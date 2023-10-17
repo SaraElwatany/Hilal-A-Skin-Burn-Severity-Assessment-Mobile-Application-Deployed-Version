@@ -22,6 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "appName":
+            MessageLookupByLibrary.simpleMessage("Home Assisstant Doctor"),
+        "language": MessageLookupByLibrary.simpleMessage("English"),
+        "login": MessageLookupByLibrary.simpleMessage("login"),
+        "start": MessageLookupByLibrary.simpleMessage("Start"),
         "title": MessageLookupByLibrary.simpleMessage("Flutter localization")
       };
 }
