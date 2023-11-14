@@ -1,0 +1,23 @@
+{
+    "app_title": "patient and doctor assistanat",
+    "title": "Flutter localization",
+    "appName":"Home Assisstant Doctor",
+    "welcome":"Welcome  !",
+    "hilal":"I'm Hilal, your healthcare companion. ",
+    "chooselang":"First, I want to know your preferred language.",
+    "start": "Start",
+    "login":"login",
+    "language": "English",
+    "home_screen_greeting": "Welcom to our application",
+    "password":   " Password",
+    "fistName": "First Name",
+    "lastName": "Second Name",
+    "nothaveAcc": "Don't have an account?",
+    "haveAcc": "Do you have an account?",
+    "signNw":"Sign up",
+    "signup": "Sign Up",
+    "mail":     "E-mail",
+    "loginNw": "login",
+    "next": "Next"
+ 
+  }

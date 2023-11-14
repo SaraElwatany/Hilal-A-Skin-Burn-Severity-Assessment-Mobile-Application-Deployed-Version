@@ -51,9 +51,15 @@ class _WelcomePageState extends State<WelcomePage> {
                         children: <Widget>[
                           Text(
                             e.flag,
-                            style: const TextStyle(fontSize: 30),
+                            style: const TextStyle(
+                              fontSize: 30,
+                            ),
                           ),
-                          Text(e.name)
+                          Text(e.name,
+                          style: const TextStyle(
+                            color: Colors.white
+                          ),
+                          )
                         ],
                       ),
                     ),
@@ -65,11 +71,11 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
       body: Column(
         children: [
-          Text(S.of(context).appName),
+          // Text(S.of(context).appName),
           const WelcomePageEN(),
-          const WelcomePageAR(),
+          //  const WelcomePageAR(),
           // const Localization(),
-          const SizedBox(height: 40),
+          const SizedBox(height: 70),
           Center(
             child: ElevatedButton(
                 onPressed: () {
