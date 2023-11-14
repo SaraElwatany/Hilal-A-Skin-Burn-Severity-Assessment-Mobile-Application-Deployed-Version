@@ -24,9 +24,30 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "appName":
             MessageLookupByLibrary.simpleMessage("Home Assisstant Doctor"),
+        "app_title": MessageLookupByLibrary.simpleMessage(
+            "patient and doctor assistanat"),
+        "chooselang": MessageLookupByLibrary.simpleMessage(
+            "First, I want to know your preferred language."),
+        "fistName": MessageLookupByLibrary.simpleMessage("First Name"),
+        "haveAcc":
+            MessageLookupByLibrary.simpleMessage("Do you have an account?"),
+        "hilal": MessageLookupByLibrary.simpleMessage(
+            "I\'m Hilal, your healthcare companion. "),
+        "home_screen_greeting":
+            MessageLookupByLibrary.simpleMessage("Welcom to our application"),
         "language": MessageLookupByLibrary.simpleMessage("English"),
+        "lastName": MessageLookupByLibrary.simpleMessage("Second Name"),
         "login": MessageLookupByLibrary.simpleMessage("login"),
+        "loginNw": MessageLookupByLibrary.simpleMessage("login"),
+        "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "nothaveAcc":
+            MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
+        "password": MessageLookupByLibrary.simpleMessage(" Password"),
+        "signNw": MessageLookupByLibrary.simpleMessage("Sign up"),
+        "signup": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
-        "title": MessageLookupByLibrary.simpleMessage("Flutter localization")
+        "title": MessageLookupByLibrary.simpleMessage("Flutter localization"),
+        "welcome": MessageLookupByLibrary.simpleMessage("Welcome  !")
       };
 }

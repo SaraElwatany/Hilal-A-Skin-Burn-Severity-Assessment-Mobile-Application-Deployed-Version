@@ -23,9 +23,27 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "appName": MessageLookupByLibrary.simpleMessage(" مساعدك المنزلى"),
+        "app_title": MessageLookupByLibrary.simpleMessage("مساعدك الطبى"),
+        "chooselang": MessageLookupByLibrary.simpleMessage(
+            " أولًا, أريد أن أعرف لغتك المفضلة !"),
+        "fistName": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
+        "haveAcc": MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل؟"),
+        "hilal": MessageLookupByLibrary.simpleMessage("أنا هلال, رفيق صحتك . "),
+        "home_screen_greeting": MessageLookupByLibrary.simpleMessage(
+            "مرحبا بك فى التطبيق الخاص بنا "),
         "language": MessageLookupByLibrary.simpleMessage("العربية"),
+        "lastName": MessageLookupByLibrary.simpleMessage("اسم العائلة"),
         "login": MessageLookupByLibrary.simpleMessage("سجل دخول"),
+        "loginNw": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+        "mail": MessageLookupByLibrary.simpleMessage(" بريدك الألكتروني"),
+        "next": MessageLookupByLibrary.simpleMessage("التالى"),
+        "nothaveAcc":
+            MessageLookupByLibrary.simpleMessage("لا يوجد لديك حساب؟"),
+        "password": MessageLookupByLibrary.simpleMessage(" كلمة المرور"),
+        "signNw": MessageLookupByLibrary.simpleMessage("اشترك الآن"),
+        "signup": MessageLookupByLibrary.simpleMessage("اشتراك"),
         "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
-        "title": MessageLookupByLibrary.simpleMessage("اشتراك")
+        "title": MessageLookupByLibrary.simpleMessage("اللغة العربية"),
+        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً")
       };
 }

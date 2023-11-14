@@ -50,6 +50,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `patient and doctor assistanat`
+  String get app_title {
+    return Intl.message(
+      'patient and doctor assistanat',
+      name: 'app_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Flutter localization`
   String get title {
     return Intl.message(
@@ -65,6 +75,36 @@ class S {
     return Intl.message(
       'Home Assisstant Doctor',
       name: 'appName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome  !`
+  String get welcome {
+    return Intl.message(
+      'Welcome  !',
+      name: 'welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I'm Hilal, your healthcare companion. `
+  String get hilal {
+    return Intl.message(
+      'I\'m Hilal, your healthcare companion. ',
+      name: 'hilal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First, I want to know your preferred language.`
+  String get chooselang {
+    return Intl.message(
+      'First, I want to know your preferred language.',
+      name: 'chooselang',
       desc: '',
       args: [],
     );
@@ -95,6 +135,116 @@ class S {
     return Intl.message(
       'English',
       name: 'language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcom to our application`
+  String get home_screen_greeting {
+    return Intl.message(
+      'Welcom to our application',
+      name: 'home_screen_greeting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` Password`
+  String get password {
+    return Intl.message(
+      ' Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name`
+  String get fistName {
+    return Intl.message(
+      'First Name',
+      name: 'fistName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Second Name`
+  String get lastName {
+    return Intl.message(
+      'Second Name',
+      name: 'lastName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have an account?`
+  String get nothaveAcc {
+    return Intl.message(
+      'Don\'t have an account?',
+      name: 'nothaveAcc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you have an account?`
+  String get haveAcc {
+    return Intl.message(
+      'Do you have an account?',
+      name: 'haveAcc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign up`
+  String get signNw {
+    return Intl.message(
+      'Sign up',
+      name: 'signNw',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Up`
+  String get signup {
+    return Intl.message(
+      'Sign Up',
+      name: 'signup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `E-mail`
+  String get mail {
+    return Intl.message(
+      'E-mail',
+      name: 'mail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `login`
+  String get loginNw {
+    return Intl.message(
+      'login',
+      name: 'loginNw',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
       desc: '',
       args: [],
     );
