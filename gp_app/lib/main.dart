@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/splash_screen.dart';
-import 'package:gp_app/router/custom_router.dart';
+// import 'package:gp_app/router/custom_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
                 fontSize: 50,
                 color: Colors.black,
               ),
+             
             ),
       ),
       localizationsDelegates: const [

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/classes/language.dart';
+// import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/main.dart';
+// import 'package:gp_app/main.dart';
+import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/signup_screen.dart';
+import 'package:gp_app/widgets/localization_icon.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,56 +17,24 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
     final _formKey = GlobalKey<FormState>();
+    var _enteredName = '';
+    var _enteredPassword;
 
 
      void _saveItem() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     }
+    Navigator.of(context).
+    push(MaterialPageRoute(
+      builder: (ctx)=>const  MainPageScreen()
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
      return Scaffold(
-      appBar: AppBar(
-                actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DropdownButton<Language>(
-              underline: const SizedBox(),
-              icon: const Icon(
-                Icons.language,
-                color: Colors.white,
-              ),
-              onChanged: (Language? language) {
-                if (language != null) {
-                  MyApp.setLocale(context, Locale(language.languageCode, ''));
-                }
-              },
-              items: Language.languageList()
-                  .map<DropdownMenuItem<Language>>(
-                    (e) => DropdownMenuItem<Language>(
-                      value: e,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text(
-                            e.flag,
-                            style: const TextStyle(fontSize: 30),
-                          ),
-                          Text(e.name,
-                          style: const TextStyle(
-                            color: Colors.white
-                          ),)
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ],
-      ),
+      appBar:const LocalizationIcon(), 
       body: Container(
         padding: const EdgeInsets.only(top: 200) ,
         child:  SingleChildScrollView(
@@ -113,7 +83,18 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               ),
                              ),
-                            
+                             validator: (value){
+                             if (value == null ||
+                                value.isEmpty ||
+                                value.trim().length <= 1 ||
+                                 value.trim().length > 50) {
+                            return 'Must be between 1 and 50 characters.';
+                                      }
+                                   return null;
+                             },
+                             onSaved: (value) {
+                             _enteredName=value!;
+                             },
                           ),
                           const SizedBox(height: 10,),
                             TextFormField(  
@@ -141,6 +122,13 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               ),
                              ),
+                              validator: (value){
+                      if(value!.isEmpty)
+                      {
+                        return 'Please a Enter Password';
+                      }
+                      return null;
+                    },
                             
                           ),
                             

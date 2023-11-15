@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/widgets/welcome_page_ar.dart';
+// import 'package:gp_app/widgets/welcome_page_ar.dart';
 import 'package:gp_app/widgets/welcome_page_en.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/login_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gp_app/router/custom_router.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:gp_app/router/custom_router.dart';
 import 'package:gp_app/main.dart';
 import 'package:gp_app/classes/language.dart';
-import 'package:gp_app/classes/language_constants.dart';
+// import 'package:gp_app/classes/language_constants.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

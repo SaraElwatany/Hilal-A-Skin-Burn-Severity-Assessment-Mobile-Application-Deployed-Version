@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Home Assisstant Doctor"),
         "app_title": MessageLookupByLibrary.simpleMessage(
             "patient and doctor assistanat"),
+        "burns": MessageLookupByLibrary.simpleMessage("Burns"),
         "chooselang": MessageLookupByLibrary.simpleMessage(
             "First, I want to know your preferred language."),
         "fistName": MessageLookupByLibrary.simpleMessage("First Name"),
