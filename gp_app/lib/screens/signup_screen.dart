@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:gp_app/classes/language.dart';
+// import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/main.dart';
+// import 'package:gp_app/main.dart';
 import 'package:gp_app/screens/login_screen.dart';
+import 'package:gp_app/screens/main_page.dart';
+import 'package:gp_app/widgets/localization_icon.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -18,45 +21,7 @@ class _SignUpState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
      return Scaffold(
-      appBar: AppBar(
-                actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DropdownButton<Language>(
-              underline: const SizedBox(),
-              icon: const Icon(
-                Icons.language,
-                color: Colors.white,
-              ),
-              onChanged: (Language? language) {
-                if (language != null) {
-                  MyApp.setLocale(context, Locale(language.languageCode, ''));
-                }
-              },
-              items: Language.languageList()
-                  .map<DropdownMenuItem<Language>>(
-                    (e) => DropdownMenuItem<Language>(
-                      value: e,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text(
-                            e.flag,
-                            style: const TextStyle(fontSize: 30),
-                          ),
-                          Text(e.name,
-                          style: const TextStyle(
-                            color: Colors.white
-                          ),)
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ],
-      ),
+      appBar: const LocalizationIcon(),
       body: Container(
         padding: const EdgeInsets.only(top: 150) ,
         child: SingleChildScrollView(
@@ -264,6 +229,10 @@ class _SignUpState extends State<SignUpScreen> {
 
                ElevatedButton(
                 onPressed: () {
+                      Navigator.of(context).
+                     push(MaterialPageRoute(
+                      builder: (ctx)=>const  MainPageScreen()
+                    ));
                  
                 },
                 style: ElevatedButton.styleFrom(
