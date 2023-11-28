@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/models/user_info.dart';
 // import 'package:gp_app/main.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/signup_screen.dart';
@@ -18,18 +19,57 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
     final _formKey = GlobalKey<FormState>();
     var _enteredName = '';
-    var _enteredPassword;
+    var _enteredPassword=1;
+    final List<UserInfo>_userInfoList=[];
 
 
      void _saveItem() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-    }
+
+      UserInfo userInfo=UserInfo(_enteredName,_enteredPassword);
+      _userInfoList.add(userInfo);
+    //  printUserInfoList();
     Navigator.of(context).
     push(MaterialPageRoute(
       builder: (ctx)=>const  MainPageScreen()
     ));
+     }
+     else {
+      showDialog(
+        context: context,
+         builder: (ctx)=>AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text('Please fill in all required fields correctly',
+          
+          ),
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.pop(ctx);
+              }, 
+              child:  Text('Okay',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.surface,
+                fontSize: 15,
+                ),
+              ),
+              ),
+          ],
+         )
+         );
+
+     }
   }
+
+  void printUserInfoList() {
+    for (UserInfo userInfo in _userInfoList) {
+      print('Username: ${userInfo.username}, Password: ${userInfo.password}');
+      // print(_userInfoList.length);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Theme.of(context).colorScheme.surface,
                         ),
                       ),
-                              label:  Text(S.of(context).fistName,
+                              label:  Text(S.of(context).firstName,
                               style:  TextStyle(
                                 fontSize: 18,
                                 color: Colors.grey.shade500
@@ -129,6 +169,10 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       return null;
                     },
+                    onSaved: (value){  
+                      _enteredPassword=int.parse(value!);
+                    }
+                    ,
                             
                           ),
                             
@@ -178,7 +222,8 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 30,
                     color: Color.fromARGB(255, 255, 251, 251),
                   ),
-                )),
+                ),
+                ),
                         ],
                                     
                       ),
