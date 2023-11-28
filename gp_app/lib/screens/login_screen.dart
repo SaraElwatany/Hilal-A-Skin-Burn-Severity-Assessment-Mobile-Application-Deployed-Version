@@ -139,6 +139,8 @@ class _LoginPageState extends State<LoginPage> {
                            children: [
                              Text(S.of(context).nothaveAcc),
                              const SizedBox(width: 10,),
+                                                         // Backend:Button to go to SignUp page
+
                              TextButton(
                               onPressed: (){
                                  Navigator.push(
@@ -162,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                            ],
                          ),
                          const SizedBox(height: 10,) ,
+                                                      // Backend:Button to go to Main page
 
                ElevatedButton(
                 onPressed: _saveItem,
