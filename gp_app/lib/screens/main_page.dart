@@ -28,7 +28,7 @@ class _MainPageState extends State <MainPageScreen>{
               Center(
                 child: InkWell(
                   onTap: (){
-                   
+            
                   },
                   child: Container(
                     decoration: BoxDecoration(

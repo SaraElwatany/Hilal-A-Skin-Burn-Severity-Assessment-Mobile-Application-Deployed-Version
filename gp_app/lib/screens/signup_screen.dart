@@ -204,6 +204,7 @@ class _SignUpState extends State<SignUpScreen> {
                        children: [
                          Text(S.of(context).haveAcc),
                          const SizedBox(width: 10,),
+                                                      // Backend:Button to go to Login page
                          TextButton(
                           onPressed: (){Navigator.pop(
                           context,
@@ -226,6 +227,7 @@ class _SignUpState extends State<SignUpScreen> {
                      )
                      ,
                          const SizedBox(height: 10,) ,
+                                                      // Backend:Button to go to Main page
 
                ElevatedButton(
                 onPressed: () {

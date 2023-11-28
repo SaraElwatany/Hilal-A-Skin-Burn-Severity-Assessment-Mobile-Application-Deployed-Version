@@ -77,6 +77,7 @@ class _WelcomePageState extends State<WelcomePage> {
           // const Localization(),
           const SizedBox(height: 70),
           Center(
+                                                           // Backend:Button to go to Login page
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -94,7 +95,8 @@ class _WelcomePageState extends State<WelcomePage> {
                     fontSize: 30,
                     color: Color.fromARGB(255, 255, 251, 251),
                   ),
-                )),
+                ),
+                ),
           ),
         ],
       ),
