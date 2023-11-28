@@ -29,7 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "burns": MessageLookupByLibrary.simpleMessage("Burns"),
         "chooselang": MessageLookupByLibrary.simpleMessage(
             "First, I want to know your preferred language."),
-        "fistName": MessageLookupByLibrary.simpleMessage("First Name"),
+        "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
         "haveAcc":
             MessageLookupByLibrary.simpleMessage("Do you have an account?"),
         "hilal": MessageLookupByLibrary.simpleMessage(

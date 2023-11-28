@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/models/new_user.dart';
 // import 'package:gp_app/main.dart';
 import 'package:gp_app/screens/login_screen.dart';
 import 'package:gp_app/screens/main_page.dart';
@@ -18,6 +19,67 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpScreen> {
+    final _formKey = GlobalKey<FormState>();
+ var _enteredFirstName='';
+ var _enteredLastName='';
+ var _enteredEmail='';
+ var _enteredPassword=1;
+     final List<NewUser>_userInfoList=[];
+
+
+
+     void _saveItem() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      NewUser userInfo=NewUser(
+        _enteredFirstName,
+        _enteredLastName,
+        _enteredEmail,
+        _enteredPassword
+        );
+      _userInfoList.add(userInfo);
+     printUserInfoList();
+    Navigator.of(context).
+    push(MaterialPageRoute(
+      builder: (ctx)=>const  MainPageScreen()
+    ));
+     }
+     else {
+      showDialog(
+        context: context,
+         builder: (ctx)=>AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text('Please fill in all required fields correctly',
+          
+          ),
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.pop(ctx);
+              }, 
+              child:  Text('Okay',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.surface,
+                fontSize: 15,
+                ),
+              ),
+              ),
+          ],
+         )
+         );
+
+     }
+  }
+   void printUserInfoList() {
+    for (NewUser userInfo in _userInfoList) {
+      print('Firstname: ${userInfo.firstName},Lastname: ${userInfo.lastName},Email: ${userInfo.email} ,Password: ${userInfo.password}');
+      // print(_userInfoList.length);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
      return Scaffold(
@@ -37,6 +99,7 @@ class _SignUpState extends State<SignUpScreen> {
                   ),
                const SizedBox(height: 20,),
                Form(
+                key: _formKey,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 40,
@@ -65,7 +128,7 @@ class _SignUpState extends State<SignUpScreen> {
                                                color: Theme.of(context).colorScheme.surface,
                                              ),
                                            ),
-                            label:  Text(S.of(context).fistName,
+                            label:  Text(S.of(context).firstName,
                             style:  TextStyle(
                               fontSize: 18,
                               color: Colors.grey.shade500
@@ -80,7 +143,10 @@ class _SignUpState extends State<SignUpScreen> {
                              return 'Must be between 1 and 50 characters.';
                            }
                            return null;
-                           }                                            
+                           },  
+                           onSaved: (value) => 
+                           _enteredFirstName=value!
+                           ,                                          
                           ),
                          ),
                       const SizedBox(width: 10,),
@@ -118,7 +184,10 @@ class _SignUpState extends State<SignUpScreen> {
                              return 'Must be between 1 and 50 characters.';
                            }
                            return null;
-                           }                 
+                           },
+                           onSaved: (value) =>
+                           _enteredLastName=value!
+                            ,            
                         ),
               ),
                         ]
@@ -152,13 +221,16 @@ class _SignUpState extends State<SignUpScreen> {
                          validator: (value){
                       if(value!.isEmpty)
                       {
-                        return 'Please a Enter';
+                        return 'This field is required';
                       }
                       if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
-                        return 'Please a valid Email';
+                        return 'Please enter a valid Email';
                       }
                       return null;
                     },
+                    onSaved: (value) =>
+                    _enteredEmail=value!
+                     ,
         
                       ),
                       const SizedBox(height: 10,),
@@ -190,10 +262,13 @@ class _SignUpState extends State<SignUpScreen> {
                         validator: (value){
                       if(value!.isEmpty)
                       {
-                        return 'Please a Enter Password';
+                        return 'Please Enter a Password';
                       }
                       return null;
                     },
+                    onSaved: (value) =>
+                    _enteredPassword=int.parse(value!)
+                     ,
         
                       ),
                       
@@ -220,9 +295,6 @@ class _SignUpState extends State<SignUpScreen> {
                           child: Text(
                             S.of(context).loginNw),
                             ),
-        
-        
-        
                        ],
                      )
                      ,
@@ -230,13 +302,7 @@ class _SignUpState extends State<SignUpScreen> {
                                                       // Backend:Button to go to Main page
 
                ElevatedButton(
-                onPressed: () {
-                      Navigator.of(context).
-                     push(MaterialPageRoute(
-                      builder: (ctx)=>const  MainPageScreen()
-                    ));
-                 
-                },
+                onPressed:_saveItem,
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),

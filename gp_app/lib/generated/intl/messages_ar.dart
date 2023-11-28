@@ -27,7 +27,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "burns": MessageLookupByLibrary.simpleMessage("حروق"),
         "chooselang": MessageLookupByLibrary.simpleMessage(
             " أولًا, أريد أن أعرف لغتك المفضلة !"),
-        "fistName": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
         "haveAcc": MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل؟"),
         "hilal": MessageLookupByLibrary.simpleMessage("أنا هلال, رفيق صحتك . "),
         "home_screen_greeting": MessageLookupByLibrary.simpleMessage(

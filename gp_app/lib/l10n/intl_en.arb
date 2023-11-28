@@ -10,7 +10,7 @@
     "language": "English",
     "home_screen_greeting": "Welcom to our application",
     "password":   " Password",
-    "fistName": "First Name",
+    "firstName": "First Name",
     "lastName": "Second Name",
     "nothaveAcc": "Don't have an account?",
     "haveAcc": "Do you have an account?",

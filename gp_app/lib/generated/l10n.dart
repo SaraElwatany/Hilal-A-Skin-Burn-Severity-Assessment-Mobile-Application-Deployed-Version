@@ -161,10 +161,10 @@ class S {
   }
 
   /// `First Name`
-  String get fistName {
+  String get firstName {
     return Intl.message(
       'First Name',
-      name: 'fistName',
+      name: 'firstName',
       desc: '',
       args: [],
     );
