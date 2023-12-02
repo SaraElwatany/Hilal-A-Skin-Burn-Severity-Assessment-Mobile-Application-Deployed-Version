@@ -1,9 +1,5 @@
 import 'package:http/http.dart' as http;
-
-fetch_login_info(String url) async {
-  http.Response response = await http.get(Uri.parse(url));
-  return response.body;
-}
+import 'package:gp_app/models/new_user.dart';
 
 // A function that sends the username and password to the flask backend (return type as future object)
 Future<void> sendData(String username, String password) async {
@@ -21,5 +17,22 @@ Future<void> sendData(String username, String password) async {
   } else {
     // Request failed, handle the error
     print('Login failed');
+  }
+}
+
+Future<void> signup(NewUser userInfo) async {
+  var url = 'http://10.0.2.2:19999/signup';
+
+  var response = await http.post(Uri.parse(url), body: {
+    'firstname': userInfo.firstName,
+    'lastname': userInfo.lastName,
+    'email': userInfo.email,
+    'password': userInfo.password,
+  });
+
+  if (response.statusCode == 200) {
+    print('signed up successfully');
+  } else {
+    print('sign up failed');
   }
 }

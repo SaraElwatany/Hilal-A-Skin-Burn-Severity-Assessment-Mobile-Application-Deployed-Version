@@ -36,6 +36,25 @@ def login_info():
         print('Fail', f'Username: {username}', f'Password: {password}')
         # Login failed
         return 'Login failed'
+    
+
+
+@app.route('/signup', methods = ['POST'])
+def signup_info():
+    data = request.form
+    firstname = data.get('firstname')
+    lastname  = data.get('lastname')
+    email     = data.get('email')
+    password  = data.get('password')
+
+    new_user = NewUser(firstname=firstname, lastname=lastname, email=email, password=password)
+
+    # Add new user to the database
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'Signup successful'})
+
 
 
 
