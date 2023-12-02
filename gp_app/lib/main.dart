@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Home Assisstant Doctor',
       theme: ThemeData.dark().copyWith(
         useMaterial3: true,
+        // useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 147, 229, 250),
           brightness: Brightness.dark,
