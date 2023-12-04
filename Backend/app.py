@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 
 
@@ -19,15 +18,17 @@ def get_sign_in_info():
         return 'Hello from Post'
     
 
+    
+
 # Route to get the username and password
 @app.route('/login', methods = ['POST'])
 def login_info():
+    # Get the data from the Json dictionary
     username = request.form.get('username')
     password = request.form.get('password')
 
     print('Route' ,f'Username: {username}', f'Password: {password}')
-
-    # Check if the username and password match
+    # Check if the username and password matches
     if username == 'admin' and password == 'password':
         print('Success, 'f'Username: {username}', f'Password: {password}')
         # Login successful
@@ -36,6 +37,8 @@ def login_info():
         print('Fail', f'Username: {username}', f'Password: {password}')
         # Login failed
         return 'Login failed'
+
+
 
 
 
