@@ -1,12 +1,6 @@
-
-
-class UserInfo{
-  const UserInfo(
-    this.username,
-    this.password
-  );
-
+class UserInfo {
+  const UserInfo(this.username, this.password);
 
   final String username;
-  final int password;
+  final String password;
 }
