@@ -6,6 +6,7 @@ import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/screens/login_screen.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/apis/apis.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,7 +22,7 @@ class _SignUpState extends State<SignUpScreen> {
   var _enteredFirstName = '';
   var _enteredLastName = '';
   var _enteredEmail = '';
-  var _enteredPassword = 1;
+  var _enteredPassword = '';
   final List<NewUser> _userInfoList = [];
 
   void _saveItem() {
@@ -30,8 +31,10 @@ class _SignUpState extends State<SignUpScreen> {
 
       NewUser userInfo = NewUser(
           _enteredFirstName, _enteredLastName, _enteredEmail, _enteredPassword);
+
       _userInfoList.add(userInfo);
-      printUserInfoList();
+      signup(userInfo);
+      // printUserInfoList();
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
     } else {
@@ -65,7 +68,7 @@ class _SignUpState extends State<SignUpScreen> {
     for (NewUser userInfo in _userInfoList) {
       print(
           'Firstname: ${userInfo.firstName},Lastname: ${userInfo.lastName},Email: ${userInfo.email} ,Password: ${userInfo.password}');
-      // print(_userInfoList.length);
+      print(_userInfoList.length);
     }
   }
 
@@ -246,8 +249,9 @@ class _SignUpState extends State<SignUpScreen> {
                           }
                           return null;
                         },
-                        onSaved: (value) =>
-                            _enteredPassword = int.parse(value!),
+                        onSaved: (value) => _enteredPassword = value!,
+
+                        ///
                       ),
 
                       const SizedBox(
@@ -283,7 +287,6 @@ class _SignUpState extends State<SignUpScreen> {
                         height: 10,
                       ),
                       // Backend:Button to go to Main page
-
                       ElevatedButton(
                           onPressed: _saveItem,
                           style: ElevatedButton.styleFrom(

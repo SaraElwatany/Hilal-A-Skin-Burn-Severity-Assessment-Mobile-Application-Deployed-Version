@@ -19,7 +19,7 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  // final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +55,9 @@ class _WelcomePageState extends State<WelcomePage> {
                               fontSize: 30,
                             ),
                           ),
-                          Text(e.name,
-                          style: const TextStyle(
-                            color: Colors.white
-                          ),
+                          Text(
+                            e.name,
+                            style: const TextStyle(color: Colors.white),
                           )
                         ],
                       ),
@@ -77,26 +76,26 @@ class _WelcomePageState extends State<WelcomePage> {
           // const Localization(),
           const SizedBox(height: 70),
           Center(
-                                                           // Backend:Button to go to Login page
+            // Backend:Button to go to Login page
             child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    fixedSize: const Size(166, 69)),
-                child: Text(
-                  S.of(context).start,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    color: Color.fromARGB(255, 255, 251, 251),
-                  ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  fixedSize: const Size(166, 69)),
+              child: Text(
+                S.of(context).start,
+                style: const TextStyle(
+                  fontSize: 30,
+                  color: Color.fromARGB(255, 255, 251, 251),
                 ),
-                ),
+              ),
+            ),
           ),
         ],
       ),

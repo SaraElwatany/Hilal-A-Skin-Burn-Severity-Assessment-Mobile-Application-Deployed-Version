@@ -24,18 +24,25 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
-  var _enteredPassword = 1;
+  var _enteredPassword = '';
   final List<UserInfo> _userInfoList = [];
 
-  void _saveItem() {
+  void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       UserInfo userInfo = UserInfo(_enteredName, _enteredPassword);
       _userInfoList.add(userInfo);
+
+      // Send data & then wait for the response either to go to main page or try again
+      String response = await sendData(username, password);
       //  printUserInfoList();
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+      if (response == 'Access Allowed') {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+      } else if (response == 'Access Denied') {
+        login_warning(context);
+      }
     } else {
       showDialog(
           context: context,
@@ -179,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                         onSaved: (value) {
-                          _enteredPassword = int.parse(value!);
+                          _enteredPassword = value!;
                         },
                       ),
 
@@ -219,10 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Backend:Button to go to Main page
 
                       ElevatedButton(
-                        onPressed: () {
-                          _saveItem;
-                          sendData(username, password);
-                        },
+                        onPressed: _saveItem,
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
