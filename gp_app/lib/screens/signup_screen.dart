@@ -28,15 +28,19 @@ class _SignUpState extends State<SignUpScreen> {
   void _saveItem() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      if (isValidEmail(_enteredEmail)) {
+        NewUser userInfo = NewUser(_enteredFirstName, _enteredLastName,
+            _enteredEmail, _enteredPassword);
 
-      NewUser userInfo = NewUser(
-          _enteredFirstName, _enteredLastName, _enteredEmail, _enteredPassword);
-
-      _userInfoList.add(userInfo);
-      signup(userInfo);
-      // printUserInfoList();
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+        _userInfoList.add(userInfo);
+        signup(userInfo);
+        // printUserInfoList();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+      } else {
+        // Invalid email, show an error message to the user
+        print('Invalid email address');
+      }
     } else {
       showDialog(
           context: context,
@@ -208,7 +212,7 @@ class _SignUpState extends State<SignUpScreen> {
                           if (value!.isEmpty) {
                             return 'This field is required';
                           }
-                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]") 
                               .hasMatch(value)) {
                             return 'Please enter a valid Email';
                           }

@@ -75,3 +75,10 @@ Future<void> signup(NewUser userInfo) async {
     print('sign up failed');
   }
 }
+
+bool isValidEmail(String email) {
+  // Regular expression for basic email validation
+  final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+  return emailRegex.hasMatch(email);
+}
