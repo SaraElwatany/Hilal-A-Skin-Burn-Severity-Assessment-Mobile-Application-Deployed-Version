@@ -23,24 +23,22 @@ class _SignUpState extends State<SignUpScreen> {
   var _enteredLastName = '';
   var _enteredEmail = '';
   var _enteredPassword = '';
+  var output = '';
   final List<NewUser> _userInfoList = [];
 
-  void _saveItem() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      if (isValidEmail(_enteredEmail)) {
-        NewUser userInfo = NewUser(_enteredFirstName, _enteredLastName,
-            _enteredEmail, _enteredPassword);
+  void _saveItem() async {
+    NewUser userInfo = NewUser(
+        _enteredFirstName, _enteredLastName, _enteredEmail, _enteredPassword);
+    _userInfoList.add(userInfo);
 
-        _userInfoList.add(userInfo);
-        signup(userInfo);
-        // printUserInfoList();
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
-      } else {
-        // Invalid email, show an error message to the user
-        print('Invalid email address');
-      }
+    output = await signUp(userInfo);
+
+    if ((_formKey.currentState!.validate()) && (output == 'Sign up Allowed')) {
+      _formKey.currentState!.save();
+
+      // printUserInfoList();
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
     } else {
       showDialog(
           context: context,
@@ -107,6 +105,9 @@ class _SignUpState extends State<SignUpScreen> {
                       Row(children: [
                         Expanded(
                           child: TextFormField(
+                            onChanged: (value) {
+                              _enteredFirstName = value.toString();
+                            },
                             maxLength: 50,
                             decoration: InputDecoration(
                               filled: true,
@@ -146,6 +147,9 @@ class _SignUpState extends State<SignUpScreen> {
                         ),
                         Expanded(
                           child: TextFormField(
+                            onChanged: (value) {
+                              _enteredLastName = value.toString();
+                            },
                             maxLength: 50,
                             decoration: InputDecoration(
                               filled: true,
@@ -185,6 +189,9 @@ class _SignUpState extends State<SignUpScreen> {
                         height: 10,
                       ),
                       TextFormField(
+                        onChanged: (value) {
+                          _enteredEmail = value.toString();
+                        },
                         maxLength: 50,
                         decoration: InputDecoration(
                           filled: true,
@@ -212,8 +219,15 @@ class _SignUpState extends State<SignUpScreen> {
                           if (value!.isEmpty) {
                             return 'This field is required';
                           }
-                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]") 
+                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                               .hasMatch(value)) {
+                            return 'Please enter a valid Email';
+                          }
+                          if (output == 'Sign up Denied due to email') {
+                            return 'Please enter a valid Email';
+                          }
+                          if (output ==
+                              'Sign up Denied due to password & email') {
                             return 'Please enter a valid Email';
                           }
                           return null;
@@ -224,6 +238,9 @@ class _SignUpState extends State<SignUpScreen> {
                         height: 10,
                       ),
                       TextFormField(
+                        onChanged: (value) {
+                          _enteredPassword = value.toString();
+                        },
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           filled: true,
@@ -250,6 +267,15 @@ class _SignUpState extends State<SignUpScreen> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please Enter a Password';
+                          }
+
+                          if (output == 'Sign up Denied due to password') {
+                            return 'Please Enter a Valid Password Format';
+                          }
+
+                          if (output ==
+                              'Sign up Denied due to password & email') {
+                            return 'Please Enter a Valid Password Format';
                           }
                           return null;
                         },

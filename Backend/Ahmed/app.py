@@ -4,6 +4,7 @@ from my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI
 import base
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = URI
 
 db = base.db
