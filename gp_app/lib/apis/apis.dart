@@ -59,7 +59,7 @@ void login_warning(context) {
           ));
 }
 
-Future<void> signup(NewUser userInfo) async {
+Future<String> signUp(NewUser userInfo) async {
   var url = 'http://10.0.2.2:19999/signup';
 
   var response = await http.post(Uri.parse(url), body: {
@@ -70,9 +70,29 @@ Future<void> signup(NewUser userInfo) async {
   });
 
   if (response.statusCode == 200) {
-    print('signed up successfully');
+    // Request successful, handle the response (valid http response was received == okay statement for http)
+    var responseData = jsonDecode(response.body);
+    var responseMessage = responseData['response'];
+    print('Received response: $responseMessage');
+
+    if (responseMessage == 'Failed Password and Email') {
+      print('Sign up Failed due to wrong password and email');
+      return 'Sign up Denied due to password & email';
+    } else if (responseMessage == 'Failed Password') {
+      print('Sign up Failed due to wrong password');
+      return 'Sign up Denied due to password';
+    } else if (responseMessage == 'Failed Email') {
+      print('Sign up Failed due to wrong email format');
+      return 'Sign up Denied due to email';
+    } else {
+      // Request was successful, and the info was correct => Sign Up
+      print('Sign up was successful');
+      return 'Sign up Allowed';
+    }
   } else {
-    print('sign up failed');
+    // Request failed, handle the error
+    print('Sign up failed due to failed request');
+    return 'Sign up Failed';
   }
 }
 
