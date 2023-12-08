@@ -106,18 +106,18 @@ def signup_info():
     new_user = User(
         username = f'{firstname} {lastname}', 
         password = hashed_password,
-        email = email,
-        phone = int(122), #'None'
-        weight = int(50),#'None'
-        height = int(170), #'None'
-        gender = 'N',
         dob = formatted_date,#'None'
+        gender = 'N',
+        height = int(170), #'None'
+        weight = int(50),#'None'
+        phone = int(122), #'None'
+        email = email,
         profession = 'None'
         )
     
     db.session.add(new_user)
     #db.session.commit()
-    # print('user id: ', new_user.id) # Get user ID
+    print('user id: ', new_user.id) # Get user ID
 
     response = {'response': 'Signup successful'}
     return jsonify(response)
