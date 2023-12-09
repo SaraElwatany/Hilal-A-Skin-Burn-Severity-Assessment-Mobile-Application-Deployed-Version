@@ -107,7 +107,7 @@ def signup_info():
     phone = 1224355, #'None'
     weight = 50,#'None'
     height = 170, #'None'
-    gender = 'M',
+    gender = 'M', #'None'
     dob = date(2020,4,2),#'None'
     profession = 'None'
     )
