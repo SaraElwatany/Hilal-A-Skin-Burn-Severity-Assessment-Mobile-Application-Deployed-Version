@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI
+from  sqlalchemy.exc import OperationalError
 from flask_socketio import SocketIO, emit
 from models.user_class import User
-from datetime import datetime, timedelta
+from datetime import date
 import base
 import re
 
@@ -94,30 +95,29 @@ def signup_info():
 
     hashed_password = generate_password_hash(password, method='pbkdf2')
     print('password is: ', hashed_password)
-
-    # Define target format
-    format_string = "%Y-%m-%d"
-    # Generate a random date
-    current_date = datetime.now()
-    # Format the date
-    formatted_date = current_date.strftime(format_string)
-
+    
+    #db.create_all()
+    #User.query.all()
+    
     # add info from form to user
     new_user = User(
-        username = f'{firstname} {lastname}', 
-        password = hashed_password,
-        dob = formatted_date,#'None'
-        gender = 'N',
-        height = int(170), #'None'
-        weight = int(50),#'None'
-        phone = int(122), #'None'
-        email = email,
-        profession = 'None'
-        )
+    username = f'{firstname} {lastname}', 
+    password = hashed_password,
+    email = email,
+    phone = 1224355, #'None'
+    weight = 50,#'None'
+    height = 170, #'None'
+    gender = 'M',
+    dob = date(2020,4,2),#'None'
+    profession = 'None'
+    )
     
-    db.session.add(new_user)
-    #db.session.commit()
-    print('user id: ', new_user.id) # Get user ID
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        print('user id: ', new_user.id) # Get user ID
+    except OperationalError:
+        print('Operational Error Encountered')
 
     response = {'response': 'Signup successful'}
     return jsonify(response)
