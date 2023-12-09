@@ -42,8 +42,10 @@ def signup():
             dob = data['dob'],
             profession = data['profession']
             )
+
         db.session.add(new_user)
         db.session.commit()
+
         print('user id: ', new_user.id) 
         return {'message': 'New user created'}
     else: return "error: wrong method"
