@@ -40,6 +40,9 @@ dependencies:
   intl: ^0.18.1
   shared_preferences: ^2.2.2
   google_fonts: ^6.1.0
+  permission_handler: ^11.0.1
+  image_cropper: ^5.0.1
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +77,8 @@ flutter:
     - assets/images/Hilal.png
     - assets/images/logo.png
     - assets/images/flame.png
+    - assets/images/burn-care.webp
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

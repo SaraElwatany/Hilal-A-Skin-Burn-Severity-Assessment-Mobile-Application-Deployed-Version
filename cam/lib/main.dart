@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: ElevatedButton(
-          child: const Text('Start'),
+          child: const Text('Start taking an image'),
           onPressed: () {
             Navigator.push(
               context,
