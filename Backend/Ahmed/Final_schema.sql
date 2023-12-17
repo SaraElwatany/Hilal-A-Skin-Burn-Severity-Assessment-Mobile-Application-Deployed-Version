@@ -84,6 +84,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `ehr`.`burn` ;
 
 CREATE TABLE IF NOT EXISTS `ehr`.`burn` (
+  `burn_id` INT NOT NULL AUTO_INCREMENT,
   `fk_burn_user_id` INT NOT NULL,
   `burn_date` DATETIME NOT NULL,
   `burn_class_model` INT NULL,
@@ -91,6 +92,7 @@ CREATE TABLE IF NOT EXISTS `ehr`.`burn` (
   `dr_id` INT NULL,
   `burn_class_dr` INT NULL,
   `dr_reply` VARCHAR(500) NULL,
+  PRIMARY KEY (`burn_id`),
   UNIQUE INDEX `burn_img_path_UNIQUE` (`burn_img_path` ASC) VISIBLE,
   INDEX `id_idx` (`fk_burn_user_id` ASC) VISIBLE,
   CONSTRAINT `id`

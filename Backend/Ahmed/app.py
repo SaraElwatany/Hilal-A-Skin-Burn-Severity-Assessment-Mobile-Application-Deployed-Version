@@ -9,6 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = URI
 db = base.db
 db.init_app(app)
 from models.user_class import User
+from models.burn_item import Burn
 
 # for web based testing only, COMMENT WHEN DONE
 @app.route('/')
@@ -16,12 +17,31 @@ def index():
     return render_template('index.html')
 
 
+# burn item route
+@app.route('/add_burn', methods=['GET', 'POST'])
+def burn_new():
+    if request.method == 'POST':
+        print('burn item received')
+        data = request.get_json()
+        # create new burn item and add to db
+        new_burn = Burn(
+            fk_burn_user_id = data['fk_burn_user_id'],
+            burn_date = data['burn_date'],
+            burn_img_path = data['burn_img_path']
+        )
+        db.session.add(new_burn)
+        db.session.commit()
+        print('burn id: ', new_burn.burn_id)
+        # return the burn id
+        return { 'message': 'New burn item created', 'id': new_burn.burn_id}
+    else: return "error: wrong method"
 
 
+# Signup route
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        print('request received')
+        print('signup request received')
         data = request.get_json()
         
         # print the conent of the JSON
@@ -44,7 +64,11 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         print('user id: ', new_user.id) 
-        return {'message': 'New user created'}
+        # return the user id
+        return { 
+            'message': 'New user created',
+            'username': new_user.username,
+            'id': new_user.id}
     else: return "error: wrong method"
 
 
@@ -63,62 +87,3 @@ def login():
 
 if __name__ == "__main__":
     app.run()
-
-
-
-# from flask import Flask
-# from flask import render_template
-# from flask_sqlalchemy import SQLAlchemy
-# from my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI 
-
-# # This part is validation for the web app
-# from flask_wtf import FlaskForm
-# from wtforms import StringField, SubmitField
-# from wtforms.validators import DataRequired
-# from flask import flash
-
-
-# @app.route('/signin', methods=['GET', 'POST'])
-# def signin():
-#     username = None
-#     form = UserForm()
-
-#     if form.validate_on_submit():
-#         username = form.username.data
-#         form.username.data = ''
-#         flash('!!!!!!Your username is {}'.format(username))
-
-#     return render_template('signin.html'
-#                            , username=username
-#                            , form=form)
-
-# class UserForm(FlaskForm):
-#     username = StringField(label='Enter username', validators=[DataRequired()])
-#     email = StringField(label='Enter email', validators=[DataRequired()])
-#     submit = SubmitField('Submit')
-
-
-
-# app = Flask(__name__)
-
-# # mysql URI
-# app.config['SQLALCHEMY_DATABASE_URI'] = URI
-# app.config['SECRET_KEY'] = SECRET_KEY
-# db = SQLAlchemy(app)
-
-
-
-
-
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
-
-
-# if __name__ == "__main__":
-#     app.run()
-
-
-
-
-
