@@ -124,7 +124,15 @@ def signup_info():
 
 
 
+@app.route('/uploadImg', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        return 'No file part'
+    
+    file = request.files['file']
+    # pass it to the model
 
+    return 'File uploaded successfully'
 
 
 if __name__ == "__main__":
