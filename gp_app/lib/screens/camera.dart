@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:gp_app/apis/apis.dart';
+
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -187,6 +189,7 @@ class _HomeScreenState extends State<CameraScreen> {
       setState(() {
         imageFile = File(croppedFile.path);
       });
+      sendImageToServer(File(croppedFile.path));
       // reload();
     }
   }
