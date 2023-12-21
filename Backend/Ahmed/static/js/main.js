@@ -1,6 +1,4 @@
-// add action lister to the sign up form
-
-// Assuming you have a form with the id 'myForm'
+// sign up form
 let form = document.getElementById("signup-form");
 
 form.addEventListener("submit", function (event) {
@@ -12,7 +10,7 @@ form.addEventListener("submit", function (event) {
   for (const [key, value] of formData.entries()) {
     jsonObject[key] = value;
   }
-  console.log(jsonObject);
+  // console.log(jsonObject);
 
   fetch("/signup", {
     method: "POST",
@@ -28,6 +26,7 @@ form.addEventListener("submit", function (event) {
     });
 });
 
+// log in form
 document
   .getElementById("signin-form")
   .addEventListener("submit", function (event) {
@@ -75,6 +74,42 @@ document
         burn_date: burn_date,
       }),
     })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+
+document
+  .getElementById("fetch-burns")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    // add burn details here
+    let fk_burn_user_id = document.getElementById("burn-user-id-fk").value;
+
+    fetch("/get_burns", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fk_burn_user_id: fk_burn_user_id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+
+document
+  .getElementById("fetch-users")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    // send get request to get all users
+    fetch("/get_users")
       .then((response) => response.json())
       .then((data) => console.log(data))
       .catch((error) => {

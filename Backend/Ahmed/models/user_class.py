@@ -16,3 +16,4 @@ class User(db.Model):
   
     profession = db.Column(db.String(20), nullable=False, default='patient')
     
+    burns = db.relationship('Burn', backref='user', lazy=True)
