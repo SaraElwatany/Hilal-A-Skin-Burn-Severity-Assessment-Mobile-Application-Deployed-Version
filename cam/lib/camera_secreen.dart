@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'apis.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+File imgFile = File('');
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -136,8 +140,18 @@ class _HomeScreenState extends State<CameraScreen> {
         .then((value) {
       if (value != null) {
         _cropImage(File(value.path));
+        imgFile = File(value.path);
       }
     });
+
+    // Check if the file exists
+    bool fileExists = imgFile.existsSync();
+    if (fileExists != false) {
+      // Upload the image file to the backend
+      String base64Image = base64Encode(imgFile.readAsBytesSync());
+      await uploadImageToBackend(base64Image, imgFile);
+      imgFile = File('');
+    }
   }
 
   _imgFromCamera() async {
@@ -146,8 +160,18 @@ class _HomeScreenState extends State<CameraScreen> {
         .then((value) {
       if (value != null) {
         _cropImage(File(value.path));
+        imgFile = File(value.path);
       }
     });
+
+    // Check if the file exists
+    bool fileExists = imgFile.existsSync();
+    if (fileExists != false) {
+      // Upload the image file to the backend
+      String base64Image = base64Encode(imgFile.readAsBytesSync());
+      await uploadImageToBackend(base64Image, imgFile);
+      imgFile = File('');
+    }
   }
 
   _cropImage(File imgFile) async {
