@@ -23,7 +23,7 @@ def index():
 @app.route('/get_users', methods=['GET', 'POST'])
 def get_users():
     # check that request is from doctor
-    
+
     # check the request method
     if request.method == 'GET':
         # check in the burn table for users with burns
@@ -64,7 +64,7 @@ def burn_new():
         return { 'message': 'New burn item created', 'id': new_burn.burn_id}
     else: return "error: wrong method"
 
-# fetch burn item with id route
+# fetch burns associated with a user
 @app.route('/get_burns', methods=['GET', 'POST'])
 def get_burns():
     if request.method == 'POST':
