@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:gp_app/models/new_user.dart';
-
+import 'dart:io';
 // A function that sends the username and password to the flask backend (return type as future object with no value == The function completes without returning any value)
 Future<String> sendData(String username, String password) async {
   String url =
@@ -101,4 +101,28 @@ bool isValidEmail(String email) {
   final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
   return emailRegex.hasMatch(email);
+}
+
+Future<void> sendImageToServer(File imageFile) async {
+  var request = http.MultipartRequest(
+    'POST',
+    Uri.parse('http://10.0.2.2:19999/uploadImg'), 
+  );
+
+  var pic = await http.MultipartFile.fromPath('file', imageFile.path);
+  request.files.add(pic);
+
+  try {
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      print('Image sent successfully');
+      // Handle success
+    } else {
+      print('Failed to send image');
+      // Handle failure
+    }
+  } catch (error) {
+    print('Error sending image: $error');
+    // Handle error
+  }
 }
