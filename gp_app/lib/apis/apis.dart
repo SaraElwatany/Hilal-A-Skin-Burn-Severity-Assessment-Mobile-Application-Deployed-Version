@@ -3,10 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:gp_app/models/new_user.dart';
 import 'dart:io';
+
 // A function that sends the username and password to the flask backend (return type as future object with no value == The function completes without returning any value)
 Future<String> sendData(String username, String password) async {
   String url =
-      'http://10.0.2.2:19999/login'; // When launching the app => http://127.0.0.1:19999  For Emulator => http://10.0.2.2:19999
+      'http://127.0.0.1:19999/login'; // When launching the app => http://127.0.0.1:19999  For Emulator => http://10.0.2.2:19999
 
   var request = await http.post(Uri.parse(url), body: {
     'username': username,
@@ -60,7 +61,7 @@ void login_warning(context) {
 }
 
 Future<String> signUp(NewUser userInfo) async {
-  var url = 'http://10.0.2.2:19999/signup';
+  var url = 'http://127.0.0.1:19999/signup';
 
   var response = await http.post(Uri.parse(url), body: {
     'firstname': userInfo.firstName,
@@ -106,7 +107,7 @@ bool isValidEmail(String email) {
 Future<void> sendImageToServer(File imageFile) async {
   var request = http.MultipartRequest(
     'POST',
-    Uri.parse('http://10.0.2.2:19999/uploadImg'), 
+    Uri.parse('http://127.0.0.1:19999/uploadImg'),
   );
 
   var pic = await http.MultipartFile.fromPath('file', imageFile.path);

@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Please a Enter Password';
+                            return 'Please Enter a Password';
                           }
                           return null;
                         },

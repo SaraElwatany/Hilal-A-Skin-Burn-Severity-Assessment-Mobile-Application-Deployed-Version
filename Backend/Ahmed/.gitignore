@@ -1,0 +1,21 @@
+# Ignore database files
+*.db
+*.sqlite
+
+# Ignore environment variables file
+.venv
+
+# Ignore Python virtual environment
+venv/
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore logs
+*.log
+my_tokens.py
