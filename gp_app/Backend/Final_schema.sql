@@ -235,12 +235,12 @@ CREATE TABLE IF NOT EXISTS `ehr`.`user` (
   `username` VARCHAR(50) NOT NULL,
   `password` VARCHAR(128) NOT NULL,
   `dob` DATE NULL DEFAULT NULL,
-  `gender` CHAR(1) NOT NULL CHECK (gender IN ('M', 'F')),
+  `gender` CHAR(1),
   `height` INT NULL DEFAULT NULL CHECK(height>0 & height<300),
   `weight` INT NULL DEFAULT NULL,
   `phone` INT NULL DEFAULT NULL,
   `email` VARCHAR(255) NULL DEFAULT NULL,
-  `profession` VARCHAR(20) NOT NULL DEFAULT 'patient',
+  `profession` VARCHAR(20) DEFAULT 'patient' CHECK (profession IN ('patient', 'doctor', 'admin')),
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
