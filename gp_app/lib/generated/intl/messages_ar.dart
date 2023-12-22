@@ -44,6 +44,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup": MessageLookupByLibrary.simpleMessage("اشتراك"),
         "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
         "title": MessageLookupByLibrary.simpleMessage("اللغة العربية"),
-        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً")
+        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً"),
+        "upload": MessageLookupByLibrary.simpleMessage("رفع الصورة"),
+        "message": MessageLookupByLibrary.simpleMessage("إرسال...")
+
       };
 }

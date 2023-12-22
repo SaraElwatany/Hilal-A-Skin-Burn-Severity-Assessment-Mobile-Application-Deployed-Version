@@ -156,7 +156,6 @@ class _LoginPageState extends State<LoginPage> {
                           // url = 'http://10.0.2.2:19999/api?query=' + value.toString(); // When launching the app 127.0.0.1
                           password = value.toString();
                         },
-                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey.shade200,

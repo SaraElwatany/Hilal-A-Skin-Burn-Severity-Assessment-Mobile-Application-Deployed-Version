@@ -259,6 +259,24 @@ class S {
       args: [],
     );
   }
+   /// `Upload Image`
+  String get upload {
+    return Intl.message(
+      'Upload Image',
+      name: 'upload',
+      desc: '',
+      args: [],
+    );
+  }
+     /// `Send a message...`
+  String get message {
+    return Intl.message(
+      'Send a message...',
+      name: 'message',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

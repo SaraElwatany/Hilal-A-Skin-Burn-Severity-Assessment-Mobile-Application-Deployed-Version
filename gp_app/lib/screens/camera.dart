@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/screens/chat_screen.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -45,20 +47,37 @@ class _HomeScreenState extends State<CameraScreen> {
             const SizedBox(
               height: 20.0,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                Map<Permission, PermissionStatus> statuses = await [
-                  Permission.storage,
-                  Permission.camera,
-                ].request();
-                if (statuses[Permission.storage]!.isGranted &&
-                    statuses[Permission.camera]!.isGranted) {
-                  showImagePicker(context);
-                } else {
-                  print('no permission provided');
-                }
-              },
-              child: const Text('Select Image'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    Map<Permission, PermissionStatus> statuses = await [
+                      Permission.storage,
+                      Permission.camera,
+                    ].request();
+                    if (statuses[Permission.storage]!.isGranted &&
+                        statuses[Permission.camera]!.isGranted) {
+                      showImagePicker(context);
+                    } else {
+                      print('no permission provided');
+                    }
+                  },
+                  child: const Text('Select Image'),
+                ),
+                const SizedBox(width: 20,),
+                ElevatedButton(
+                  onPressed: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const ChatScreen()));
+                  }, 
+                  child: Text(
+                    S.of(context).upload,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  )
+                  ),
+              ],
             ),
           ],
         ),

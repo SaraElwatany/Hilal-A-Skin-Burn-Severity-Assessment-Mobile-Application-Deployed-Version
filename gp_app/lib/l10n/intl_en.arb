@@ -19,6 +19,9 @@
     "mail":     "E-mail",
     "loginNw": "login",
     "next": "Next",
-    "burns": "Burns"
+    "burns": "Burns",
+    "upload" : "Upload Image",
+    "message" : "Send a message..."
+
  
   }
