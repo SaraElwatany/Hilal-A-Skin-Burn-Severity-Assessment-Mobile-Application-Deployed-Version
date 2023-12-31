@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "title": MessageLookupByLibrary.simpleMessage("Flutter localization"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome  !"),
         "upload": MessageLookupByLibrary.simpleMessage("Upload Image"),
-        "message": MessageLookupByLibrary.simpleMessage("Send a message..."),
+        "message": MessageLookupByLibrary.simpleMessage("Ask Hilal..."),
 
       };
 }

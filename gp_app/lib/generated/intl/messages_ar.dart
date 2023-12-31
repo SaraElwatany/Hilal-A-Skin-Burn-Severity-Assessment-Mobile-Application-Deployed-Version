@@ -46,7 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "title": MessageLookupByLibrary.simpleMessage("اللغة العربية"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحباً"),
         "upload": MessageLookupByLibrary.simpleMessage("رفع الصورة"),
-        "message": MessageLookupByLibrary.simpleMessage("إرسال...")
+        "message": MessageLookupByLibrary.simpleMessage("اسأل هلال...")
 
       };
 }

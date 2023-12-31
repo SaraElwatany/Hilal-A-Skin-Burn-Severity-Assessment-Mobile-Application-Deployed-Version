@@ -271,7 +271,7 @@ class S {
      /// `Send a message...`
   String get message {
     return Intl.message(
-      'Send a message...',
+      'Ask Hilal...',
       name: 'message',
       desc: '',
       args: [],
