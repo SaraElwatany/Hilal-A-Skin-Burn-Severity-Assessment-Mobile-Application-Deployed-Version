@@ -7,7 +7,9 @@ from models.user_class import User
 from datetime import date
 import base
 import re
-
+import io
+from PIL import Image
+from tensorflow.keras.models import load_model
 
 
 app = Flask(__name__)
@@ -19,7 +21,11 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 db = base.db
 db.init_app(app)
     
-   
+
+# update it with model name
+model = load_model('Burn_model.h5')
+
+
 
 # Route to get the username and password in the login screen
 @app.route('/login', methods = ['POST'])
@@ -123,16 +129,28 @@ def signup_info():
     return jsonify(response)
 
 
-
+# marina
 @app.route('/uploadImg', methods=['POST'])
 def upload():
     if 'file' not in request.files:
         return 'No file part'
     
     file = request.files['file']
-    # pass it to the model
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
 
-    return 'File uploaded successfully'
+    if file:
+        # Read and preprocess the image
+        image = Image.open(io.BytesIO(file.read()))
+        # Preprocess the image here (resize, normalize, etc.)
+        # For example: image = preprocess_image(image)
+        
+        # Predict using your model
+        prediction = model.predict(image)
+
+        # Format and return the prediction
+        return jsonify({'prediction': str(prediction)})
+
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ class ChatMessage {
 
 
   final String message;
-  final bool reciever;
+  final bool receiver;
 
-ChatMessage({required this.message,required this.reciever});
+ChatMessage({required this.message,required this.receiver});
 }

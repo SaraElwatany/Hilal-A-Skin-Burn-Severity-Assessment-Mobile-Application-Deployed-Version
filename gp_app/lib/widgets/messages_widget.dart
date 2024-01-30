@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gp_app/Data/messages.dart';
+// import 'package:gp_app/Data/messages.dart';
 import 'package:gp_app/models/chat_message.dart';
 
 class MessagesWidget extends StatelessWidget {
@@ -14,13 +14,13 @@ class MessagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: chatMessage.reciever
+      alignment: chatMessage.receiver
           ? Alignment.topRight
           : Alignment.topLeft,
       child: Container(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Row(
-          mainAxisAlignment: chatMessage.reciever
+          mainAxisAlignment: chatMessage.receiver
               ? MainAxisAlignment.end
               : MainAxisAlignment.start,
           children: [
@@ -31,7 +31,7 @@ class MessagesWidget extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: (!chatMessage.reciever
+                color: (!chatMessage.receiver
                     ? Theme.of(context).colorScheme.surface
                     : const Color.fromARGB(255, 106, 105, 105)),
               ),
@@ -39,10 +39,10 @@ class MessagesWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Visibility(
-                    visible: !chatMessage.reciever,
+                    visible: !chatMessage.receiver,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4.0, left: 4.0),
-                      child: (!chatMessage.reciever
+                      child: (!chatMessage.receiver
                           ? Image.asset(
                               'assets/images/Hilal.png',
                               width: 40, // Adjust the width as needed

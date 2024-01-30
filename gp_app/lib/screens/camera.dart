@@ -7,6 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:gp_app/apis/apis.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:gp_app/models/global.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -210,6 +213,43 @@ class _HomeScreenState extends State<CameraScreen> {
       });
       sendImageToServer(File(croppedFile.path));
       // reload();
+    }
+  }
+
+  // marina 
+  void sendImageToServer(File image) async {
+    try {
+      String url = 'http://10.0.2.2:19999/uploadImg'; 
+
+      // Prepare the request
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.files.add(await http.MultipartFile.fromPath('file', image.path));
+
+      // Send the request
+      var response = await request.send();
+
+      // Handle the response
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        var responseData = await response.stream.bytesToString();
+        var decodedData = json.decode(responseData);
+        var prediction = decodedData['prediction'];
+        print('Prediction: $prediction');
+
+        // Set the prediction to the global variable
+        latestPrediction = prediction;
+
+        // Navigate to ChatScreen
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (ctx) => const ChatScreen()),
+        );
+      } else {
+        print('Failed to load prediction');
+      }
+      
+      
+    } catch (e) {
+      print('Error sending image: $e');
     }
   }
 }

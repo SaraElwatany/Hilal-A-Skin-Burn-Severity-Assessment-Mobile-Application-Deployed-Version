@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/Data/messages.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
+
+import 'package:gp_app/models/global.dart';
 
 class ChatScreen extends StatefulWidget {
 const ChatScreen({super.key});
@@ -16,8 +19,23 @@ State<ChatScreen> createState() {
 }
 
 class _ChatScreenState extends State<ChatScreen>{
+  //marina
+  List<ChatMessage> chatMessages = [];
+  //
   final _messageController = TextEditingController();
 
+
+  //marina
+  @override
+  void initState() {
+    super.initState();
+    if (latestPrediction.isNotEmpty) {
+      updateChatScreenWithPrediction(latestPrediction);
+      // Reset the prediction to avoid duplication when the screen is opened again
+      latestPrediction = '';
+    }
+  }
+  //
 
   @override
   void dispose() {
@@ -27,9 +45,17 @@ class _ChatScreenState extends State<ChatScreen>{
 
   void _sendMessage(){
     FocusScope.of(context).unfocus();
-    _messageController.clear();
-
+    //marina
+    final messageText = _messageController.text;
+    if (messageText.isNotEmpty) {
+      setState(() {
+        chatMessages.add(ChatMessage(message: messageText, receiver: false));
+      });
+    //marina
+      _messageController.clear();
+    }
   }
+   
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +64,9 @@ class _ChatScreenState extends State<ChatScreen>{
       body: Stack(
         children: [
            ListView.builder(
-            itemCount: chatMessage.length,
+            itemCount: chatMessages.length,
             itemBuilder: (context, index) {
-              return MessagesWidget(chatMessage: chatMessage[index]
+              return MessagesWidget(chatMessage: chatMessages[index]
            );
             },
       ),
@@ -97,5 +123,13 @@ class _ChatScreenState extends State<ChatScreen>{
       
     );
   }
+
+//marina
+ void updateChatScreenWithPrediction(String prediction) {
+    setState(() {
+      chatMessages.add(ChatMessage(message: prediction, receiver: true));
+    });
+}
+//
 
 }
