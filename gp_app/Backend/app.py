@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI
-from  sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import OperationalError
 from flask_socketio import SocketIO, emit
 from models.user_class import User
 from datetime import date

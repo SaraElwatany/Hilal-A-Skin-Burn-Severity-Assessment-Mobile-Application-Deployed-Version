@@ -87,11 +87,11 @@ CREATE TABLE IF NOT EXISTS `ehr`.`burn` (
   `fk_burn_user_id` INT NOT NULL,
   `burn_date` DATETIME NOT NULL,
   `burn_class_model` INT NULL,
-  `burn_img_path` VARCHAR(300) NOT NULL,
+  `burn_img` MEDIUMBLOB NOT NULL,
   `dr_id` INT NULL,
   `burn_class_dr` INT NULL,
   `dr_reply` VARCHAR(500) NULL,
-  UNIQUE INDEX `burn_img_path_UNIQUE` (`burn_img_path` ASC) VISIBLE,
+  UNIQUE INDEX `burn_img_UNIQUE` (`burn_img` ASC) VISIBLE,
   INDEX `id_idx` (`fk_burn_user_id` ASC) VISIBLE,
   CONSTRAINT `id`
     FOREIGN KEY (`fk_burn_user_id`)
