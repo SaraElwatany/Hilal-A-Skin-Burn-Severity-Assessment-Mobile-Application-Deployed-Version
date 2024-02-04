@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/Graduation Project/PatientAssistantMobileApplication/cam/linux"
+    "cmake.sourceDirectory": "D:/Graduation Project/PatientAssistantMobileApplication/cam/linux",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("سجل دخول"),
         "loginNw": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "mail": MessageLookupByLibrary.simpleMessage(" بريدك الألكتروني"),
+        "message": MessageLookupByLibrary.simpleMessage("اسأل هلال..."),
         "next": MessageLookupByLibrary.simpleMessage("التالى"),
         "nothaveAcc":
             MessageLookupByLibrary.simpleMessage("لا يوجد لديك حساب؟"),
@@ -44,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup": MessageLookupByLibrary.simpleMessage("اشتراك"),
         "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
         "title": MessageLookupByLibrary.simpleMessage("اللغة العربية"),
+        "upload": MessageLookupByLibrary.simpleMessage("رفع الصورة"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحباً")
       };
 }

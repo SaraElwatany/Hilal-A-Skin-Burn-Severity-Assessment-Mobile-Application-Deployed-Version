@@ -41,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("login"),
         "loginNw": MessageLookupByLibrary.simpleMessage("login"),
         "mail": MessageLookupByLibrary.simpleMessage("E-mail"),
+        "message": MessageLookupByLibrary.simpleMessage("Ask Hilal..."),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "nothaveAcc":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
@@ -49,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
         "title": MessageLookupByLibrary.simpleMessage("Flutter localization"),
+        "upload": MessageLookupByLibrary.simpleMessage("Upload Image"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome  !")
       };
 }

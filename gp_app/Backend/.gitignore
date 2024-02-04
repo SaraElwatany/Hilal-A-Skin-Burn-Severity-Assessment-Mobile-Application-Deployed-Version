@@ -19,3 +19,5 @@ __pycache__/
 # Ignore logs
 *.log
 my_tokens.py
+# Ignore the model
+# best_model.pkl

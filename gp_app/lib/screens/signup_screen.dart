@@ -241,7 +241,6 @@ class _SignUpState extends State<SignUpScreen> {
                         onChanged: (value) {
                           _enteredPassword = value.toString();
                         },
-                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey.shade200,

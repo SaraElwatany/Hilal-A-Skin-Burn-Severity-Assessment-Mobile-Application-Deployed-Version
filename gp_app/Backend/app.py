@@ -1,12 +1,82 @@
-from flask import Flask, request, jsonify, render_template
-from werkzeug.security import generate_password_hash, check_password_hash
-from my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI
-from  sqlalchemy.exc import OperationalError
-from flask_socketio import SocketIO, emit
-from models.user_class import User
-from datetime import date
-import base
 import re
+import base
+import base64
+import torch.nn as nn
+import functions as func
+from datetime import date
+from torchvision import models
+from models.burn_item import Burn
+from models.user_class import User
+from sqlalchemy.exc import IntegrityError
+from flask_socketio import SocketIO, emit
+from  sqlalchemy.exc import OperationalError
+from flask import Flask, request, jsonify, render_template
+from my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
+
+
+""" class MyModel(nn.Module):
+    def __init__(self, num_classes):
+        super(MyModel, self).__init__()
+        # Choose your model.
+        resnet50 = models.resnet50(pretrained=True)
+        # Freeze the weights of the ResNet50 model.
+        for param in resnet50.parameters():
+            param.requires_grad = False
+        # Add a new layer to the ResNet50 model for the multi-label classification task.
+        resnet50.classifier = nn.Sequential(nn.Conv2d(2048, 128, kernel_size=3, padding=1, stride=1),
+                                    nn.Softmax(dim=1),
+                                    nn.MaxPool2d(4, 4),
+
+                                    nn.Conv2d(128, 64, kernel_size=3, padding=1, stride=2),
+                                    nn.Softmax(dim=1),
+                                    nn.MaxPool2d(2, 2),
+
+                                    nn.Dropout(p=0.2),
+                                    nn.Flatten(),
+
+                                    nn.Linear(in_features= resnet50.fc.in_features, out_features= 3)
+                                    )
+        for param in resnet50.fc.parameters():
+            param.requires_grad = True
+        # Unfreeze the last few layers of the model.
+        for param in resnet50.layer4.parameters():
+            param.requires_grad = True
+        # Set the model to your class attribute
+        self.resnet50 = resnet50
+
+    def forward(self, x):
+        return self.resnet50(x) """
+#########################
+# Resnet50 Model's Architecture used for prediction
+class MyModel(nn.Module):
+    def __init__(self, num_classes):
+        super(MyModel, self).__init__()
+        # Choose your model.
+        resnet50 = models.resnet50(pretrained=True)
+
+        # Unfreeze the last 5 layers' weights of the original model
+        for name, param in self.base_model.named_parameters():
+          if 'layer' in name:
+            param.requires_grad = True
+
+        # Set the model to your class attribute
+        self.resnet50 = resnet50
+
+    def forward(self, x):
+        return self.resnet50(x)
+    
+""" img = func.load_img()
+print(img, type(img))
+# Pass the Image to the model
+IMAGE_DATA = func.transform(img)
+model = func.load_model()
+output = func.predict(model, IMAGE_DATA)
+print(output, type(output)) """
+#########################
+
 
 
 
@@ -18,8 +88,17 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 db = base.db
 db.init_app(app)
-    
-   
+
+
+
+# Route to get the username and password in the login screen
+@app.route('/', methods = ['POST'])
+def intro():
+    # Move to login screen
+    response = {'response': 'Log In page'}
+    return jsonify(response)
+
+
 
 # Route to get the username and password in the login screen
 @app.route('/login', methods = ['POST'])
@@ -79,15 +158,18 @@ def signup_info():
     print(f'Special Character: {special_character}')
 
     if (not pass_val) and (not email_val):
+        print('Sign Up Failed Due to Password & Email')
         response = {'response': 'Failed Password and Email'}
         return jsonify(response)
 
     if not pass_val:
+        print('Sign Up Failed Due to Password')
         print(f'Failed Password: {password}')
         response = {'response': 'Failed Password'}
         return jsonify(response)
 
     if not email_val:
+        print('Sign Up Failed Due to Email')
         response = {'response': 'Failed Email'}
         return jsonify(response)
     
@@ -116,24 +198,60 @@ def signup_info():
         db.session.add(new_user)
         db.session.commit()
         print('user id: ', new_user.id) # Get user ID
+        response = {'response': 'Signup successful'}
     except OperationalError:
         print('Operational Error Encountered')
-
-    response = {'response': 'Signup successful'}
+    except IntegrityError:
+        db.session.rollback()   # Rollback the transaction
+        print('Integrity Error: User with this email already exists')
+        response = {'response': 'Email already exists'}
+    except Exception as e:
+        db.session.rollback()
+        print(f'Error during signup: {str(e)}')
+        response = {'response': 'Internal Server Error'}
+    
     return jsonify(response)
 
 
 
+
+# Route to receive the burn image from user and return the model's prediction
 @app.route('/uploadImg', methods=['POST'])
 def upload():
+    degrees = {0: 'First Degree Burn',
+               1: 'Second Degree Burn',
+               2: 'Third Degree Burn'
+               }
     if 'file' not in request.files:
-        return 'No file part'
-    
+        return jsonify({'error': 'No selected file'})    # 'No file part'
+    # Get the Image
     file = request.files['file']
-    # pass it to the model
+    if file:
+        IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
+        # Decode the base64 encoded string (Image) back to binary data
+        IMAGE_DATA = base64.b64decode(IMAGE_DATA)   # Image to be stored in the database as blob file
+        print('Image Sent with Data: ', IMAGE_DATA)
+        print('Data Type: ', type(IMAGE_DATA))
+        #IMAGE_DATA = convert_to_obj(IMAGE_DATA, output_file_path)   # Convert binary data to image object (if needed)
+        # Pass the Image to the model
+        IMAGE_DATA = func.transform(IMAGE_DATA)
+        model = func.load_model()
+        output = func.predict(model, IMAGE_DATA)
+        prediction = {'prediction': degrees[output]}
 
-    return 'File uploaded successfully'
+        return jsonify(prediction) , 200        #return 'File uploaded successfully' 
+    
+""" if file.filename == '':
+        return  
+    if file:
+        # Read and preprocess the image
+        image = Image.open(io.BytesIO(file.read()))
+ """
+
 
 
 if __name__ == "__main__":
     app.run(debug=True, port= 19999)        # Modify the Port number to avoid any conflicts with available ports
+
+
+

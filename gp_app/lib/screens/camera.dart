@@ -1,13 +1,17 @@
 import 'dart:io';
+import 'package:gp_app/apis/apis.dart';
 import 'package:flutter/material.dart';
+import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/screens/chat_screen.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:gp_app/apis/apis.dart';
 
+// Define your global variables here
+int navigate = 0; // Flag to navigate to the chat screen
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({Key? key}) : super(key: key);
+  const CameraScreen({super.key});
 
   @override
   State<CameraScreen> createState() => _HomeScreenState();
@@ -45,20 +49,46 @@ class _HomeScreenState extends State<CameraScreen> {
             const SizedBox(
               height: 20.0,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                Map<Permission, PermissionStatus> statuses = await [
-                  Permission.storage,
-                  Permission.camera,
-                ].request();
-                if (statuses[Permission.storage]!.isGranted &&
-                    statuses[Permission.camera]!.isGranted) {
-                  showImagePicker(context);
-                } else {
-                  print('no permission provided');
-                }
-              },
-              child: const Text('Select Image'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    Map<Permission, PermissionStatus> statuses = await [
+                      Permission.storage,
+                      Permission.camera,
+                    ].request();
+                    if (statuses[Permission.storage]!.isGranted &&
+                        statuses[Permission.camera]!.isGranted) {
+                      showImagePicker(context);
+                    } else {
+                      print('no permission provided');
+                    }
+                  },
+                  child: const Text('Select Image'),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => const ChatScreen()));
+                      // Check if nullableFile is not null before casting
+                      if (imageFile != null) {
+                        File nonNullableFile = imageFile as File;
+                        sendImageToServer(nonNullableFile);
+                      } else {
+                        // Handle the case when nullableFile is null
+                      }
+                    },
+                    child: Text(
+                      S.of(context).upload,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    )),
+              ],
             ),
           ],
         ),
@@ -189,8 +219,49 @@ class _HomeScreenState extends State<CameraScreen> {
       setState(() {
         imageFile = File(croppedFile.path);
       });
-      sendImageToServer(File(croppedFile.path));
+      navigate = await sendImageToServer(File(croppedFile.path));
+/*       if (navigate == 1) {
+        // Navigate to ChatScreen
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (ctx) => const ChatScreen()),
+        ); 
+      }*/
       // reload();
     }
   }
+
+/*   // marina -> moved to apis.dart
+  void sendImageToServer(File image) async {
+    String url = 'http://10.0.2.2:19999/uploadImg';
+
+    try {
+      // Prepare the request
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.files.add(await http.MultipartFile.fromPath('file', image.path));
+
+      // Send the request
+      var response = await request.send();
+
+      // Handle the response
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        var responseData = await response.stream.bytesToString();
+        var decodedData = json.decode(responseData);
+        var prediction = decodedData['prediction'];
+        print('Prediction: $prediction');
+
+        // Set the prediction to the global variable
+        latestPrediction = prediction;
+
+        // Navigate to ChatScreen
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (ctx) => const ChatScreen()),
+        );
+      } else {
+        print('Failed to load prediction');
+      }
+    } catch (e) {
+      print('Error sending image: $e');
+    }
+  } */
 }
