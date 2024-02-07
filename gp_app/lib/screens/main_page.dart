@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/screens/about_us.dart';
 import 'package:gp_app/screens/camera.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/widgets/Icons.dart';
 
 class MainPageScreen extends StatefulWidget {
   const MainPageScreen({super.key});
@@ -21,44 +23,29 @@ class _MainPageState extends State<MainPageScreen> {
         padding: const EdgeInsets.all(100.0),
         child: Column(
           children: [
-            Center(
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CameraScreen()),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(10)),
-                  height: 187,
-                  width: 187,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Image.asset(
-                        'assets/images/flame.png',
-                      ),
-                      // const SizedBox(height: 10,)
-                      // ,
-                      Text(
-                        S.of(context).burns,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
+            MainIcons(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CameraScreen()),
+                );
+              },
+              imagePath: 'assets/images/flame.png',
+              text: S.of(context).burns,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            MainIcons(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AboutUs()),
+                );
+              },
+              imagePath: 'assets/images/AboutUs.png',
+              text: (S.of(context).about),
+            ),
           ],
         ),
       ),

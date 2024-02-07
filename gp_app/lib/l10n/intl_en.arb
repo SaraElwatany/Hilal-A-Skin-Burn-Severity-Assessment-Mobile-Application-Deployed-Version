@@ -21,7 +21,8 @@
     "next": "Next",
     "burns": "Burns",
     "upload" : "Upload Image",
-    "message" : "Ask Hilal..."
+    "message" : "Ask Hilal...",
+    "about"   : "About"
 
  
   }
