@@ -112,7 +112,7 @@ def login_info():
     user = User.query.filter_by(username= username).first()
 
     # Check if the username and password matches
-    if not user or not check_password_hash(user.password, password):
+    if (not user) or (not check_password_hash(user.password, password)):
         print('Fail', f'Username: {username}', f'Password: {password}')
         # Send a JSON response back to the client
         response = {'response': 'Access Denied'}
