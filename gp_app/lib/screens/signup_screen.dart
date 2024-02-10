@@ -230,6 +230,10 @@ class _SignUpState extends State<SignUpScreen> {
                               'Sign up Denied due to password & email') {
                             return 'Please enter a valid Email';
                           }
+                          if (output ==
+                              'Sign up Denied due to duplicate email') {
+                            return 'An account with this Email already exist';
+                          }
                           return null;
                         },
                         onSaved: (value) => _enteredEmail = value!,
