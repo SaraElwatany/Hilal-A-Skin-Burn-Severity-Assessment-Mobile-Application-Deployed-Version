@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:gp_app/apis/apis.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/screens/chat_screen.dart';
+import 'package:gp_app/screens/patient_model_screen.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';

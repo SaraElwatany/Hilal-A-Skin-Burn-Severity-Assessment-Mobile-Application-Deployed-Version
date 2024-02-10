@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
         "title": MessageLookupByLibrary.simpleMessage("اللغة العربية"),
         "upload": MessageLookupByLibrary.simpleMessage("رفع الصورة"),
-        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً")
+        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً"),
+        "intro": MessageLookupByLibrary.simpleMessage("أهلا, أنا هلال, رفيقك الصحي, ممكن اساعدك تفتكر تاريخك المرضي من إشاعات و تحاليل و عمليات و غيره. بالإضافة لكده, ممكن أديك نصائح تحسن صحتك بناءًا على تاريخك المرضي\nاقدر افهم أعراضك و اقترح عليك اقتراح مبدأي خاص بصحتك.")
       };
 }

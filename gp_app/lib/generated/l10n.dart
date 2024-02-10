@@ -289,6 +289,18 @@ class S {
       args: [],
     );
   }
+
+// Intro
+  String get Intro {
+    return Intl.message(
+      "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history.",
+      name: 'intro',
+      desc: '',
+      args: [],
+    );
+  }
+
+
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

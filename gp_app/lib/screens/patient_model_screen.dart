@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/models/chat_message.dart';
-import 'package:gp_app/Data/messages.dart';
+// import 'package:gp_app/Data/messages.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 
 import 'package:gp_app/models/global.dart';
+import 'package:gp_app/Data/messages.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -21,6 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<ChatMessage> chatMessages = [];
   //
   final _messageController = TextEditingController();
+  bool introMessageShown = false;
 
   //marina
   @override
@@ -60,9 +62,11 @@ class _ChatScreenState extends State<ChatScreen> {
         body: Stack(
           children: [
             ListView.builder(
-              itemCount: chatMessages.length,
+              itemCount: chatMessage.length,
               itemBuilder: (context, index) {
-                return MessagesWidget(chatMessage: chatMessages[index]);
+                return MessagesWidget(
+                  chatMessage: chatMessage[index],
+                  introMessage: !introMessageShown && index == 0 ? S.of(context).Intro : null,                  );
               },
             ),
             Align(

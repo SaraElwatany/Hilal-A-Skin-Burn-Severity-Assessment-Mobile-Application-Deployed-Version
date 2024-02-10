@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/widgets/welcome_page_en.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/login_screen.dart';
@@ -91,6 +92,14 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
           ),
+          ElevatedButton(
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainPageScreen()),
+                );
+            },
+           child: Text('skip'))
         ],
       ),
     );

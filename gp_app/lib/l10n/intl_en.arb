@@ -22,7 +22,7 @@
     "burns": "Burns",
     "upload" : "Upload Image",
     "message" : "Ask Hilal...",
-    "about"   : "About"
-
+    "about"   : "About",
+    "intro": "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history."
  
   }
