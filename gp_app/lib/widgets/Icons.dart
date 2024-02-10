@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/screens/camera.dart';
-import 'package:gp_app/widgets/localization_icon.dart';
+// import 'package:gp_app/generated/l10n.dart';
+// import 'package:gp_app/screens/camera.dart';
+// import 'package:gp_app/widgets/localization_icon.dart';
 
 class MainIcons extends StatelessWidget {
   final Function onTap;
