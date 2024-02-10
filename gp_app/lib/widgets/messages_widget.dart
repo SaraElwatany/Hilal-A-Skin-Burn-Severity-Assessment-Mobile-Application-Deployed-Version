@@ -5,9 +5,9 @@ import 'package:gp_app/models/chat_message.dart';
 
 class MessagesWidget extends StatelessWidget {
   const MessagesWidget({
-    super.key,
+    Key? key,
     required this.chatMessage,
-  });
+  }) : super(key: key);
 
   final ChatMessage chatMessage;
 
