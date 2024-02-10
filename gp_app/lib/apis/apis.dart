@@ -136,6 +136,9 @@ Future<String> signUp(NewUser userInfo) async {
     } else if (responseMessage == 'Failed Email') {
       print('Sign up Failed due to wrong email format');
       return 'Sign up Denied due to email';
+    } else if (responseMessage == 'Failed: Email already exists') {
+      print('Sign up failed, an account with this email already exists');
+      return 'Sign up Denied due to duplicate email';
     } else {
       // Request was successful, and the info was correct => Sign Up
       print('Sign up was successful');

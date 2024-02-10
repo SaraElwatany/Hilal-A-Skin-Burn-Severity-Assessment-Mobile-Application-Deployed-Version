@@ -109,14 +109,28 @@ def login_info():
 
     print('Log In Route,' ,f'Username: {username}', f'Password: {password}')
 
-    user = User.query.filter_by(username= username).first()
+    user = User.query.filter_by(username=username).first()
 
-    # Check if the username and password matches
-    if (not user) or (not check_password_hash(user.password, password)):
-        print('Fail', f'Username: {username}', f'Password: {password}')
+    #print(user.email)
+    #print(user.username)
+    #print("User's Password:", user.password)
+    #hashed_password = generate_password_hash(password, method='pbkdf2')
+    #print('Entered Password:', hashed_password)
+    #print(check_password_hash(user.password, hashed_password))
+
+    # User Doesn't exist
+    if not user:
+        print("Login Failed, Username doesn't exist", f'Entered Username: {username}', f'Entered Password: {password}')
         # Send a JSON response back to the client
         response = {'response': 'Access Denied'}
         return jsonify(response)        # Login failed
+    # Check if the entered password and the stored password matches
+    if (not check_password_hash(user.password, password)):
+        print('Login Failed, Wrong Password', f'Entered Username: {username}', f'Entered Password: {password}')
+        # Send a JSON response back to the client
+        response = {'response': 'Access Denied'}
+        return jsonify(response)        # Login failed
+    # Log In was Successful
     else:
         print('Success, 'f'Username: {username}', f'Password: {password}')
         # Send a JSON response back to the client
@@ -141,15 +155,14 @@ def signup_info():
     capital = any(char.isupper() for char in password)
     small = any(char.islower() for char in password)
     special_character = bool(regex_2.search(password))
+    email_val, pass_val = 0, 0
 
-    email_val = 0
-    pass_val = 0
-
+    # Check the password for small, capital & special characters
     if capital and small and special_character:
-        pass_val = 1
-
+        pass_val = 1    # Set flag to true
+    # Check the email format
     if(re.fullmatch(regex_1, email)):
-        email_val = 1
+        email_val = 1   # Set flag to true
 
     print('Sign Up Information, 'f'Username: {firstname} {lastname}', f'Email: {email}', f'Password: {password}')
     print(f'Email: {bool(re.fullmatch(regex_1, email))}')
@@ -157,60 +170,64 @@ def signup_info():
     print(f'Small: {small}')
     print(f'Special Character: {special_character}')
 
+    # Both, Email & Password don't match the criteria
     if (not pass_val) and (not email_val):
         print('Sign Up Failed Due to Password & Email')
         response = {'response': 'Failed Password and Email'}
         return jsonify(response)
-
+    # Password doesn't match the criteria
     if not pass_val:
         print('Sign Up Failed Due to Password')
         print(f'Failed Password: {password}')
         response = {'response': 'Failed Password'}
         return jsonify(response)
-
+    # Email doesn't match the criteria
     if not email_val:
         print('Sign Up Failed Due to Email')
         response = {'response': 'Failed Email'}
         return jsonify(response)
-    
-    print('Signed Up Successfully, 'f'Username: {firstname} {lastname}', f'Email: {email}', f'Password: {password}')
+    # Email & Password accepted
+    else:
+        print('Signed Up Successfully, 'f'Username: {firstname} {lastname}', f'Email: {email}', f'Password: {password}')
+        hashed_password = generate_password_hash(password, method='pbkdf2')
+        print('Hashed Password is: ', hashed_password)
 
-    hashed_password = generate_password_hash(password, method='pbkdf2')
-    print('password is: ', hashed_password)
-    
-    #db.create_all()
-    #User.query.all()
-    
-    # add info from form to user
-    new_user = User(
-    username = f'{firstname} {lastname}', 
-    password = hashed_password,
-    email = email,
-    phone = 1224355, #'None'
-    weight = 50,#'None'
-    height = 170, #'None'
-    gender = 'M', #'None'
-    dob = date(2020,4,2),#'None'
-    profession = 'None'
-    )
-    
-    try:
-        db.session.add(new_user)
-        db.session.commit()
-        print('user id: ', new_user.id) # Get user ID
-        response = {'response': 'Signup successful'}
-    except OperationalError:
-        print('Operational Error Encountered')
-    except IntegrityError:
-        db.session.rollback()   # Rollback the transaction
-        print('Integrity Error: User with this email already exists')
-        response = {'response': 'Email already exists'}
-    except Exception as e:
-        db.session.rollback()
-        print(f'Error during signup: {str(e)}')
-        response = {'response': 'Internal Server Error'}
-    
-    return jsonify(response)
+        # Check if the email already exists
+        if User.query.filter_by(email=email).first():
+            print('Sign Up Failed Due to Duplicate Email')
+            response = {'response': 'Failed: Email already exists'}
+            return jsonify(response)
+        # Email doesn't exist
+        else:
+            # add info from form to user
+            new_user = User(
+            username = f'{firstname} {lastname}', 
+            password = hashed_password,
+            email = email,
+            phone = 1224355, #'None'
+            weight = 50,#'None'
+            height = 170, #'None'
+            gender = 'M', #'None'
+            dob = date(2020,4,2),#'None'
+            profession = 'None'
+            )
+            
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                print('user id: ', new_user.id) # Get user ID
+                response = {'response': 'Signup successful'}
+            except OperationalError:
+                print('Operational Error Encountered')
+            except IntegrityError:
+                db.session.rollback()   # Rollback the transaction
+                print('Integrity Error: User with this email already exists')
+                response = {'response': 'Email already exists'}
+            except Exception as e:
+                db.session.rollback()
+                print(f'Error during signup: {str(e)}')
+                response = {'response': 'Internal Server Error'}
+            return jsonify(response)
 
 
 
