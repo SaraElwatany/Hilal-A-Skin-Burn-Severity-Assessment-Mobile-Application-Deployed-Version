@@ -268,7 +268,7 @@ def upload():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port= 19999)        # Modify the Port number to avoid any conflicts with available ports
-
+    # app.run(debug=True, port= 19999)        # Modify the Port number to avoid any conflicts with available ports
+    app.run() 
 
 
