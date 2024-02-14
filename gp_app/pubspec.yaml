@@ -79,6 +79,7 @@ flutter:
     - assets/images/flame.png
     - assets/images/burn-care.webp
     - assets/images/AboutUs.png
+    - assets/images/burndegree.png
     
     
   # An image asset can refer to one or more resolution-specific "variants", see

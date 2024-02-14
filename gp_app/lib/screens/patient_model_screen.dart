@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/models/patient_message.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/models/global.dart';
-import 'package:gp_app/Data/messages.dart';
+// import 'package:gp_app/Data/messages.dart';
 
 
 

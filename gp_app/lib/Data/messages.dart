@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/models/patient_message.dart';
 
 List<ChatMessage> chatMessage = [
   ChatMessage(message: "Hi", receiver: false),

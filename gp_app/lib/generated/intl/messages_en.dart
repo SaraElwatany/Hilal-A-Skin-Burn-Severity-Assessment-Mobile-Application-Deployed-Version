@@ -52,6 +52,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "title": MessageLookupByLibrary.simpleMessage("Flutter localization"),
         "upload": MessageLookupByLibrary.simpleMessage("Upload Image"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome  !"),
+        "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+        "asdoctor": MessageLookupByLibrary.simpleMessage("Continue as a doctor"),
         "intro": MessageLookupByLibrary.simpleMessage("Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history.")
       };
 }
