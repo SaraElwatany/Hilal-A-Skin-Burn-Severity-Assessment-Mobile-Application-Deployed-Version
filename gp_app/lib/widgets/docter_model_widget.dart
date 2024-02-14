@@ -78,7 +78,7 @@ class DoctorMessagesWidget extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             fixedSize: const Size(105, 43),
-                            backgroundColor: Color.fromARGB(255, 64, 208, 80)
+                            backgroundColor: Color.fromARGB(255,3, 206, 164)
                             ),
                     child: Text(S.of(context).confirm,
                      style: const TextStyle(
@@ -93,7 +93,7 @@ class DoctorMessagesWidget extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             fixedSize: const Size(105, 43),
-                            backgroundColor: Color.fromARGB(255, 245, 106, 96)
+                            backgroundColor: Color.fromARGB(255, 255, 115, 115)
 
                             ),
                     child: Text(S.of(context).edit,
