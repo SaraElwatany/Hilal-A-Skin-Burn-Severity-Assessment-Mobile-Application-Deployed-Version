@@ -70,15 +70,17 @@ class DoctorMessagesWidget extends StatelessWidget {
             Visibility(
               visible:!doctorMessage.receiver, 
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: (){}, 
                       style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            fixedSize: const Size(105, 43)
+                            fixedSize: const Size(105, 43),
+                            backgroundColor: Color.fromARGB(255, 64, 208, 80)
                             ),
-                    child: Text(S.of(context).edit,
+                    child: Text(S.of(context).confirm,
                      style: const TextStyle(
                             fontSize: 20,
                             color: Color.fromARGB(255, 255, 251, 251),
@@ -91,8 +93,10 @@ class DoctorMessagesWidget extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             fixedSize: const Size(105, 43),
+                            backgroundColor: Color.fromARGB(255, 245, 106, 96)
+
                             ),
-                    child: Text(S.of(context).confirm,
+                    child: Text(S.of(context).edit,
                      style: const TextStyle(
                             fontSize: 20,
                             color: Color.fromARGB(255, 255, 251, 251),
