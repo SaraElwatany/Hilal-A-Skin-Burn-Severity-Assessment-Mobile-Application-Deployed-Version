@@ -44,11 +44,23 @@ class _PatientListState extends State<PatientList> {
         },
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black), // Add border
+            border: Border.all(color: Colors.black),
             color:
                 _isHovered ? Colors.grey.withOpacity(0.5) : Colors.transparent,
           ),
           child: ListTile(
+            leading: Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromARGB(255, 03, 48, 73),
+              ),
+              child: const Icon(
+                Icons.person,
+                color: Color.fromARGB(255, 3, 206, 164),
+              ),
+            ),
             title: Text(widget.patient.name),
             subtitle: Text(widget.patient.info),
             // if new messages
