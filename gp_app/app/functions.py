@@ -11,7 +11,7 @@ from torchvision import transforms
 # Function to load the saved model
 def load_model():
     # Load the saved model
-    model = torch.load('D:/Graduation Project/PatientAssistantMobileApplication/gp_app/Backend/best_model.pkl', map_location=torch.device('cpu'))
+    model = torch.load('D:/Graduation Project/PatientAssistantMobileApplication/gp_app/app/best_model.pkl', map_location=torch.device('cpu'))
     return model # Return the loaded model
 
 

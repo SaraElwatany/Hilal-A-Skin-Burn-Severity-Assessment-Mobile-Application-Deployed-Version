@@ -18,22 +18,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-
-
 ############################
-""" 
-my_model = model.MyModel(3)   
-img = func.load_img()
+""" img = func.load_img()
 print(img, type(img))
 # Pass the Image to the model
 IMAGE_DATA = func.transform(img)
 model = func.load_model()
 output = func.predict(model, IMAGE_DATA)
-print(output, type(output)) 
-
-"""
+print(output, type(output))  """
 #########################
-
 
 
 
@@ -193,6 +186,7 @@ def signup_info():
 # Route to receive the burn image from user and return the model's prediction
 @app.route('/uploadImg', methods=['POST'])
 def upload():
+    my_model = model.MyModel(3) 
     degrees = {0: 'First Degree Burn',
                1: 'Second Degree Burn',
                2: 'Third Degree Burn'

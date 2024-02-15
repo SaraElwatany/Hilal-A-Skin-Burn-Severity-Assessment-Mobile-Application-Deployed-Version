@@ -20,7 +20,7 @@ class MyModel(nn.Module):
         self.resnet50 = resnet50
 
     def forward(self, x):
-        return self.resnet50(x)
+        return self.resnet50(x) 
 
 
 
