@@ -300,7 +300,35 @@ class S {
     );
   }
 
+  // asdoctor
+  String get asdoctor {
+    return Intl.message(
+      "Continue as a doctor",
+      name: 'asdoctor',
+      desc: '',
+      args: [],
+    );
+  }
 
+  // edit
+  String get edit {
+    return Intl.message(
+      "Edit",
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // confirm
+  String get confirm {
+    return Intl.message(
+      "Confirm",
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

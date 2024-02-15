@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/user_info.dart';
-// import 'package:gp_app/main.dart';
+import 'package:gp_app/screens/doctor_profile.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
@@ -223,7 +223,6 @@ class _LoginPageState extends State<LoginPage> {
                         height: 10,
                       ),
                       // Backend:Button to go to Main page
-
                       ElevatedButton(
                         onPressed: _saveItem,
                         style: ElevatedButton.styleFrom(
@@ -238,6 +237,27 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => const DocterProfile()));
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            fixedSize: const Size(210, 60)),
+                        child: Text(
+                          S.of(context).asdoctor,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            color: Color.fromARGB(255, 255, 251, 251),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
                     ],
                   ),
                 ),

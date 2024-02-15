@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/models/patient_message.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
-
 import 'package:gp_app/models/global.dart';
-import 'package:gp_app/Data/messages.dart';
+// import 'package:gp_app/Data/messages.dart';
+
+
+
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -16,6 +18,7 @@ class ChatScreen extends StatefulWidget {
   }
 }
 
+
 class _ChatScreenState extends State<ChatScreen> {
   //marina
   List<ChatMessage> chatMessages = [];
@@ -23,18 +26,31 @@ class _ChatScreenState extends State<ChatScreen> {
   final _messageController = TextEditingController();
   bool introMessageShown = false;
 
-  //marina
-  @override
-  void initState() {
-    super.initState();
-    if (latestPrediction.isNotEmpty) {
-      updateChatScreenWithPrediction(latestPrediction);
-      // Reset the prediction to avoid duplication when the screen is opened again
-      latestPrediction = '';
-    }
-  }
-  //
 
+  //marina
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+
+  if (chatMessages.isEmpty && !introMessageShown) {
+    chatMessages.add(ChatMessage(
+      message: S.of(context).Intro, 
+      receiver: false,
+    ));
+    introMessageShown = true; // Ensure we don't add the intro message again.
+  }
+
+  if (latestPrediction.isNotEmpty) {
+    chatMessages.add(ChatMessage(
+      message: latestPrediction,
+      receiver: false,
+    ));
+    latestPrediction = ''; // Clear the prediction to avoid duplication.
+  }
+}
+
+  //
+  
   @override
   void dispose() {
     _messageController.dispose();
@@ -47,10 +63,11 @@ class _ChatScreenState extends State<ChatScreen> {
     final messageText = _messageController.text;
     if (messageText.isNotEmpty) {
       setState(() {
-        chatMessages.add(ChatMessage(message: messageText, receiver: false));
+        chatMessages.add(ChatMessage(message: messageText, receiver: true));
       });
       //marina
       _messageController.clear();
+      
     }
   }
 
@@ -61,11 +78,11 @@ class _ChatScreenState extends State<ChatScreen> {
         body: Stack(
           children: [
             ListView.builder(
-              itemCount: chatMessage.length,
+              itemCount: chatMessages.length,
               itemBuilder: (context, index) {
                 return MessagesWidget(
-                  chatMessage: chatMessage[index],
-                  introMessage: !introMessageShown && index == 0 ? S.of(context).Intro : null,                  );
+                  chatMessage: chatMessages[index],
+                  introMessage: null,                  );
               },
             ),
             Align(
@@ -112,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
 //marina
   void updateChatScreenWithPrediction(String prediction) {
     setState(() {
-      chatMessages.add(ChatMessage(message: prediction, receiver: true));
+      chatMessages.add(ChatMessage(message: prediction, receiver: false));
     });
   }
 //
