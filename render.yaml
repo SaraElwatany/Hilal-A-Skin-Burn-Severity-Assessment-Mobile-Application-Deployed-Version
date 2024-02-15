@@ -1,7 +1,7 @@
 services:
   - name: flask-app
     type: web
-    buildCommand: pip install -r gp_app/requirements.txt
+    buildCommand: pip install -r requirements.txt
     startCommand: gunicorn -b 0.0.0.0:$PORT gp_app.Backend.app:app
     root: gp_app
 
