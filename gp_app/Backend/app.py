@@ -85,7 +85,7 @@ def login_info():
     else:
         print('Success, 'f'Username: {username}', f'Password: {password}')
         # Send a JSON response back to the client
-        response = {'response': 'Access Allowed'}
+        response = {'response': 'Access Allowed', 'user': user}
         return jsonify(response)
         
 
