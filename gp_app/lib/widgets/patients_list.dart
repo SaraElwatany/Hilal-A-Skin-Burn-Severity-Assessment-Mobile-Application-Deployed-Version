@@ -43,10 +43,23 @@ class _PatientListState extends State<PatientList> {
           );
         },
         child: Container(
-          color: _isHovered ? Colors.grey.withOpacity(0.5) : Colors.transparent,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black), // Add border
+            color:
+                _isHovered ? Colors.grey.withOpacity(0.5) : Colors.transparent,
+          ),
           child: ListTile(
             title: Text(widget.patient.name),
             subtitle: Text(widget.patient.info),
+            // if new messages
+            trailing: Container(
+              width: 24,
+              height: 24,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromARGB(255, 3, 206, 164),
+              ),
+            ),
           ),
         ),
       ),

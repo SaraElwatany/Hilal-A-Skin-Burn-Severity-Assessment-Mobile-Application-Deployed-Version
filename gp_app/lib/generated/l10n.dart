@@ -308,9 +308,9 @@ class S {
       desc: '',
       args: [],
     );
-
   }
-    // edit
+
+  // edit
   String get edit {
     return Intl.message(
       "Edit",
@@ -318,9 +318,9 @@ class S {
       desc: '',
       args: [],
     );
-
   }
-    // confirm
+
+  // confirm
   String get confirm {
     return Intl.message(
       "Confirm",
@@ -328,7 +328,6 @@ class S {
       desc: '',
       args: [],
     );
-
   }
 }
 
