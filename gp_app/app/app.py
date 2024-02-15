@@ -2,6 +2,7 @@ import re
 import os
 import base
 import base64
+import model
 import torch.nn as nn
 import functions as func
 from datetime import date
@@ -18,64 +19,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
-""" class MyModel(nn.Module):
-    def __init__(self, num_classes):
-        super(MyModel, self).__init__()
-        # Choose your model.
-        resnet50 = models.resnet50(pretrained=True)
-        # Freeze the weights of the ResNet50 model.
-        for param in resnet50.parameters():
-            param.requires_grad = False
-        # Add a new layer to the ResNet50 model for the multi-label classification task.
-        resnet50.classifier = nn.Sequential(nn.Conv2d(2048, 128, kernel_size=3, padding=1, stride=1),
-                                    nn.Softmax(dim=1),
-                                    nn.MaxPool2d(4, 4),
 
-                                    nn.Conv2d(128, 64, kernel_size=3, padding=1, stride=2),
-                                    nn.Softmax(dim=1),
-                                    nn.MaxPool2d(2, 2),
-
-                                    nn.Dropout(p=0.2),
-                                    nn.Flatten(),
-
-                                    nn.Linear(in_features= resnet50.fc.in_features, out_features= 3)
-                                    )
-        for param in resnet50.fc.parameters():
-            param.requires_grad = True
-        # Unfreeze the last few layers of the model.
-        for param in resnet50.layer4.parameters():
-            param.requires_grad = True
-        # Set the model to your class attribute
-        self.resnet50 = resnet50
-
-    def forward(self, x):
-        return self.resnet50(x) """
-#########################
-# Resnet50 Model's Architecture used for prediction
-class MyModel(nn.Module):
-    def __init__(self, num_classes):
-        super(MyModel, self).__init__()
-        # Choose your model.
-        resnet50 = models.resnet50(pretrained=True)
-
-        # Unfreeze the last 5 layers' weights of the original model
-        for name, param in self.base_model.named_parameters():
-          if 'layer' in name:
-            param.requires_grad = True
-
-        # Set the model to your class attribute
-        self.resnet50 = resnet50
-
-    def forward(self, x):
-        return self.resnet50(x)
-    
-""" img = func.load_img()
+############################
+""" 
+my_model = model.MyModel(3)   
+img = func.load_img()
 print(img, type(img))
 # Pass the Image to the model
 IMAGE_DATA = func.transform(img)
 model = func.load_model()
 output = func.predict(model, IMAGE_DATA)
-print(output, type(output)) """
+print(output, type(output)) 
+
+"""
 #########################
 
 
@@ -259,6 +215,7 @@ def upload():
         prediction = {'prediction': degrees[output]}
 
         return jsonify(prediction) , 200        #return 'File uploaded successfully' 
+    
     
 """ if file.filename == '':
         return  
