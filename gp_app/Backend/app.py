@@ -1,4 +1,5 @@
 import re
+import os
 import base
 import base64
 import torch.nn as nn
@@ -83,6 +84,7 @@ print(output, type(output)) """
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = URI
+# postgresql://ehr_user:ERx4cIQJTRXrZBJE2NVMTY0oDnIuJK41@dpg-cn4ka80cmk4c73emrvd0-a.oregon-postgres.render.com/ehr
 
 socketio = SocketIO(app, cors_allowed_origins='*')
 
