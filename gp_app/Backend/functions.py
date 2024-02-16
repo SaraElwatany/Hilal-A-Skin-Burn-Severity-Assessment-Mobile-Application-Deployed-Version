@@ -1,3 +1,4 @@
+import os
 import torch
 from PIL import Image
 import torch.nn as nn
@@ -10,8 +11,16 @@ from torchvision import transforms
 
 # Function to load the saved model
 def load_model():
+    # Print the current working directory
+    print("Current working directory:", os.getcwd())
+    # Specify the full path to the model file
+    model_path = 'best_model.pkl'
+    # Check if the model file exists
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model file '{model_path}' not found.")
     # Load the saved model
-    model = torch.load('D:/Graduation Project/PatientAssistantMobileApplication/gp_app/app/best_model.pkl', map_location=torch.device('cpu'))
+    model = torch.load("best_model.pkl", map_location=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
+    model.eval()    # Set the model to evaluation mode
     return model # Return the loaded model
 
 
@@ -42,6 +51,7 @@ def load_img():
 # Function to predict the output of the model
 def predict(model, img):
     output = model(img)
+    #print(output)
     # Postprocess predictions if needed
     
     # Get the predicted class

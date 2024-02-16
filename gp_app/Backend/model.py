@@ -10,12 +10,14 @@ class MyModel(nn.Module):
         super(MyModel, self).__init__()
         # Choose your model.
         resnet50 = models.resnet50(pretrained=True)
+        n_inputs = resnet50.fc.in_features
 
         # Unfreeze the last 5 layers' weights of the original model
         for name, param in self.base_model.named_parameters():
           if 'layer' in name:
             param.requires_grad = True
 
+        resnet50.fc = nn.Sequential(nn.Linear(n_inputs, num_classes))
         # Set the model to your class attribute
         self.resnet50 = resnet50
 

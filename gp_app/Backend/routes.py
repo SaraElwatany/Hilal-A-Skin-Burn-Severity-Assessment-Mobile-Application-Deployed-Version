@@ -1,49 +1,41 @@
 import re
-import os
-import base
 import base64
-import model
 import torch.nn as nn
-import functions as func
 from datetime import date
 from torchvision import models
-from models.burn_item import Burn
-from models.user_class import User
 from sqlalchemy.exc import IntegrityError
-from flask_socketio import SocketIO, emit
 from  sqlalchemy.exc import OperationalError
+from flask import Blueprint, redirect, url_for
 from flask import Flask, request, jsonify, render_template
-from my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
+from .model import MyModel
+from .base import db
+from .functions import load_img, transform, load_model, predict 
+from .burn_item import Burn
+from .user_class import User
+
+
+
+main = Blueprint('main', __name__)
+
 ############################
-""" img = func.load_img()
+#""" 
+img = load_img()
 print(img, type(img))
 # Pass the Image to the model
-IMAGE_DATA = func.transform(img)
-model = func.load_model()
-output = func.predict(model, IMAGE_DATA)
-print(output, type(output))  """
+IMAGE_DATA = transform(img)
+model = load_model()
+output = predict(model, IMAGE_DATA)
+print(output, type(output))  #"""
 #########################
 
 
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = SECRET_KEY
-app.config['SQLALCHEMY_DATABASE_URI'] = URI
-# postgresql://ehr_user:ERx4cIQJTRXrZBJE2NVMTY0oDnIuJK41@dpg-cn4ka80cmk4c73emrvd0-a.oregon-postgres.render.com/ehr
-
-socketio = SocketIO(app, cors_allowed_origins='*')
-
-db = base.db
-db.init_app(app)
-
-
-
 # Route to get the username and password in the login screen
-@app.route('/', methods = ['POST'])
+@main.route('/', methods = ['POST'])
 def intro():
     # Move to login screen
     response = {'response': 'Log In page'}
@@ -52,7 +44,7 @@ def intro():
 
 
 # Route to get the username and password in the login screen
-@app.route('/login', methods = ['POST'])
+@main.route('/login', methods = ['POST'])
 def login_info():
     # Get the data from the Json dictionary
     username = request.form.get('username')
@@ -91,7 +83,7 @@ def login_info():
 
 
 # A route for the sign up screen
-@app.route('/signup', methods = ['POST'])
+@main.route('/signup', methods = ['POST'])
 def signup_info():
 
     regex_1 = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
@@ -184,9 +176,9 @@ def signup_info():
 
 
 # Route to receive the burn image from user and return the model's prediction
-@app.route('/uploadImg', methods=['POST'])
+@main.route('/uploadImg', methods=['POST'])
 def upload():
-    my_model = model.MyModel(3) 
+    my_model = MyModel(3) 
     degrees = {0: 'First Degree Burn',
                1: 'Second Degree Burn',
                2: 'Third Degree Burn'
@@ -203,9 +195,9 @@ def upload():
         print('Data Type: ', type(IMAGE_DATA))
         #IMAGE_DATA = convert_to_obj(IMAGE_DATA, output_file_path)   # Convert binary data to image object (if needed)
         # Pass the Image to the model
-        IMAGE_DATA = func.transform(IMAGE_DATA)
-        model = func.load_model()
-        output = func.predict(model, IMAGE_DATA)
+        IMAGE_DATA = transform(IMAGE_DATA)
+        model = load_model()
+        output = predict(model, IMAGE_DATA)
         prediction = {'prediction': degrees[output]}
 
         return jsonify(prediction) , 200        #return 'File uploaded successfully' 
@@ -217,11 +209,5 @@ def upload():
         # Read and preprocess the image
         image = Image.open(io.BytesIO(file.read()))
  """
-
-
-
-if __name__ == "__main__":
-    # app.run(debug=True, port= 19999)        # Modify the Port number to avoid any conflicts with available ports
-    app.run() 
 
 
