@@ -8,27 +8,28 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema ehr
+-- Schema defaultdb
 -- -----------------------------------------------------
 -- main database
 -- 
-DROP SCHEMA IF EXISTS `ehr` ;
+DROP SCHEMA IF EXISTS `defaultdb` ;
 
 -- -----------------------------------------------------
--- Schema ehr
+-- Schema defaultdb
 --
 -- main database
 -- 
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `ehr` ;
-USE `ehr` ;
+CREATE SCHEMA IF NOT EXISTS `defaultdb` ;
+USE `defaultdb` ;
 
 -- -----------------------------------------------------
--- Table `ehr`.`blood_test`
+-- Table `defaultdb`.`blood_test`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`blood_test` ;
+DROP TABLE IF EXISTS `defaultdb`.`blood_test` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`blood_test` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`blood_test` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_blood_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `hemoglobin` INT NULL DEFAULT NULL,
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `ehr`.`blood_test` (
   INDEX `blood_id` (`fk_blood_test_user_id` ASC) VISIBLE,
   CONSTRAINT `blood_id`
     FOREIGN KEY (`fk_blood_test_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -79,11 +80,12 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`burn`
+-- Table `defaultdb`.`burn`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`burn` ;
+DROP TABLE IF EXISTS `defaultdb`.`burn` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`burn` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`burn` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_burn_user_id` INT NOT NULL,
   `burn_date` DATETIME NOT NULL,
   `burn_class_model` INT NULL,
@@ -95,18 +97,19 @@ CREATE TABLE IF NOT EXISTS `ehr`.`burn` (
   INDEX `id_idx` (`fk_burn_user_id` ASC) VISIBLE,
   CONSTRAINT `id`
     FOREIGN KEY (`fk_burn_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`cardiac_test`
+-- Table `defaultdb`.`cardiac_test`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`cardiac_test` ;
+DROP TABLE IF EXISTS `defaultdb`.`cardiac_test` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`cardiac_test` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`cardiac_test` (
+ `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_cardiac_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `ecg` VARCHAR(200) NULL DEFAULT NULL,
@@ -115,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `ehr`.`cardiac_test` (
   INDEX `cardiac_id` (`fk_cardiac_test_user_id` ASC) VISIBLE,
   CONSTRAINT `cardiac_id`
     FOREIGN KEY (`fk_cardiac_test_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -123,11 +126,12 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`imaging_test`
+-- Table `defaultdb`.`imaging_test`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`imaging_test` ;
+DROP TABLE IF EXISTS `defaultdb`.`imaging_test` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`imaging_test` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`imaging_test` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_imaging_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `x_rays` VARCHAR(200) NULL DEFAULT NULL,
@@ -139,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `ehr`.`imaging_test` (
   INDEX `imaging_id` (`fk_imaging_test_user_id` ASC) VISIBLE,
   CONSTRAINT `imaging_id`
     FOREIGN KEY (`fk_imaging_test_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE RESTRICT)
 ENGINE = InnoDB
@@ -148,11 +152,12 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`medical_history`
+-- Table `defaultdb`.`medical_history`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`medical_history` ;
+DROP TABLE IF EXISTS `defaultdb`.`medical_history` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`medical_history` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`medical_history` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_medical_history_user_id` INT NOT NULL,
   `allergies` VARCHAR(45) NULL DEFAULT NULL,
   `conditions` VARCHAR(45) NULL DEFAULT NULL,
@@ -163,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `ehr`.`medical_history` (
   INDEX `history_id` (`fk_medical_history_user_id` ASC) VISIBLE,
   CONSTRAINT `history_id`
     FOREIGN KEY (`fk_medical_history_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -171,11 +176,12 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`medication`
+-- Table `defaultdb`.`medication`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`medication` ;
+DROP TABLE IF EXISTS `defaultdb`.`medication` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`medication` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`medication` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_medication_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `medication_name` VARCHAR(45) NULL DEFAULT NULL,
@@ -184,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `ehr`.`medication` (
   INDEX `medication_id` (`fk_medication_user_id` ASC) VISIBLE,
   CONSTRAINT `medication_id`
     FOREIGN KEY (`fk_medication_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE RESTRICT)
 ENGINE = InnoDB
@@ -193,11 +199,12 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`urine_test`
+-- Table `defaultdb`.`urine_test`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`urine_test` ;
+DROP TABLE IF EXISTS `defaultdb`.`urine_test` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`urine_test` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`urine_test` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_urine_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `color` VARCHAR(45) NULL DEFAULT NULL,
@@ -215,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `ehr`.`urine_test` (
   INDEX `urine_id` (`fk_urine_test_user_id` ASC) VISIBLE,
   CONSTRAINT `urine_id`
     FOREIGN KEY (`fk_urine_test_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE RESTRICT)
 ENGINE = InnoDB
@@ -224,11 +231,11 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`user`
+-- Table `defaultdb`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`user` ;
+DROP TABLE IF EXISTS `defaultdb`.`user` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`user` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
   `password` VARCHAR(128) NOT NULL,
@@ -246,18 +253,19 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `ehr`.`vaccination`
+-- Table `defaultdb`.`vaccination`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ehr`.`vaccination` ;
+DROP TABLE IF EXISTS `defaultdb`.`vaccination` ;
 
-CREATE TABLE IF NOT EXISTS `ehr`.`vaccination` (
+CREATE TABLE IF NOT EXISTS `defaultdb`.`vaccination` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_vaccination_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `vaccination_name` VARCHAR(50) NULL DEFAULT NULL,
   INDEX `vacc_id` (`fk_vaccination_user_id` ASC) VISIBLE,
   CONSTRAINT `vacc_id`
     FOREIGN KEY (`fk_vaccination_user_id`)
-    REFERENCES `ehr`.`user` (`id`)
+    REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
