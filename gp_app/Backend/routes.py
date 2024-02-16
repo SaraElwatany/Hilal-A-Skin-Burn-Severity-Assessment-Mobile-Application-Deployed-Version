@@ -22,7 +22,7 @@ from .user_class import User
 main = Blueprint('main', __name__)
 
 ############################
-#""" 
+""" 
 img = load_img()
 print(img, type(img))
 # Pass the Image to the model
