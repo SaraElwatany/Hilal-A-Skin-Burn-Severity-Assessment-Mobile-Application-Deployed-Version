@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "مرحبا بك فى التطبيق الخاص بنا "),
         "language": MessageLookupByLibrary.simpleMessage("العربية"),
         "lastName": MessageLookupByLibrary.simpleMessage("اسم العائلة"),
+        "firstName": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
         "login": MessageLookupByLibrary.simpleMessage("سجل دخول"),
         "loginNw": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "mail": MessageLookupByLibrary.simpleMessage(" بريدك الألكتروني"),
@@ -50,8 +51,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "asdoctor": MessageLookupByLibrary.simpleMessage("الاستمرار كطبيب"),
         "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
         "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
-        "about": MessageLookupByLibrary.simpleMessage("معلومات"),
+        "clinictitle": MessageLookupByLibrary.simpleMessage("معلومات عن الحرق"),
+        "symptoms":
+            MessageLookupByLibrary.simpleMessage("الأعراض التي تعانى منها :"),
+        "symptom_1": MessageLookupByLibrary.simpleMessage("اطراف مرتعشة"),
+        "symptom_2": MessageLookupByLibrary.simpleMessage("اسهال"),
+        "symptom_3": MessageLookupByLibrary.simpleMessage("برودة الأطراف"),
+        "symptom_4": MessageLookupByLibrary.simpleMessage("الغثيان"),
+        "cause": MessageLookupByLibrary.simpleMessage("سبب الحرق :"),
+        "heat": MessageLookupByLibrary.simpleMessage("حرارة"),
+        "electricity": MessageLookupByLibrary.simpleMessage("كهرباء"),
+        "chemical": MessageLookupByLibrary.simpleMessage("كيميائي"),
+        "radioactive": MessageLookupByLibrary.simpleMessage("إشعاعي"),
         "intro": MessageLookupByLibrary.simpleMessage(
-            "أهلا, أنا هلال, رفيقك الصحي, ممكن اساعدك تفتكر تاريخك المرضي من إشاعات و تحاليل و عمليات و غيره. بالإضافة لكده, ممكن أديك نصائح تحسن صحتك بناءًا على تاريخك المرضي\nاقدر افهم أعراضك و اقترح عليك اقتراح مبدأي خاص بصحتك.")
+            "أهلا, أنا هلال, رفيقك الصحي, ممكن اساعدك تفتكر تاريخك المرضي من إشاعات و تحاليل و عمليات و غيره. بالإضافة لكده, ممكن أديك نصائح تحسن صحتك بناءًا على تاريخك المرضي\nاقدر افهم أعراضك و اقترح عليك اقتراح مبدأي خاص بصحتك."),
+        "about": MessageLookupByLibrary.simpleMessage("معلومات"),
+        "patients": MessageLookupByLibrary.simpleMessage("المرضى"),
+        "time": MessageLookupByLibrary.simpleMessage("الوقت"),
+        "danger": MessageLookupByLibrary.simpleMessage("الخطورة"),
+        "skip": MessageLookupByLibrary.simpleMessage("تخطى"),
+        "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
+            " نحن طلاب كلية الهندسة الطبية والمنظومات بجامعه القاهرة. قمنا بإنشاء هذا التطبيق لمساعدة ضحايا الحروق المنزلية على التعامل مع الإصابات فى الوقت المناسب "),
       };
 }

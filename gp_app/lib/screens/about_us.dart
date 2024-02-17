@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/screens/camera.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 
 class AboutUs extends StatelessWidget {
@@ -13,6 +12,7 @@ class AboutUs extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
               child: InkWell(
@@ -26,42 +26,28 @@ class AboutUs extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 5),
+                      Container(
+                        height: 80,
+                        width: 100,
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                       const SizedBox(height: 10),
-                      Text(
-                        (""),
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: InkWell(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  height: 340,
-                  width: 326,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        (""),
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: Colors.white),
-                      )
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          S.of(context).aboutUsMessage,
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

@@ -5,6 +5,8 @@ import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/docter_model_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 // import 'package:gp_app/widgets/messages_widget.dart';
+import 'package:gp_app/models/doctor_message.dart';
+import 'package:gp_app/apis/apis.dart';
 
 class DocterModelChat extends StatefulWidget {
   const DocterModelChat({super.key});
@@ -16,6 +18,29 @@ class DocterModelChat extends StatefulWidget {
 }
 
 class DocterModelChatState extends State<DocterModelChat> {
+
+  //marina
+List<DoctorMessage> messages = [];
+
+ @override
+void initState() {
+  super.initState();
+  loadChatHistory();
+}
+
+void loadChatHistory() async {
+  try {
+    List<DoctorMessage> messages = await fetchChatHistory(); 
+    setState(() {
+      this.messages = messages;
+    });
+  } catch (e) {
+    // Handle error or show a message
+    print("Failed to load chat history: $e");
+  }
+}
+//marina
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

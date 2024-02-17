@@ -26,6 +26,22 @@
     "intro": "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history.",
     "asdoctor": "Continue as a doctor",
     "confirm":"Confirm",
-    "edit":"Edit"
+    "edit":"Edit",
+    "clinictitle":"Clinical data on burn",
+    "symptoms":"Identify your symptom:",
+    "symptom_1":"Trembling limbs",
+    "symptom_2":"Diarrhea",
+    "symptom_3":"Cold extremities",
+    "symptom_4":"Nausea",
+    "cause":"Cause of burn:",
+    "heat":"Heat",
+    "electricity":"Electricity",
+    "chemical":"Chemical",
+    "radioactive":"Radioactive",
+    "patients":"Patients",
+    "time":"Time",
+    "danger":"Danger",
+    "skip":"Skip",
+    "aboutUsMessage":"We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury."
  
   }

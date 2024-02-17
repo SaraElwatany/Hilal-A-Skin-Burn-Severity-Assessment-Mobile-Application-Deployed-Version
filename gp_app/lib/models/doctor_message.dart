@@ -15,4 +15,12 @@ DoctorMessage({
   required this.receiver,
   required this.imageFile,
   });
+
+  factory DoctorMessage.fromJson(Map<String, dynamic> json) {
+    return DoctorMessage(
+      message: json['message'] as String,
+      receiver: json['receiver'] as bool,
+      imageFile: json['imageFile'] as String?,
+    );
+  }
 }

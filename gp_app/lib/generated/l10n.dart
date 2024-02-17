@@ -329,6 +329,166 @@ class S {
       args: [],
     );
   }
+
+  // patients
+  String get patients {
+    return Intl.message(
+      "patients",
+      name: 'patients',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // Time
+  String get time {
+    return Intl.message(
+      "Time",
+      name: 'time',
+      desc: '',
+      args: [],
+    );
+  }
+
+// Danger
+  String get danger {
+    return Intl.message(
+      "Danger",
+      name: 'danger',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // AboutUsMessage
+  String get aboutUsMessage {
+    return Intl.message(
+      "We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury.",
+      name: 'aboutUsMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // clinictitle
+  String get clinictitle {
+    return Intl.message(
+      "Clinical data on burn",
+      name: 'clinictitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // symptoms
+  String get symptoms {
+    return Intl.message(
+      "Identify your symptom:",
+      name: 'symptoms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // symptom_1
+  String get symptom_1 {
+    return Intl.message(
+      "Trembling limbs",
+      name: 'symptom_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // symptom_2
+  String get symptom_2 {
+    return Intl.message(
+      "Diarrhea",
+      name: 'symptom_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // symptom_3
+  String get symptom_3 {
+    return Intl.message(
+      "Cold extremities",
+      name: 'symptom_3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // symptom_4
+  String get symptom_4 {
+    return Intl.message(
+      "Nausea",
+      name: 'symptom_4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // cause
+  String get cause {
+    return Intl.message(
+      "Cause of burn:",
+      name: 'cause',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // heat
+  String get heat {
+    return Intl.message(
+      "Heat",
+      name: 'heat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // electricity
+  String get electricity {
+    return Intl.message(
+      "Electricity",
+      name: 'electricity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // chemical
+  String get chemical {
+    return Intl.message(
+      "Chemical",
+      name: 'chemical',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // radioactive
+  String get radioactive {
+    return Intl.message(
+      "Radioactive",
+      name: 'radioactive',
+      desc: '',
+      args: [],
+    );
+  }
+
+   // skip
+  String get skip {
+    return Intl.message(
+      "Skip",
+      name: 'skip',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

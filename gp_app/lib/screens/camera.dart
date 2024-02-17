@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:gp_app/apis/apis.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/screens/patient_model_screen.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -73,7 +74,8 @@ class _HomeScreenState extends State<CameraScreen> {
                 ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => const ChatScreen()));
+                          // builder: (ctx) => const ChatScreen()));
+                          builder: (ctx) => const ClinicalDataScreen()));
                       // Check if nullableFile is not null before casting
                       if (imageFile != null) {
                         File nonNullableFile = imageFile as File;

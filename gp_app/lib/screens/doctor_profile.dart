@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/Data/doctor_msg.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/widgets/patients_list.dart';
+import 'package:gp_app/apis/apis.dart';
 
 class DocterProfile extends StatefulWidget {
   const DocterProfile({Key? key}) : super(key: key);
@@ -13,13 +13,31 @@ class DocterProfile extends StatefulWidget {
 }
 
 class DocterProfileState extends State<DocterProfile> {
-  // Just for test
+/*   // Just for test
   List<Patient> patients = [
     Patient(name: 'Patient 1', info: 'Info for Patient 1'),
     Patient(name: 'Patient 2', info: 'Info for Patient 2'),
   ];
+ */
+  String _selectedItem = 'Time'; // Default
+  List<Patient> patients = [];
 
-  String _selectedItem = 'Time'; // Default selected item
+  @override
+  void initState() {
+    super.initState();
+    _fetchPatients();
+  }
+
+  Future<void> _fetchPatients() async {
+    try {
+      List<Patient> fetchedPatients = await getPatients();
+      setState(() {
+        patients = fetchedPatients;
+      });
+    } catch (error) {
+      // Handle error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +51,16 @@ class DocterProfileState extends State<DocterProfile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Patients',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  S.of(context).patients,
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Stack(
                   alignment: Alignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(10),
@@ -54,21 +73,24 @@ class DocterProfileState extends State<DocterProfile> {
                               _selectedItem = newValue!;
                             });
                           },
-                          items: <String>['Time', 'Danger']
-                              .map<DropdownMenuItem<String>>((String value) {
+                          items: <String>[
+                            S.of(context).time,
+                            S.of(context).danger,
+                          ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
-                              value: value,
+                              value: value == S.of(context).time
+                                  ? 'Time'
+                                  : 'Danger',
                               child: Text(value),
                             );
                           }).toList(),
-                          // Customizing dropdown menu appearance
                           dropdownColor: Colors.grey[200],
                           elevation: 8,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconEnabledColor: Colors.black,
                           iconDisabledColor: Colors.black,
                           iconSize: 24,
-                          underline: Container(), // No underline
+                          underline: Container(),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),

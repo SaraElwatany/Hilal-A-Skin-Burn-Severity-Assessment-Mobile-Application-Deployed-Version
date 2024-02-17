@@ -56,8 +56,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "asdoctor":
             MessageLookupByLibrary.simpleMessage("Continue as a doctor"),
-        "about": MessageLookupByLibrary.simpleMessage("About"),
+        "clinictitle":
+            MessageLookupByLibrary.simpleMessage("Clinical data on burn"),
+        "symptoms":
+            MessageLookupByLibrary.simpleMessage("Identify your symptom:"),
+        "symptom_1": MessageLookupByLibrary.simpleMessage("Trembling limbs"),
+        "symptom_2": MessageLookupByLibrary.simpleMessage("Diarrhea"),
+        "symptom_3": MessageLookupByLibrary.simpleMessage("Cold extremities"),
+        "symptom_4": MessageLookupByLibrary.simpleMessage("Nausea"),
+        "cause": MessageLookupByLibrary.simpleMessage("Cause of burn:"),
+        "heat": MessageLookupByLibrary.simpleMessage("Heat"),
+        "electricity": MessageLookupByLibrary.simpleMessage("Electricity"),
+        "chemical": MessageLookupByLibrary.simpleMessage("Chemical"),
+        "radioactive": MessageLookupByLibrary.simpleMessage("Radioactive"),
         "intro": MessageLookupByLibrary.simpleMessage(
-            "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history.")
+            "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history."),
+        "about": MessageLookupByLibrary.simpleMessage("About"),
+        "patients": MessageLookupByLibrary.simpleMessage("Patients"),
+        "time": MessageLookupByLibrary.simpleMessage("Time"),
+        "danger": MessageLookupByLibrary.simpleMessage("Danger"),
+        "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
+            "We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury."),
       };
 }

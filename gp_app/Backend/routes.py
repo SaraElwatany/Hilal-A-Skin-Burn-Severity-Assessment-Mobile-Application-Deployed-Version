@@ -54,6 +54,7 @@ def login_info():
 
     user = User.query.filter_by(username=username).first()
 
+    print(type(user.id))
     #print(user.email)
     #print(user.username)
     #print("User's Password:", user.password)
@@ -77,7 +78,7 @@ def login_info():
     else:
         print('Success, 'f'Username: {username}', f'Password: {password}')
         # Send a JSON response back to the client
-        response = {'response': 'Access Allowed', 'user': user}
+        response = {'response': 'Access Allowed', 'user_id': str(user.id)}
         return jsonify(response)
         
 
