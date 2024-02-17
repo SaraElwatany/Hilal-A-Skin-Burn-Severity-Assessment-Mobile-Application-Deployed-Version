@@ -50,11 +50,12 @@ def login_info():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    print('Log In Route,' ,f'Username: {username}', f'Password: {password}')
+    print('Log In Route,' , f'Username: {username}', f'Password: {password}')
 
     user = User.query.filter_by(username=username).first()
+    user_id = user.id
 
-    print('Type of the user id', type(user.id))
+    print('Type of the user id', type(user_id))
     #print(user.email)
     #print(user.username)
     #print("User's Password:", user.password)
@@ -78,9 +79,11 @@ def login_info():
     else:
         print('Success, 'f'Username: {username}', f'Password: {password}')
         # Send a JSON response back to the client
-        response = {'response': 'Access Allowed', 'user_id': str(user.id)}
+        response = {'response': 'Access Allowed', 
+                    'user_id': str(user_id) }
+        print('The response that will be sent: ', response)
         return jsonify(response)
-        
+    
 
 
 # A route for the sign up screen
