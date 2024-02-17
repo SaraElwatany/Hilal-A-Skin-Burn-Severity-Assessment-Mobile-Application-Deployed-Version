@@ -9,17 +9,28 @@ class MyModel(nn.Module):
     def __init__(self, num_classes):
         super(MyModel, self).__init__()
         # Choose your model.
-        resnet50 = models.resnet50(pretrained=True)
-        n_inputs = resnet50.fc.in_features
+        pretrained_resnet = models.resnet50(pretrained=True)
+        n_inputs = pretrained_resnet.fc.in_features
 
-        # Unfreeze the last 5 layers' weights of the original model
-        for name, param in self.base_model.named_parameters():
-          if 'layer' in name:
+        # Freeze the weights of the ResNet50 model
+        for param in pretrained_resnet.parameters():
+            param.requires_grad = False
+
+        # Remove the avgpool and fc layers
+        pretrained_resnet = nn.Sequential(*list(pretrained_resnet.children())[:-2])
+
+        # Add a new layer to the ResNet50 model for the multi-label classification task
+        pretrained_resnet.fc = nn.Sequential(nn.Flatten(),
+                                             nn.Linear(n_inputs*7*7, num_classes),
+                                            )
+
+
+        # Unfreeze the last fc layer of the model
+        for param in pretrained_resnet.fc.parameters():
             param.requires_grad = True
 
-        resnet50.fc = nn.Sequential(nn.Linear(n_inputs, num_classes))
         # Set the model to your class attribute
-        self.resnet50 = resnet50
+        self.resnet50 = pretrained_resnet
 
     def forward(self, x):
         return self.resnet50(x) 

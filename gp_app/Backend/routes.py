@@ -39,6 +39,7 @@ print(output, type(output))  #"""
 def intro():
     # Move to login screen
     response = {'response': 'Log In page'}
+    print('Hello there, I am Hilal')
     return jsonify(response)
 
 
@@ -182,11 +183,13 @@ def signup_info():
 # Route to receive the burn image from user and return the model's prediction
 @main.route('/uploadImg', methods=['POST'])
 def upload():
+    print('Before Model Object')
     my_model = MyModel(3) 
     degrees = {0: 'First Degree Burn',
                1: 'Second Degree Burn',
                2: 'Third Degree Burn'
                }
+    print('After Model Object')
     if 'file' not in request.files:
         return jsonify({'error': 'No selected file'})    # 'No file part'
     # Get the Image
@@ -207,11 +210,5 @@ def upload():
         return jsonify(prediction) , 200        #return 'File uploaded successfully' 
     
     
-""" if file.filename == '':
-        return  
-    if file:
-        # Read and preprocess the image
-        image = Image.open(io.BytesIO(file.read()))
- """
 
 
