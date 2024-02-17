@@ -9,36 +9,42 @@ import 'package:gp_app/models/doctor_message.dart';
 import 'package:gp_app/apis/apis.dart';
 
 class DocterModelChat extends StatefulWidget {
-  const DocterModelChat({super.key});
+  final int senderId;
+  final int receiverId;
+
+  const DocterModelChat({
+    super.key,
+    required this.senderId, //dr
+    required this.receiverId, //patient 
+  });
 
   @override
-  State<DocterModelChat> createState() {
-    return DocterModelChatState();
-  }
+  State<DocterModelChat> createState() => DocterModelChatState();
 }
+
 
 class DocterModelChatState extends State<DocterModelChat> {
 
   //marina
-List<DoctorMessage> messages = [];
+  List<DoctorMessage> messages = [];
 
- @override
-void initState() {
-  super.initState();
-  loadChatHistory();
-}
-
-void loadChatHistory() async {
-  try {
-    List<DoctorMessage> messages = await fetchChatHistory(); 
-    setState(() {
-      this.messages = messages;
-    });
-  } catch (e) {
-    // Handle error or show a message
-    print("Failed to load chat history: $e");
+  @override
+  void initState() {
+    super.initState();
+    loadChatHistory();
   }
-}
+
+  void loadChatHistory() async {
+    try {
+      // Pass senderId and receiverId to fetchChatHistory
+      List<DoctorMessage> messages = await fetchChatHistory(widget.senderId, widget.receiverId);
+      setState(() {
+        this.messages = messages;
+      });
+    } catch (e) {
+      print("Failed to load chat history: $e");
+    }
+  }
 //marina
 
   @override
@@ -48,9 +54,9 @@ void loadChatHistory() async {
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: doctorMessage.length,
+            itemCount: messages.length, 
             itemBuilder: (context, index) {
-              return DoctorMessagesWidget(doctorMessage: doctorMessage[index]);
+              return DoctorMessagesWidget(doctorMessage: messages[index]);
             },
           ),
           Align(

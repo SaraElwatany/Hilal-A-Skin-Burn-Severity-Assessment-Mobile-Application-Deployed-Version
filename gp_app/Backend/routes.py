@@ -179,37 +179,158 @@ def signup_info():
 
 
 
-
-# Route to receive the burn image from user and return the model's prediction
-@main.route('/uploadImg', methods=['POST'])
-def upload():
-    print('Before Model Object')
-    my_model = MyModel(3) 
-    degrees = {0: 'First Degree Burn',
-               1: 'Second Degree Burn',
-               2: 'Third Degree Burn'
-               }
-    print('After Model Object')
-    if 'file' not in request.files:
-        return jsonify({'error': 'No selected file'})    # 'No file part'
-    # Get the Image
-    file = request.files['file']
-    if file:
-        IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
-        # Decode the base64 encoded string (Image) back to binary data
-        IMAGE_DATA = base64.b64decode(IMAGE_DATA)   # Image to be stored in the database as blob file
-        print('Image Sent with Data: ', IMAGE_DATA)
-        print('Data Type: ', type(IMAGE_DATA))
-        #IMAGE_DATA = convert_to_obj(IMAGE_DATA, output_file_path)   # Convert binary data to image object (if needed)
-        # Pass the Image to the model
-        IMAGE_DATA = transform(IMAGE_DATA)
-        model = load_model()
-        output = predict(model, IMAGE_DATA)
-        print("Model's Prediction", output)
-        prediction = {'prediction': degrees[output]}
-
-        return jsonify(prediction) , 200        #return 'File uploaded successfully' 
     
     
 
 
+# burn item route
+@main.route('/add_burn', methods=['GET', 'POST'])
+def burn_new():
+    if request.method == 'POST':
+        print('burn item received')
+        data = request.get_json()
+        # Model prediction goes here
+        my_model = model.MyModel(3) 
+        degrees = { 0: 'First Degree Burn',
+                    1: 'Second Degree Burn',
+                    2: 'Third Degree Burn'
+                    }
+        if 'file' not in request.files:
+            return jsonify({'error': 'No selected file'})    # 'No file part'
+        # Get the Image
+        file = request.files['file']
+        if file:
+            IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
+            # Decode the base64 encoded string (Image) back to binary data
+            IMAGE_DATA = base64.b64decode(IMAGE_DATA)   # Image to be stored in the database as blob file
+            print('Image Sent with Data: ', IMAGE_DATA)
+            print('Data Type: ', type(IMAGE_DATA))
+            USER_ID = int(request.form['user_id'])  # Cast user id to integer
+            #IMAGE_DATA = convert_to_obj(IMAGE_DATA, output_file_path)   # Convert binary data to image object (if needed)
+            # Pass the Image to the model
+            IMAGE_DATA = transform(IMAGE_DATA)
+            model = load_model()
+            output = predict(model, IMAGE_DATA)
+            prediction = {'prediction': degrees[output]}
+        # create new burn item and add to db
+        new_burn = Burn(
+            fk_burn_user_id = data['fk_burn_user_id'],
+            burn_date = data['burn_date'],
+            burn_img = IMAGE_DATA,
+            burn_class_model = output,
+        )
+        # add burn item to db
+        db.session.add(new_burn)
+        db.session.commit()
+        # return the burn id
+        return { 'message': 'New burn item created',
+                 'id': new_burn.burn_id,
+                 'fk_burn_user_id': new_burn.fk_burn_user_id,
+                 'burn_date': new_burn.burn_date,
+                 'burn_class_model': new_burn.burn_class_model}
+    else: return "error: wrong method"
+
+# fetch info of all users with burns
+@main.route('/get_all_burns', methods=['POST'])
+def get_all_burns():
+
+    print("fetching users with burns...")
+
+    # get all users with burns
+    users = User.query.filter(User.burns.any()).all()
+    print('Users: ', users)
+
+    # build a dictionary of the users
+    user_list = [{
+        'id': user.id, 
+        'username': user.username, 
+        'email': user.email, 
+        'phone': user.phone, 
+        'weight': user.weight, 
+        'height': user.height}
+                for user in users]
+    
+    print('User lists found', user_list)
+    user_ids = [user.id for user in users]
+    user_names = [user.username for user in users]
+    user_info = ['Weight: '+str(user.weight)+' '+'Height: '+str(user.height) for user in users]
+    # return the user list
+    return { 'message': 'Users with burns found', 'user_ids': user_ids, 'user_names': user_names, 'user_info': user_info }
+    
+
+# fetch burns associated with a user
+@main.route('/get_user_burns', methods=['GET', 'POST'])
+def get_user_burns():
+    if request.method == 'POST':
+        print('get burns request received. User ID:', request.get_json()['fk_burn_user_id'] )
+        data = request.get_json()
+        # get the burns associated with the user id
+        burn_list = Burn.query.filter_by(fk_burn_user_id=data['fk_burn_user_id']).all()
+
+        # build a dictionary of the burns
+        burn_list = [{
+            'burn_id': burn.burn_id, 
+            'fk_burn_user_id': burn.fk_burn_user_id,
+            'burn_date': burn.burn_date, 
+            'burn_img_path': burn.burn_img_path, 
+            'dr_id': burn.dr_id,
+            'burn_class_dr': burn.burn_class_dr,
+            'burn_class_model': burn.burn_class_model,
+            'dr_reply': burn.dr_reply,
+            }
+                 for burn in burn_list] 
+        # return the burn list
+        return { 'message': 'Burns found', 'burns': burn_list}
+    else: return "error: wrong method"
+
+# route for updating burn item 
+@main.route('/update_burn', methods=['GET', 'POST'])
+def update_burn():
+    # check the request method
+    if request.method == 'POST':
+        data = request.get_json()
+        # check that user is doctor and has permission to update this burn item
+        user = User.query.filter_by(id=data['id']).first()
+        if user.profession != 'doctor' and user.profession != 'admin':
+            return {'message': 'Not authorized'}
+        else:
+            print('update burn request received')
+            # get the burn item
+            burn = Burn.query.filter_by(burn_id=data['burn_id']).first()
+            # update the burn item if the data is not empty
+            if data['burn_class_dr'] != '': burn.burn_class_dr = data['burn_class_dr']
+            if data['dr_reply'] != '': burn.dr_reply = data['dr_reply']
+            # commit the changes to the db
+            db.session.commit()
+            # return the burn id
+            return { 'message': 'Burn item updated',
+                    'burn_id': burn.burn_id,
+                    'burn_class_dr': burn.burn_class_dr,
+                    'dr_reply': burn.dr_reply}
+
+    else: return "error: wrong method"
+
+
+
+@main.route('/get_chat_history', methods=['GET'])
+def get_chat_history():
+    sender_id = request.args.get('sender_id')
+    receiver_id = request.args.get('receiver_id')
+
+    # Validate sender_id and receiver_id
+    if not sender_id or not receiver_id:
+        return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
+
+    try:
+        sender_id = int(sender_id)
+        receiver_id = int(receiver_id)
+    except ValueError:
+        return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
+
+    # Example query - adjust to your database schema and requirements
+    chat_history = ChatMessage.query.filter(
+        (ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id)
+        | (ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id)
+    ).all()
+
+    return jsonify([message.to_dict() for message in chat_history])

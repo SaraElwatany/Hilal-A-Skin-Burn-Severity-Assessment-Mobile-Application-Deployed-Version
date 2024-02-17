@@ -206,7 +206,7 @@ Future<int> sendImageToServer(File imageFile) async {
   print('Before Request');
   var request = http.MultipartRequest(
     'POST',
-    Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
+    Uri.parse('https://my-trial-t8wj.onrender.com/add_burn'),
   );
   print('After Request');
 
@@ -250,8 +250,10 @@ Future<int> sendImageToServer(File imageFile) async {
   }
 }
 
-Future<List<DoctorMessage>> fetchChatHistory() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_chat_history');
+Future<List<DoctorMessage>> fetchChatHistory(
+    int senderId, int receiverId) async {
+  var url = Uri.parse(
+      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
   var response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -285,7 +287,10 @@ Future<List<Patient>> getPatients() async {
     print('Received users: $patients_ids');
 
     List<Patient> patients_list = List.generate(no_patients, (index) {
-      return Patient(name: patients_names[index], info: patients_info[index]);
+      return Patient(
+          name: patients_names[index],
+          info: patients_info[index],
+          id: patients_ids[index]);
     });
 
     return patients_list;

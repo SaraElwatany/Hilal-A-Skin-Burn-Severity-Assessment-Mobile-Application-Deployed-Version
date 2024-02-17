@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/screens/patient_model_screen.dart';
 import 'package:gp_app/widgets/clinical_data_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 
@@ -103,7 +104,13 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
                 ElevatedButton(
-            onPressed: (){}, 
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ChatScreen()),
+              );
+            }, 
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
@@ -121,7 +128,13 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
             ),
              const SizedBox(width: 30), 
              ElevatedButton(
-            onPressed: (){}, 
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ChatScreen()),
+              );
+            }, 
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15)),

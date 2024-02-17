@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           label: Text(
-                            S.of(context).firstName,
+                            S.of(context).mail,
                             style: TextStyle(
                                 fontSize: 18, color: Colors.grey.shade500),
                           ),
