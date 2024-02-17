@@ -54,7 +54,7 @@ def login_info():
 
     user = User.query.filter_by(username=username).first()
 
-    print(type(user.id))
+    print('Type of the user id', type(user.id))
     #print(user.email)
     #print(user.username)
     #print("User's Password:", user.password)
