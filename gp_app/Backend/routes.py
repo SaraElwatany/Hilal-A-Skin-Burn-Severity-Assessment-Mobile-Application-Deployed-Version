@@ -205,6 +205,7 @@ def upload():
         IMAGE_DATA = transform(IMAGE_DATA)
         model = load_model()
         output = predict(model, IMAGE_DATA)
+        print("Model's Prediction", output)
         prediction = {'prediction': degrees[output]}
 
         return jsonify(prediction) , 200        #return 'File uploaded successfully' 
