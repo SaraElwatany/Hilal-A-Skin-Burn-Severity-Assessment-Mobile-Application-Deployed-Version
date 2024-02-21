@@ -19,7 +19,7 @@ from .user_class import User
 from .chat_message import ChatMessage
 
 from .model import MyModel
-from .functions import load_img, transform, load_model, predict 
+from .functions import load_img, transform, load_model, predict, convert_to_obj
 
 
 
