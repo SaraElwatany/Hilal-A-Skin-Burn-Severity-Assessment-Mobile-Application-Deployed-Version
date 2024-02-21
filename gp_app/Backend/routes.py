@@ -1,5 +1,6 @@
 import re
 import base64
+import numpy as np
 import torch.nn as nn
 from datetime import date
 from torchvision import models
@@ -200,18 +201,32 @@ def upload():
     if file:
         IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
         # Decode the base64 encoded string (Image) back to binary data
-        IMAGE_DATA = base64.b64decode(IMAGE_DATA)   # Image to be stored in the database as blob file
-        print('Image Sent with Data: ', IMAGE_DATA)
-        print('Data Type: ', type(IMAGE_DATA))
+        #IMAGE_DATA = base64.b64decode(IMAGE_DATA)   # Image to be stored in the database as blob file
+        #print('Image Sent with Data: ', IMAGE_DATA)
+        #print('Data Type: ', type(IMAGE_DATA))
         USER_ID = int(request.form['user_id'])  # Cast user id to integer
         print('User ID Associated with burn:', USER_ID)
-        IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
+        #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         # Pass the Image to the model
-        IMAGE_DATA_OBJECT = transform(IMAGE_DATA_OBJECT)
+        #IMAGE_DATA_OBJECT = transform(IMAGE_DATA_OBJECT)
         model = load_model()
         output = predict(model, IMAGE_DATA_OBJECT)
         prediction = {'prediction': degrees[output]}
+        print(output)
         print(prediction)
+
+        print('The file received from App: ', file)
+        # Read the image file and convert it to a numpy array
+        image = convert_to_obj(file)
+        image = np.array(image)
+        # Preprocess the image (if needed)
+        IMAGE_DATA_OBJECT = transform(image)
+        # Pass image to the model for inference
+        model = load_model()
+        output = predict(model, IMAGE_DATA_OBJECT)
+        print(output)
+        prediction = {'prediction': degrees[output]}
+
 
         # Get the user associated with that id
         user = User.query.filter_by(user_id=USER_ID).first()

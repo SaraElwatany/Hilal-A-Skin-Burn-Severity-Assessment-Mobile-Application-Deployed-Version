@@ -16,15 +16,15 @@ import 'dart:io';
 
 // Function that sends the username and password to the flask backend (return type as future object with no value == The function completes without returning any value)
 Future<String> sendData(String email, String password) async {
+  // Set The Global Variables To Null with each login
+  userId = '0';
+  burnId = '0';
+
   String url = 'https://my-trial-t8wj.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
     'email': email,
     'password': password,
   });
-
-  // Set The Global Variables To Null with each login
-  userId = '0';
-  burnId = '0';
 
   if (request.statusCode == 200 ||
       request.statusCode == 201 ||
