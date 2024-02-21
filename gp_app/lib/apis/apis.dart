@@ -12,7 +12,7 @@ import 'dart:io';
 // Local Host For Android Emulator => http://10.0.2.2:19999
 // Local Host For Windows => http://127.0.0.1:19999
 // Local Host For Chrome => http://localhost:58931  120.0.6099.111
-// Deployment => https://my-trial-t8wj.onrender.com
+// https://my-trial-t8wj.onrender.com
 
 // Global Variable for User ID from Login Screen
 String userId = '0';
@@ -43,7 +43,11 @@ Future<String> sendData(String email, String password) async {
 
     if (responseMessage == 'Access Allowed') {
       userId = responseData['user_id'];
+      UserProfession = responseData['user_profession'];
+
       print('Login successful');
+      print('Profession: $UserProfession');
+
       return 'Access Allowed';
     } else {
       print('Login Failed due to incorrect email or password');

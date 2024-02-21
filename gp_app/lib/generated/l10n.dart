@@ -93,7 +93,7 @@ class S {
   /// `I'm Hilal, your healthcare companion. `
   String get hilal {
     return Intl.message(
-      'I\'m Hilal, your healthcare companion. ',
+      'I\'m Hilal, Your skin burn care companion. ',
       name: 'hilal',
       desc: '',
       args: [],
@@ -103,7 +103,7 @@ class S {
   /// `First, I want to know your preferred language.`
   String get chooselang {
     return Intl.message(
-      'First, I want to know your preferred language.',
+      'First, join to us by creating an account or press emergency if you are in hurry.',
       name: 'chooselang',
       desc: '',
       args: [],
@@ -293,7 +293,7 @@ class S {
 // Intro
   String get Intro {
     return Intl.message(
-      "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history.",
+       "Hello! My name is Hilal, the health companion for burn patients. \nI am here to answer your questions about the treatment \nand management of skin burns that occur at home.",
       name: 'intro',
       desc: '',
       args: [],
@@ -489,6 +489,28 @@ class S {
       args: [],
     );
   }
+
+     // emergency
+  String get emergency {
+    return Intl.message(
+      "Emergency",
+      name: 'emergency',
+      desc: '',
+      args: [],
+    );
+  }
+  
+     // select_image
+  String get select_image {
+    return Intl.message(
+      "Select Image",
+      name: 'select_image',
+      desc: '',
+      args: [],
+    );
+  }
+
+  
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

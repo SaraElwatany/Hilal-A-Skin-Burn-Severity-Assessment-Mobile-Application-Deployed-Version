@@ -26,7 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_title": MessageLookupByLibrary.simpleMessage("مساعدك الطبى"),
         "burns": MessageLookupByLibrary.simpleMessage("حروق"),
         "chooselang": MessageLookupByLibrary.simpleMessage(
-            " أولًا, أريد أن أعرف لغتك المفضلة !"),
+            " أولاً، انضم إلينا عن طريق إنشاء حساب أو اضغط على الطوارئ إذا كنت في عجلة من أمرك."),
         "haveAcc": MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل؟"),
         "hilal": MessageLookupByLibrary.simpleMessage("أنا هلال, رفيق صحتك . "),
         "home_screen_greeting": MessageLookupByLibrary.simpleMessage(
@@ -47,7 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
         "title": MessageLookupByLibrary.simpleMessage("اللغة العربية"),
         "upload": MessageLookupByLibrary.simpleMessage("رفع الصورة"),
-        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً"),
+        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !"),
         "asdoctor": MessageLookupByLibrary.simpleMessage("الاستمرار كطبيب"),
         "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
         "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
@@ -64,12 +64,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "chemical": MessageLookupByLibrary.simpleMessage("كيميائي"),
         "radioactive": MessageLookupByLibrary.simpleMessage("إشعاعي"),
         "intro": MessageLookupByLibrary.simpleMessage(
-            "أهلا, أنا هلال, رفيقك الصحي, ممكن اساعدك تفتكر تاريخك المرضي من إشاعات و تحاليل و عمليات و غيره. بالإضافة لكده, ممكن أديك نصائح تحسن صحتك بناءًا على تاريخك المرضي\nاقدر افهم أعراضك و اقترح عليك اقتراح مبدأي خاص بصحتك."),
-        "about": MessageLookupByLibrary.simpleMessage("معلومات"),
+          " أهلا, أنا هلال, رفيق الرعاية الصحة لمرضى الحروق. تقدر تسألني اسئلة متعلقة بمعالجة و\nمتابعة حروق الجلد أو إي إصابات شبهها بتحصل في البيت."),
         "patients": MessageLookupByLibrary.simpleMessage("المرضى"),
         "time": MessageLookupByLibrary.simpleMessage("الوقت"),
         "danger": MessageLookupByLibrary.simpleMessage("الخطورة"),
         "skip": MessageLookupByLibrary.simpleMessage("تخطى"),
+        "emergency": MessageLookupByLibrary.simpleMessage("طوارئ"),
+        "about": MessageLookupByLibrary.simpleMessage("معلومات"),
+        "select_image": MessageLookupByLibrary.simpleMessage("اختر صورة"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             " نحن طلاب كلية الهندسة الطبية والمنظومات بجامعه القاهرة. قمنا بإنشاء هذا التطبيق لمساعدة ضحايا الحروق المنزلية على التعامل مع الإصابات فى الوقت المناسب "),
       };

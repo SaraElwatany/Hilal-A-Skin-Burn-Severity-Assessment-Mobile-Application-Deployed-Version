@@ -3,8 +3,8 @@
     "title": "Flutter localization",
     "appName":"Home Assisstant Doctor",
     "welcome":"Welcome  !",
-    "hilal":"I'm Hilal, your healthcare companion. ",
-    "chooselang":"First, I want to know your preferred language.",
+    "hilal":"I'm Hilal, Your skin burn care companion. ",
+    "chooselang":"First, join to us by creating an account or press emergency if you are in hurry. ",
     "start": "Start",
     "login":"login",
     "language": "English",
@@ -23,7 +23,7 @@
     "upload" : "Upload Image",
     "message" : "Ask Hilal...",
     "about"   : "About",
-    "intro": "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history.",
+    "intro":  "Hello! My name is Hilal, the health companion for burn patients. \nI am here to answer your questions about the treatment \nand management of skin burns that occur at home.",
     "asdoctor": "Continue as a doctor",
     "confirm":"Confirm",
     "edit":"Edit",
@@ -42,6 +42,8 @@
     "time":"Time",
     "danger":"Danger",
     "skip":"Skip",
-    "aboutUsMessage":"We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury."
+    "select_image":"Select Image",
+    "aboutUsMessage":"We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury.",
+    "emergency": "Emergency"
  
   }

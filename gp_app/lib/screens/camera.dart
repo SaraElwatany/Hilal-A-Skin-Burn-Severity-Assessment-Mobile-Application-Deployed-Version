@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/screens/patient_model_screen.dart';
+import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -24,9 +25,12 @@ class _HomeScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Image'),
-      ),
+      appBar:const LocalizationIcon(),
+
+      // AppBar(
+      //   title: const Text('Image'),
+
+      // ),
       body: Center(
         child: Column(
           children: [
@@ -66,7 +70,19 @@ class _HomeScreenState extends State<CameraScreen> {
                       print('no permission provided');
                     }
                   },
-                  child: const Text('Select Image'),
+                      style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  fixedSize: const Size(140, 45),
+                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
+                ),
+                  child: Text(S.of(context).select_image,
+                   style: const TextStyle(
+                    fontSize: 17,
+                    color: Color.fromARGB(255, 255, 251, 251),
+                  ),
+                  ),
                 ),
                 const SizedBox(
                   width: 20,
@@ -84,11 +100,19 @@ class _HomeScreenState extends State<CameraScreen> {
                         // Handle the case when nullableFile is null
                       }
                     },
+                        style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  fixedSize: const Size(140, 45),
+                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
+                ),
                     child: Text(
                       S.of(context).upload,
                       style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                    fontSize: 17,
+                    color: Color.fromARGB(255, 255, 251, 251),
+                  ),
                     )),
               ],
             ),

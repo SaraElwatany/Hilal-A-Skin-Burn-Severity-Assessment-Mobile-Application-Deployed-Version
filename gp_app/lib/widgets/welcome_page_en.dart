@@ -13,7 +13,7 @@ class WelcomePageEN extends StatelessWidget{
    return  Align(
   alignment: Alignment.centerLeft,
   child: Container(
-    padding: const EdgeInsets.only(left: 20,top: 200), // Adjust the left padding
+    padding: const EdgeInsets.only(left: 20,top: 200, right: 20), // Adjust the left padding
     child: Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

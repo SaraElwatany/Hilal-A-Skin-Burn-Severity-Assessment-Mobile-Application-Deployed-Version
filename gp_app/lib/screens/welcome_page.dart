@@ -82,7 +82,10 @@ class _WelcomePageState extends State<WelcomePage> {
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  fixedSize: const Size(166, 69)),
+                  fixedSize: const Size(166, 69),
+                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
+                  ),
+                  
               child: Text(
                 S.of(context).start,
                 style: const TextStyle(
@@ -92,6 +95,8 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
           ),
+          const SizedBox(height: 20,)
+          ,
           ElevatedButton(
             onPressed: (){
               Navigator.push(
@@ -99,7 +104,21 @@ class _WelcomePageState extends State<WelcomePage> {
                   MaterialPageRoute(builder: (context) => const MainPageScreen()),
                 );
             },
-           child: Text('skip'))
+            style: ElevatedButton.styleFrom(
+                             shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  fixedSize: const Size(166, 69),
+                            backgroundColor: const Color.fromARGB(255, 156, 17, 17)
+
+                            ),
+           child: Text(S.of(context).emergency,
+           style: const TextStyle(
+                  fontSize: 26,
+                  color: Color.fromARGB(255, 255, 251, 251),
+                ),
+           ),
+           
+           )
         ],
       ),
     );

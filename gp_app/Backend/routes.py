@@ -51,7 +51,7 @@ def intro():
 # Route to get the username and password in the login screen
 @main.route('/login', methods = ['POST'])
 def login_info():
-    # Get the data from the Json dictionary
+   # Get the data from the Json dictionary
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -86,7 +86,7 @@ def login_info():
     else:
         print('Success, 'f'Email: {email}', f'Password: {password}')
         # Send a JSON response back to the client
-        response = {'response': 'Access Allowed', 'user_id': str(user.id)}
+        response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession)}
         return jsonify(response)
     
 
@@ -163,7 +163,7 @@ def signup_info():
             height = 170, #'None'
             gender = 'M', #'None'
             dob = date(2020,4,2),#'None'
-            profession = 'None'
+            profession = 'patient'
             )
             
             try:

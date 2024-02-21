@@ -28,12 +28,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "patient and doctor assistanat"),
         "burns": MessageLookupByLibrary.simpleMessage("Burns"),
         "chooselang": MessageLookupByLibrary.simpleMessage(
-            "First, I want to know your preferred language."),
+            "First, join to us by creating an account or press emergency if you are in hurry. "),
         "firstName": MessageLookupByLibrary.simpleMessage("First Name"),
         "haveAcc":
             MessageLookupByLibrary.simpleMessage("Do you have an account?"),
         "hilal": MessageLookupByLibrary.simpleMessage(
-            "I\'m Hilal, your healthcare companion. "),
+            "I\'m Hilal, Your skin burn care companion. "),
         "home_screen_greeting":
             MessageLookupByLibrary.simpleMessage("Welcom to our application"),
         "language": MessageLookupByLibrary.simpleMessage("English"),
@@ -70,12 +70,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "chemical": MessageLookupByLibrary.simpleMessage("Chemical"),
         "radioactive": MessageLookupByLibrary.simpleMessage("Radioactive"),
         "intro": MessageLookupByLibrary.simpleMessage(
-            "Hi, I'm Hilal, your health companion. \nI can help you remember your medical history, including reports, tests, surgeries, and more. \nAdditionally, I can give you tips to improve your health based on your medical history."),
+            "Hello! My name is Hilal, the health companion for burn patients. \nI am here to answer your questions about the treatment \nand management of skin burns that occur at home."),
         "about": MessageLookupByLibrary.simpleMessage("About"),
         "patients": MessageLookupByLibrary.simpleMessage("Patients"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "danger": MessageLookupByLibrary.simpleMessage("Danger"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "emergency": MessageLookupByLibrary.simpleMessage("Emergency"),
+        "select_image": MessageLookupByLibrary.simpleMessage("Select Image"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             "We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury."),
       };

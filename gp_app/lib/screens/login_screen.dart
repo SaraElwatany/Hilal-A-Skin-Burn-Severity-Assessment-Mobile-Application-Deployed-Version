@@ -6,6 +6,7 @@ import 'package:gp_app/screens/doctor_profile.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
 
 String url = '';
@@ -38,8 +39,13 @@ class _LoginPageState extends State<LoginPage> {
       String response = await sendData(username, password);
       //  printUserInfoList();
       if (response == 'Access Allowed') {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+        if (UserProfession == 'patient') {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+        } else {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+        }
       } else if (response == 'Access Denied') {
         login_warning(context);
       }
@@ -240,24 +246,24 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (ctx) => const DocterProfile()));
-                        },
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            fixedSize: const Size(210, 60)),
-                        child: Text(
-                          S.of(context).asdoctor,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(255, 255, 251, 251),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      )
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     Navigator.of(context).push(MaterialPageRoute(
+                      //         builder: (ctx) => const DocterProfile()));
+                      //   },
+                      //   style: ElevatedButton.styleFrom(
+                      //       shape: RoundedRectangleBorder(
+                      //           borderRadius: BorderRadius.circular(15)),
+                      //       fixedSize: const Size(210, 60)),
+                      //   child: Text(
+                      //     S.of(context).asdoctor,
+                      //     style: const TextStyle(
+                      //       fontSize: 25,
+                      //       color: Color.fromARGB(255, 255, 251, 251),
+                      //     ),
+                      //     textAlign: TextAlign.center,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
