@@ -205,7 +205,7 @@ def upload():
         print('Data Type: ', type(IMAGE_DATA))
         USER_ID = int(request.form['user_id'])  # Cast user id to integer
         print('User ID Associated with burn:', USER_ID)
-        IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA_OBJECT)    # Convert binary data to image object (if needed)
+        IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         # Pass the Image to the model
         IMAGE_DATA_OBJECT = transform(IMAGE_DATA_OBJECT)
         model = load_model()
