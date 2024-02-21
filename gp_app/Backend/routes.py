@@ -217,7 +217,9 @@ def upload():
 
         print('The file received from App: ', file)
         # Read the image file and convert it to a numpy array
-        image = convert_to_obj(file)
+        # Read image data as bytes
+        image_data = file.read()
+        image = convert_to_obj(image_data)
         image = np.array(image)
         # Preprocess the image (if needed)
         IMAGE_DATA_OBJECT = transform(image)
