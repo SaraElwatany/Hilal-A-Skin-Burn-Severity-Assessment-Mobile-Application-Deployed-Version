@@ -209,11 +209,11 @@ def upload():
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         # Pass the Image to the model
         #IMAGE_DATA_OBJECT = transform(IMAGE_DATA_OBJECT)
-        model = load_model()
-        output = predict(model, IMAGE_DATA_OBJECT)
-        prediction = {'prediction': degrees[output]}
-        print(output)
-        print(prediction)
+        #model = load_model()
+        #output = predict(model, IMAGE_DATA_OBJECT)
+        #prediction = {'prediction': degrees[output]}
+        #print(output)
+        #print(prediction)
 
         print('The file received from App: ', file)
         # Read the image file and convert it to a numpy array
