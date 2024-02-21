@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
+import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/doctor_message.dart';
 import 'dart:io';
 
@@ -11,15 +12,18 @@ import 'dart:io';
 // Local Host For Android Emulator => http://10.0.2.2:19999
 // Local Host For Windows => http://127.0.0.1:19999
 // Local Host For Chrome => http://localhost:58931  120.0.6099.111
+// Deployment => https://my-trial-t8wj.onrender.com
 
 // Global Variable for User ID from Login Screen
-String user_id = '';
+String userId = '0';
+// Global Variable for Burn ID from Capturing Image Screen
+String burnId = '0';
 
-// A function that sends the username and password to the flask backend (return type as future object with no value == The function completes without returning any value)
-Future<String> sendData(String username, String password) async {
+// Function that sends the username and password to the flask backend (return type as future object with no value == The function completes without returning any value)
+Future<String> sendData(String email, String password) async {
   String url = 'https://my-trial-t8wj.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
-    'username': username,
+    'email': email,
     'password': password,
   });
 
@@ -34,15 +38,15 @@ Future<String> sendData(String username, String password) async {
     // Request successful, handle the response (valid http response was received == okay statement for http)
     final responseData = jsonDecode(request.body);
     final responseMessage = responseData['response'];
-    user_id = responseData['user_id'];
 
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Access Allowed') {
+      userId = responseData['user_id'];
       print('Login successful');
       return 'Access Allowed';
     } else {
-      print('Login Failed due to incorrect username or password');
+      print('Login Failed due to incorrect email or password');
       return 'Access Denied';
     }
   } else if (request.statusCode == 400) {
@@ -86,6 +90,7 @@ Future<String> sendData(String username, String password) async {
   }
 }
 
+// Function to pop up a warning whenever the user enters wrong login information
 void login_warning(context) {
   showDialog(
       context: context,
@@ -112,6 +117,7 @@ void login_warning(context) {
           ));
 }
 
+// Function to sign up an account
 Future<String> signUp(NewUser userInfo) async {
   var url = 'https://my-trial-t8wj.onrender.com/signup'; //
   print('Before Request');
@@ -193,6 +199,7 @@ Future<String> signUp(NewUser userInfo) async {
   }
 }
 
+// Function to check if the signed up email is valid
 bool isValidEmail(String email) {
   // Regular expression for basic email validation
   final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
@@ -200,20 +207,21 @@ bool isValidEmail(String email) {
   return emailRegex.hasMatch(email);
 }
 
+// Function to send the captured image to the prediction
 Future<int> sendImageToServer(File imageFile) async {
   int navigate = 0;
   String base64Image = base64Encode(imageFile.readAsBytesSync());
   print('Before Request');
   var request = http.MultipartRequest(
     'POST',
-    Uri.parse('https://my-trial-t8wj.onrender.com/add_burn'),
+    Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
   );
   print('After Request');
 
   // Add the base64-encoded image as a field
   request.fields['Image'] = base64Image;
   // Add the user id as a field
-  request.fields['user_id'] = user_id;
+  request.fields['user_id'] = userId;
 
   var pic = await http.MultipartFile.fromPath('file', imageFile.path);
   request.files.add(pic);
@@ -232,7 +240,10 @@ Future<int> sendImageToServer(File imageFile) async {
 
       var decodedData = json.decode(responseData);
       var prediction = decodedData['prediction'];
+      burnId = decodedData['burn_id'];
+
       print('Prediction: $prediction');
+      print('Received Burn Id;: $burnId');
 
       // Set the prediction to the global variable
       latestPrediction = prediction;
@@ -250,6 +261,117 @@ Future<int> sendImageToServer(File imageFile) async {
   }
 }
 
+// Function to fetch the symptoms and cause of burn from the user
+Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn) async {
+  String url = 'https://my-trial-t8wj.onrender.com/add_burn';
+
+  List<String> clinicalSymptoms = [];
+  String cause = '';
+  int no_symptoms = symptoms.length;
+
+  print('Symptoms: $symptoms');
+  print('Cause: $causeOfBurn');
+
+  // Encode the symtoms after a burn in the form of dictionary
+  for (int indx = 0; indx < no_symptoms; indx++) {
+    String value = '';
+
+    if (symptoms[indx] == Symptoms.symptom_1) {
+      value = 'trembling_limbs';
+    } else if (symptoms[indx] == Symptoms.symptom_2) {
+      value = 'diarrhea';
+    } else if (symptoms[indx] == Symptoms.symptom_3) {
+      value = 'cold_extremities';
+    } else if (symptoms[indx] == Symptoms.symptom_4) {
+      value = 'nausea';
+    }
+
+    print(value);
+    clinicalSymptoms.add(value);
+  }
+
+  // Converting symptoms list to dictionary
+  Map<String, dynamic> symptomsMap = {};
+  for (int symp = 0; symp < no_symptoms; symp++) {
+    symptomsMap[clinicalSymptoms[symp]] = clinicalSymptoms[symp];
+  }
+  print(symptomsMap);
+
+  // Encode the cause of burn in the form of dictionary
+  if (causeOfBurn == Symptoms.electricity) {
+    cause = 'electricity';
+  } else if (causeOfBurn == Symptoms.heat) {
+    cause = 'heat';
+  } else if (causeOfBurn == Symptoms.chemical) {
+    cause = 'chemical';
+  } else if (causeOfBurn == Symptoms.radioactive) {
+    cause = 'radioactive';
+  }
+
+  // Concatenate the clinical data dictionaries
+  Map<String, dynamic> causeMap = {'cause': cause};
+  Map<String, dynamic> burn_id = {'burn_id': burnId};
+
+  // Concatenating dictionaries using the spread operator
+  Map<String, dynamic> concatenatedDict = {
+    ...symptomsMap,
+    ...causeMap,
+    ...burn_id
+  };
+
+  print(concatenatedDict);
+
+  try {
+    // Try sending a request with the clinical data
+    var request = await http.post(
+      Uri.parse(url),
+      body: concatenatedDict,
+    );
+
+    // Request successful, handle the response (valid http response was received == okay statement for http)
+    if (request.statusCode == 200) {
+      print('Clinical Data Sent successfully');
+      // If the call to the server was successful, parse the JSON
+      final responseData = jsonDecode(request.body);
+      final responseMessage = responseData['response'];
+
+      print('Received response: $responseData');
+    } else {
+      print('Failed to receive response');
+      // Handle failure
+    }
+  } catch (error) {
+    print('Error sending image: $error');
+    // Handle error
+  }
+}
+
+// Skip the acquiring of clinical data for now
+// Function to fetch the symptoms and cause of burn from the user
+Future skipClinicalData() async {
+  String url = 'https://my-trial-t8wj.onrender.com/add_burn';
+  Map<String, dynamic> burn_id = {'burn_id': burnId};
+
+  try {
+    // Try sending a request with the empty clinical data
+    var request = await http.post(Uri.parse(url), body: burn_id);
+
+    // Request successful, handle the response (valid http response was received == okay statement for http)
+    if (request.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON
+      final responseData = jsonDecode(request.body);
+      final responseMessage = responseData['response'];
+    } else {
+      print('Failed to receive response');
+      // Handle failure
+    }
+  } catch (error) {
+    print('Failed to send request: $error');
+    // Handle error
+  }
+}
+
+//
 Future<List<DoctorMessage>> fetchChatHistory(
     int senderId, int receiverId) async {
   var url = Uri.parse(
@@ -267,6 +389,7 @@ Future<List<DoctorMessage>> fetchChatHistory(
   }
 }
 
+// Function to list all users with burns for the doctor
 Future<List<Patient>> getPatients() async {
   var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_all_burns');
   var response = await http.post(url);

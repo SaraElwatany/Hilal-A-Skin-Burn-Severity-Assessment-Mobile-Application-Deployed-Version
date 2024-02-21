@@ -29,7 +29,7 @@ USE `defaultdb` ;
 DROP TABLE IF EXISTS `defaultdb`.`blood_test` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`blood_test` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `blood_id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_blood_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `hemoglobin` INT NULL DEFAULT NULL,
@@ -85,21 +85,27 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `defaultdb`.`burn` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`burn` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `fk_burn_user_id` INT NOT NULL,
+  `burn_id` INT NOT NULL AUTO_INCREMENT,
+  `fk_burn_user_id` INT NULL,
   `burn_date` DATETIME NOT NULL,
   `burn_class_model` INT NULL,
-  `burn_img` MEDIUMBLOB NOT NULL,
+  `burn_img` MEDIUMBLOB, -- Allow null values
   `dr_id` INT NULL,
   `burn_class_dr` INT NULL,
   `dr_reply` VARCHAR(500) NULL,
-  UNIQUE INDEX `burn_img_UNIQUE` (`burn_img`(255) ASC) VISIBLE,
+  `vomitting` INT NULL,
+  `nausea` INT NULL,
+  `rigors` INT NULL,
+  `cold_extremities` INT NULL,
+  `burn_type` VARCHAR(15) NULL,
   INDEX `id_idx` (`fk_burn_user_id` ASC) VISIBLE,
+  PRIMARY KEY (`burn_id`),
   CONSTRAINT `id`
     FOREIGN KEY (`fk_burn_user_id`)
     REFERENCES `defaultdb`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
+    
 ENGINE = InnoDB;
 
 
@@ -109,7 +115,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `defaultdb`.`cardiac_test` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`cardiac_test` (
- `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `cardiac_id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_cardiac_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `ecg` VARCHAR(200) NULL DEFAULT NULL,
@@ -131,7 +137,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `defaultdb`.`imaging_test` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`imaging_test` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `imaging_id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_imaging_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `x_rays` VARCHAR(200) NULL DEFAULT NULL,
@@ -157,7 +163,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `defaultdb`.`medical_history` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`medical_history` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `history_id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_medical_history_user_id` INT NOT NULL,
   `allergies` VARCHAR(45) NULL DEFAULT NULL,
   `conditions` VARCHAR(45) NULL DEFAULT NULL,
@@ -181,7 +187,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `defaultdb`.`medication` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`medication` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `medication_id` INT AUTO_INCREMENT PRIMARY KEY,
   `fk_medication_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `medication_name` VARCHAR(45) NULL DEFAULT NULL,
@@ -204,7 +210,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `defaultdb`.`urine_test` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`urine_test` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `urine_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `fk_urine_test_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `color` VARCHAR(45) NULL DEFAULT NULL,
@@ -229,6 +235,21 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
+-- -----------------------------------------------------
+-- Table `defaultdb`.`chat_message`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `defaultdb`.`chat_message` ;
+
+CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    message VARCHAR(500) NOT NULL,
+    image VARCHAR(500),
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX sender_id_idx (sender_id),
+    INDEX receiver_id_idx (receiver_id)
+);
 
 -- -----------------------------------------------------
 -- Table `defaultdb`.`user`
@@ -240,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`user` (
   `username` VARCHAR(50) NOT NULL,
   `password` VARCHAR(128) NOT NULL,
   `dob` DATE NULL DEFAULT NULL,
-  `gender` CHAR(1) NOT NULL CHECK (gender IN ('M', 'F')),
+  `gender` CHAR(1) CHECK (gender IN ('M', 'F')),
   `height` INT NULL DEFAULT NULL CHECK(height>0 & height<300),
   `weight` INT NULL DEFAULT NULL,
   `phone` INT NULL DEFAULT NULL,
@@ -258,7 +279,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `defaultdb`.`vaccination` ;
 
 CREATE TABLE IF NOT EXISTS `defaultdb`.`vaccination` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `vacc_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `fk_vaccination_user_id` INT NOT NULL,
   `test_date` DATE NULL DEFAULT NULL,
   `vaccination_name` VARCHAR(50) NULL DEFAULT NULL,
@@ -271,6 +292,11 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`vaccination` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
+
+INSERT INTO `defaultdb`.`user` 
+(`id`, `username`, `password`, `dob`, `gender`, `height`, `weight`, `phone`, `email`, `profession`)
+VALUES
+(123, 'admin_dr', 'password123', '1990-01-01', 'M', 180, 70, '1234567890', 'admin_dr@example.com', 'doctor');
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
