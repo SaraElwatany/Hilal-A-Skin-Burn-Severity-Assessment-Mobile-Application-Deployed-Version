@@ -395,32 +395,6 @@ def get_user_burns():
 
 
 
-# fetch burns associated with a user
-@main.route('/get_user_burns', methods=['GET', 'POST'])
-def get_user_burns():
-    if request.method == 'POST':
-        print('get burns request received. User ID:', request.get_json()['fk_burn_user_id'] )
-        data = request.get_json()
-        # get the burns associated with the user id
-        burn_list = Burn.query.filter_by(fk_burn_user_id=data['fk_burn_user_id']).all()
-
-        # build a dictionary of the burns
-        burn_list = [{
-            'burn_id': burn.burn_id, 
-            'fk_burn_user_id': burn.fk_burn_user_id,
-            'burn_date': burn.burn_date, 
-            'burn_img_path': burn.burn_img_path, 
-            'dr_id': burn.dr_id,
-            'burn_class_dr': burn.burn_class_dr,
-            'burn_class_model': burn.burn_class_model,
-            'dr_reply': burn.dr_reply,
-            }
-                 for burn in burn_list] 
-        # return the burn list
-        return { 'message': 'Burns found', 'burns': burn_list}
-    else: return "error: wrong method"
-
-
 
 # route for updating burn item 
 @main.route('/update_burn', methods=['GET', 'POST'])
