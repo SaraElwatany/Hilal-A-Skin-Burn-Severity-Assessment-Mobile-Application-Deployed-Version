@@ -204,11 +204,11 @@ def upload():
         print('Image Sent with Data: ', IMAGE_DATA)
         print('Data Type: ', type(IMAGE_DATA))
         USER_ID = int(request.form['user_id'])  # Cast user id to integer
-        #IMAGE_DATA = convert_to_obj(IMAGE_DATA, output_file_path)   # Convert binary data to image object (if needed)
+        IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA_OBJECT)    # Convert binary data to image object (if needed)
         # Pass the Image to the model
-        IMAGE_DATA = transform(IMAGE_DATA)
+        IMAGE_DATA_OBJECT = transform(IMAGE_DATA_OBJECT)
         model = load_model()
-        output = predict(model, IMAGE_DATA)
+        output = predict(model, IMAGE_DATA_OBJECT)
         prediction = {'prediction': degrees[output]}
 
         # Get the user associated with that id
