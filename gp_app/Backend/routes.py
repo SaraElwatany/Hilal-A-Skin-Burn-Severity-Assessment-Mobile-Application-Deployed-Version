@@ -220,7 +220,7 @@ def upload():
         # Read image data as bytes
         image_data = file.read()
         image = convert_to_obj(image_data)
-        image = np.array(image)
+        #image = np.array(image)
         # Preprocess the image (if needed)
         IMAGE_DATA_OBJECT = transform(image)
         # Pass image to the model for inference
