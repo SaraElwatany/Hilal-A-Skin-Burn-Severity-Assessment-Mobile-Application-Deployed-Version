@@ -14,11 +14,6 @@ import 'dart:io';
 // Local Host For Chrome => http://localhost:58931  120.0.6099.111
 // https://my-trial-t8wj.onrender.com
 
-// Global Variable for User ID from Login Screen
-String userId = '0';
-// Global Variable for Burn ID from Capturing Image Screen
-String burnId = '0';
-
 // Function that sends the username and password to the flask backend (return type as future object with no value == The function completes without returning any value)
 Future<String> sendData(String email, String password) async {
   String url = 'https://my-trial-t8wj.onrender.com/login';
@@ -26,6 +21,10 @@ Future<String> sendData(String email, String password) async {
     'email': email,
     'password': password,
   });
+
+  // Set The Global Variables To Null with each login
+  userId = '0';
+  burnId = '0';
 
   if (request.statusCode == 200 ||
       request.statusCode == 201 ||
@@ -43,6 +42,7 @@ Future<String> sendData(String email, String password) async {
 
     if (responseMessage == 'Access Allowed') {
       userId = responseData['user_id'];
+      print('User ID from Login Route: $userId');
       UserProfession = responseData['user_profession'];
 
       print('Login successful');
@@ -224,6 +224,7 @@ Future<int> sendImageToServer(File imageFile) async {
 
   // Add the base64-encoded image as a field
   request.fields['Image'] = base64Image;
+  print('User ID from Upload Image Route: $userId');
   // Add the user id as a field
   request.fields['user_id'] = userId;
 

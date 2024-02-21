@@ -204,18 +204,21 @@ def upload():
         print('Image Sent with Data: ', IMAGE_DATA)
         print('Data Type: ', type(IMAGE_DATA))
         USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        print('User ID Associated with burn:', USER_ID)
         IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA_OBJECT)    # Convert binary data to image object (if needed)
         # Pass the Image to the model
         IMAGE_DATA_OBJECT = transform(IMAGE_DATA_OBJECT)
         model = load_model()
         output = predict(model, IMAGE_DATA_OBJECT)
         prediction = {'prediction': degrees[output]}
+        print(prediction)
 
         # Get the user associated with that id
         user = User.query.filter_by(user_id=USER_ID).first()
 
         # If the user already exists
         if user:
+            print('Creating a new burn item for the pre-existing/signed up user......')
             # create new burn item and add to db
             new_burn = Burn(
                 fk_burn_user_id = USER_ID,
@@ -304,17 +307,21 @@ def burn_new():
 
         # Check if user exists
         if user: 
-            USER_ID = user.fk_burn_user_id
-            print('User ID; ', USER_ID)
-            # add symptoms (clinical data) if sent
-            user.vomitting = vomiting
-            user.nausea = nausea
-            user.rigors = rigors
-            user.cold_extremities = cold_extremities
-            user.burn_type = burn_type
+            # Print the user id if it exists
+            try:
+                USER_ID = user.fk_burn_user_id
+                print('Updated the Clinical Data For Signed Up User With ID; ', USER_ID)
+            # Update Clinical Data For Both Signed Up Users & Guests
+            finally:
+                # add symptoms (clinical data) if sent
+                user.vomitting = vomiting
+                user.nausea = nausea
+                user.rigors = rigors
+                user.cold_extremities = cold_extremities
+                user.burn_type = burn_type
 
             db.session.commit()
-
+        # For the emulator
         else:
             print('No User Found, creating a new burn item for the guest user......')
 
