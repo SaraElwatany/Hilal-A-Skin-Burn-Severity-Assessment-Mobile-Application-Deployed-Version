@@ -63,13 +63,13 @@ def predict(model, img):
 
 
 # Function to convert the input image (binary data) to image object
-def convert_to_obj(bytes_img, output_file_path):
+def convert_to_obj(bytes_img):
     # Create a BytesIO object
     #bytes_io = io.BytesIO(bytes_data)
     # Use PIL to open the image from BytesIO
     image = Image.open(bytes_img)
     # Save the image to a file
-    image.save(output_file_path)
+    #image.save(output_file_path)
     return image
     
 
