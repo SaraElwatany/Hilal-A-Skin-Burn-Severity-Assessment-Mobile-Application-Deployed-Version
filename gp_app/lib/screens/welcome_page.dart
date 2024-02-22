@@ -113,7 +113,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             ),
            child: Text(S.of(context).emergency,
            style: const TextStyle(
-                  fontSize: 26,
+                  fontSize: 24,
                   color: Color.fromARGB(255, 255, 251, 251),
                 ),
            ),

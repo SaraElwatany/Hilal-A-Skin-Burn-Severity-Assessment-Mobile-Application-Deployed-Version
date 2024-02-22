@@ -79,7 +79,7 @@ class _HomeScreenState extends State<CameraScreen> {
                 ),
                   child: Text(S.of(context).select_image,
                    style: const TextStyle(
-                    fontSize: 17,
+                    fontSize: 15,
                     color: Color.fromARGB(255, 255, 251, 251),
                   ),
                   ),
@@ -110,7 +110,7 @@ class _HomeScreenState extends State<CameraScreen> {
                     child: Text(
                       S.of(context).upload,
                       style: const TextStyle(
-                    fontSize: 17,
+                    fontSize: 15,
                     color: Color.fromARGB(255, 255, 251, 251),
                   ),
                     )),
