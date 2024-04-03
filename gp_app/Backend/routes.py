@@ -223,9 +223,9 @@ def upload():
             # create new burn item and add to db
             new_burn = Burn(
                             fk_burn_user_id = USER_ID,
-                            burn_date = datetime.now(),
-                            burn_img = IMAGE_DATA,
-                            burn_class_model = output,
+                            burn_date = date.today(),
+                            burn_img = file,
+                            burn_class_model = int(output),
                             vomitting = 0, #'None'
                             nausea = 0, #'None'
                             rigors = 0, #'None'
@@ -246,9 +246,9 @@ def upload():
             # create a new burn item and add to db
             new_burn = Burn(
                             #fk_burn_user_id = USER_ID,  # USER_ID, No USER ID FOUND
-                            burn_date = datetime.now(),
-                            burn_img = IMAGE_DATA,
-                            burn_class_model = output,
+                            burn_date = date.today(),
+                            burn_img = file,
+                            burn_class_model = int(output),
                             vomitting = 0, #'None'
                             nausea = 0, #'None'
                             rigors = 0, #'None'
