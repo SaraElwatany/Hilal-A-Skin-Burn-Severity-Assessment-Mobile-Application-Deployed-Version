@@ -210,21 +210,42 @@ def upload():
         model = load_model()
         output = predict(model, IMAGE_DATA_OBJECT)
         prediction = {'prediction': degrees[output]}
+        burn_id_dict = {}
         print("Model's output:", output)
         print("Model's prediction:", prediction['prediction'])
 
         # Try To Get the user associated with that id, if error encountered then the user is a guest
         try:
             user = User.query.filter_by(user_id=USER_ID).first()
-        except:
-            print('Burn Item received from guest')
+            
+            # If the user already exists
+            if user:
+                print('Creating a new burn item for the pre-existing/signed up user......')
+                # create new burn item and add to db
+                new_burn = Burn(
+                    fk_burn_user_id = USER_ID,
+                    burn_date = datetime.now(),
+                    burn_img = IMAGE_DATA,
+                    burn_class_model = output,
+                    vomiting = 0, #'None'
+                    nausea = 0, #'None'
+                    rigors = 0, #'None'
+                    cold_extremities = 0, #'None'
+                    burn_type = 'None' #'None'
+                )
 
-        # If the user already exists
-        if user:
-            print('Creating a new burn item for the pre-existing/signed up user......')
-            # create new burn item and add to db
-            new_burn = Burn(
-                fk_burn_user_id = USER_ID,
+                # add burn item to db
+                db.session.add(new_burn)
+                db.session.commit()
+                # get the burn id for the already existed user
+                burn_id = new_burn.burn_id
+
+            # If the user doesn't exist then it is a guest & autoincrement the burn id
+            else:
+                print('No User Found, creating a new burn item for the guest user......')
+                # create a new burn item and add to db
+                new_burn = Burn(
+                #fk_burn_user_id = USER_ID,  # USER_ID, No USER ID FOUND
                 burn_date = datetime.now(),
                 burn_img = IMAGE_DATA,
                 burn_class_model = output,
@@ -233,39 +254,20 @@ def upload():
                 rigors = 0, #'None'
                 cold_extremities = 0, #'None'
                 burn_type = 'None' #'None'
-            )
+                )
 
-            # add burn item to db
-            db.session.add(new_burn)
-            db.session.commit()
-            # get the burn id for the already existed user
-            burn_id = new_burn.burn_id
+                # add burn item to db
+                db.session.merge(new_burn)
+                db.session.commit() 
+                # get the burn id for the guest user
+                burn_id = new_burn.burn_id
 
-        # If the user doesn't exist then it is a guest & autoincrement the burn id
-        else:
-            print('No User Found, creating a new burn item for the guest user......')
-            # create a new burn item and add to db
-            new_burn = Burn(
-            #fk_burn_user_id = USER_ID,  # USER_ID, No USER ID FOUND
-            burn_date = datetime.now(),
-            burn_img = IMAGE_DATA,
-            burn_class_model = output,
-            vomiting = 0, #'None'
-            nausea = 0, #'None'
-            rigors = 0, #'None'
-            cold_extremities = 0, #'None'
-            burn_type = 'None' #'None'
-            )
+            # Create a dictionary for the burn id
+            burn_id_dict = {'burn_id': str(burn_id)}
+            print("Associated burn_id: ", str(burn_id))
 
-            # add burn item to db
-            db.session.merge(new_burn)
-            db.session.commit() 
-            # get the burn id for the guest user
-            burn_id = new_burn.burn_id
-
-        # Create a dictionary for the burn id
-        burn_id_dict = {'burn_id': str(burn_id)}
-        print("Associated burn_id: ", str(burn_id))
+        except:
+            print('Burn Item received from guest')
 
         return jsonify(prediction, burn_id_dict) , 200        #return 'File uploaded successfully' 
     
