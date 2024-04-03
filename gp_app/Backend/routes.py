@@ -1,4 +1,5 @@
 import re
+import random
 import base64
 import numpy as np
 import torch.nn as nn
@@ -369,11 +370,50 @@ def get_all_burns():
 
     print("fetching users with burns...")
 
-    # get all users with burns
-    users = User.query.filter(User.burns.any()).all()
+    # Get all users from the Burn table
+    users = Burn.query.all()
     print('Users: ', users)
 
+    # Check if each user from Burn table exists in Users table
+    user_list = []
+
     # build a dictionary of the users
+    for burn_user in users:
+        user_in_users_table = User.query.filter_by(id=burn_user.fk_burn_user_id).first()
+        if user_in_users_table:
+            user_dict = {
+                'id': user_in_users_table.id,
+                'username': user_in_users_table.username, 
+                'email': user_in_users_table.email, 
+                'phone': user_in_users_table.phone, 
+                'weight': user_in_users_table.weight, 
+                'height': user_in_users_table.height
+            }
+            user_list.append(user_dict)
+        else:
+            # Generate a random integer between 0 and 1000
+            random_number = random.randint(0, 1000)
+            user_dict = {
+                'id': random_number,
+                'username': 'Guest', 
+                'email': 'None', 
+                'phone': None, 
+                'weight': None, 
+                'height': None
+            }
+            user_list.append(user_dict)
+
+
+    print('User lists found', user_list)
+
+    user_ids = [user.id for user in users]
+    user_names = [user.username for user in users]
+    user_info = ['Weight: '+str(user.weight)+' '+'Height: '+str(user.height) for user in users]
+
+    # return the user list
+    return { 'message': 'Users with burns found', 'user_ids': user_ids, 'user_names': user_names, 'user_info': user_info }
+
+"""     # build a dictionary of the users
     user_list = [{
         'id': user.id, 
         'username': user.username, 
@@ -381,14 +421,9 @@ def get_all_burns():
         'phone': user.phone, 
         'weight': user.weight, 
         'height': user.height}
-                for user in users]
+                for user in users if user] """
     
-    print('User lists found', user_list)
-    user_ids = [user.id for user in users]
-    user_names = [user.username for user in users]
-    user_info = ['Weight: '+str(user.weight)+' '+'Height: '+str(user.height) for user in users]
-    # return the user list
-    return { 'message': 'Users with burns found', 'user_ids': user_ids, 'user_names': user_names, 'user_info': user_info }
+
     
 
 

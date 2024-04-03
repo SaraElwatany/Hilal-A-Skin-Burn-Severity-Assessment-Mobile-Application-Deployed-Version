@@ -16,7 +16,7 @@ def load_model():
     current_directory = os.getcwd()
     print("Current working directory:", current_directory)
     # Specify the full path to the model file
-    model_path = os.path.join(current_directory, 'best_model.pkl')
+    model_path = os.path.join(current_directory, 'Backend/best_model.pkl')
     #model_path = 'best_model.pkl'
     # Check if the model file exists
     if not os.path.exists(model_path):
