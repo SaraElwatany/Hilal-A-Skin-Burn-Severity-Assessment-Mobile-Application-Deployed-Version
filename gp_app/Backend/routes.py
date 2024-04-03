@@ -218,7 +218,7 @@ def upload():
 
         # Try To Get the user associated with that id, if error encountered then the user is a guest
         # If the user already exists
-        if User.query.filter_by(user_id=USER_ID).first():
+        if User.query.filter_by(id=USER_ID).first():
             print('Creating a new burn item for the pre-existing/signed up user......')
             # create new burn item and add to db
             new_burn = Burn(
