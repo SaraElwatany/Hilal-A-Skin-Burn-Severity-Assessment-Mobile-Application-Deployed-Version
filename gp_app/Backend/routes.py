@@ -24,20 +24,7 @@ from .model import MyModel
 from .functions import load_img, transform, load_model, predict, convert_to_obj
 
 
-
 main = Blueprint('main', __name__)
-
-############################
-""" 
-img = load_img()
-print(img, type(img))
-# Pass the Image to the model
-IMAGE_DATA = transform(img)
-model = load_model()
-output = predict(model, IMAGE_DATA)
-print(output, type(output))  #"""
-#########################
-
 
 
 # Route to get the username and password in the login screen
@@ -50,7 +37,7 @@ def intro():
 
 
 
-# Route to get the username and password in the login screen
+# Route to get the username and password in the login screen (Done)
 @main.route('/login', methods = ['POST'])
 def login_info():
    # Get the data from the Json dictionary
@@ -93,7 +80,7 @@ def login_info():
     
 
 
-# A route for the sign up screen
+# A route for the sign up screen (Done)
 @main.route('/signup', methods = ['POST'])
 def signup_info():
     regex_1 = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
@@ -187,7 +174,7 @@ def signup_info():
 
 
 
-# Route to receive the burn image from user and return the model's prediction as well as the burn id 
+# Route to receive the burn image from user and return the model's prediction as well as the burn id  (Done)
 @main.route('/uploadImg', methods=['POST'])
 def upload():
     #my_model = model.MyModel(3) 
@@ -206,11 +193,10 @@ def upload():
         #print('Image Sent with Data: ', IMAGE_DATA)
         #print('Data Type: ', type(IMAGE_DATA))
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
-        try:
-            USER_ID = int(request.form['user_id'])  # Cast user id to integer
-            print('User ID Associated with burn:', USER_ID)
-        except:
-            print('Burn Item received from guest')
+        
+        # Get the user_id from the received request 
+        USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        print('User ID Associated with burn:', USER_ID)
 
         # Read the image file 
         print('The file received from App: ', file)
@@ -225,11 +211,13 @@ def upload():
         output = predict(model, IMAGE_DATA_OBJECT)
         prediction = {'prediction': degrees[output]}
         print("Model's output:", output)
-        print("Model's prediction:", prediction)
+        print("Model's prediction:", prediction['prediction'])
 
-
-        # Get the user associated with that id
-        user = User.query.filter_by(user_id=USER_ID).first()
+        # Try To Get the user associated with that id, if error encountered then the user is a guest
+        try:
+            user = User.query.filter_by(user_id=USER_ID).first()
+        except:
+            print('Burn Item received from guest')
 
         # If the user already exists
         if user:
@@ -256,7 +244,6 @@ def upload():
         # If the user doesn't exist then it is a guest & autoincrement the burn id
         else:
             print('No User Found, creating a new burn item for the guest user......')
-
             # create a new burn item and add to db
             new_burn = Burn(
             #fk_burn_user_id = USER_ID,  # USER_ID, No USER ID FOUND
@@ -286,7 +273,7 @@ def upload():
 
 
 
-# Add Burn item route (Patient Screen)
+# Add Burn item route (Patient Screen) (Done
 @main.route('/add_burn', methods=['POST'])
 def burn_new():
     if request.method == 'POST':
@@ -298,9 +285,8 @@ def burn_new():
         if not data:
             return jsonify({'response': 'Failed to Load info...'})    
 
-
         BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
-        print(BURN_ID)
+        print('Received Burn ID: ', BURN_ID)
         # Get the latest burn item added for that user
         #user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
         user = Burn.query.filter_by(burn_id=BURN_ID).first()
@@ -328,7 +314,7 @@ def burn_new():
             try:
                 USER_ID = user.fk_burn_user_id
                 print('Updated the Clinical Data For Signed Up User With ID; ', USER_ID)
-            # Update Clinical Data For Signed Up Users 
+            # Update Clinical Data For Signed Up & GUESTS Users 
             finally:
                 # add symptoms (clinical data) if sent
                 user.vomitting = vomiting
@@ -338,6 +324,7 @@ def burn_new():
                 user.burn_type = burn_type
 
             db.session.commit()
+
         # For the emulator
         else:
             print('No User Found, creating a new burn item for the guest user......')
@@ -413,14 +400,16 @@ def get_all_burns():
     # return the user list
     return { 'message': 'Users with burns found', 'user_ids': user_ids, 'user_names': user_names, 'user_info': user_info }
 
-"""     # build a dictionary of the users
+""" # build a dictionary of the users
     user_list = [{
-        'id': user.id, 
-        'username': user.username, 
-        'email': user.email, 
-        'phone': user.phone, 
-        'weight': user.weight, 
-        'height': user.height}
+    
+                'id': user.id, 
+                'username': user.username, 
+                'email': user.email, 
+                'phone': user.phone, 
+                'weight': user.weight, 
+                'height': user.height}
+                
                 for user in users if user] """
     
 
