@@ -205,19 +205,15 @@ def upload():
         #IMAGE_DATA = base64.b64decode(IMAGE_DATA)   # Image to be stored in the database as blob file
         #print('Image Sent with Data: ', IMAGE_DATA)
         #print('Data Type: ', type(IMAGE_DATA))
-        USER_ID = int(request.form['user_id'])  # Cast user id to integer
-        print('User ID Associated with burn:', USER_ID)
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
-        # Pass the Image to the model
-        #IMAGE_DATA_OBJECT = transform(IMAGE_DATA_OBJECT)
-        #model = load_model()
-        #output = predict(model, IMAGE_DATA_OBJECT)
-        #prediction = {'prediction': degrees[output]}
-        #print(output)
-        #print(prediction)
+        try:
+            USER_ID = int(request.form['user_id'])  # Cast user id to integer
+            print('User ID Associated with burn:', USER_ID)
+        except:
+            print('Burn Item received from guest')
 
+        # Read the image file 
         print('The file received from App: ', file)
-        # Read the image file and convert it to a numpy array
         # Read image data as bytes
         image_data = file.read()
         image = convert_to_obj(image_data)
@@ -227,8 +223,9 @@ def upload():
         # Pass image to the model for inference
         model = load_model()
         output = predict(model, IMAGE_DATA_OBJECT)
-        print(output)
         prediction = {'prediction': degrees[output]}
+        print("Model's output:", output)
+        print("Model's prediction:", prediction)
 
 
         # Get the user associated with that id
@@ -281,10 +278,12 @@ def upload():
 
         # Create a dictionary for the burn id
         burn_id_dict = {'burn_id': str(burn_id)}
+        print("Associated burn_id: ", str(burn_id))
 
         return jsonify(prediction, burn_id_dict) , 200        #return 'File uploaded successfully' 
     
     
+
 
 
 # Add Burn item route (Patient Screen)
@@ -301,10 +300,10 @@ def burn_new():
 
 
         BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
+        print(BURN_ID)
         # Get the latest burn item added for that user
         #user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
         user = Burn.query.filter_by(burn_id=BURN_ID).first()
-
 
         # Parse the received data
         if 'rigors' in data: rigors = 1
@@ -329,7 +328,7 @@ def burn_new():
             try:
                 USER_ID = user.fk_burn_user_id
                 print('Updated the Clinical Data For Signed Up User With ID; ', USER_ID)
-            # Update Clinical Data For Both Signed Up Users & Guests
+            # Update Clinical Data For Signed Up Users 
             finally:
                 # add symptoms (clinical data) if sent
                 user.vomitting = vomiting
@@ -361,6 +360,7 @@ def burn_new():
             db.session.commit() 
 
         return jsonify({'response': 'Success'})  
+
 
 
 
