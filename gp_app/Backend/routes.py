@@ -334,8 +334,8 @@ def burn_new():
             # create a new burn item and add to db
             new_burn = Burn(
             #fk_burn_user_id = USER_ID,  # USER_ID
-            burn_date = datetime.now(),
-            burn_img = b'',
+            burn_date = date.today(),
+            burn_img = 'NULL',
             burn_class_model = 0,
             vomitting = vomitting, #'None'
             nausea = nausea, #'None'
