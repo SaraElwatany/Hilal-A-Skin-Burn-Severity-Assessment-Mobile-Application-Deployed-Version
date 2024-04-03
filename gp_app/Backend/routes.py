@@ -210,7 +210,9 @@ def upload():
         model = load_model()
         output = predict(model, IMAGE_DATA_OBJECT)
         prediction = {'prediction': degrees[output]}
+        # Initialize the burn_id variable & dictionary
         burn_id_dict = {}
+        burn_id = 0
         print("Model's output:", output)
         print("Model's prediction:", prediction['prediction'])
 
@@ -223,17 +225,16 @@ def upload():
                 print('Creating a new burn item for the pre-existing/signed up user......')
                 # create new burn item and add to db
                 new_burn = Burn(
-                    fk_burn_user_id = USER_ID,
-                    burn_date = datetime.now(),
-                    burn_img = IMAGE_DATA,
-                    burn_class_model = output,
-                    vomiting = 0, #'None'
-                    nausea = 0, #'None'
-                    rigors = 0, #'None'
-                    cold_extremities = 0, #'None'
-                    burn_type = 'None' #'None'
-                )
-
+                                fk_burn_user_id = USER_ID,
+                                burn_date = datetime.now(),
+                                burn_img = IMAGE_DATA,
+                                burn_class_model = output,
+                                vomiting = 0, #'None'
+                                nausea = 0, #'None'
+                                rigors = 0, #'None'
+                                cold_extremities = 0, #'None'
+                                burn_type = 'None' #'None'
+                            )
                 # add burn item to db
                 db.session.add(new_burn)
                 db.session.commit()
@@ -245,16 +246,16 @@ def upload():
                 print('No User Found, creating a new burn item for the guest user......')
                 # create a new burn item and add to db
                 new_burn = Burn(
-                #fk_burn_user_id = USER_ID,  # USER_ID, No USER ID FOUND
-                burn_date = datetime.now(),
-                burn_img = IMAGE_DATA,
-                burn_class_model = output,
-                vomiting = 0, #'None'
-                nausea = 0, #'None'
-                rigors = 0, #'None'
-                cold_extremities = 0, #'None'
-                burn_type = 'None' #'None'
-                )
+                                #fk_burn_user_id = USER_ID,  # USER_ID, No USER ID FOUND
+                                burn_date = datetime.now(),
+                                burn_img = IMAGE_DATA,
+                                burn_class_model = output,
+                                vomiting = 0, #'None'
+                                nausea = 0, #'None'
+                                rigors = 0, #'None'
+                                cold_extremities = 0, #'None'
+                                burn_type = 'None' #'None'
+                                )
 
                 # add burn item to db
                 db.session.merge(new_burn)
