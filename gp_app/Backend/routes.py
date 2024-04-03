@@ -226,7 +226,7 @@ def upload():
                             burn_date = datetime.now(),
                             burn_img = IMAGE_DATA,
                             burn_class_model = output,
-                            vomiting = 0, #'None'
+                            vomitting = 0, #'None'
                             nausea = 0, #'None'
                             rigors = 0, #'None'
                             cold_extremities = 0, #'None'
@@ -249,7 +249,7 @@ def upload():
                             burn_date = datetime.now(),
                             burn_img = IMAGE_DATA,
                             burn_class_model = output,
-                            vomiting = 0, #'None'
+                            vomitting = 0, #'None'
                             nausea = 0, #'None'
                             rigors = 0, #'None'
                             cold_extremities = 0, #'None'
@@ -282,6 +282,8 @@ def burn_new():
         data = request.form
         print('Clinical Data: ', data)
 
+        rigors, vomitting, cold_extremities, nausea, diarrhea, burn_type = 0, 0, 0, 0, 0, 'None'
+
         if not data:
             return jsonify({'response': 'Failed to Load info...'})    
 
@@ -289,15 +291,14 @@ def burn_new():
         print('Received Burn ID: ', BURN_ID)
         # Get the latest burn item added for that user
         #user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
-        user = Burn.query.filter_by(burn_id=BURN_ID).first()
 
         # Parse the received data
         if 'rigors' in data: rigors = 1
         else: rigors = 0
         if 'cold_extremities' in data: cold_extremities = 1
         else: cold_extremities = 0
-        if 'vomitting' in data: vomiting = 1
-        else: vomiting = 0
+        if 'vomitting' in data: vomitting = 1
+        else: vomitting = 0
         if 'nausea' in data: nausea = 1
         else: nausea = 0
         if 'diarrhea' in data: diarrhea = 1
@@ -308,8 +309,9 @@ def burn_new():
         print('Nausea: ', nausea)
         print('Burn Type: ', burn_type)
 
-        # Check if user exists
-        if user: 
+        # Check if burn item already exists 
+        if Burn.query.filter_by(burn_id=BURN_ID).first(): 
+            user = Burn.query.filter_by(burn_id=BURN_ID).first()
             # Print the user id if it exists
             try:
                 USER_ID = user.fk_burn_user_id
@@ -317,7 +319,7 @@ def burn_new():
             # Update Clinical Data For Signed Up & GUESTS Users 
             finally:
                 # add symptoms (clinical data) if sent
-                user.vomitting = vomiting
+                user.vomitting = vomitting
                 user.nausea = nausea
                 user.rigors = rigors
                 user.cold_extremities = cold_extremities
@@ -335,7 +337,7 @@ def burn_new():
             burn_date = datetime.now(),
             burn_img = b'',
             burn_class_model = 0,
-            vomitting = vomiting, #'None'
+            vomitting = vomitting, #'None'
             nausea = nausea, #'None'
             rigors = rigors, #'None'
             cold_extremities = cold_extremities, #'None'
