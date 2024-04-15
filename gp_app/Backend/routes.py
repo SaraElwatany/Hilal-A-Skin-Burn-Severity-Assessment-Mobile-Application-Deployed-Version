@@ -207,8 +207,9 @@ def upload():
         # Preprocess the image (if needed)
         IMAGE_DATA_OBJECT = transform(image)
         # Pass image to the model for inference
-        model = load_model()
-        output = predict(model, IMAGE_DATA_OBJECT)
+        #model = load_model()
+        #output = predict(model, IMAGE_DATA_OBJECT)
+        output = 0
         prediction = {'prediction': degrees[output]}
         print("Model's output:", output)
         print("Model's prediction:", prediction['prediction'])
