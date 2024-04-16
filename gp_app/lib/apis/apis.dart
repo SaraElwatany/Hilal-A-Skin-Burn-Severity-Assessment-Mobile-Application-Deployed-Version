@@ -248,11 +248,13 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   request.files.add(pic);
 
   // Request successful, handle the response (valid http response was received == okay statement for http)
-  try {
-    var response = await request.send();
 
-    if (response.statusCode == 200) {
-      print('Image sent & degree predicted successfully');
+  var response = await request.send();
+
+  if (response.statusCode == 200) {
+    print('Image sent & degree being predicted');
+
+    while (burnId == '0') {
       // If the call to the server was successful, parse the JSON
       var responseData =
           await response.stream.bytesToString(); // Read the response message
@@ -268,16 +270,12 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
 
       // Set the prediction to the global variable
       latestPrediction = prediction;
-      navigate = 1;
-      return navigate;
-    } else {
-      print('Failed to receive response');
-      // Handle failure
-      return navigate;
     }
-  } catch (error) {
-    print('Error sending image: $error');
-    // Handle error
+    navigate = 1;
+    return navigate;
+  } else {
+    print('Failed to receive response');
+    // Handle failure
     return navigate;
   }
 }
