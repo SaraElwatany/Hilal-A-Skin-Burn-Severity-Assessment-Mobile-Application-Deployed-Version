@@ -267,7 +267,7 @@ def upload():
 
 
         # get the burn id of the latest added burn item for user/guest 
-        latest_user = Burn.query.order_by(Burn.id.desc()).first()
+        latest_user = Burn.query.order_by(Burn.burn_id.desc()).first()
         burn_id = latest_user.burn_id
 
         # Create a dictionary for the burn id
