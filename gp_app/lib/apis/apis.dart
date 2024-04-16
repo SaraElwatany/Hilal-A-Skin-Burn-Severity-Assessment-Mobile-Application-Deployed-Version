@@ -226,51 +226,58 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   // Get the state of my widgets
   final myState = Provider.of<MyState>(context, listen: false);
   String userId = myState.userId;
+  String burnId = myState.burnId;
   print('Initial userId: $userId');
-
-  // Define Route
-  var url = 'https://my-trial-t8wj.onrender.com/uploadImg';
 
   int navigate = 0;
   String base64Image = base64Encode(imageFile.readAsBytesSync());
-
-  // Add the base64-encoded image as a field
-  //request.fields['Image'] = base64Image;
-  print('User ID from Upload Image Route: $userId');
-  // Add the user id as a field
-  //request.fields['user_id'] = userId;
-  //var pic = await http.MultipartFile.fromPath('file', imageFile.path);
-  //request.files.add(pic);
-
   print('Before Request');
-  var request = await http.post(Uri.parse(url), body: {
-    'user_id': userId,
-    'file': imageFile.path,
-  });
+  var request = http.MultipartRequest(
+    'POST',
+    Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
+  );
   print('After Request');
 
-  if (request.statusCode == 200) {
-    // Request successful, handle the response (valid http response was received == okay statement for http)
-    final responseData = jsonDecode(request.body);
-    print('Received response: $responseData');
+  // Add the base64-encoded image as a field
+  request.fields['Image'] = base64Image;
+  print('User ID from Upload Image Route: $userId');
+  // Add the user id as a field
+  request.fields['user_id'] = userId;
 
-    print('Image sent & degree predicted successfully');
+  var pic = await http.MultipartFile.fromPath('file', imageFile.path);
+  request.files.add(pic);
 
-    // Get the prediction associated with the burn item from uploadImg Route & update the state
-    var prediction = responseData['prediction'];
-    myState.updatePrediction(prediction);
-    // Get the burn id from uploadImg Route & update the state
-    var burnId = responseData['burn_id'];
-    myState.updateBurnId(burnId);
+  // Request successful, handle the response (valid http response was received == okay statement for http)
+  try {
+    var response = await request.send();
 
-    print('Prediction: $prediction');
-    print('Received Burn Id;: $burnId');
+    if (response.statusCode == 200) {
+      print('Image sent & degree predicted successfully');
+      // If the call to the server was successful, parse the JSON
+      var responseData =
+          await response.stream.bytesToString(); // Read the response message
 
-    navigate = 1;
-    return navigate;
-  } else {
-    print('Failed to send request');
-    // Handle failure
+      print('Received response: $responseData');
+
+      var decodedData = json.decode(responseData);
+      var prediction = decodedData['prediction'];
+      burnId = decodedData['burn_id'];
+
+      print('Prediction: $prediction');
+      print('Received Burn Id;: $burnId');
+
+      // Set the prediction to the global variable
+      latestPrediction = prediction;
+      navigate = 1;
+      return navigate;
+    } else {
+      print('Failed to receive response');
+      // Handle failure
+      return navigate;
+    }
+  } catch (error) {
+    print('Error sending image: $error');
+    // Handle error
     return navigate;
   }
 }
