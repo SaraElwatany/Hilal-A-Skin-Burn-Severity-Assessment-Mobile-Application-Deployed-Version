@@ -279,7 +279,7 @@ def upload():
         burn_id_dict = {'burn_id': str(burn_id)}
         print("Associated burn_id 2: ", str(burn_id))
 
-        return jsonify(prediction, burn_id_dict) , 200        #return 'File uploaded successfully' 
+        return jsonify(prediction, burn_id_dict)       #return 'File uploaded successfully' 
     
     
 

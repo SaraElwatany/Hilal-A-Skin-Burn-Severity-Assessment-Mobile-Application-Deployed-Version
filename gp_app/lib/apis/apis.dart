@@ -247,30 +247,29 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   var pic = await http.MultipartFile.fromPath('file', imageFile.path);
   request.files.add(pic);
 
-  // Request successful, handle the response (valid http response was received == okay statement for http)
-
   var response = await request.send();
+  print('Response: $response');
 
+  // Request successful, handle the response (valid http response was received == okay statement for http)
   if (response.statusCode == 200) {
     print('Image sent & degree being predicted');
 
-    while (burnId == '0') {
-      // If the call to the server was successful, parse the JSON
-      var responseData =
-          await response.stream.bytesToString(); // Read the response message
+    // If the call to the server was successful, parse the JSON
+    var responseData =
+        await response.stream.bytesToString(); // Read the response message
 
-      print('Received response: $responseData');
+    print('Received response: $responseData');
 
-      var decodedData = json.decode(responseData);
-      var prediction = decodedData['prediction'];
-      burnId = decodedData['burn_id'];
+    var decodedData = json.decode(responseData);
+    var prediction = decodedData['prediction'];
+    burnId = decodedData['burn_id'];
 
-      print('Prediction: $prediction');
-      print('Received Burn Id;: $burnId');
+    print('Prediction: $prediction');
+    print('Received Burn Id;: $burnId');
 
-      // Set the prediction to the global variable
-      latestPrediction = prediction;
-    }
+    // Set the prediction to the global variable
+    latestPrediction = prediction;
+
     navigate = 1;
     return navigate;
   } else {
