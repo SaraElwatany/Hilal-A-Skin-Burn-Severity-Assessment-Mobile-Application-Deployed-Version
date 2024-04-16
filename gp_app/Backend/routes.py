@@ -182,12 +182,15 @@ def upload():
                1: 'Second Degree Burn',
                2: 'Third Degree Burn'
                }
-    if 'file' not in request.files:
+    
+    if not request.form.get('file'):
         return jsonify({'error': 'No selected file'})    # 'No file part'
+    
     # Get the Image
-    file = request.files['file']
+    file = request.form.get('file')
+
     if file:
-        IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
+        #IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
         # Decode the base64 encoded string (Image) back to binary data
         #IMAGE_DATA = base64.b64decode(IMAGE_DATA)   # Image to be stored in the database as blob file
         #print('Image Sent with Data: ', IMAGE_DATA)
@@ -195,7 +198,7 @@ def upload():
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         
         # Get the user_id from the received request 
-        USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        USER_ID = int(request.form.get('user_id'))  # Cast user id to integer
         print('User ID Associated with burn:', USER_ID)
 
         # Read the image file 

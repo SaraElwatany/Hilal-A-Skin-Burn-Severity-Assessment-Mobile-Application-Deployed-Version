@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       _userInfoList.add(userInfo);
 
       // Send data & then wait for the response either to go to main page or try again
-      String response = await sendData(username, password);
+      String response = await sendData(username, password, context);
       //  printUserInfoList();
       if (response == 'Access Allowed') {
         if (UserProfession == 'patient') {

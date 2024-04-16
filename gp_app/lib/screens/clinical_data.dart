@@ -156,8 +156,8 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  addClinicalData(
-                      selectedFirstGroupSymptoms, selectedSecondGroupSymptom);
+                  addClinicalData(selectedFirstGroupSymptoms,
+                      selectedSecondGroupSymptom, context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const ChatScreen()),
@@ -181,7 +181,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
               const SizedBox(width: 30),
               ElevatedButton(
                 onPressed: () {
-                  skipClinicalData();
+                  skipClinicalData(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const ChatScreen()),

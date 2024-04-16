@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,7 +7,10 @@ import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/doctor_message.dart';
-import 'dart:io';
+
+// Imports for keeping the state of variables
+import 'package:provider/provider.dart';
+import 'package:gp_app/models/my_state.dart'; // Import the file where you defined your state class
 
 // Local Host For ios Emulator => http://127.0.0.1:19999
 // Local Host For Android Emulator => http://10.0.2.2:19999
@@ -15,10 +19,16 @@ import 'dart:io';
 // https://my-trial-t8wj.onrender.com
 
 // Function that sends the username and password to the flask backend (return type as future object with no value == The function completes without returning any value)
-Future<String> sendData(String email, String password) async {
+Future<String> sendData(
+    String email, String password, BuildContext context) async {
   // Set The Global Variables To Null with each login
-  userId = '0';
-  burnId = '0';
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
+  String burnId = myState.burnId;
+  myState.updateUserId("0");
+  myState.updateBurnId("0");
+  //userId = '0';
+  //burnId = '0';
 
   String url = 'https://my-trial-t8wj.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
@@ -212,63 +222,67 @@ bool isValidEmail(String email) {
 }
 
 // Function to send the captured image to the prediction
-Future<int> sendImageToServer(File imageFile) async {
+Future<int> sendImageToServer(File imageFile, BuildContext context) async {
+  // Get the state of my widgets
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
+  print('Initial userId: $userId');
+
+  // Define Route
+  var url = 'https://my-trial-t8wj.onrender.com/uploadImg';
+
   int navigate = 0;
   String base64Image = base64Encode(imageFile.readAsBytesSync());
-  print('Before Request');
-  var request = http.MultipartRequest(
-    'POST',
-    Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
-  );
-  print('After Request');
 
   // Add the base64-encoded image as a field
-  request.fields['Image'] = base64Image;
+  //request.fields['Image'] = base64Image;
   print('User ID from Upload Image Route: $userId');
   // Add the user id as a field
-  request.fields['user_id'] = userId;
+  //request.fields['user_id'] = userId;
+  //var pic = await http.MultipartFile.fromPath('file', imageFile.path);
+  //request.files.add(pic);
 
-  var pic = await http.MultipartFile.fromPath('file', imageFile.path);
-  request.files.add(pic);
+  print('Before Request');
+  var request = await http.post(Uri.parse(url), body: {
+    'user_id': userId,
+    'file': imageFile.path,
+  });
+  print('After Request');
 
-  // Request successful, handle the response (valid http response was received == okay statement for http)
-  try {
-    var response = await request.send();
+  if (request.statusCode == 200) {
+    // Request successful, handle the response (valid http response was received == okay statement for http)
+    final responseData = jsonDecode(request.body);
+    print('Received response: $responseData');
 
-    if (response.statusCode == 200) {
-      print('Image sent & degree predicted successfully');
-      // If the call to the server was successful, parse the JSON
-      var responseData =
-          await response.stream.bytesToString(); // Read the response message
+    print('Image sent & degree predicted successfully');
 
-      print('Received response: $responseData');
+    // Get the prediction associated with the burn item from uploadImg Route & update the state
+    var prediction = responseData['prediction'];
+    myState.updatePrediction(prediction);
+    // Get the burn id from uploadImg Route & update the state
+    var burnId = responseData['burn_id'];
+    myState.updateBurnId(burnId);
 
-      var decodedData = json.decode(responseData);
-      var prediction = decodedData['prediction'];
-      burnId = decodedData['burn_id'];
+    print('Prediction: $prediction');
+    print('Received Burn Id;: $burnId');
 
-      print('Prediction: $prediction');
-      print('Received Burn Id;: $burnId');
-
-      // Set the prediction to the global variable
-      latestPrediction = prediction;
-      navigate = 1;
-      return navigate;
-    } else {
-      print('Failed to receive response');
-      // Handle failure
-      return navigate;
-    }
-  } catch (error) {
-    print('Error sending image: $error');
-    // Handle error
+    navigate = 1;
+    return navigate;
+  } else {
+    print('Failed to send request');
+    // Handle failure
     return navigate;
   }
 }
 
 // Function to fetch the symptoms and cause of burn from the user
-Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn) async {
+Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
+    BuildContext context) async {
   String url = 'https://my-trial-t8wj.onrender.com/add_burn';
+
+  // Get the state of the widgets
+  final myState = Provider.of<MyState>(context, listen: false);
+  String burnId = myState.burnId;
 
   List<String> clinicalSymptoms = [];
   String cause = '';
@@ -353,8 +367,12 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn) async {
 
 // Skip the acquiring of clinical data for now
 // Function to fetch the symptoms and cause of burn from the user
-Future skipClinicalData() async {
+Future skipClinicalData(BuildContext context) async {
   String url = 'https://my-trial-t8wj.onrender.com/add_burn';
+  // Get the state of the widgets
+  final myState = Provider.of<MyState>(context, listen: false);
+  String burnId = myState.burnId;
+
   Map<String, dynamic> burn_id = {'burn_id': burnId};
 
   try {

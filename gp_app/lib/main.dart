@@ -3,12 +3,20 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/splash_screen.dart';
 
+import 'package:provider/provider.dart';
+import 'package:gp_app/models/my_state.dart'; // Import the file where you defined your state class
+
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => MyState(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -32,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       locale: _locale,
-      title: 'Home Assisstant Doctor',
+      title: 'Home Assistant Doctor',
       theme: ThemeData.dark().copyWith(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 147, 229, 250),

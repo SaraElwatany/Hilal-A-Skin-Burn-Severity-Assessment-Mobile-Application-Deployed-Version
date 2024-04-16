@@ -25,7 +25,7 @@ class _HomeScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:const LocalizationIcon(),
+      appBar: const LocalizationIcon(),
 
       // AppBar(
       //   title: const Text('Image'),
@@ -70,18 +70,19 @@ class _HomeScreenState extends State<CameraScreen> {
                       print('no permission provided');
                     }
                   },
-                      style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    fixedSize: const Size(140, 45),
+                    backgroundColor: const Color.fromARGB(255, 29, 49, 78),
                   ),
-                  fixedSize: const Size(140, 45),
-                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
-                ),
-                  child: Text(S.of(context).select_image,
-                   style: const TextStyle(
-                    fontSize: 15,
-                    color: Color.fromARGB(255, 255, 251, 251),
-                  ),
+                  child: Text(
+                    S.of(context).select_image,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Color.fromARGB(255, 255, 251, 251),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -95,24 +96,24 @@ class _HomeScreenState extends State<CameraScreen> {
                       // Check if nullableFile is not null before casting
                       if (imageFile != null) {
                         File nonNullableFile = imageFile as File;
-                        sendImageToServer(nonNullableFile);
+                        sendImageToServer(nonNullableFile, context);
                       } else {
                         // Handle the case when nullableFile is null
                       }
                     },
-                        style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  fixedSize: const Size(140, 45),
-                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
-                ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      fixedSize: const Size(140, 45),
+                      backgroundColor: const Color.fromARGB(255, 29, 49, 78),
+                    ),
                     child: Text(
                       S.of(context).upload,
                       style: const TextStyle(
-                    fontSize: 15,
-                    color: Color.fromARGB(255, 255, 251, 251),
-                  ),
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 255, 251, 251),
+                      ),
                     )),
               ],
             ),
@@ -245,7 +246,7 @@ class _HomeScreenState extends State<CameraScreen> {
       setState(() {
         imageFile = File(croppedFile.path);
       });
-      navigate = await sendImageToServer(File(croppedFile.path));
+      navigate = await sendImageToServer(File(croppedFile.path), context);
 /*       if (navigate == 1) {
         // Navigate to ChatScreen
         Navigator.of(context).pushReplacement(
