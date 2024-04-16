@@ -223,59 +223,60 @@ bool isValidEmail(String email) {
 
 // Function to send the captured image to the prediction
 Future<int> sendImageToServer(File imageFile, BuildContext context) async {
-  // Get the state of my widgets
-  final myState = Provider.of<MyState>(context, listen: false);
-  String userId = myState.userId;
-  String burnId = myState.burnId;
-  print('Initial userId: $userId');
+  try {
+    // Get the state of my widgets
+    final myState = Provider.of<MyState>(context, listen: false);
+    String userId = myState.userId;
+    String burnId = myState.burnId;
+    print('Initial userId: $userId');
 
-  int navigate = 0;
-  String base64Image = base64Encode(imageFile.readAsBytesSync());
-  print('Before Request');
-  var request = http.MultipartRequest(
-    'POST',
-    Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
-  );
-  print('After Request');
+    // Encode the image as base64
+    String base64Image = base64Encode(imageFile.readAsBytesSync());
 
-  // Add the base64-encoded image as a field
-  request.fields['Image'] = base64Image;
-  print('User ID from Upload Image Route: $userId');
-  // Add the user id as a field
-  request.fields['user_id'] = userId;
+    // Create the multipart request
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
+    );
 
-  var pic = await http.MultipartFile.fromPath('file', imageFile.path);
-  request.files.add(pic);
+    // Add the base64-encoded image as a field
+    request.fields['user_id'] = userId;
+    request.fields['Image'] = base64Image;
 
-  var response = await request.send();
-  print('Response: $response');
+    // Attach the image file
+    var pic = await http.MultipartFile.fromPath('file', imageFile.path);
+    request.files.add(pic);
 
-  // Request successful, handle the response (valid http response was received == okay statement for http)
-  if (response.statusCode == 200) {
-    print('Image sent & degree being predicted');
+    // Send the request and wait for the response
+    var response = await http.Response.fromStream(await request.send());
 
-    // If the call to the server was successful, parse the JSON
-    var responseData =
-        await response.stream.bytesToString(); // Read the response message
+    // Check the response status code
+    if (response.statusCode == 200) {
+      print('Image sent and prediction received');
 
-    print('Received response: $responseData');
+      // Parse the JSON response
+      var responseData = json.decode(response.body);
+      var prediction = responseData['prediction'];
+      var receivedBurnId = responseData['burn_id'];
 
-    var decodedData = json.decode(responseData);
-    var prediction = decodedData['prediction'];
-    burnId = decodedData['burn_id'];
+      print('Prediction: $prediction');
+      print('Received Burn Id: $receivedBurnId');
 
-    print('Prediction: $prediction');
-    print('Received Burn Id;: $burnId');
+      // Set the prediction and burn ID to the global variables
+      myState.updatePrediction(prediction);
+      myState.updateBurnId(receivedBurnId);
 
-    // Set the prediction to the global variable
-    latestPrediction = prediction;
-
-    navigate = 1;
-    return navigate;
-  } else {
-    print('Failed to receive response');
-    // Handle failure
-    return navigate;
+      // Return navigate = 1 to indicate success
+      return 1;
+    } else {
+      print('Failed to receive response. Status code: ${response.statusCode}');
+      // Return navigate = 0 to indicate failure
+      return 0;
+    }
+  } catch (error) {
+    print('Error sending image: $error');
+    // Return navigate = 0 to indicate failure
+    return 0;
   }
 }
 

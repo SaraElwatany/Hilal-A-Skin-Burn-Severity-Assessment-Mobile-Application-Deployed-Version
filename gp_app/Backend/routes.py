@@ -180,6 +180,8 @@ def upload():
     #my_model = model.MyModel(3) 
     image_data = bytes()
 
+    print('Entered UploadImg Route')
+
     degrees = {0: 'First Degree Burn',
                1: 'Second Degree Burn',
                2: 'Third Degree Burn'
@@ -190,6 +192,8 @@ def upload():
     
     # Get the Image
     file = request.form['file']
+
+    print(file)
 
     if file:
         IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
