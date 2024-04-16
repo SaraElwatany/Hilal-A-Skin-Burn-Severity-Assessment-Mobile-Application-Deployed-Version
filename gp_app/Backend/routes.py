@@ -178,6 +178,8 @@ def signup_info():
 @main.route('/uploadImg', methods=['POST'])
 def upload():
     #my_model = model.MyModel(3) 
+    image_data = bytes()
+
     degrees = {0: 'First Degree Burn',
                1: 'Second Degree Burn',
                2: 'Third Degree Burn'
@@ -204,7 +206,8 @@ def upload():
         # Read the image file 
         print('The file received from App: ', file)
         # Read image data as bytes
-        image_data = file.read()
+        with open(file, 'rb') as f:
+            image_data = f.read()
         image = convert_to_obj(image_data)
         #image = np.array(image)
         # Preprocess the image (if needed)
