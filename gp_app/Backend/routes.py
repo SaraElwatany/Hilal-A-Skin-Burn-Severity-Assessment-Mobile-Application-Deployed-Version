@@ -191,7 +191,7 @@ def upload():
         return jsonify({'error': 'No selected file'})    # 'No file part'
     
     # Get the Image
-    file = request.form['file']
+    file = request.files['file']
 
     print(file)
 
