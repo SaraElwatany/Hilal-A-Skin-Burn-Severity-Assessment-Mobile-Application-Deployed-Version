@@ -239,8 +239,6 @@ def upload():
             # add burn item to db
             db.session.add(new_burn)
             db.session.commit()
-            # get the burn id for the already existed user
-            burn_id = new_burn.burn_id
 
         # If the user doesn't exist then it is a guest & autoincrement the burn id
         else:
@@ -264,9 +262,13 @@ def upload():
             # add burn item to db
             db.session.merge(new_burn)
             db.session.commit() 
-            # get the burn id for the guest user
-            burn_id = new_burn.burn_id
-            print("Associated burn_id 1: ", str(burn_id))
+
+            #print("Associated burn_id 1: ", str(burn_id))
+
+
+        # get the burn id of the latest added burn item for user/guest 
+        latest_user = Burn.query.order_by(Burn.id.desc()).first()
+        burn_id = latest_user.burn_id
 
         # Create a dictionary for the burn id
         burn_id_dict = {'burn_id': str(burn_id)}
