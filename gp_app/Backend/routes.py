@@ -26,6 +26,9 @@ from .functions import load_img, transform, load_model, predict, convert_to_obj
 
 main = Blueprint('main', __name__)
 
+# Initialize Global variables
+BURN_ID, USER_ID, prediction = 0, 0, {}
+
 
 # Route to get the username and password in the login screen
 @main.route('/', methods = ['POST'])
@@ -177,11 +180,12 @@ def signup_info():
 # Route to receive the burn image from user and return the model's prediction as well as the burn id  (Done)
 @main.route('/uploadImg', methods=['POST'])
 def upload():
-    #my_model = model.MyModel(3) 
-    image_data = bytes()
+
+    global BURN_ID, USER_ID, prediction 
 
     print('Entered UploadImg Route')
 
+    #my_model = model.MyModel(3)
     degrees = {0: 'First Degree Burn',
                1: 'Second Degree Burn',
                2: 'Third Degree Burn'
@@ -192,8 +196,6 @@ def upload():
     
     # Get the Image
     file = request.files['file']
-
-    print(file)
 
     if file:
         IMAGE_DATA = request.form['Image']      # Will be stored in the database as a string
@@ -224,7 +226,6 @@ def upload():
         print("Model's prediction:", prediction['prediction'])
         # Initialize the burn_id variable & dictionary
         burn_id_dict = {}
-        burn_id = 0
 
         # Try To Get the user associated with that id, if error encountered then the user is a guest
         # If the user already exists
@@ -277,11 +278,11 @@ def upload():
 
         # get the burn id of the latest added burn item for user/guest 
         latest_user = Burn.query.order_by(Burn.burn_id.desc()).first()
-        burn_id = latest_user.burn_id
+        BURN_ID = latest_user.burn_id
 
         # Create a dictionary for the burn id
-        burn_id_dict = {'burn_id': str(burn_id)}
-        print("Associated burn_id 2: ", str(burn_id))
+        burn_id_dict = {'burn_id': str(BURN_ID)}
+        print("Associated burn_id 2: ", str(BURN_ID))
 
         return jsonify(prediction, burn_id_dict)       #return 'File uploaded successfully' 
     
@@ -292,6 +293,9 @@ def upload():
 # Add Burn item route (Patient Screen) (Done
 @main.route('/add_burn', methods=['POST'])
 def burn_new():
+
+    global BURN_ID, USER_ID, prediction 
+
     if request.method == 'POST':
 
         print('burn item received')
@@ -303,7 +307,7 @@ def burn_new():
         if not data:
             return jsonify({'response': 'Failed to Load info...'})    
 
-        BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
+        #BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
         print('Received Burn ID: ', BURN_ID)
         # Get the latest burn item added for that user
         #user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
