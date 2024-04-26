@@ -57,7 +57,22 @@ class _ClinicalDataState extends State<ClinicalData> {
                                         ? S.of(context).chemical
                                         : widget.symptom == Symptoms.radioactive
                                             ? S.of(context).radioactive
-                                            : '',
+                                            : widget.symptom == Symptoms.boiling
+                                            ? S.of(context).radioactive
+                                            : widget.symptom == Symptoms.place
+                                            ?S.of(context).place
+                                            :widget.symptom == Symptoms.arm
+                                            ?S.of(context).arm
+                                            :widget.symptom == Symptoms.leg
+                                            ?S.of(context).leg
+                                            :widget.symptom == Symptoms.head
+                                            ?S.of(context).head
+                                            :widget.symptom == Symptoms.back
+                                            ?S.of(context).back
+                                            :widget.symptom == Symptoms.chest
+                                            ?S.of(context).chest
+                                            :"",
+
             style: TextStyle(
               color: widget.selectedSymptoms.contains(widget.symptom)
                   ? const Color.fromARGB(255, 29, 49, 78) // Selected color

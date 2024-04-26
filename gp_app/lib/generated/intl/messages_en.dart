@@ -54,8 +54,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome  !"),
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
-        "asdoctor":
-            MessageLookupByLibrary.simpleMessage("Continue as a doctor"),
+        "asadmin":
+            MessageLookupByLibrary.simpleMessage("Admin"),
         "clinictitle":
             MessageLookupByLibrary.simpleMessage("Clinical data on burn"),
         "symptoms":
@@ -65,10 +65,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "symptom_3": MessageLookupByLibrary.simpleMessage("Cold extremities"),
         "symptom_4": MessageLookupByLibrary.simpleMessage("Nausea"),
         "cause": MessageLookupByLibrary.simpleMessage("Cause of burn:"),
-        "heat": MessageLookupByLibrary.simpleMessage("Heat"),
+        "heat": MessageLookupByLibrary.simpleMessage("Fire/Fire flame"),
         "electricity": MessageLookupByLibrary.simpleMessage("Electricity"),
         "chemical": MessageLookupByLibrary.simpleMessage("Chemical"),
         "radioactive": MessageLookupByLibrary.simpleMessage("Radioactive"),
+        "boiling": MessageLookupByLibrary.simpleMessage("Boiling Liquid"),
+        "place": MessageLookupByLibrary.simpleMessage("Burn Place"),
+        "arm": MessageLookupByLibrary.simpleMessage("Arm"),
+        "head": MessageLookupByLibrary.simpleMessage("Head and Neck"),
+        "leg": MessageLookupByLibrary.simpleMessage("Leg"),
+        "chest": MessageLookupByLibrary.simpleMessage("Chest and Upper back"),
+        "back": MessageLookupByLibrary.simpleMessage("Abdomen and Lower back"),
         "intro": MessageLookupByLibrary.simpleMessage(
             "Hello! My name is Hilal, the health companion for burn patients. \nI am here to answer your questions about the treatment \nand management of skin burns that occur at home."),
         "about": MessageLookupByLibrary.simpleMessage("About"),
@@ -76,8 +83,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "danger": MessageLookupByLibrary.simpleMessage("Danger"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "doctors": MessageLookupByLibrary.simpleMessage("Doctors"),
         "emergency": MessageLookupByLibrary.simpleMessage("Emergency"),
+        "addDoctors": MessageLookupByLibrary.simpleMessage("Add Doctor"),
+        "doctorInfo": MessageLookupByLibrary.simpleMessage("Doctor Infromation"),
+        "degree": MessageLookupByLibrary.simpleMessage("Professional degree"),
         "select_image": MessageLookupByLibrary.simpleMessage("Select Image"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             "We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury."),
       };

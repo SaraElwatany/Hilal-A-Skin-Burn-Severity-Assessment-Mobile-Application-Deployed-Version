@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
-// import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/new_user.dart';
-// import 'package:gp_app/main.dart';
-import 'package:gp_app/screens/login_screen.dart';
-import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
-import 'package:gp_app/apis/apis.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class AddDoctors extends StatefulWidget {
+  const AddDoctors({super.key});
 
   @override
-  State<SignUpScreen> createState() {
-    return _SignUpState();
+  State<AddDoctors> createState() {
+    return _AddDoctorsState();
   }
 }
 
-class _SignUpState extends State<SignUpScreen> {
+class _AddDoctorsState extends State<AddDoctors> {
   final _formKey = GlobalKey<FormState>();
   var _enteredFirstName = '';
   var _enteredLastName = '';
@@ -25,55 +20,9 @@ class _SignUpState extends State<SignUpScreen> {
   var _enteredPassword = '';
   var output = '';
   final List<NewUser> _userInfoList = [];
-  bool flag = true;
 
-  void _saveItem() async {
-    NewUser userInfo = NewUser(
-        _enteredFirstName, _enteredLastName, _enteredEmail, _enteredPassword);
-    _userInfoList.add(userInfo);
 
-    output = await signUp(userInfo);
 
-    if ((_formKey.currentState!.validate()) && (output == 'Sign up Allowed')) {
-      _formKey.currentState!.save();
-
-      // printUserInfoList();
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
-    } else {
-      showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: const Text('Invalid Input'),
-                content: const Text(
-                  'Please fill in all required fields correctly',
-                ),
-                backgroundColor: Colors.white,
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                    },
-                    child: Text(
-                      'Okay',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ));
-    }
-  }
-
-  void printUserInfoList() {
-    for (NewUser userInfo in _userInfoList) {
-      print(
-          'Firstname: ${userInfo.firstName},Lastname: ${userInfo.lastName},Email: ${userInfo.email} ,Password: ${userInfo.password}');
-      print(_userInfoList.length);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +35,7 @@ class _SignUpState extends State<SignUpScreen> {
             children: [
               Center(
                 child: Text(
-                  (!flag)
-                  ?S.of(context).signup
-                  :S.of(context).doctorInfo
-                  ,
+                  S.of(context).doctorInfo,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -294,8 +240,7 @@ class _SignUpState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 30,
                       ),
-                      if(flag)
-                       TextFormField(
+                      TextFormField(
                             onChanged: (value) {
                               _enteredLastName = value.toString();
                             },
@@ -323,53 +268,26 @@ class _SignUpState extends State<SignUpScreen> {
                               ),
                             ),
                           ),
-
-
+                          const SizedBox(height: 30,)
+                          ,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(S.of(context).haveAcc),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          // Backend:Button to go to Login page
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginPage()),
-                              );
-                            },
-                            style: TextButton.styleFrom(
-                                foregroundColor: Colors.black,
-                                textStyle: const TextStyle(
-                                  fontSize: 15,
-                                )),
-                            child: Text(S.of(context).loginNw),
-                          ),
+                          ElevatedButton(
+                              onPressed: (){},
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  fixedSize: const Size(130, 69)),
+                              child: Text(
+                                S.of(context).save,
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  color: Color.fromARGB(255, 255, 251, 251),
+                                ),
+                              )),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      // Backend:Button to go to Main page
-                      ElevatedButton(
-                          onPressed: _saveItem,
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              fixedSize: const Size(130, 69)),
-                          child: Text(
-                            (!flag)
-                            ?S.of(context).next
-                            : S.of(context).save
-                            ,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              color: Color.fromARGB(255, 255, 251, 251),
-                            ),
-                          )),
                     ],
                   ),
                 ),

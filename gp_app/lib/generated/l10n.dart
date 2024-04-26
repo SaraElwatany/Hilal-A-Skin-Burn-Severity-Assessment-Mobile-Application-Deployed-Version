@@ -300,11 +300,11 @@ class S {
     );
   }
 
-  // asdoctor
-  String get asdoctor {
+  // asadmin
+  String get asadmin {
     return Intl.message(
-      "Continue as a doctor",
-      name: 'asdoctor',
+      "Admin",
+      name: 'asadmin',
       desc: '',
       args: [],
     );
@@ -443,7 +443,7 @@ class S {
   // heat
   String get heat {
     return Intl.message(
-      "Heat",
+      "Fire/Fire flame",
       name: 'heat',
       desc: '',
       args: [],
@@ -480,6 +480,79 @@ class S {
     );
   }
 
+   // boiling
+  String get boiling {
+    return Intl.message(
+      "Boiling Liquid",
+      name: 'boiling',
+      desc: '',
+      args: [],
+    );
+  }
+
+// place
+  String get place {
+    return Intl.message(
+      "Burn Place",
+      name: 'place',
+      desc: '',
+      args: [],
+    );
+  }
+
+
+// arm
+  String get arm {
+    return Intl.message(
+      "Arm",
+      name: 'arm',
+      desc: '',
+      args: [],
+    );
+  }
+  
+// leg
+  String get leg {
+    return Intl.message(
+      "Leg",
+      name: 'leg',
+      desc: '',
+      args: [],
+    );
+  }
+
+// head
+  String get head {
+    return Intl.message(
+      "Head and Neck",
+      name: 'head',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // chest
+  String get chest {
+    return Intl.message(
+      "Chest and Upper back",
+      name: 'chest',
+      desc: '',
+      args: [],
+    );
+  }
+
+ // back
+  String get back {
+    return Intl.message(
+      "Abdomen and Lower back",
+      name: 'back',
+      desc: '',
+      args: [],
+    );
+  }
+
+
+
    // skip
   String get skip {
     return Intl.message(
@@ -509,6 +582,56 @@ class S {
       args: [],
     );
   }
+
+   // doctoes
+  String get doctors {
+    return Intl.message(
+      "Doctors",
+      name: 'doctors',
+      desc: '',
+      args: [],
+    );
+  }
+
+    // addDoctors
+  String get addDoctors {
+    return Intl.message(
+      "Add Doctor",
+      name: 'addDoctors',
+      desc: '',
+      args: [],
+    );
+  }
+      // doctorInfo
+  String get doctorInfo {
+    return Intl.message(
+      "Doctor Infromation",
+      name: 'doctorInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+        // degree
+  String get degree {
+    return Intl.message(
+      "Professional degree",
+      name: 'degree',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // save
+  String get save {
+    return Intl.message(
+      "Save",
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
 
   
 }

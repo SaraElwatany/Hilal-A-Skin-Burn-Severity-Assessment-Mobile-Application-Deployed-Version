@@ -22,7 +22,15 @@ enum Symptoms {
   heat,
   electricity,
   chemical,
-  radioactive
+  radioactive,
+  boiling,
+  place,
+  arm,
+  leg,
+head,
+back,
+chest
+
 }
 
 class ClinicalDataState extends State<ClinicalDataScreen> {
@@ -148,8 +156,87 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
+                ClinicalData(
+                symptom: Symptoms.boiling,
+                selectedSymptoms: selectedSecondGroupSymptom != null
+                    ? [selectedSecondGroupSymptom!]
+                    : [],
+                onSymptomSelected: (symptom) {
+                  _handleSecondGroupSymptomSelected(symptom);
+                },
+              ),
+
             ],
           ),
+          const SizedBox(
+            height: 40,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              S.of(context).place,
+              style:
+                  Theme.of(context).textTheme.headline6!.copyWith(fontSize: 20),
+            ),
+          ),
+             Row(
+            children: [
+              ClinicalData(
+                symptom: Symptoms.head,
+                selectedSymptoms: selectedSecondGroupSymptom != null
+                    ? [selectedSecondGroupSymptom!]
+                    : [],
+                onSymptomSelected: (symptom) {
+                  _handleSecondGroupSymptomSelected(symptom);
+                },
+              ),
+              ClinicalData(
+                symptom: Symptoms.chest,
+                selectedSymptoms: selectedSecondGroupSymptom != null
+                    ? [selectedSecondGroupSymptom!]
+                    : [],
+                onSymptomSelected: (symptom) {
+                  _handleSecondGroupSymptomSelected(symptom);
+                },
+              ),
+            ],
+          ),
+             Row(
+            children: [
+              ClinicalData(
+                symptom: Symptoms.back,
+                selectedSymptoms: selectedSecondGroupSymptom != null
+                    ? [selectedSecondGroupSymptom!]
+                    : [],
+                onSymptomSelected: (symptom) {
+                  _handleSecondGroupSymptomSelected(symptom);
+                },
+              ),
+              ClinicalData(
+                symptom: Symptoms.leg,
+                selectedSymptoms: selectedSecondGroupSymptom != null
+                    ? [selectedSecondGroupSymptom!]
+                    : [],
+                onSymptomSelected: (symptom) {
+                  _handleSecondGroupSymptomSelected(symptom);
+                },
+              ),
+               ClinicalData(
+                symptom: Symptoms.arm,
+                selectedSymptoms: selectedSecondGroupSymptom != null
+                    ? [selectedSecondGroupSymptom!]
+                    : [],
+                onSymptomSelected: (symptom) {
+                  _handleSecondGroupSymptomSelected(symptom);
+                },
+              ),
+            ],
+          ),
+
+
+
+
+
           const SizedBox(height: 50),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
