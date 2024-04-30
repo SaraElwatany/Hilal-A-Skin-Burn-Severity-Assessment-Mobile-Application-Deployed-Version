@@ -7,6 +7,12 @@ import 'package:gp_app/widgets/localization_icon.dart';
 // import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/models/doctor_message.dart';
 import 'package:gp_app/apis/apis.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:gp_app/widgets/audio_record_widget.dart';
+import 'package:gp_app/widgets/audio_player_widget.dart';
+
+
 
 class DocterModelChat extends StatefulWidget {
   final int senderId;
@@ -27,24 +33,66 @@ class DocterModelChatState extends State<DocterModelChat> {
 
   //marina
   List<DoctorMessage> messages = [];
+  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  bool _isRecording = false;
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     loadChatHistory();
+    AudioApi.initRecorder();
   }
 
   void loadChatHistory() async {
-    try {
-      // Pass senderId and receiverId to fetchChatHistory
-      List<DoctorMessage> messages = await fetchChatHistory(widget.senderId, widget.receiverId);
+  try {
+    List<DoctorMessage> fetchedMessages = await fetchChatHistory(widget.senderId, widget.receiverId);
+    setState(() {
+      messages = fetchedMessages;
+    });
+  } catch (e) {
+    print("Failed to load chat history: $e");
+  }
+}
+
+
+  @override
+  void dispose() {
+    AudioApi.closeRecorder();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _toggleRecording() async {
+    if (_isRecording) {
+      final path = await _recorder.stopRecorder();
+      if (path != null) {
+        setState(() {
+          messages.add(DoctorMessage(message: 'New audio message', audioUrl: path, receiver: false, timestamp: DateTime.now(),));
+        });
+      }
       setState(() {
-        this.messages = messages;
+        _isRecording = false;
       });
-    } catch (e) {
-      print("Failed to load chat history: $e");
+    } else {
+      await _recorder.startRecorder(toFile: 'audio_message.aac');
+      setState(() {
+        _isRecording = true;
+      });
     }
   }
+
+ void _sendMessage() {
+  final text = _messageController.text.trim();
+  if (text.isNotEmpty) {
+    setState(() {
+      messages.add(DoctorMessage(message: text, receiver: true, imageFile: null, timestamp: DateTime.now(),));  // Assuming DoctorMessage requires an imageFile.
+      _messageController.clear();
+    });
+  }
+}
+
+
 //marina
 
   @override
@@ -54,9 +102,24 @@ class DocterModelChatState extends State<DocterModelChat> {
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: messages.length, 
+            itemCount: messages.length,
             itemBuilder: (context, index) {
-              return DoctorMessagesWidget(doctorMessage: messages[index]);
+              final chatMessage = messages[index];
+              if (chatMessage.audioUrl != null) {
+                // If there's an audio URL, display both the audio player and the message text.
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(chatMessage.message),
+                      subtitle:  Text(chatMessage.receiver ? "Doctor" : "Patient"),// Displaying text message if available
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
+                    ),
+                  ],
+                );
+              } 
             },
           ),
           Align(
@@ -82,10 +145,15 @@ class DocterModelChatState extends State<DocterModelChat> {
                           InputDecoration(hintText: S.of(context).message),
                     ),
                   ),
+                  IconButton(
+                    icon: Icon(_isRecording ? Icons.stop : Icons.mic),
+                    onPressed: _toggleRecording,
+                    color: _isRecording ? Colors.red : Colors.white,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {}, // Implement send message logic here
                       icon: const Icon(
                         Icons.send,
                       ),

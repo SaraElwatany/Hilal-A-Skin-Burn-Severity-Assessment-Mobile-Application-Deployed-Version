@@ -449,3 +449,34 @@ Future<List<Patient>> getPatients() async {
     throw Exception('Failed to load patients');
   }
 }
+
+
+class AudioApi {
+    static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+    static String? _recordFilePath;
+
+    static Future<void> initRecorder() async {
+        final status = await Permission.microphone.request();
+        if (status != PermissionStatus.granted) {
+            throw Exception('Microphone permission not granted');
+        }
+
+        // Open the audio session
+        await _recorder.openRecorder();
+    }
+
+    static Future<void> startRecording() async {
+        final dir = await getApplicationDocumentsDirectory();
+        _recordFilePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+        await _recorder.startRecorder(toFile: _recordFilePath);
+    }
+
+    static Future<String?> stopRecording() async {
+        await _recorder.stopRecorder();
+        return _recordFilePath; // Return the file path after stopping the recorder
+    }
+
+    static Future<void> closeRecorder() async {
+        await _recorder.closeRecorder();  // Correct method to close the recorder
+    }
+}

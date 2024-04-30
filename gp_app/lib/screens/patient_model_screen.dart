@@ -5,7 +5,8 @@ import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/models/global.dart';
 // import 'package:gp_app/Data/messages.dart';
-
+import 'package:gp_app/widgets/audio_player_widget.dart';
+import 'package:gp_app/widgets/audio_record_widget.dart';
 
 
 
@@ -26,8 +27,18 @@ class _ChatScreenState extends State<ChatScreen> {
   final _messageController = TextEditingController();
   bool introMessageShown = false;
 
+  final AudioRecorder _audioRecorder = AudioRecorder(); 
+  bool isRecording = false; // Track recording state
+
 
   //marina
+@override
+  void initState() {
+    super.initState();
+    _audioRecorder.init(); // Initialize the recorder
+  }
+
+
 @override
 void didChangeDependencies() {
   super.didChangeDependencies();
@@ -54,6 +65,7 @@ void didChangeDependencies() {
   @override
   void dispose() {
     _messageController.dispose();
+    _audioRecorder.dispose();
     super.dispose();
   }
 
@@ -71,6 +83,23 @@ void didChangeDependencies() {
     }
   }
 
+  void _toggleRecording() async {
+    if (isRecording) {
+      String? filePath = await _audioRecorder.stopRecording();
+      if (filePath != null) {
+        // Optionally handle the file path, like sending it as a message
+      }
+      setState(() {
+        isRecording = false;
+      });
+    } else {
+      await _audioRecorder.startRecording();
+      setState(() {
+        isRecording = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,13 +107,32 @@ void didChangeDependencies() {
         body: Stack(
           children: [
             ListView.builder(
-              itemCount: chatMessages.length,
-              itemBuilder: (context, index) {
+            itemCount: chatMessages.length,
+            itemBuilder: (context, index) {
+              final chatMessage = chatMessages[index];
+              if (chatMessage.audioUrl != null) {
+                // If there's an audio URL, display both the audio player and the message text.
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text("Audio Message: Tap to play"),
+                      subtitle: Text(chatMessage.message), // Displaying text message if available
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
+                    ),
+                  ],
+                );
+              } else {
+                // Otherwise, render the text message as usual
                 return MessagesWidget(
-                  chatMessage: chatMessages[index],
-                  introMessage: null,                  );
-              },
-            ),
+                  chatMessage: chatMessage,
+                  introMessage: null,
+                );
+              }
+            },
+          ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -99,6 +147,11 @@ void didChangeDependencies() {
                     color: const Color.fromARGB(255, 106, 105, 105),
                   ),
                   child: Row(children: [
+                     IconButton(
+                    icon: Icon(isRecording ? Icons.stop : Icons.mic),
+                    onPressed: _toggleRecording,
+                    color: isRecording ? Colors.red : Color.fromARGB(255, 10, 15, 153),
+                  ),
                     Expanded(
                       child: TextField(
                         controller: _messageController,
