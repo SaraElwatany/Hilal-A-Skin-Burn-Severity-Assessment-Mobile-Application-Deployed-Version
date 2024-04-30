@@ -22,13 +22,13 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   Future<void> _initPlayer() async {
     _player = FlutterSoundPlayer();
-    await _player!.openPlayer();  // Change this line from openAudioSession
+    await _player!.openAudioSession();  // Change this line from openAudioSession
     setState(() {});
   }
 
   @override
   void dispose() {
-    _player!.closePlayer();  // Change this line from closeAudioSession
+    _player!.closeAudioSession();  // Change this line from closeAudioSession
     _player = null;
     super.dispose();
   }

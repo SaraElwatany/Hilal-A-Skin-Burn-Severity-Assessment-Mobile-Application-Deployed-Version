@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   http:
+  flutter_sound: any
+  path_provider: ^2.0.9
 
   provider: ^5.0.0
 

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +6,10 @@ import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/doctor_message.dart';
+import 'dart:io';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart'; 
 
 // Imports for keeping the state of variables
 import 'package:provider/provider.dart';
@@ -462,7 +465,7 @@ class AudioApi {
         }
 
         // Open the audio session
-        await _recorder.openRecorder();
+        await _recorder.openAudioSession();
     }
 
     static Future<void> startRecording() async {
@@ -477,6 +480,6 @@ class AudioApi {
     }
 
     static Future<void> closeRecorder() async {
-        await _recorder.closeRecorder();  // Correct method to close the recorder
+        await _recorder.closeAudioSession();  // Correct method to close the recorder
     }
 }
