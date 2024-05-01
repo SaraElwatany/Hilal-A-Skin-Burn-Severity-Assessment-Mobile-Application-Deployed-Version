@@ -518,3 +518,15 @@ def update_burn():
 #     return jsonify([message.to_dict() for message in chat_history])
 
     return jsonify([message.to_dict() for message in chat_history])
+
+@main.route('/upload_audio', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return 'No file part'
+    file = request.files['file']
+    if file.filename == '':
+        return 'No selected file'
+    if file:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 'File uploaded successfully'
