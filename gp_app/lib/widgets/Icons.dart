@@ -7,25 +7,29 @@ class MainIcons extends StatelessWidget {
   final Function onTap;
   final String imagePath;
   final String text;
-
+  final double height;
+  final double width;
+  final double textSize;
   const MainIcons({
     required this.onTap,
     required this.imagePath,
     required this.text,
+    this.height = 187,
+    this.width = 187,
+    this.textSize = 40,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: InkWell(
+    return InkWell(
         onTap: () => onTap(),
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(10),
           ),
-          height: 187,
-          width: 187,
+          height: height,
+          width: width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -36,12 +40,14 @@ class MainIcons extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: Colors.white, fontSize: textSize),
+                    
+                    
               )
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

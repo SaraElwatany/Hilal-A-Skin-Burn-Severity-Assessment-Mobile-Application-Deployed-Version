@@ -328,7 +328,9 @@ class _SignUpState extends State<SignUpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(S.of(context).haveAcc),
+                          (flag)
+                          ? Container()
+                          :Text(S.of(context).haveAcc),
                           const SizedBox(
                             width: 10,
                           ),
@@ -346,7 +348,10 @@ class _SignUpState extends State<SignUpScreen> {
                                 textStyle: const TextStyle(
                                   fontSize: 15,
                                 )),
-                            child: Text(S.of(context).loginNw),
+                            child: 
+                            (flag)
+                            ?Container()
+                           :Text(S.of(context).loginNw),
                           ),
                         ],
                       ),

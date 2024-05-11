@@ -90,7 +90,47 @@ class MessageLookup extends MessageLookupByLibrary {
         "degree": MessageLookupByLibrary.simpleMessage("Professional degree"),
         "select_image": MessageLookupByLibrary.simpleMessage("Select Image"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "instructions": MessageLookupByLibrary.simpleMessage("Instructions"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             "We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury."),
+      
+        "goodLigthingTitle": MessageLookupByLibrary.simpleMessage("Good lighting"),
+        "goodLigthingtext": MessageLookupByLibrary.simpleMessage("Make sure there is good lighting when taking the photo. Natural lighting during the day is best. Avoid very strong lighting that may cause harsh glare or shadows"),
+            
+
+        "simpleBackgroundTitle": MessageLookupByLibrary.simpleMessage("Simple background"),
+        "simpleBackgroundText": MessageLookupByLibrary.simpleMessage( "Use a neutral, non-distracting background. A plain or white background helps highlight the details of the burn."),
+
+
+         
+
+        "flashligthTitle": MessageLookupByLibrary.simpleMessage("Avoid using Flash Ligth"),
+        "flashligthText": MessageLookupByLibrary.simpleMessage("Flash may change the colors of the burn and make details blurry. Use natural light as much as possible."),
+  
+
+
+        "burnDetailsTitle": MessageLookupByLibrary.simpleMessage("Burning Details"),
+        "burnDetailsText": MessageLookupByLibrary.simpleMessage(" Take pictures from several angles to show all the details of the burn. Close-up photos to show edges, depth, and any discolouration."),
+    
+
+
+        "burnTouchTitle": MessageLookupByLibrary.simpleMessage("Avoid touching Burn Area"),
+        "burnTouchText": MessageLookupByLibrary.simpleMessage("Do not try to move or touch the burn to improve the view in the image, so as not to aggravate the injury."),
+
+
+        "foucsTitle": MessageLookupByLibrary.simpleMessage("Focus"),
+        "foucsText": MessageLookupByLibrary.simpleMessage("Use the auto focus mode on your camera to make sure the image is clear and not blurry. Check the sharpness of the image before sending it."),
+   
+        
+        "privacyTitle": MessageLookupByLibrary.simpleMessage("Respect Privacy"),
+        "privacyText": MessageLookupByLibrary.simpleMessage("Make sure that no personal features or any sensitive information is visible in the photo."),
+
+
+
+        "areadetection": MessageLookupByLibrary.simpleMessage("Determine size"),
+        "areadetectionText": MessageLookupByLibrary.simpleMessage("If the burn is large, you may need to take several pictures from different distances to show the actual size of the burn in relation to other parts of the body."),
+          
+
+      
       };
 }

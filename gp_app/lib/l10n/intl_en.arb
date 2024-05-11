@@ -56,6 +56,36 @@
     "addDoctors": "Add Doctor",
     "doctorInfo": "Doctor Information",
     "degree": "Professional degree",
-    "save": "Save"
+    "save": "Save",
+    "instructions":"Instructions",
+   
+    "goodLigthingTitle": "Good lighting",
+    "goodLigthingtext": "Make sure there is good lighting when taking the photo. Natural lighting during the day is best. Avoid very strong lighting that may cause harsh glare or shadows",
+    
+    "simpleBackgroundTitle":"Simple background",
+    "simpleBackgroundText": "Use a neutral, non-distracting background. A plain or white background helps highlight the details of the burn.",
+
+    "flashligthTitle":"Avoid using Flash Ligth",
+    "flashligthText":"Flash may change the colors of the burn and make details blurry. Use natural light as much as possible.",
+
+
+    "burnDetailsTitle":"Burning Details",
+    "burnDetailsText":" Take pictures from several angles to show all the details of the burn. Close-up photos to show edges, depth, and any discolouration.",
+
+
+    "burnTouchTitle":"Avoid touching Burn Area",
+    "burnTouchText":"Do not try to move or touch the burn to improve the view in the image, so as not to aggravate the injury.",
+
+    "foucsTitle":"Focus",
+    "foucsText":"Use the auto focus mode on your camera to make sure the image is clear and not blurry. Check the sharpness of the image before sending it.",
+
+
+    "privacyTitle":"Respect Privacy",
+    "privacyText":"Make sure that no personal features or any sensitive information is visible in the photo.",
+
+    "areadetection":"Determine size",
+    "areadetectionText":"If the burn is large, you may need to take several pictures from different distances to show the actual size of the burn in relation to other parts of the body."
+
+
  
   }

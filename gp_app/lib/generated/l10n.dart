@@ -632,8 +632,176 @@ class S {
     );
   }
 
+  // instructions
+  String get instructions {
+    return Intl.message(
+      "Instructions",
+      name: 'instructions',
+      desc: '',
+      args: [],
+    );
+  }
 
-  
+
+  // goodLigthingTitle
+  String get goodLigthingTitle {
+    return Intl.message(
+      "Good lighting",
+      name: 'goodLigthingTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+   // simpleBackgroundTitle
+  String get simpleBackgroundTitle {
+    return Intl.message(
+      "Simple background",
+      name: 'simpleBackgroundTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+    // flashligthTitle
+  String get flashligthTitle {
+    return Intl.message(
+      "Avoid using Flash Ligth",
+      name: 'flashligthTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+
+// burnDetailsTitle
+  String get burnDetailsTitle {
+    return Intl.message(
+      "Burning Details",
+      name: 'burnDetailsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // burnTouchTitle
+  String get burnTouchTitle {
+    return Intl.message(
+      "Avoid touching Burn Area",
+      name: 'burnTouchTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+    // foucsTitle
+  String get foucsTitle {
+    return Intl.message(
+      "Focus",
+      name: 'foucsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+     // privacyTitle
+  String get privacyTitle {
+    return Intl.message(
+      "Respect Privacy",
+      name: 'privacyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+    // areadetection
+  String get areadetection {
+    return Intl.message(
+      "Determine size",
+      name: 'areadetection',
+      desc: '',
+      args: [],
+    );
+  }
+ 
+   // goodLigthingtext
+  String get goodLigthingtext {
+    return Intl.message(
+     "Make sure there is good lighting when taking the photo. Natural lighting during the day is best. Avoid very strong lighting that may cause harsh glare or shadows",
+      name: 'goodLigthingtext',
+      desc: '',
+      args: [],
+    );
+  }
+
+   // simpleBackgroundText
+  String get simpleBackgroundText {
+    return Intl.message(
+       "Use a neutral, non-distracting background. A plain or white background helps highlight the details of the burn.",
+      name: 'simpleBackgroundText',
+      desc: '',
+      args: [],
+    );
+  }
+
+   // flashligthText
+  String get flashligthText {
+    return Intl.message(
+   "Flash may change the colors of the burn and make details blurry. Use natural light as much as possible.",
+      name: 'flashligthText',
+      desc: '',
+      args: [],
+    );
+  }
+
+ // burnDetailsText
+  String get burnDetailsText {
+    return Intl.message(
+      "Take pictures from several angles to show all the details of the burn. Close-up photos to show edges, depth, and any discolouration.",
+      name: 'burnDetailsText',
+      desc: '',
+      args: [],
+    );
+  }
+
+// burnTouchText
+  String get burnTouchText {
+    return Intl.message(
+ "Do not try to move or touch the burn to improve the view in the image, so as not to aggravate the injury.",      name: 'burnTouchText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // foucsText
+  String get foucsText {
+    return Intl.message(
+      "Use the auto focus mode on your camera to make sure the image is clear and not blurry. Check the sharpness of the image before sending it.",
+      desc: '',
+      args: [],
+    );
+  }
+   
+     // privacyText
+  String get privacyText {
+    return Intl.message(
+    "Make sure that no personal features or any sensitive information is visible in the photo.",
+      desc: '',
+      args: [],
+    );
+  }
+
+      // areadetectionText
+  String get areadetectionText {
+    return Intl.message(
+    "If the burn is large, you may need to take several pictures from different distances to show the actual size of the burn in relation to other parts of the body.",
+      desc: '',
+      args: [],
+    );
+  }    
+
+
+
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

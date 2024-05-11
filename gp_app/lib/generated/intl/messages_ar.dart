@@ -83,8 +83,46 @@ class MessageLookup extends MessageLookupByLibrary {
         "addDoctors": MessageLookupByLibrary.simpleMessage("إضافة دكتور"),
         "select_image": MessageLookupByLibrary.simpleMessage("اختر صورة"),
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+        "instructions": MessageLookupByLibrary.simpleMessage("تعليمات"),
         "degree": MessageLookupByLibrary.simpleMessage("الدرجة الوظيفية"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             " نحن طلاب كلية الهندسة الطبية والمنظومات بجامعه القاهرة. قمنا بإنشاء هذا التطبيق لمساعدة ضحايا الحروق المنزلية على التعامل مع الإصابات فى الوقت المناسب "),
+      
+        "goodLigthingTitle": MessageLookupByLibrary.simpleMessage("الإضاءة الجيدة"),
+        "goodLigthingtext": MessageLookupByLibrary.simpleMessage("تأكد من وجود إضاءة جيدة عند التقاط الصورة. الإضاءة الطبيعية خلال النهار هي الأفضل. تجنب الإضاءة القوية جدًا التي قد تسبب توهجًا أو ظلالًا شديدة."),
+
+
+        "simpleBackgroundTitle": MessageLookupByLibrary.simpleMessage("الخلفية البسيطة"),
+        "simpleBackgroundText": MessageLookupByLibrary.simpleMessage( "استخدم خلفية محايدة وغير مشتتة. خلفية بيضاء أو سادة تساعد في إبراز تفاصيل الحرق."),
+
+
+        "flashligthTitle": MessageLookupByLibrary.simpleMessage("تجنب استخدام الفلاش"),
+         "flashligthText": MessageLookupByLibrary.simpleMessage("الفلاش قد يغير من ألوان الحرق ويجعل التفاصيل غير واضحة. استخدم الضوء الطبيعي قدر الإمكان."),
+ 
+
+
+        "burnDetailsTitle": MessageLookupByLibrary.simpleMessage("تفاصيل الحرق"),
+        "burnDetailsText": MessageLookupByLibrary.simpleMessage( " التقط الصور من عدة زوايا لإظهار جميع تفاصيل الحرق. صور من مسافة قريبة لتوضيح الحواف والعمق وأي تغير في اللون."),
+
+
+
+        "burnTouchTitle": MessageLookupByLibrary.simpleMessage("تجنب لمس الحرق"),
+        "burnTouchText": MessageLookupByLibrary.simpleMessage("لا تحاول تحريك أو لمس الحرق لتحسين الرؤية في الصورة، حتى لا تتسبب في تفاقم الإصابة."),
+  
+
+
+        "foucsTitle": MessageLookupByLibrary.simpleMessage("التركيز"),
+        "foucsText": MessageLookupByLibrary.simpleMessage("استخدم وضع التركيز التلقائي على الكاميرا للتأكد من أن الصورة واضحة وغير ضبابية. تحقق من حدة الصورة قبل إرسالها."),
+  
+
+
+        "privacyTitle": MessageLookupByLibrary.simpleMessage("احترام الخصوصية"),
+        "privacyText": MessageLookupByLibrary.simpleMessage( "تأكد من عدم ظهور معالم شخصية أو أي معلومات حساسة في الصورة"),
+         
+        "areadetection": MessageLookupByLibrary.simpleMessage("تحديد الحجم"),
+        "areadetectionText": MessageLookupByLibrary.simpleMessage("إذا كان الحرق كبير، قد تحتاج إلى التقاط عدة صور من مسافات مختلفة لتوضيح الحجم الفعلي للحرق بالنسبة لأجزاء الجسم الأخرى."),
+  
+       
+
       };
 }
