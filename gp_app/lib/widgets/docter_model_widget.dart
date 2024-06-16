@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/models/doctor_message.dart';
-// import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/models/patient_message.dart';
+import 'package:gp_app/models/chat_message.dart';
 
 class DoctorMessagesWidget extends StatelessWidget {
   const DoctorMessagesWidget({
@@ -10,7 +8,7 @@ class DoctorMessagesWidget extends StatelessWidget {
     required this.doctorMessage,
   }) : super(key: key);
 
-  final DoctorMessage doctorMessage;
+  final ChatMessage doctorMessage;
 
   @override
   Widget build(BuildContext context) {

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/Data/doctor_msg.dart';
-import 'package:gp_app/generated/l10n.dart';
-// import 'package:gp_app/screens/patient_model_screen.dart';
-import 'package:gp_app/widgets/docter_model_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
-// import 'package:gp_app/widgets/messages_widget.dart';
-import 'package:gp_app/models/doctor_message.dart';
+import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:gp_app/widgets/audio_record_widget.dart';
-import 'package:gp_app/widgets/audio_player_widget.dart';
 
+import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/widgets/docter_model_widget.dart';
+
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:gp_app/widgets/audio_player_widget.dart';
 
 
 class DocterModelChat extends StatefulWidget {
@@ -32,7 +29,7 @@ class DocterModelChat extends StatefulWidget {
 class DocterModelChatState extends State<DocterModelChat> {
 
   //marina
-  List<DoctorMessage> messages = [];
+  List<ChatMessage> messages = [];
   final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   bool _isRecording = false;
   final TextEditingController _messageController = TextEditingController();
@@ -44,9 +41,16 @@ class DocterModelChatState extends State<DocterModelChat> {
     AudioApi.initRecorder();
   }
 
+ @override
+  void dispose() {
+    AudioApi.closeRecorder();
+    _messageController.dispose();
+    super.dispose();
+  }
+
   void loadChatHistory() async {
   try {
-    List<DoctorMessage> fetchedMessages = await fetchChatHistory(widget.senderId, widget.receiverId);
+    List<ChatMessage> fetchedMessages = await fetchChatHistory(widget.senderId, widget.receiverId);
     setState(() {
       messages = fetchedMessages;
     });
@@ -56,19 +60,18 @@ class DocterModelChatState extends State<DocterModelChat> {
 }
 
 
-  @override
-  void dispose() {
-    AudioApi.closeRecorder();
-    _messageController.dispose();
-    super.dispose();
-  }
 
   void _toggleRecording() async {
     if (_isRecording) {
       final path = await _recorder.stopRecorder();
       if (path != null) {
         setState(() {
-          messages.add(DoctorMessage(message: 'New audio message', audioUrl: path, receiver: false, timestamp: DateTime.now(),));
+          messages.add(ChatMessage(
+            message: 'New audio message',
+            audioUrl: path,
+            receiver: false,
+            timestamp: DateTime.now(),
+          ));
         });
       }
       setState(() {
@@ -82,15 +85,20 @@ class DocterModelChatState extends State<DocterModelChat> {
     }
   }
 
- void _sendMessage() {
-  final text = _messageController.text.trim();
-  if (text.isNotEmpty) {
-    setState(() {
-      messages.add(DoctorMessage(message: text, receiver: true, imageFile: null, timestamp: DateTime.now(),));  // Assuming DoctorMessage requires an imageFile.
-      _messageController.clear();
-    });
+  void _sendMessage() {
+    final text = _messageController.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        messages.add(ChatMessage(
+          message: text,
+          receiver: true,
+          timestamp: DateTime.now(),
+        ));
+        _messageController.clear();
+      });
+      // TODO: Implement send message to server logic here
+    }
   }
-}
 
 
 //marina

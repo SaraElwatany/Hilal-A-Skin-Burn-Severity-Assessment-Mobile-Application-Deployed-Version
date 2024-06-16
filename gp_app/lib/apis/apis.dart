@@ -5,7 +5,7 @@ import 'package:gp_app/models/global.dart';
 import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/screens/clinical_data.dart';
-import 'package:gp_app/models/doctor_message.dart';
+import 'package:gp_app/models/chat_message.dart';
 import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -402,23 +402,59 @@ Future skipClinicalData(BuildContext context) async {
   }
 }
 
-//
-Future<List<DoctorMessage>> fetchChatHistory(
-    int senderId, int receiverId) async {
-  var url = Uri.parse(
-      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
+Future<List<ChatMessage>> fetchChatHistory(int senderId, int receiverId) async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
   var response = await http.get(url);
 
   if (response.statusCode == 200) {
     List<dynamic> messagesJson = json.decode(response.body);
-    List<DoctorMessage> messages = messagesJson
-        .map((messageJson) => DoctorMessage.fromJson(messageJson))
+    List<ChatMessage> messages = messagesJson
+        .map((messageJson) => ChatMessage.fromJson(messageJson))
         .toList();
     return messages;
   } else {
     throw Exception('Failed to load chat history');
   }
 }
+
+void _sendMessage() {
+  final text = _messageController.text.trim();
+  if (text.isNotEmpty) {
+    final message = ChatMessage(
+      message: text,
+      receiver: true,
+      imageFile: null,
+      audioUrl: null,  // Add this line if applicable
+      timestamp: DateTime.now(),
+    );
+
+    // Send the message to the server
+    sendMessageToServer(message);
+
+    setState(() {
+      messages.add(message);
+      _messageController.clear();
+    });
+  }
+}
+
+Future<void> _requestMicrophonePermission() async {
+    await Permission.microphone.request();
+  }
+
+Future<void> sendMessageToServer(ChatMessage message) async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/api/send_message');
+  var response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode(message.toJson()),
+  );
+
+  if (response.statusCode != 201) {
+    throw Exception('Failed to send message');
+  }
+}
+
 
 // Function to list all users with burns for the doctor
 Future<List<Patient>> getPatients() async {
@@ -455,31 +491,29 @@ Future<List<Patient>> getPatients() async {
 
 
 class AudioApi {
-    static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-    static String? _recordFilePath;
+  static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  static String? _recordFilePath;
 
-    static Future<void> initRecorder() async {
-        final status = await Permission.microphone.request();
-        if (status != PermissionStatus.granted) {
-            throw Exception('Microphone permission not granted');
-        }
-
-        // Open the audio session
-        await _recorder.openAudioSession();
+  static Future<void> initRecorder() async {
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw Exception('Microphone permission not granted');
     }
+    await _recorder.openAudioSession();
+  }
 
-    static Future<void> startRecording() async {
-        final dir = await getApplicationDocumentsDirectory();
-        _recordFilePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
-        await _recorder.startRecorder(toFile: _recordFilePath);
-    }
+  static Future<void> startRecording() async {
+    final dir = await getApplicationDocumentsDirectory();
+    _recordFilePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+    await _recorder.startRecorder(toFile: _recordFilePath);
+  }
 
-    static Future<String?> stopRecording() async {
-        await _recorder.stopRecorder();
-        return _recordFilePath; // Return the file path after stopping the recorder
-    }
+  static Future<String?> stopRecording() async {
+    await _recorder.stopRecorder();
+    return _recordFilePath;
+  }
 
-    static Future<void> closeRecorder() async {
-        await _recorder.closeAudioSession();  // Correct method to close the recorder
-    }
+  static Future<void> closeRecorder() async {
+    await _recorder.closeAudioSession();
+  }
 }

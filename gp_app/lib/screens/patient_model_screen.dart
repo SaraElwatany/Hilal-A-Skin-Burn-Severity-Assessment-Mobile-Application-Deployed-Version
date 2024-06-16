@@ -1,104 +1,129 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/models/patient_message.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
-import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/models/global.dart';
-// import 'package:gp_app/Data/messages.dart';
+import 'package:gp_app/apis/apis.dart';
+
+import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/widgets/messages_widget.dart';
+
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:gp_app/widgets/audio_player_widget.dart';
-import 'package:gp_app/widgets/audio_record_widget.dart';
 
 
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+
+class PatientModelChat extends StatefulWidget {
+  final int senderId;
+  final int receiverId;
+
+  const PatientModelChat({
+    Key? key,
+    required this.senderId, // Patient
+    required this.receiverId, // Doctor
+  }) : super(key: key);
 
   @override
-  State<ChatScreen> createState() {
-    return _ChatScreenState();
-  }
+  State<PatientModelChat> createState() => PatientModelChatState();
 }
 
-
-class _ChatScreenState extends State<ChatScreen> {
-  //marina
-  List<ChatMessage> chatMessages = [];
-  //
-  final _messageController = TextEditingController();
+class PatientModelChatState extends State<PatientModelChat> {
+  List<ChatMessage> messages = [];
+  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  bool _isRecording = false;
+  final TextEditingController _messageController = TextEditingController();
   bool introMessageShown = false;
 
-  final AudioRecorder _audioRecorder = AudioRecorder(); 
-  bool isRecording = false; // Track recording state
-
 
   //marina
-@override
-  void initState() {
-    super.initState();
-    _audioRecorder.init(); // Initialize the recorder
-  }
+  @override
+    void initState() {
+      super.initState();
+      loadChatHistory();
+      AudioApi.initRecorder();
+    }
 
-
-@override
-void didChangeDependencies() {
-  super.didChangeDependencies();
-
-  if (chatMessages.isEmpty && !introMessageShown) {
-    chatMessages.add(ChatMessage(
-      message: S.of(context).Intro, 
-      receiver: false,
-    ));
-    introMessageShown = true; // Ensure we don't add the intro message again.
-  }
-
-  if (latestPrediction.isNotEmpty) {
-    chatMessages.add(ChatMessage(
-      message: latestPrediction,
-      receiver: false,
-    ));
-    latestPrediction = ''; // Clear the prediction to avoid duplication.
-  }
-}
-
-  //
-  
   @override
   void dispose() {
+    AudioApi.closeRecorder();
     _messageController.dispose();
-    _audioRecorder.dispose();
     super.dispose();
   }
 
-  void _sendMessage() {
-    FocusScope.of(context).unfocus();
-    //marina
-    final messageText = _messageController.text;
-    if (messageText.isNotEmpty) {
-      setState(() {
-        chatMessages.add(ChatMessage(message: messageText, receiver: true));
-      });
-      //marina
-      _messageController.clear();
-      
+  void loadChatHistory() async {
+      try {
+        List<ChatMessage> fetchedMessages = await fetchChatHistory(widget.senderId, widget.receiverId);
+        setState(() {
+          messages = fetchedMessages;
+        });
+      } catch (e) {
+        print("Failed to load chat history: $e");
+      }
+    }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (messages.isEmpty && !introMessageShown) {
+      messages.add(ChatMessage(
+        message: S.of(context).Intro, 
+        receiver: false,
+        timestamp: DateTime.now(),
+      ));
+      introMessageShown = true; // Ensure we don't add the intro message again.
+    }
+
+    if (latestPrediction.isNotEmpty) {
+      messages.add(ChatMessage(
+        message: latestPrediction,
+        receiver: false,
+        timestamp: DateTime.now(),
+      ));
+      latestPrediction = ''; // Clear the prediction to avoid duplication.
     }
   }
 
+  
   void _toggleRecording() async {
-    if (isRecording) {
-      String? filePath = await _audioRecorder.stopRecording();
-      if (filePath != null) {
-        // Optionally handle the file path, like sending it as a message
+    if (_isRecording) {
+      final path = await _recorder.stopRecorder();
+      if (path != null) {
+        setState(() {
+          messages.add(ChatMessage(
+            message: 'New audio message',
+            audioUrl: path,
+            receiver: false,
+            timestamp: DateTime.now(),
+          ));
+        });
       }
       setState(() {
-        isRecording = false;
+        _isRecording = false;
       });
     } else {
-      await _audioRecorder.startRecording();
+      await _recorder.startRecorder(toFile: 'audio_message.aac');
       setState(() {
-        isRecording = true;
+        _isRecording = true;
       });
     }
   }
+
+  void _sendMessage() {
+    final text = _messageController.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        messages.add(ChatMessage(
+          message: text,
+          receiver: true,
+          timestamp: DateTime.now(),
+        ));
+        _messageController.clear();
+      });
+      // TODO: Implement send message to server logic here
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,16 +132,16 @@ void didChangeDependencies() {
         body: Stack(
           children: [
             ListView.builder(
-            itemCount: chatMessages.length,
+            itemCount: messages.length,
             itemBuilder: (context, index) {
-              final chatMessage = chatMessages[index];
+              final chatMessage = messages[index];
               if (chatMessage.audioUrl != null) {
                 // If there's an audio URL, display both the audio player and the message text.
                 return Column(
                   children: [
                     ListTile(
-                      title: Text("Audio Message: Tap to play"),
-                      subtitle: Text(chatMessage.message), // Displaying text message if available
+                      title: Text(chatMessage.message),
+                      subtitle: Text(chatMessage.receiver ? "Doctor" : "Patient"), // Displaying text message if available
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -148,9 +173,9 @@ void didChangeDependencies() {
                   ),
                   child: Row(children: [
                      IconButton(
-                    icon: Icon(isRecording ? Icons.stop : Icons.mic),
+                    icon: Icon(_isRecording ? Icons.stop : Icons.mic),
                     onPressed: _toggleRecording,
-                    color: isRecording ? Colors.red : Color.fromARGB(255, 10, 15, 153),
+                    color: _isRecording ? Colors.red : Color.fromARGB(255, 10, 15, 153),
                   ),
                     Expanded(
                       child: TextField(
@@ -182,7 +207,7 @@ void didChangeDependencies() {
 //marina
   void updateChatScreenWithPrediction(String prediction) {
     setState(() {
-      chatMessages.add(ChatMessage(message: prediction, receiver: false));
+      messages.add(ChatMessage(message: prediction, receiver: false));
     });
   }
 //

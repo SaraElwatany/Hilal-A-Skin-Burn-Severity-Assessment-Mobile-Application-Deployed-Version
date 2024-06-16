@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/screens/patient_model_screen.dart';
-import 'package:gp_app/widgets/clinical_data_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/apis/apis.dart';
+
+import 'package:gp_app/widgets/clinical_data_widget.dart';
+import 'package:gp_app/screens/patient_model_screen.dart';
+import 'package:gp_app/models/clinical_data.dart';
+
 
 class ClinicalDataScreen extends StatefulWidget {
-  const ClinicalDataScreen({Key? key}) : super(key: key);
+  final int senderId;
+  final int receiverId;
+ 
+  const ClinicalDataScreen({
+    Key? key,
+    required this.senderId, // Patient
+    required this.receiverId, // Doctor
+  }) : super(key: key);
 
   @override
   State<ClinicalDataScreen> createState() {
@@ -14,24 +24,7 @@ class ClinicalDataScreen extends StatefulWidget {
   }
 }
 
-enum Symptoms {
-  symptom_1,
-  symptom_2,
-  symptom_3,
-  symptom_4,
-  heat,
-  electricity,
-  chemical,
-  radioactive,
-  boiling,
-  place,
-  arm,
-  leg,
-head,
-back,
-chest
 
-}
 
 class ClinicalDataState extends State<ClinicalDataScreen> {
   List<Symptoms> selectedFirstGroupSymptoms = [];
@@ -69,14 +62,14 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
           ),
           Row(
             children: [
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.symptom_1,
                 selectedSymptoms: selectedFirstGroupSymptoms,
                 onSymptomSelected: (symptom) {
                   _handleFirstGroupSymptomSelected(symptom);
                 },
               ),
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.symptom_2,
                 selectedSymptoms: selectedFirstGroupSymptoms,
                 onSymptomSelected: (symptom) {
@@ -87,14 +80,14 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
           ),
           Row(
             children: [
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.symptom_3,
                 selectedSymptoms: selectedFirstGroupSymptoms,
                 onSymptomSelected: (symptom) {
                   _handleFirstGroupSymptomSelected(symptom);
                 },
               ),
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.symptom_4,
                 selectedSymptoms: selectedFirstGroupSymptoms,
                 onSymptomSelected: (symptom) {
@@ -116,7 +109,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
           ),
           Row(
             children: [
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.heat,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -125,7 +118,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.electricity,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -138,7 +131,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
           ),
           Row(
             children: [
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.chemical,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -147,7 +140,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.radioactive,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -156,7 +149,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
-                ClinicalData(
+                ClinicalDataCheckbox(
                 symptom: Symptoms.boiling,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -181,7 +174,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
           ),
              Row(
             children: [
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.head,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -190,7 +183,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.chest,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -203,7 +196,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
           ),
              Row(
             children: [
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.back,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -212,7 +205,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
-              ClinicalData(
+              ClinicalDataCheckbox(
                 symptom: Symptoms.leg,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -221,7 +214,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
-               ClinicalData(
+               ClinicalDataCheckbox(
                 symptom: Symptoms.arm,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
@@ -247,8 +240,11 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                       selectedSecondGroupSymptom, context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ChatScreen()),
-                  );
+                    MaterialPageRoute(
+                      builder: (context) => PatientModelChat(
+                        senderId: widget.senderId,
+                        receiverId: widget.receiverId,
+                      ),));
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -271,7 +267,11 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   skipClinicalData(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ChatScreen()),
+                    MaterialPageRoute(
+                  builder: (context) => PatientModelChat(
+                    senderId: widget.senderId,
+                    receiverId: widget.receiverId,
+                  ),),
                   );
                 },
                 style: ElevatedButton.styleFrom(

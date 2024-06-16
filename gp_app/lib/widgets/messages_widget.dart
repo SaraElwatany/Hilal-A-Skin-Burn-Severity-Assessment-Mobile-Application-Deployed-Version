@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/models/patient_message.dart';
+import 'package:gp_app/models/chat_message.dart';
 
 class MessagesWidget extends StatelessWidget {
   const MessagesWidget({

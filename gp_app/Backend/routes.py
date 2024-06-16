@@ -494,30 +494,47 @@ def update_burn():
     else: return "error: wrong method"
 
 
-# @main.route('/get_chat_history', methods=['GET'])
-# def get_chat_history():
-#     sender_id = request.args.get('sender_id')
-#     receiver_id = request.args.get('receiver_id')
+# Endpoint to send a message
+@main.route('/api/send_message', methods=['POST'])
+def send_message():
+    data = request.json
+    message = ChatMessage(
+        sender_id=data['sender_id'],
+        receiver_id=data['receiver_id'],
+        message=data['message'],
+        image=data.get('image'),
+        audio_url=data.get('audio_url'),  # Add this line
+        timestamp=datetime.now()
+    )
+    db.session.add(message)
+    db.session.commit()
+    return jsonify(message.to_dict()), 201
 
-#     # Validate sender_id and receiver_id
-#     if not sender_id or not receiver_id:
-#         return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
 
-#     try:
-#         sender_id = int(sender_id)
-#         receiver_id = int(receiver_id)
-#     except ValueError:
-#         return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
 
-#     # Example query - adjust to your database schema and requirements
-#     chat_history = ChatMessage.query.filter(
-#         (ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id)
-#         | (ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id)
-#     ).all()
+# Endpoint to retrieve chat history
+@main.route('/api/get_chat_history', methods=['GET'])
+def get_chat_history():
+    sender_id = request.args.get('sender_id')
+    receiver_id = request.args.get('receiver_id')
 
-#     return jsonify([message.to_dict() for message in chat_history])
+    if not sender_id or not receiver_id:
+        return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
 
-    return jsonify([message.to_dict() for message in chat_history])
+    try:
+        sender_id = int(sender_id)
+        receiver_id = int(receiver_id)
+    except ValueError:
+        return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
+
+    chat_history = ChatMessage.query.filter(
+        ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
+        | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
+    ).all()
+
+    return jsonify([message.to_dict() for message in chat_history]), 200
+
+
 
 @main.route('/upload_audio', methods=['POST'])
 def upload_file():

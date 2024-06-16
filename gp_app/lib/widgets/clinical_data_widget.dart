@@ -1,9 +1,10 @@
-import 'package:gp_app/screens/clinical_data.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/screens/clinical_data.dart';
+import 'package:gp_app/models/clinical_data.dart';
 
-class ClinicalData extends StatefulWidget {
-  const ClinicalData({
+class ClinicalDataCheckbox extends StatefulWidget {
+  const ClinicalDataCheckbox({
     Key? key,
     required this.symptom,
     required this.selectedSymptoms,
@@ -15,10 +16,10 @@ class ClinicalData extends StatefulWidget {
   final void Function(Symptoms) onSymptomSelected;
 
   @override
-  _ClinicalDataState createState() => _ClinicalDataState();
+  _ClinicalDataCheckboxState createState() => _ClinicalDataCheckboxState();
 }
 
-class _ClinicalDataState extends State<ClinicalData> {
+class _ClinicalDataCheckboxState extends State<ClinicalDataCheckbox> {
   @override
   Widget build(BuildContext context) {
     bool isSecondGroup = widget.symptom.index >= 4;
