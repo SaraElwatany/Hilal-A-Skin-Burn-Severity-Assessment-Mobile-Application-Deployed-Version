@@ -7,3 +7,4 @@ String UserProfession = '';
 //String userId = '0';
 // Global Variable for Burn ID from Capturing Image Screen
 //String burnId = '0';
+ 

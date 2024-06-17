@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/user_info.dart';
 import 'package:gp_app/screens/doctor_profile.dart';
@@ -8,6 +7,9 @@ import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
+import 'package:gp_app/models/my_state.dart';
+import 'package:provider/provider.dart';
+
 
 String url = '';
 String username = '';
@@ -32,7 +34,11 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      UserInfo userInfo = UserInfo(_enteredName, _enteredPassword);
+      final myState = Provider.of<MyState>(context, listen: false);
+      String userId = myState.userId;
+
+
+      UserInfo userInfo = UserInfo(_enteredName, _enteredPassword, userId);
       _userInfoList.add(userInfo);
 
       // Send data & then wait for the response either to go to main page or try again

@@ -3,6 +3,8 @@ import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
+import 'package:gp_app/models/my_state.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
@@ -14,14 +16,7 @@ import 'package:gp_app/widgets/audio_player_widget.dart';
 
 
 class PatientModelChat extends StatefulWidget {
-  final int senderId;
-  final int receiverId;
-
-  const PatientModelChat({
-    Key? key,
-    required this.senderId, // Patient
-    required this.receiverId, // Doctor
-  }) : super(key: key);
+  const PatientModelChat({Key? key}) : super(key: key);
 
   @override
   State<PatientModelChat> createState() => PatientModelChatState();
@@ -40,36 +35,47 @@ class PatientModelChatState extends State<PatientModelChat> {
     void initState() {
       super.initState();
       loadChatHistory();
-      AudioApi.initRecorder();
+      // AudioApi.initRecorder();
     }
 
   @override
   void dispose() {
-    AudioApi.closeRecorder();
+    // AudioApi.closeRecorder();
     _messageController.dispose();
     super.dispose();
   }
 
-  void loadChatHistory() async {
-      try {
-        List<ChatMessage> fetchedMessages = await fetchChatHistory(widget.senderId, widget.receiverId);
-        setState(() {
-          messages = fetchedMessages;
-        });
-      } catch (e) {
-        print("Failed to load chat history: $e");
-      }
+void loadChatHistory() async {
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
+
+    try {
+      List<ChatMessage> fetchedMessages = await fetchChatHistory(userId, '1'); // Receiver ID set to 1
+      setState(() {
+        messages = fetchedMessages;
+      });
+    } catch (e) {
+      print("Failed to load chat history: $e");
     }
+  }
+    
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+      final myState = Provider.of<MyState>(context, listen: false);
+      String userId = myState.userId;
+
+
     if (messages.isEmpty && !introMessageShown) {
+     
       messages.add(ChatMessage(
         message: S.of(context).Intro, 
         receiver: false,
         timestamp: DateTime.now(),
+        senderId: userId,
+        receiverId: '1'
       ));
       introMessageShown = true; // Ensure we don't add the intro message again.
     }
@@ -79,6 +85,8 @@ class PatientModelChatState extends State<PatientModelChat> {
         message: latestPrediction,
         receiver: false,
         timestamp: DateTime.now(),
+        senderId: userId,
+        receiverId: '1'
       ));
       latestPrediction = ''; // Clear the prediction to avoid duplication.
     }
@@ -86,6 +94,9 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   
   void _toggleRecording() async {
+    final myState = Provider.of<MyState>(context, listen: false);
+    String userId = myState.userId;
+
     if (_isRecording) {
       final path = await _recorder.stopRecorder();
       if (path != null) {
@@ -95,6 +106,8 @@ class PatientModelChatState extends State<PatientModelChat> {
             audioUrl: path,
             receiver: false,
             timestamp: DateTime.now(),
+            senderId: userId,
+            receiverId: '1'
           ));
         });
       }
@@ -110,23 +123,47 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   void _sendMessage() {
-    final text = _messageController.text.trim();
-    if (text.isNotEmpty) {
-      setState(() {
-        messages.add(ChatMessage(
-          message: text,
-          receiver: true,
-          timestamp: DateTime.now(),
-        ));
-        _messageController.clear();
-      });
-      // TODO: Implement send message to server logic here
-    }
+
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
+
+  final text = _messageController.text.trim();
+  if (text.isNotEmpty) {
+    final message = ChatMessage(
+      message: text,
+      receiver: true,
+      imageFile: null,
+      audioUrl: null,  // Add this line if applicable
+      timestamp: DateTime.now(),
+      senderId: userId,
+      receiverId: '1'
+    );
+
+    // Send the message to the server
+    sendMessageToServer(message);
+
+    setState(() {
+      messages.add(message);
+      _messageController.clear();
+    });
   }
+}
+
+void updateChatScreenWithPrediction(String prediction) {
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
+
+  setState(() {
+    messages.add(ChatMessage(message: prediction, receiver: false ,  senderId: userId, receiverId: '1'));
+  });
+}
 
 
   @override
   Widget build(BuildContext context) {
+    
+  final userId = Provider.of<MyState>(context, listen: false).userId;
+
     return Scaffold(
         appBar: const LocalizationIcon(),
         body: Stack(
@@ -204,11 +241,5 @@ class PatientModelChatState extends State<PatientModelChat> {
         ));
   }
 
-//marina
-  void updateChatScreenWithPrediction(String prediction) {
-    setState(() {
-      messages.add(ChatMessage(message: prediction, receiver: false));
-    });
-  }
-//
+
 }

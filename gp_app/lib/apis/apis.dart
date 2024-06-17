@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:gp_app/models/my_state.dart'; // Import the file where you defined your state class
 
+
 // Local Host For ios Emulator => http://127.0.0.1:19999
 // Local Host For Android Emulator => http://10.0.2.2:19999
 // Local Host For Windows => http://127.0.0.1:19999
@@ -402,59 +403,6 @@ Future skipClinicalData(BuildContext context) async {
   }
 }
 
-Future<List<ChatMessage>> fetchChatHistory(int senderId, int receiverId) async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
-  var response = await http.get(url);
-
-  if (response.statusCode == 200) {
-    List<dynamic> messagesJson = json.decode(response.body);
-    List<ChatMessage> messages = messagesJson
-        .map((messageJson) => ChatMessage.fromJson(messageJson))
-        .toList();
-    return messages;
-  } else {
-    throw Exception('Failed to load chat history');
-  }
-}
-
-void _sendMessage() {
-  final text = _messageController.text.trim();
-  if (text.isNotEmpty) {
-    final message = ChatMessage(
-      message: text,
-      receiver: true,
-      imageFile: null,
-      audioUrl: null,  // Add this line if applicable
-      timestamp: DateTime.now(),
-    );
-
-    // Send the message to the server
-    sendMessageToServer(message);
-
-    setState(() {
-      messages.add(message);
-      _messageController.clear();
-    });
-  }
-}
-
-Future<void> _requestMicrophonePermission() async {
-    await Permission.microphone.request();
-  }
-
-Future<void> sendMessageToServer(ChatMessage message) async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/api/send_message');
-  var response = await http.post(
-    url,
-    headers: {'Content-Type': 'application/json'},
-    body: json.encode(message.toJson()),
-  );
-
-  if (response.statusCode != 201) {
-    throw Exception('Failed to send message');
-  }
-}
-
 
 // Function to list all users with burns for the doctor
 Future<List<Patient>> getPatients() async {
@@ -490,30 +438,73 @@ Future<List<Patient>> getPatients() async {
 }
 
 
-class AudioApi {
-  static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  static String? _recordFilePath;
+// class AudioApi {
+//     static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+//     static String? _recordFilePath;
 
-  static Future<void> initRecorder() async {
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw Exception('Microphone permission not granted');
+//     static Future<void> initRecorder() async {
+//         final status = await Permission.microphone.request();
+//         if (status != PermissionStatus.granted) {
+//             throw Exception('Microphone permission not granted');
+//         }
+
+//         // Open the audio session
+//         await _recorder.openAudioSession();
+//     }
+
+//     static Future<void> startRecording() async {
+//         final dir = await getApplicationDocumentsDirectory();
+//         _recordFilePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+//         await _recorder.startRecorder(toFile: _recordFilePath);
+//     }
+
+//     static Future<String?> stopRecording() async {
+//         await _recorder.stopRecorder();
+//         return _recordFilePath; // Return the file path after stopping the recorder
+//     }
+
+//     static Future<void> closeRecorder() async {
+//         await _recorder.closeAudioSession();  // Correct method to close the recorder
+//     }
+// }
+
+Future<List<ChatMessage>> fetchChatHistory(String senderId, String receiverId) async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
+  var response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    List<dynamic> messagesJson = json.decode(response.body);
+    List<ChatMessage> messages = messagesJson
+        .map((messageJson) => ChatMessage.fromJson(messageJson))
+        .toList();
+    return messages;
+  } else {
+    throw Exception('Failed to load chat history');
+  }
+}
+
+
+Future<void> _requestMicrophonePermission() async {
+    await Permission.microphone.request();
+  }
+
+
+Future<void> sendMessageToServer(ChatMessage message) async {
+  try {
+    var url = Uri.parse('https://my-trial-t8wj.onrender.com/send_message'); // Replace with your server URL
+    var headers = {'Content-Type': 'application/json'};
+    var body = jsonEncode(message.toJson()); // Convert ChatMessage to JSON string
+
+    var response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      print('Message sent successfully');
+    } else {
+      print('Failed to send message. Status code: ${response.statusCode}');
+      throw Exception('Failed to send message');
     }
-    await _recorder.openAudioSession();
-  }
-
-  static Future<void> startRecording() async {
-    final dir = await getApplicationDocumentsDirectory();
-    _recordFilePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
-    await _recorder.startRecorder(toFile: _recordFilePath);
-  }
-
-  static Future<String?> stopRecording() async {
-    await _recorder.stopRecorder();
-    return _recordFilePath;
-  }
-
-  static Future<void> closeRecorder() async {
-    await _recorder.closeAudioSession();
+  } catch (e) {
+    print('Error sending message: $e');
+    throw Exception('Error sending message: $e');
   }
 }

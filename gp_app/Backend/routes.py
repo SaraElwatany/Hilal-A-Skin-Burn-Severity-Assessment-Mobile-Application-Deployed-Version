@@ -495,7 +495,7 @@ def update_burn():
 
 
 # Endpoint to send a message
-@main.route('/api/send_message', methods=['POST'])
+@main.route('/send_message', methods=['POST'])
 def send_message():
     data = request.json
     message = ChatMessage(
@@ -513,7 +513,7 @@ def send_message():
 
 
 # Endpoint to retrieve chat history
-@main.route('/api/get_chat_history', methods=['GET'])
+@main.route('/get_chat_history', methods=['GET'])
 def get_chat_history():
     sender_id = request.args.get('sender_id')
     receiver_id = request.args.get('receiver_id')

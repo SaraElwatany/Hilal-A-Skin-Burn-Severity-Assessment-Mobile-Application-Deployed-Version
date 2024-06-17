@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/models/global.dart'; // Import the file where you defined your global variable
 
 class MyState with ChangeNotifier {
   // Global Variable for User ID from Login Screen

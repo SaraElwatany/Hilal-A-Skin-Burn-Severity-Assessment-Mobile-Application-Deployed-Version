@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-// import 'package:gp_app/classes/language.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/models/new_user.dart';
-// import 'package:gp_app/main.dart';
-import 'package:gp_app/screens/login_screen.dart';
-import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/apis/apis.dart';
+import 'package:gp_app/models/my_state.dart';
+import 'package:provider/provider.dart';
+
+import 'package:gp_app/models/new_user.dart';
+import 'package:gp_app/screens/login_screen.dart';
+import 'package:gp_app/screens/main_page.dart';
+
+
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -27,9 +31,17 @@ class _SignUpState extends State<SignUpScreen> {
   final List<NewUser> _userInfoList = [];
   bool flag = true;
 
+
   void _saveItem() async {
+    final userId = Provider.of<MyState>(context, listen: false).userId;
+
     NewUser userInfo = NewUser(
-        _enteredFirstName, _enteredLastName, _enteredEmail, _enteredPassword);
+    firstName: _enteredFirstName,
+    lastName: _enteredLastName,
+    email: _enteredEmail,
+    password: _enteredPassword,
+    userId: userId,
+  );
     _userInfoList.add(userInfo);
 
     output = await signUp(userInfo);
@@ -38,8 +50,7 @@ class _SignUpState extends State<SignUpScreen> {
       _formKey.currentState!.save();
 
       // printUserInfoList();
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const MainPageScreen(),));
     } else {
       showDialog(
           context: context,

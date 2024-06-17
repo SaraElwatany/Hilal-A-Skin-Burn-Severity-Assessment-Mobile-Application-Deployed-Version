@@ -6,6 +6,7 @@ import 'package:gp_app/screens/instruction.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/widgets/Icons.dart';
 
+
 class MainPageScreen extends StatefulWidget {
   const MainPageScreen({super.key});
 
@@ -28,7 +29,7 @@ class _MainPageState extends State<MainPageScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CameraScreen()),
+                  MaterialPageRoute(builder: (context) => const CameraScreen()), 
                 );
               },
               imagePath: 'assets/images/flame.png',

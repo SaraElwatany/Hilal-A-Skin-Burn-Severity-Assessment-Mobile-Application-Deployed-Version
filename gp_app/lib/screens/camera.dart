@@ -3,7 +3,6 @@ import 'package:gp_app/apis/apis.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/clinical_data.dart';
-import 'package:gp_app/screens/patient_model_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,8 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 int navigate = 0; // Flag to navigate to the chat screen
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
-
+  const CameraScreen({Key? key}) : super(key: key);
   @override
   State<CameraScreen> createState() => _HomeScreenState();
 }
@@ -24,6 +22,7 @@ class _HomeScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: const LocalizationIcon(),
 
@@ -90,9 +89,11 @@ class _HomeScreenState extends State<CameraScreen> {
                 ),
                 ElevatedButton(
                     onPressed: () {
+
                       Navigator.of(context).push(MaterialPageRoute(
                           // builder: (ctx) => const ChatScreen()));
-                          builder: (ctx) => const ClinicalDataScreen()));
+                          builder: (ctx) =>  
+                          ClinicalDataScreen(),),); //edittt recieverID
                       // Check if nullableFile is not null before casting
                       if (imageFile != null) {
                         File nonNullableFile = imageFile as File;
@@ -257,38 +258,4 @@ class _HomeScreenState extends State<CameraScreen> {
     }
   }
 
-/*   // marina -> moved to apis.dart
-  void sendImageToServer(File image) async {
-    String url = 'http://10.0.2.2:19999/uploadImg';
-
-    try {
-      // Prepare the request
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.files.add(await http.MultipartFile.fromPath('file', image.path));
-
-      // Send the request
-      var response = await request.send();
-
-      // Handle the response
-      if (response.statusCode == 200) {
-        // If the call to the server was successful, parse the JSON
-        var responseData = await response.stream.bytesToString();
-        var decodedData = json.decode(responseData);
-        var prediction = decodedData['prediction'];
-        print('Prediction: $prediction');
-
-        // Set the prediction to the global variable
-        latestPrediction = prediction;
-
-        // Navigate to ChatScreen
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (ctx) => const ChatScreen()),
-        );
-      } else {
-        print('Failed to load prediction');
-      }
-    } catch (e) {
-      print('Error sending image: $e');
-    }
-  } */
 }

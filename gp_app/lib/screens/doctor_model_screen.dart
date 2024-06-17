@@ -3,6 +3,8 @@ import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
+import 'package:gp_app/models/my_state.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/docter_model_widget.dart';
@@ -11,20 +13,16 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:gp_app/widgets/audio_player_widget.dart';
 
 
+
 class DocterModelChat extends StatefulWidget {
-  final int senderId;
-  final int receiverId;
 
   const DocterModelChat({
-    super.key,
-    required this.senderId, //dr
-    required this.receiverId, //patient 
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DocterModelChat> createState() => DocterModelChatState();
 }
-
 
 class DocterModelChatState extends State<DocterModelChat> {
 
@@ -38,30 +36,35 @@ class DocterModelChatState extends State<DocterModelChat> {
   void initState() {
     super.initState();
     loadChatHistory();
-    AudioApi.initRecorder();
+    // AudioApi.initRecorder();
   }
 
  @override
   void dispose() {
-    AudioApi.closeRecorder();
+    // AudioApi.closeRecorder();
     _messageController.dispose();
     super.dispose();
   }
 
   void loadChatHistory() async {
-  try {
-    List<ChatMessage> fetchedMessages = await fetchChatHistory(widget.senderId, widget.receiverId);
-    setState(() {
-      messages = fetchedMessages;
-    });
-  } catch (e) {
-    print("Failed to load chat history: $e");
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
+
+    try {
+      List<ChatMessage> fetchedMessages = await fetchChatHistory(userId, '1'); // Receiver ID set to 1
+      setState(() {
+        messages = fetchedMessages;
+      });
+    } catch (e) {
+      print("Failed to load chat history: $e");
+    }
   }
-}
-
-
+    
 
   void _toggleRecording() async {
+    final myState = Provider.of<MyState>(context, listen: false);
+    String userId = myState.userId;
+
     if (_isRecording) {
       final path = await _recorder.stopRecorder();
       if (path != null) {
@@ -71,6 +74,8 @@ class DocterModelChatState extends State<DocterModelChat> {
             audioUrl: path,
             receiver: false,
             timestamp: DateTime.now(),
+            senderId: userId,
+            receiverId: '1'
           ));
         });
       }
@@ -86,20 +91,31 @@ class DocterModelChatState extends State<DocterModelChat> {
   }
 
   void _sendMessage() {
-    final text = _messageController.text.trim();
-    if (text.isNotEmpty) {
-      setState(() {
-        messages.add(ChatMessage(
-          message: text,
-          receiver: true,
-          timestamp: DateTime.now(),
-        ));
-        _messageController.clear();
-      });
-      // TODO: Implement send message to server logic here
-    }
-  }
 
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
+
+  final text = _messageController.text.trim();
+  if (text.isNotEmpty) {
+    final message = ChatMessage(
+      message: text,
+      receiver: true,
+      imageFile: null,
+      audioUrl: null,  // Add this line if applicable
+      timestamp: DateTime.now(),
+      senderId: userId,
+      receiverId: '1'
+    );
+
+    // Send the message to the server
+    sendMessageToServer(message);
+
+    setState(() {
+      messages.add(message);
+      _messageController.clear();
+    });
+  }
+}
 
 //marina
 

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:gp_app/Data/doctor_msg.dart';
-// import 'package:gp_app/generated/l10n.dart';
-// import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/screens/doctor_model_screen.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/models/global.dart';
@@ -39,7 +36,7 @@ class _PatientListState extends State<PatientList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-             builder: (ctx) => DocterModelChat(senderId: drId, receiverId: widget.patient.id),
+             builder: (ctx) => DocterModelChat(),
             ),
           );
         },

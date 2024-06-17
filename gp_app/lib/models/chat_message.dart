@@ -4,6 +4,8 @@ class ChatMessage {
   final String? imageFile;
   final String? audioUrl;
   final DateTime timestamp;
+  final String senderId; 
+  final String receiverId;
   bool introMessageDisplayed = false;
 
   ChatMessage({
@@ -11,6 +13,8 @@ class ChatMessage {
     required this.receiver,
     this.imageFile,
     this.audioUrl,
+    required this.senderId,
+    required this.receiverId, 
     DateTime? timestamp,  // Allow timestamp to be optional and provide a default
   }) : this.timestamp = timestamp ?? DateTime.now();  // Default to current time if none provided
 
@@ -20,8 +24,10 @@ class ChatMessage {
     return ChatMessage(
       message: json['message'] as String,
       receiver: json['receiver'] as bool,
-      imageFile: json['imageFile'] as String?,
+      imageFile: json['imageFile'] as String?,  
       audioUrl: json['audioUrl'] as String?,
+      senderId: json['senderId'] as String,
+      receiverId: json['receiverId'] as String,
       timestamp: DateTime.parse(json['timestamp'] as String),  // Assuming 'timestamp' is in ISO 8601 format
     );
   }
@@ -33,7 +39,18 @@ class ChatMessage {
       'receiver': receiver,
       'imageFile': imageFile,
       'audioUrl': audioUrl,
+       'senderId': senderId,
+      'receiverId': receiverId,
       'timestamp': timestamp.toIso8601String(),
     };
   }
+
+  // Override toString method for better debugging output
+  @override
+  String toString() {
+    return 'ChatMessage{message: $message, receiver: $receiver, imageFile: $imageFile, '
+        'audioUrl: $audioUrl, senderId: $senderId, receiverId: $receiverId, timestamp: $timestamp, '
+        'introMessageDisplayed: $introMessageDisplayed}';
+  }
 }
+

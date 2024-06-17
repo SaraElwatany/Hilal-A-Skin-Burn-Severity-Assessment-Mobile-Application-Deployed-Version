@@ -1,10 +1,9 @@
+import 'package:gp_app/screens/clinical_data.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/screens/clinical_data.dart';
-import 'package:gp_app/models/clinical_data.dart';
 
-class ClinicalDataCheckbox extends StatefulWidget {
-  const ClinicalDataCheckbox({
+class ClinicalData extends StatefulWidget {
+  const ClinicalData({
     Key? key,
     required this.symptom,
     required this.selectedSymptoms,
@@ -16,10 +15,10 @@ class ClinicalDataCheckbox extends StatefulWidget {
   final void Function(Symptoms) onSymptomSelected;
 
   @override
-  _ClinicalDataCheckboxState createState() => _ClinicalDataCheckboxState();
+  _ClinicalDataState createState() => _ClinicalDataState();
 }
 
-class _ClinicalDataCheckboxState extends State<ClinicalDataCheckbox> {
+class _ClinicalDataState extends State<ClinicalData> {
   @override
   Widget build(BuildContext context) {
     bool isSecondGroup = widget.symptom.index >= 4;
@@ -58,22 +57,7 @@ class _ClinicalDataCheckboxState extends State<ClinicalDataCheckbox> {
                                         ? S.of(context).chemical
                                         : widget.symptom == Symptoms.radioactive
                                             ? S.of(context).radioactive
-                                            : widget.symptom == Symptoms.boiling
-                                            ? S.of(context).radioactive
-                                            : widget.symptom == Symptoms.place
-                                            ?S.of(context).place
-                                            :widget.symptom == Symptoms.arm
-                                            ?S.of(context).arm
-                                            :widget.symptom == Symptoms.leg
-                                            ?S.of(context).leg
-                                            :widget.symptom == Symptoms.head
-                                            ?S.of(context).head
-                                            :widget.symptom == Symptoms.back
-                                            ?S.of(context).back
-                                            :widget.symptom == Symptoms.chest
-                                            ?S.of(context).chest
-                                            :"",
-
+                                            : '',
             style: TextStyle(
               color: widget.selectedSymptoms.contains(widget.symptom)
                   ? const Color.fromARGB(255, 29, 49, 78) // Selected color

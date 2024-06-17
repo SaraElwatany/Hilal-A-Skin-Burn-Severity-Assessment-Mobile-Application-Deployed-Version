@@ -1,8 +1,15 @@
 class NewUser {
-  String firstName = '';
-  String lastName = '';
-  String email = '';
-  String password = '';
+  String firstName;
+  String lastName;
+  String email;
+  String password;
+  String userId;
 
-  NewUser(this.firstName, this.lastName, this.email, this.password);
+  NewUser({
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.password,
+    required this.userId,
+  });
 }
