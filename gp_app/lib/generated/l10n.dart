@@ -293,7 +293,7 @@ class S {
 // Intro
   String get Intro {
     return Intl.message(
-       "Hello! My name is Hilal, the health companion for burn patients. \nI am here to answer your questions about the treatment \nand management of skin burns that occur at home.",
+      "Hello! My name is Hilal, the health companion for burn patients. \nI am here to answer your questions about the treatment \nand management of skin burns that occur at home.",
       name: 'intro',
       desc: '',
       args: [],
@@ -480,7 +480,7 @@ class S {
     );
   }
 
-   // boiling
+  // boiling
   String get boiling {
     return Intl.message(
       "Boiling Liquid",
@@ -500,7 +500,6 @@ class S {
     );
   }
 
-
 // arm
   String get arm {
     return Intl.message(
@@ -510,7 +509,7 @@ class S {
       args: [],
     );
   }
-  
+
 // leg
   String get leg {
     return Intl.message(
@@ -541,7 +540,7 @@ class S {
     );
   }
 
- // back
+  // back
   String get back {
     return Intl.message(
       "Abdomen and Lower back",
@@ -551,9 +550,7 @@ class S {
     );
   }
 
-
-
-   // skip
+  // skip
   String get skip {
     return Intl.message(
       "Skip",
@@ -563,7 +560,7 @@ class S {
     );
   }
 
-     // emergency
+  // emergency
   String get emergency {
     return Intl.message(
       "Emergency",
@@ -572,8 +569,8 @@ class S {
       args: [],
     );
   }
-  
-     // select_image
+
+  // select_image
   String get select_image {
     return Intl.message(
       "Select Image",
@@ -583,7 +580,7 @@ class S {
     );
   }
 
-   // doctoes
+  // doctoes
   String get doctors {
     return Intl.message(
       "Doctors",
@@ -593,7 +590,7 @@ class S {
     );
   }
 
-    // addDoctors
+  // addDoctors
   String get addDoctors {
     return Intl.message(
       "Add Doctor",
@@ -602,7 +599,8 @@ class S {
       args: [],
     );
   }
-      // doctorInfo
+
+  // doctorInfo
   String get doctorInfo {
     return Intl.message(
       "Doctor Infromation",
@@ -612,7 +610,7 @@ class S {
     );
   }
 
-        // degree
+  // degree
   String get degree {
     return Intl.message(
       "Professional degree",
@@ -642,7 +640,6 @@ class S {
     );
   }
 
-
   // goodLigthingTitle
   String get goodLigthingTitle {
     return Intl.message(
@@ -653,7 +650,7 @@ class S {
     );
   }
 
-   // simpleBackgroundTitle
+  // simpleBackgroundTitle
   String get simpleBackgroundTitle {
     return Intl.message(
       "Simple background",
@@ -663,7 +660,7 @@ class S {
     );
   }
 
-    // flashligthTitle
+  // flashligthTitle
   String get flashligthTitle {
     return Intl.message(
       "Avoid using Flash Ligth",
@@ -672,7 +669,6 @@ class S {
       args: [],
     );
   }
-
 
 // burnDetailsTitle
   String get burnDetailsTitle {
@@ -694,7 +690,7 @@ class S {
     );
   }
 
-    // foucsTitle
+  // foucsTitle
   String get foucsTitle {
     return Intl.message(
       "Focus",
@@ -704,7 +700,7 @@ class S {
     );
   }
 
-     // privacyTitle
+  // privacyTitle
   String get privacyTitle {
     return Intl.message(
       "Respect Privacy",
@@ -714,7 +710,7 @@ class S {
     );
   }
 
-    // areadetection
+  // areadetection
   String get areadetection {
     return Intl.message(
       "Determine size",
@@ -723,38 +719,58 @@ class S {
       args: [],
     );
   }
- 
-   // goodLigthingtext
+
+  // areadetection
+  String get location {
+    return Intl.message(
+      "Get current location",
+      name: 'location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // areadetection
+  String get userlocation {
+    return Intl.message(
+      "Set you current location",
+      name: 'userlocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // goodLigthingtext
   String get goodLigthingtext {
     return Intl.message(
-     "Make sure there is good lighting when taking the photo. Natural lighting during the day is best. Avoid very strong lighting that may cause harsh glare or shadows",
+      "Make sure there is good lighting when taking the photo. Natural lighting during the day is best. Avoid very strong lighting that may cause harsh glare or shadows",
       name: 'goodLigthingtext',
       desc: '',
       args: [],
     );
   }
 
-   // simpleBackgroundText
+  // simpleBackgroundText
   String get simpleBackgroundText {
     return Intl.message(
-       "Use a neutral, non-distracting background. A plain or white background helps highlight the details of the burn.",
+      "Use a neutral, non-distracting background. A plain or white background helps highlight the details of the burn.",
       name: 'simpleBackgroundText',
       desc: '',
       args: [],
     );
   }
 
-   // flashligthText
+  // flashligthText
   String get flashligthText {
     return Intl.message(
-   "Flash may change the colors of the burn and make details blurry. Use natural light as much as possible.",
+      "Flash may change the colors of the burn and make details blurry. Use natural light as much as possible.",
       name: 'flashligthText',
       desc: '',
       args: [],
     );
   }
 
- // burnDetailsText
+  // burnDetailsText
   String get burnDetailsText {
     return Intl.message(
       "Take pictures from several angles to show all the details of the burn. Close-up photos to show edges, depth, and any discolouration.",
@@ -767,7 +783,8 @@ class S {
 // burnTouchText
   String get burnTouchText {
     return Intl.message(
- "Do not try to move or touch the burn to improve the view in the image, so as not to aggravate the injury.",      name: 'burnTouchText',
+      "Do not try to move or touch the burn to improve the view in the image, so as not to aggravate the injury.",
+      name: 'burnTouchText',
       desc: '',
       args: [],
     );
@@ -781,27 +798,24 @@ class S {
       args: [],
     );
   }
-   
-     // privacyText
+
+  // privacyText
   String get privacyText {
     return Intl.message(
-    "Make sure that no personal features or any sensitive information is visible in the photo.",
+      "Make sure that no personal features or any sensitive information is visible in the photo.",
       desc: '',
       args: [],
     );
   }
 
-      // areadetectionText
+  // areadetectionText
   String get areadetectionText {
     return Intl.message(
-    "If the burn is large, you may need to take several pictures from different distances to show the actual size of the burn in relation to other parts of the body.",
+      "If the burn is large, you may need to take several pictures from different distances to show the actual size of the burn in relation to other parts of the body.",
       desc: '',
       args: [],
     );
-  }    
-
-
-
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -42,7 +42,7 @@ class AboutUs extends StatelessWidget {
                           S.of(context).aboutUsMessage,
                           textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
                                     color: Colors.white,
                                     fontSize: 18,
                                   ),
