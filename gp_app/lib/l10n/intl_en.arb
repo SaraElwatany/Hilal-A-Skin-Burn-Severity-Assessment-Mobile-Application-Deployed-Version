@@ -58,6 +58,9 @@
     "degree": "Professional degree",
     "save": "Save",
     "instructions":"Instructions",
+    "userlocation":"Set you current location ",
+    "location":"Get current location",
+    
    
     "goodLigthingTitle": "Good lighting",
     "goodLigthingtext": "Make sure there is good lighting when taking the photo. Natural lighting during the day is best. Avoid very strong lighting that may cause harsh glare or shadows",
