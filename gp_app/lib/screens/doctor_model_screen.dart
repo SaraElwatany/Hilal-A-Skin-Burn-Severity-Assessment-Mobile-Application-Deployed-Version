@@ -71,7 +71,7 @@ class DocterModelChatState extends State<DocterModelChat> {
         setState(() {
           messages.add(ChatMessage(
             message: 'New audio message',
-            audioUrl: path,
+            // audioUrl: path,
             receiver: false,
             timestamp: DateTime.now(),
             senderId: userId,
@@ -101,7 +101,7 @@ class DocterModelChatState extends State<DocterModelChat> {
       message: text,
       receiver: true,
       imageFile: null,
-      audioUrl: null,  // Add this line if applicable
+      // audioUrl: null,  
       timestamp: DateTime.now(),
       senderId: userId,
       receiverId: '1'
@@ -128,22 +128,22 @@ class DocterModelChatState extends State<DocterModelChat> {
           ListView.builder(
             itemCount: messages.length,
             itemBuilder: (context, index) {
-              final chatMessage = messages[index];
-              if (chatMessage.audioUrl != null) {
-                // If there's an audio URL, display both the audio player and the message text.
-                return Column(
-                  children: [
-                    ListTile(
-                      title: Text(chatMessage.message),
-                      subtitle:  Text(chatMessage.receiver ? "Doctor" : "Patient"),// Displaying text message if available
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
-                    ),
-                  ],
-                );
-              } 
+              // final chatMessage = messages[index];
+              // if (chatMessage.audioUrl != null) {
+              //   // If there's an audio URL, display both the audio player and the message text.
+              //   return Column(
+              //     children: [
+              //       ListTile(
+              //         title: Text(chatMessage.message),
+              //         subtitle:  Text(chatMessage.receiver ? "Doctor" : "Patient"),// Displaying text message if available
+              //       ),
+              //       Padding(
+              //         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              //         child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
+              //       ),
+              //     ],
+              //   );
+              // } 
             },
           ),
           Align(
@@ -169,11 +169,11 @@ class DocterModelChatState extends State<DocterModelChat> {
                           InputDecoration(hintText: S.of(context).message),
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-                    onPressed: _toggleRecording,
-                    color: _isRecording ? Colors.red : Colors.white,
-                  ),
+                  // IconButton(
+                  //   icon: Icon(_isRecording ? Icons.stop : Icons.mic),
+                  //   onPressed: _toggleRecording,
+                  //   color: _isRecording ? Colors.red : Colors.white,
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: IconButton(

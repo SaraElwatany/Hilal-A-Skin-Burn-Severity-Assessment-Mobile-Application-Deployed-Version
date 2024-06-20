@@ -6,6 +6,8 @@ import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/models/global.dart';
+
 import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -57,7 +59,7 @@ Future<String> sendData(
     if (responseMessage == 'Access Allowed') {
       userId = responseData['user_id'];
       print('User ID from Login Route: $userId');
-      UserProfession = responseData['user_profession'];
+      String UserProfession = responseData['user_profession'];
 
       print('Login successful');
       print('Profession: $UserProfession');
@@ -506,5 +508,33 @@ Future<void> sendMessageToServer(ChatMessage message) async {
   } catch (e) {
     print('Error sending message: $e');
     throw Exception('Error sending message: $e');
+  }
+}
+
+
+Future<void> loginUser(String email, String password) async {
+  // Example endpoint URL (replace with your Flask server URL)
+  String url = 'https://my-trial-t8wj.onrender.com/login';
+
+  // Example request body
+  Map<String, String> body = {
+    'email': email,
+    'password': password,
+  };
+
+  try {
+    var response = await http.post(
+      Uri.parse(url),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      // Successful login, parse JSON response
+      Map<String, dynamic> data = json.decode(response.body);
+      // Update global.dart variables based on response data
+      Global.updateFromJson(data);
+    } 
+  } catch (e) {
+    // Handle network or other errors
   }
 }

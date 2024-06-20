@@ -2,7 +2,7 @@ class ChatMessage {
   final String message;
   final bool receiver; // Indicates if the message was received (true) or sent (false)
   final String? imageFile;
-  final String? audioUrl;
+  // final String? audioUrl;
   final DateTime timestamp;
   final String senderId; 
   final String receiverId;
@@ -12,7 +12,7 @@ class ChatMessage {
     required this.message,
     required this.receiver,
     this.imageFile,
-    this.audioUrl,
+    // this.audioUrl,
     required this.senderId,
     required this.receiverId, 
     DateTime? timestamp,  // Allow timestamp to be optional and provide a default
@@ -25,7 +25,7 @@ class ChatMessage {
       message: json['message'] as String,
       receiver: json['receiver'] as bool,
       imageFile: json['imageFile'] as String?,  
-      audioUrl: json['audioUrl'] as String?,
+      // audioUrl: json['audioUrl'] as String?,
       senderId: json['senderId'] as String,
       receiverId: json['receiverId'] as String,
       timestamp: DateTime.parse(json['timestamp'] as String),  // Assuming 'timestamp' is in ISO 8601 format
@@ -38,7 +38,7 @@ class ChatMessage {
       'message': message,
       'receiver': receiver,
       'imageFile': imageFile,
-      'audioUrl': audioUrl,
+      // 'audioUrl': audioUrl,
        'senderId': senderId,
       'receiverId': receiverId,
       'timestamp': timestamp.toIso8601String(),
@@ -47,9 +47,14 @@ class ChatMessage {
 
   // Override toString method for better debugging output
   @override
+  // String toString() {
+  //   return 'ChatMessage{message: $message, receiver: $receiver, imageFile: $imageFile, '
+  //       'audioUrl: $audioUrl, senderId: $senderId, receiverId: $receiverId, timestamp: $timestamp, '
+  //       'introMessageDisplayed: $introMessageDisplayed}';
+  // }
+
   String toString() {
-    return 'ChatMessage{message: $message, receiver: $receiver, imageFile: $imageFile, '
-        'audioUrl: $audioUrl, senderId: $senderId, receiverId: $receiverId, timestamp: $timestamp, '
+    return 'ChatMessage{message: $message, receiver: $receiver, imageFile: $imageFile, senderId: $senderId, receiverId: $receiverId, timestamp: $timestamp, '
         'introMessageDisplayed: $introMessageDisplayed}';
   }
 }

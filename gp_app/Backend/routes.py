@@ -9,7 +9,7 @@ from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 from  sqlalchemy.exc import OperationalError
 from flask import Blueprint, redirect, url_for
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -77,8 +77,15 @@ def login_info():
     # Log In was Successful
     else:
         print('Success, 'f'Email: {email}', f'Password: {password}')
+        
+        #marina admin/ or dr
+        user_profession = user.profession
+        # Determine if user is admin based on user profession or any other criteria
+        adminPassword = (user_profession == 'admin')
+
         # Send a JSON response back to the client
-        response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession)}
+        response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession) , 'adminPassword': adminPassword}
+
         return jsonify(response)
     
 
@@ -421,20 +428,6 @@ def get_all_burns():
 
     # return the user list
     return { 'message': 'Users with burns found', 'user_ids': user_ids, 'user_names': user_names, 'user_info': user_info }
-
-""" # build a dictionary of the users
-    user_list = [{
-    
-                'id': user.id, 
-                'username': user.username, 
-                'email': user.email, 
-                'phone': user.phone, 
-                'weight': user.weight, 
-                'height': user.height}
-                
-                for user in users if user] """
-    
-
     
 
 
@@ -498,18 +491,30 @@ def update_burn():
 @main.route('/send_message', methods=['POST'])
 def send_message():
     data = request.json
-    message = ChatMessage(
-        sender_id=data['sender_id'],
-        receiver_id=data['receiver_id'],
-        message=data['message'],
-        image=data.get('image'),
-        audio_url=data.get('audio_url'),  # Add this line
-        timestamp=datetime.now()
-    )
-    db.session.add(message)
-    db.session.commit()
-    return jsonify(message.to_dict()), 201
 
+    if not data:
+     return jsonify({'error': 'Invalid JSON body'}), 400
+
+    required_keys = ['sender_id', 'receiver_id', 'message']
+    for key in required_keys:
+        if key not in data:
+            return jsonify({'error': f'Missing {key} in request body'}), 400
+
+    try:
+        message = ChatMessage(
+            sender_id=data['sender_id'],
+            receiver_id=data['receiver_id'],
+            message=data['message'],
+            image=data.get('image'),
+            # audio_url=data.get('audio_url'),
+            timestamp=datetime.now()
+        )
+        db.session.add(message)
+        db.session.commit()
+        return jsonify(message.to_dict()), 201
+
+    except Exception as e:
+            return jsonify({'error': str(e)}), 500
 
 
 # Endpoint to retrieve chat history
@@ -522,8 +527,8 @@ def get_chat_history():
         return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
 
     try:
-        sender_id = int(sender_id)
-        receiver_id = int(receiver_id)
+        sender_id = sender_id
+        receiver_id = receiver_id
     except ValueError:
         return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
 
@@ -536,14 +541,14 @@ def get_chat_history():
 
 
 
-@main.route('/upload_audio', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return 'No file part'
-    file = request.files['file']
-    if file.filename == '':
-        return 'No selected file'
-    if file:
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return 'File uploaded successfully'
+# @main.route('/upload_audio', methods=['POST'])
+# def upload_file():
+#     if 'file' not in request.files:
+#         return 'No file part'
+#     file = request.files['file']
+#     if file.filename == '':
+#         return 'No selected file'
+#     if file:
+#         filename = secure_filename(file.filename)
+#         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#         return 'File uploaded successfully'

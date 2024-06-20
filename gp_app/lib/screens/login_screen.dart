@@ -37,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
       final myState = Provider.of<MyState>(context, listen: false);
       String userId = myState.userId;
 
+      loginUser(_enteredName, _enteredPassword);
 
       UserInfo userInfo = UserInfo(_enteredName, _enteredPassword, userId);
       _userInfoList.add(userInfo);
@@ -45,13 +46,15 @@ class _LoginPageState extends State<LoginPage> {
       String response = await sendData(username, password, context);
       //  printUserInfoList();
       if (response == 'Access Allowed') {
-        if (UserProfession == 'patient') {
-          Navigator.of(context).push(
+        Navigator.of(context).push(
               MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
-        } else {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
-        }
+        // if (UserProfession == 'patient') {
+        //   Navigator.of(context).push(
+        //       MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+        // } else {
+        //   Navigator.of(context)
+        //       .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+        // }
       } else if (response == 'Access Denied') {
         login_warning(context);
       }
