@@ -244,6 +244,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
+    audio_url VARCHAR(500),
     message VARCHAR(500) NOT NULL,
     image VARCHAR(500),
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,

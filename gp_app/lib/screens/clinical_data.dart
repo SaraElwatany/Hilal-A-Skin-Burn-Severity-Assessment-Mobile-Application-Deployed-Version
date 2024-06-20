@@ -27,12 +27,10 @@ enum Symptoms {
   place,
   arm,
   leg,
-head,
-back,
-chest
-
+  head,
+  back,
+  chest
 }
-
 
 class ClinicalDataState extends State<ClinicalDataScreen> {
   List<Symptoms> selectedFirstGroupSymptoms = [];
@@ -53,8 +51,10 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               S.of(context).clinictitle,
-              style:
-                  Theme.of(context).textTheme.headline6!.copyWith(fontSize: 30),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 30),
             ),
           ),
           const SizedBox(
@@ -64,8 +64,10 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               S.of(context).symptoms,
-              style:
-                  Theme.of(context).textTheme.headline6!.copyWith(fontSize: 20),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 20),
             ),
           ),
           Row(
@@ -111,8 +113,10 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               S.of(context).cause,
-              style:
-                  Theme.of(context).textTheme.headline6!.copyWith(fontSize: 20),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 20),
             ),
           ),
           Row(
@@ -165,11 +169,12 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  addClinicalData(
-                      selectedFirstGroupSymptoms, selectedSecondGroupSymptom, context);
+                  addClinicalData(selectedFirstGroupSymptoms,
+                      selectedSecondGroupSymptom, context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const PatientModelChat()),
+                    MaterialPageRoute(
+                        builder: (context) => const PatientModelChat()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -193,7 +198,8 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   skipClinicalData(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const PatientModelChat()),
+                    MaterialPageRoute(
+                        builder: (context) => const PatientModelChat()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
