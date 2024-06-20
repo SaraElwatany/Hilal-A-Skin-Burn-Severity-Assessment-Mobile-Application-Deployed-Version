@@ -9,12 +9,11 @@ import 'package:gp_app/models/chat_message.dart';
 import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:path_provider/path_provider.dart'; 
+import 'package:path_provider/path_provider.dart';
 
 // Imports for keeping the state of variables
 import 'package:provider/provider.dart';
 import 'package:gp_app/models/my_state.dart'; // Import the file where you defined your state class
-
 
 // Local Host For ios Emulator => http://127.0.0.1:19999
 // Local Host For Android Emulator => http://10.0.2.2:19999
@@ -403,7 +402,6 @@ Future skipClinicalData(BuildContext context) async {
   }
 }
 
-
 // Function to list all users with burns for the doctor
 Future<List<Patient>> getPatients() async {
   var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_all_burns');
@@ -437,7 +435,6 @@ Future<List<Patient>> getPatients() async {
   }
 }
 
-
 // class AudioApi {
 //     static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
 //     static String? _recordFilePath;
@@ -468,8 +465,10 @@ Future<List<Patient>> getPatients() async {
 //     }
 // }
 
-Future<List<ChatMessage>> fetchChatHistory(String senderId, String receiverId) async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
+Future<List<ChatMessage>> fetchChatHistory(
+    String senderId, String receiverId) async {
+  var url = Uri.parse(
+      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
   var response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -483,17 +482,17 @@ Future<List<ChatMessage>> fetchChatHistory(String senderId, String receiverId) a
   }
 }
 
-
 Future<void> _requestMicrophonePermission() async {
-    await Permission.microphone.request();
-  }
-
+  await Permission.microphone.request();
+}
 
 Future<void> sendMessageToServer(ChatMessage message) async {
   try {
-    var url = Uri.parse('https://my-trial-t8wj.onrender.com/send_message'); // Replace with your server URL
+    var url = Uri.parse(
+        'https://my-trial-t8wj.onrender.com/send_message'); // Replace with your server URL
     var headers = {'Content-Type': 'application/json'};
-    var body = jsonEncode(message.toJson()); // Convert ChatMessage to JSON string
+    var body =
+        jsonEncode(message.toJson()); // Convert ChatMessage to JSON string
 
     var response = await http.post(url, headers: headers, body: body);
 
@@ -506,5 +505,23 @@ Future<void> sendMessageToServer(ChatMessage message) async {
   } catch (e) {
     print('Error sending message: $e');
     throw Exception('Error sending message: $e');
+  }
+}
+
+// Function to list all users with burns for the doctor
+Future<void> respondToUser() async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
+  var response = await http.post(url);
+
+  // Request was successful, handle the response
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    final responseMessage = responseData['message'];
+
+    final patients_ids = responseData['patients_ids'];
+    final hospitals = responseData['hospitals'];
+    final prediction = responseData['ّprediction'];
+
+    print('Received Response From get_patients route: $responseMessage');
   }
 }

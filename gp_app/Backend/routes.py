@@ -21,13 +21,13 @@ from .user_class import User
 from .chat_message import ChatMessage
 
 from .model import MyModel
-from .functions import load_img, transform, load_model, predict, convert_to_obj
+from .functions import load_img, transform, load_model, predict, convert_to_obj, load_hospitals_from_file, haversine
 
 
 main = Blueprint('main', __name__)
 
 # Initialize Global variables
-BURN_ID, USER_ID, prediction = 0, 0, {}
+BURN_ID, USER_ID, prediction, user_lat, user_lon  = 0, 0, {} , 0.0 , 0.0
 
 
 # Route to get the username and password in the login screen
@@ -37,6 +37,8 @@ def intro():
     response = {'response': 'Log In page'}
     print('Hello there, I am Hilal')
     return jsonify(response)
+
+
 
 
 
@@ -81,6 +83,8 @@ def login_info():
         response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession)}
         return jsonify(response)
     
+
+
 
 
 # A route for the sign up screen (Done)
@@ -174,6 +178,9 @@ def signup_info():
                 print(f'Error during signup: {str(e)}')
                 response = {'response': 'Internal Server Error'}
             return jsonify(response)
+
+
+
 
 
 
@@ -290,7 +297,7 @@ def upload():
 
 
 
-# Add Burn item route (Patient Screen) (Done
+# Add Burn item route (Patient Screen) (Done)
 @main.route('/add_burn', methods=['POST'])
 def burn_new():
 
@@ -373,6 +380,8 @@ def burn_new():
 
 
 
+
+
 # Fetch info of all users with burns (Doctor Screen)
 @main.route('/get_all_burns', methods=['POST'])
 def get_all_burns():
@@ -391,25 +400,25 @@ def get_all_burns():
         user_in_users_table = User.query.filter_by(id=burn_user.fk_burn_user_id).first()
         if user_in_users_table:
             user_dict = {
-                'id': user_in_users_table.id,
-                'username': user_in_users_table.username, 
-                'email': user_in_users_table.email, 
-                'phone': user_in_users_table.phone, 
-                'weight': user_in_users_table.weight, 
-                'height': user_in_users_table.height
-            }
+                         'id': user_in_users_table.id,
+                         'username': user_in_users_table.username, 
+                         'email': user_in_users_table.email, 
+                         'phone': user_in_users_table.phone, 
+                         'weight': user_in_users_table.weight, 
+                         'height': user_in_users_table.height
+                        }
             user_list.append(user_dict)
         else:
             # Generate a random integer between 0 and 1000
             random_number = random.randint(0, 1000)
             user_dict = {
-                'id': random_number,
-                'username': 'Guest', 
-                'email': 'None', 
-                'phone': None, 
-                'weight': None, 
-                'height': None
-            }
+                         'id': random_number,
+                         'username': 'Guest', 
+                         'email': 'None', 
+                         'phone': None, 
+                         'weight': None, 
+                         'height': None
+                        }
             user_list.append(user_dict)
 
 
@@ -420,7 +429,12 @@ def get_all_burns():
     user_info = ['Weight: '+str(user.weight)+' '+'Height: '+str(user.height) for user in users]
 
     # return the user list
-    return { 'message': 'Users with burns found', 'user_ids': user_ids, 'user_names': user_names, 'user_info': user_info }
+    return {
+            'message': 'Users with burns found', 
+            'user_ids': user_ids, 
+            'user_names': user_names, 
+            'user_info': user_info 
+            }
 
 """ # build a dictionary of the users
     user_list = [{
@@ -462,6 +476,8 @@ def get_user_burns():
         # return the burn list
         return { 'message': 'Burns found', 'burns': burn_list}
     else: return "error: wrong method"
+
+
 
 
 
@@ -536,6 +552,7 @@ def get_chat_history():
 
 
 
+
 @main.route('/upload_audio', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -547,3 +564,57 @@ def upload_file():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return 'File uploaded successfully'
+
+
+
+
+# Route to Get the user Location
+@main.route('/get_user_location', methods=['POST'])
+def get_user_location():
+
+    global user_lat, user_lon
+
+    user_lat = float(request.args.get('lat', 0))
+    user_lon = float(request.args.get('lon', 0))
+
+    if user_lat == 0 or user_lon == 0:
+        return jsonify({"error": "Invalid coordinates"}), 400
+    
+
+    # Prepare JSON response
+    response = { "message": "User Location Successfully Identified",
+               }
+
+    return jsonify(response)
+
+
+
+
+# Route to Get the Top 5 Nearest Burn Hospitals to the user & the model's prediction
+@main.route('/respond_to_user', methods=['POST'])
+def respond_to_user():
+
+    # Load hospitals data
+    hospitals = load_hospitals_from_file()
+
+    if user_lat == 0 or user_lon == 0:
+        return jsonify({"error": "Invalid coordinates"}), 400
+
+    # Calculate distance from user's location to each hospital
+    for hospital in hospitals:
+        hospital['distance'] = haversine(user_lon, user_lat, hospital['lon'], hospital['lat'])
+
+    # Sort hospitals by distance
+    hospitals_sorted = sorted(hospitals, key=lambda x: x['distance'])
+
+    # Get the top 5 nearest hospitals
+    nearest_hospitals = hospitals_sorted[:5]
+
+    # Prepare JSON response
+    response = {
+                "message": "Top 5 nearest burn hospitals:",
+                "hospitals": nearest_hospitals,
+                "ّprediction": prediction['prediction'],
+               }
+
+    return jsonify(response)
