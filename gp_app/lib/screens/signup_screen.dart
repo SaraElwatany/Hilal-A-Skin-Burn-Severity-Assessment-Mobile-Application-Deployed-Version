@@ -3,13 +3,12 @@ import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
+import 'package:gp_app/models/global.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/screens/login_screen.dart';
 import 'package:gp_app/screens/main_page.dart';
-
-
 
 
 class SignUpScreen extends StatefulWidget {
@@ -29,7 +28,7 @@ class _SignUpState extends State<SignUpScreen> {
   var _enteredPassword = '';
   var output = '';
   final List<NewUser> _userInfoList = [];
-  bool flag = true;
+  bool flag = Global.adminPassword;
 
 
   void _saveItem() async {

@@ -80,15 +80,15 @@ void loadChatHistory() async {
       introMessageShown = true; // Ensure we don't add the intro message again.
     }
 
-    if (latestPrediction.isNotEmpty) {
+    if (Global.latestPrediction.isNotEmpty) {
       messages.add(ChatMessage(
-        message: latestPrediction,
+        message: Global.latestPrediction,
         receiver: false,
         timestamp: DateTime.now(),
         senderId: userId,
         receiverId: '1'
       ));
-      latestPrediction = ''; // Clear the prediction to avoid duplication.
+      Global.latestPrediction = ''; // Clear the prediction to avoid duplication.
     }
   }
 

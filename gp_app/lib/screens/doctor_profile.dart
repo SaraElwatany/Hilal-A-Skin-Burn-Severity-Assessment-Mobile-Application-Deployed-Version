@@ -4,8 +4,11 @@ import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/add_Doctor.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/patient_list.dart';
+import 'package:gp_app/models/global.dart';
+
 import 'package:gp_app/widgets/patients_list.dart';
 import 'package:gp_app/apis/apis.dart';
+
 
 class DocterProfile extends StatefulWidget {
   const DocterProfile({Key? key}) : super(key: key);
@@ -23,7 +26,7 @@ class DocterProfileState extends State<DocterProfile> {
  */
   String _selectedItem = 'Time'; // Default
   List<Patient> patients = [];
-  bool adminPassword = true;
+  bool adminPassword = ! Global.adminPassword; 
 
   @override
   void initState() {
