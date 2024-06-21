@@ -227,7 +227,7 @@ def upload():
         # Read the image file 
         print('The file received from App: ', file)
         # Read image data as bytes
-        image_data = file.read()
+        image_data = file.read()        # BLOB File 
         image = convert_to_obj(image_data)
         #image = np.array(image)
         # Preprocess the image (if needed)
@@ -250,7 +250,7 @@ def upload():
             new_burn = Burn(
                             fk_burn_user_id = USER_ID,
                             burn_date = date.today(),
-                            burn_img = file,
+                            burn_img = image_data,
                             burn_class_model = int(output),
                             trembling_limbs = 0, #'None'
                             nausea = 0, #'None'
