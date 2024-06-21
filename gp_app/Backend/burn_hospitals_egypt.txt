@@ -32,8 +32,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى الجلاء العسكري",
         
         "google_maps_location": "Cairo, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -41,8 +39,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى المنيرة العام",
         
         "google_maps_location": "Cairo, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -50,8 +46,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى شبرا العام",
         
         "google_maps_location": "Cairo, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -59,8 +53,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى السلام التخصصي",
         
         "google_maps_location": "Cairo, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -68,8 +60,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى الشيخ زايد آل نهيان",
         
         "google_maps_location": "Cairo, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -77,8 +67,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى أحمد ماهر التعليمي",
         
         "google_maps_location": "Cairo, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -86,8 +74,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى المطرية التعليمي",
         
         "google_maps_location": "Cairo, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -95,8 +81,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى الحوامدية العام",
         
         "google_maps_location": "Giza, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -104,8 +88,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى إمبابة العام",
         
         "google_maps_location": "Giza, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -113,8 +95,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى أم المصريين العام",
         
         "google_maps_location": "Giza, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -122,17 +102,13 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى أبو قير المركزي",
         
         "google_maps_location": "Alexandria, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
         "english_name": "Ras El-Tin General Hospital",
         "arabic_name": "مستشفى رأس التين العام",
 
-        "google_maps_location": "Alexandria, Egypt", 
-        "lat": , 
-        "lon": 
+        "google_maps_location": "Alexandria, Egypt",  
     },
 
     {
@@ -140,8 +116,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى الجمهورية العام",
 
         "google_maps_location": "Alexandria, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -149,8 +123,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى حوش عيسى المركزي",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -158,8 +130,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى رشيد المركزي",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -167,8 +137,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى إيتاي البارود المركزي",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -176,8 +144,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى كفر الدوار العام",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -185,17 +151,13 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى منوف العام",
 
         "google_maps_location": "Menoufia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
         "english_name": "Ashmoun General Hospital",
         "arabic_name": "مستشفى أشمون العام",
 
-        "google_maps_location": "Menoufia, Egypt", 
-        "lat": , 
-        "lon": 
+        "google_maps_location": "Menoufia, Egypt",  
     },
 
     {
@@ -203,8 +165,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى مطروح العام",
 
         "google_maps_location": "Matrouh, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -212,8 +172,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى زفتى العام",
 
         "google_maps_location": "Gharbia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -221,8 +179,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى كفر الزيات العام",
 
         "google_maps_location": "Gharbia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -230,8 +186,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى كفر الشيخ العام",
 
         "google_maps_location": "Gharbia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -239,8 +193,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى العبور للتأمين الصحي",
 
         "google_maps_location": "Qalyubia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -248,8 +200,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى فاقوس المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -257,8 +207,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى بلبيس المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -266,8 +214,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى أبو حماد المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -275,8 +221,6 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى ههيا المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
@@ -284,139 +228,159 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى السنبلاوين العام",
 
         "google_maps_location": "Dakahlia, Egypt", 
-        "lat": , 
-        "lon": 
     },
 
     {
         "english_name": "Meet Ghamr Central Hospital",
         "arabic_name": "مستشفى ميت غمر المركزي",
+
         "google_maps_location": "Dakahlia, Egypt (example)"
     },
 
     {
         "english_name": "El-Mansoura Central Hospital",
         "arabic_name": "مستشفى المنصورة المركزي",
+
         "google_maps_location": "Dakahlia, Egypt (example)"
     },
 
     {
         "english_name": "New Mansoura General Hospital",
         "arabic_name": "مستشفى المنصورة الجديدة",
+
         "google_maps_location": "Dakahlia, Egypt (example)"
     },
 
     {
         "english_name": "Kafr Saad Central Hospital",
         "arabic_name": "مستشفى كفر سعد المركزي",
+
         "google_maps_location": "Damietta, Egypt (example)"
     },
 
     {
         "english_name": "Damietta Specialized Hospital",
         "arabic_name": "مستشفى دمياط التخصصي",
+
         "google_maps_location": "Damietta, Egypt (example)"
     },
 
     {
         "english_name": "Ismailia Medical Complex",
         "arabic_name": "المجمع الطبي بالإسماعيلية",
+
         "google_maps_location": "Ismailia, Egypt (example)"
     },
 
     {
         "english_name": "Suez General Hospital",
         "arabic_name": "مستشفى السويس العام",
+
         "google_maps_location": "Suez, Egypt (example)"
     },
 
     {
         "english_name": "Fayoum General Hospital",
         "arabic_name": "مستشفى الفيوم العام",
+
         "google_maps_location": "Fayoum, Egypt (example)"
     },
 
     {
         "english_name": "Beni Suef Specialized Hospital",
         "arabic_name": "مستشفى بني سويف التخصصي",
+
         "google_maps_location": "Beni Suef, Egypt (example)"
     },
 
     {
         "english_name": "Maghagha Central Hospital",
         "arabic_name": "مستشفى مغاغة المركزي",
+
         "google_maps_location": "Minya, Egypt (example)"
     },
 
     {
         "english_name": "Minya General Hospital",
         "arabic_name": "مستشفى المنيا العام",
+
         "google_maps_location": "Minya, Egypt (example)"
     },
 
     {
         "english_name": "Mallawi Specialized Hospital",
         "arabic_name": "مستشفى ملوي التخصصي",
+
         "google_maps_location": "Minya, Egypt (example)"
     },
 
     {
         "english_name": "Assiut General Hospital",
         "arabic_name": "مستشفى أسيوط العام",
+
         "google_maps_location": "Assiut, Egypt (example)"
     },
 
     {
         "english_name": "El-Iman General Hospital",
         "arabic_name": "مستشفى الإيمان العام",
+
         "google_maps_location": "Assiut, Egypt (example)"
     },
 
     {
         "english_name": "Dairut General Hospital",
         "arabic_name": "مستشفى ديروط العام",
+
         "google_maps_location": "Assiut, Egypt (example)"
     },
 
     {
         "english_name": "El-Qusiya Central Hospital",
         "arabic_name": "مستشفى القوصية المركزي",
+
         "google_maps_location": "Assiut, Egypt (example)"
     },
 
     {
         "english_name": "Abu Tig Model Hospital",
         "arabic_name": "مستشفى أبو تيج النموذجي",
+
         "google_maps_location": "Assiut, Egypt (example)"
     },
 
     {
         "english_name": "Hurghada General Hospital",
-        "arabic_name": "مستشفى الغردقة العام,
+        "arabic_name": "مستشفى الغردقة العام",
+
         "google_maps_location": "Red Sea, Egypt (example)"
     },
 
     {
         "english_name": "Sohag General Hospital",
         "arabic_name": "مستشفى سوهاج العام",
+
         "google_maps_location": "Sohag, Egypt (example)"
     },
 
     {
         "english_name": "Akhmim Central Hospital",
         "arabic_name": "مستشفى أخميم المركزي",
+
         "google_maps_location": "Sohag, Egypt (example)"
     },
 
     {
         "english_name": "Qena General Hospital",
         "arabic_name": "مستشفى قنا العام",
+
         "google_maps_location": "Qena, Egypt (example)"
     },
 
     {
         "english_name": "Luxor International Hospital",
         "arabic_name": "مستشفى الأقصر الدولي",
+        
         "google_maps_location": "Luxor, Egypt (example)"
     },
 
