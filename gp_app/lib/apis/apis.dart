@@ -549,6 +549,11 @@ Future<void> get_user_location(
   if (request.statusCode == 200 ||
       request.statusCode == 201 ||
       request.statusCode == 204) {
+    // Request successful, handle the response (valid http response was received == okay statement for http)
+    final responseData = jsonDecode(request.body);
+    final responseMessage = responseData['message'];
+    print('Received response: $responseMessage');
+
     print(
         'Received a successful response (Status Code: ${request.statusCode})');
   } else if (request.statusCode == 400) {
@@ -583,6 +588,46 @@ Future<void> get_user_location(
     // Other status codes
     print(
         'Received an unexpected response with status code: ${request.statusCode}');
+  }
+}
+
+Future<void> getHospitals() async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+
+      if (responseBody['error'] != null) {
+        print('Error: ${responseBody['error']}');
+      } else {
+        List<dynamic> hospitals = responseBody['hospitals'];
+
+        print('Top 5 Nearest Burn Hospitals:');
+
+        for (var i = 0; i < 5 && i < hospitals.length; i++) {
+          var hospital = hospitals[i];
+
+          print('${hospital['english_name']} - ${hospital['arabic_name']}');
+          print('Latitude: ${hospital['lat']}, Longitude: ${hospital['lon']}');
+          print('---');
+        }
+
+        String prediction = responseBody['prediction'];
+        print('Prediction: $prediction');
+      }
+    } else {
+      print('Failed to get response. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error: $e');
   }
 }
 

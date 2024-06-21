@@ -40,7 +40,7 @@ class _LocationAppState extends State<Location> {
 
         double user_latitude = userLatitude ?? 0.0;
         double user_longitude = userLongitude ?? 0.0;
-        // get_user_location(user_latitude, user_longitude);
+        get_user_location(user_latitude, user_longitude);
 
         userLocation = LatLng(position.latitude, position.longitude);
 

@@ -609,6 +609,7 @@ def get_user_location():
 
 
 
+
 # Route to Get the Top 5 Nearest Burn Hospitals to the user & the model's prediction
 @main.route('/respond_to_user', methods=['POST'])
 def respond_to_user():
