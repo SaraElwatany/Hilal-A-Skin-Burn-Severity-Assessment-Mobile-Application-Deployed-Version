@@ -37,7 +37,10 @@ class _LocationAppState extends State<Location> {
       setState(() {
         userLatitude = position.latitude; // Store latitude
         userLongitude = position.longitude; // Store longitude
-        // get_user_location(userLatitude, userLongitude);
+
+        double user_latitude = userLatitude ?? 0.0;
+        double user_longitude = userLongitude ?? 0.0;
+        // get_user_location(user_latitude, user_longitude);
 
         userLocation = LatLng(position.latitude, position.longitude);
 
