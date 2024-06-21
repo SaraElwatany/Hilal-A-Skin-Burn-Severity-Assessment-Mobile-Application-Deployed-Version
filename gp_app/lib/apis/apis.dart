@@ -541,53 +541,59 @@ Future<void> loginUser(String email, String password) async {
 Future<void> get_user_location(
     double user_latitude, double user_longitude) async {
   var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_user_location');
-  var request = await http.post(url, body: {
-    'latitude': user_latitude.toString(),
-    'longitude': user_longitude.toString(),
-  });
+  // Construct query parameters
+  var params = {
+    'user_latitude': user_latitude.toString(),
+    'user_longitude': user_longitude.toString(),
+  };
 
-  if (request.statusCode == 200 ||
-      request.statusCode == 201 ||
-      request.statusCode == 204) {
-    // Request successful, handle the response (valid http response was received == okay statement for http)
-    final responseData = jsonDecode(request.body);
+  var response = await http.post(
+    url.replace(queryParameters: params),
+  );
+
+  print('Latitude: $user_latitude');
+
+  if (response.statusCode == 200 ||
+      response.statusCode == 201 ||
+      response.statusCode == 204) {
+    // Request successful, handle the response
+    final responseData = jsonDecode(response.body);
     final responseMessage = responseData['message'];
     print('Received response: $responseMessage');
-
     print(
-        'Received a successful response (Status Code: ${request.statusCode})');
-  } else if (request.statusCode == 400) {
+        'Received a successful response (Status Code: ${response.statusCode})');
+  } else if (response.statusCode == 400) {
     // Bad Request
     print(
         'Bad Request: The server could not understand the request (Status Code: 400)');
-    print('Response Body: ${request.body}');
-  } else if (request.statusCode == 401) {
+    print('Response Body: ${response.body}');
+  } else if (response.statusCode == 401) {
     // Unauthorized
     print(
         'Unauthorized: The request requires user authentication (Status Code: 401)');
-    print('Response Body: ${request.body}');
-  } else if (request.statusCode == 403) {
+    print('Response Body: ${response.body}');
+  } else if (response.statusCode == 403) {
     // Forbidden
     print(
         'Forbidden: The server understood the request but refuses to authorize it (Status Code: 403)');
-    print('Response Body: ${request.body}');
-  } else if (request.statusCode == 404) {
+    print('Response Body: ${response.body}');
+  } else if (response.statusCode == 404) {
     // Not Found
     print(
         'Not Found: The requested resource could not be found (Status Code: 404)');
-    print('Response Body: ${request.body}');
-  } else if (request.statusCode == 500) {
+    print('Response Body: ${response.body}');
+  } else if (response.statusCode == 500) {
     // Internal Server Error
     print(
         'Internal Server Error: A generic error occurred on the server (Status Code: 500)');
-    print('Response Body: ${request.body}');
+    print('Response Body: ${response.body}');
   } else {
     // Request failed, handle the error
     print('Location Not Sent due to failed request');
-    print('Response Body: ${request.body}');
+    print('Response Body: ${response.body}');
     // Other status codes
     print(
-        'Received an unexpected response with status code: ${request.statusCode}');
+        'Received an unexpected response with status code: ${response.statusCode}');
   }
 }
 
