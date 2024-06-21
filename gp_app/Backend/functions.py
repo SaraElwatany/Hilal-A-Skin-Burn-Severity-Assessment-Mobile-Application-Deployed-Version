@@ -146,9 +146,3 @@ def haversine(lon1, lat1, lon2, lat2):
     return distance
 
 
-
-
-
-# Load hospitals data
-hospitals = load_hospitals_from_file()
-# print(hospitals)
