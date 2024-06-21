@@ -542,8 +542,8 @@ Future<void> get_user_location(
     double user_latitude, double user_longitude) async {
   var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_user_location');
   var request = await http.post(url, body: {
-    'latitude': user_latitude,
-    'longitude': user_longitude,
+    'latitude': user_latitude.toString(),
+    'longitude': user_longitude.toString(),
   });
 
   if (request.statusCode == 200 ||
