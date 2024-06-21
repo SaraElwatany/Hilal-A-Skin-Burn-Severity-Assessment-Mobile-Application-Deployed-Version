@@ -484,7 +484,7 @@ burn_hospitals_egypt = [
         "google_maps_location": "Luxor, Egypt", 
         "lat": 30.0, 
         "lon": 30.0
-    },
+    }
 
     
 ]
