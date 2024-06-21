@@ -252,9 +252,9 @@ def upload():
                             burn_date = date.today(),
                             burn_img = file,
                             burn_class_model = int(output),
-                            vomitting = 0, #'None'
+                            trembling_limbs = 0, #'None'
                             nausea = 0, #'None'
-                            rigors = 0, #'None'
+                            diarrhea = 0, #'None'
                             cold_extremities = 0, #'None'
                             burn_type = 'None' #'None'
                             )
@@ -275,9 +275,9 @@ def upload():
                             burn_date = date.today(),
                             burn_img = file,
                             burn_class_model = int(output),
-                            vomitting = 0, #'None'
+                            trembling_limbs = 0, #'None'
                             nausea = 0, #'None'
-                            rigors = 0, #'None'
+                            diarrhea = 0, #'None'
                             cold_extremities = 0, #'None'
                             burn_type = 'None' #'None'
                             )

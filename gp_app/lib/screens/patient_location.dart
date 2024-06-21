@@ -17,14 +17,20 @@ class Location extends StatefulWidget {
 class _LocationAppState extends State<Location> {
   var locationMessage = "";
   LatLng? userLocation;
-
   double? userLatitude; // Added to store user's latitude
   double? userLongitude; // Added to store user's longitude
+  bool isDisposed = false; // Flag to check if widget is disposed
 
   @override
   void initState() {
     super.initState();
     getCurrentLocation();
+  }
+
+  @override
+  void dispose() {
+    isDisposed = true; // Set flag to true when the widget is disposed
+    super.dispose();
   }
 
   void getCurrentLocation() async {
@@ -34,24 +40,30 @@ class _LocationAppState extends State<Location> {
       var position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
 
-      setState(() {
-        userLatitude = position.latitude; // Store latitude
-        userLongitude = position.longitude; // Store longitude
+      if (!isDisposed) {
+        // Check if widget is not disposed before calling setState
+        setState(() {
+          userLatitude = position.latitude; // Store latitude
+          userLongitude = position.longitude; // Store longitude
 
-        double user_latitude = userLatitude ?? 0.0;
-        double user_longitude = userLongitude ?? 0.0;
-        
-        get_user_location(user_latitude, user_longitude);
+          double user_latitude = userLatitude ?? 0.0;
+          double user_longitude = userLongitude ?? 0.0;
 
-        userLocation = LatLng(position.latitude, position.longitude);
+          get_user_location(user_latitude, user_longitude);
 
-        locationMessage =
-            "Latitude position: $userLatitude, Longitude position: $userLongitude"; // Use new variables
-      });
+          userLocation = LatLng(position.latitude, position.longitude);
+
+          locationMessage =
+              "Latitude position: $userLatitude, Longitude position: $userLongitude"; // Use new variables
+        });
+      }
     } else {
-      setState(() {
-        locationMessage = "Location permission denied.";
-      });
+      if (!isDisposed) {
+        // Check if widget is not disposed before calling setState
+        setState(() {
+          locationMessage = "Location permission denied.";
+        });
+      }
     }
   }
 
@@ -140,9 +152,8 @@ class _LocationAppState extends State<Location> {
                   ElevatedButton(
                     onPressed: getCurrentLocation,
                     style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(// MaterialStateProperty.all(
-                              const Color.fromARGB(255, 29, 49, 78)),
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromARGB(255, 29, 49, 78)),
                     ),
                     child: Text(
                       S.of(context).location,
