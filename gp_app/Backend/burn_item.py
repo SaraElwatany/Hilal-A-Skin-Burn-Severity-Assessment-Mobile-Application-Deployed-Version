@@ -13,9 +13,9 @@ class Burn(db.Model):
     burn_class_dr = db.Column(db.Integer(), nullable= True)
     dr_reply = db.Column(db.String(1500), nullable = True, default=None)
 
-    vomitting = db.Column(db.Integer(), nullable=True, default=0)
+    trembling_limbs = db.Column(db.Integer(), nullable=True, default=0)
     nausea = db.Column(db.Integer(), nullable = True, default=0)
-    rigors = db.Column(db.Integer(), nullable = True, default=0)
+    diarrhea = db.Column(db.Integer(), nullable = True, default=0)
     cold_extremities = db.Column(db.Integer(), nullable = True, default=0)
     burn_type = db.Column(db.String(15), nullable = True, default='None')
     

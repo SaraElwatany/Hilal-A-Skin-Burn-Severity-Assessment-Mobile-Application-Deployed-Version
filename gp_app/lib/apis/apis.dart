@@ -6,6 +6,8 @@ import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/models/global.dart';
+
 import 'dart:io';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -56,7 +58,7 @@ Future<String> sendData(
     if (responseMessage == 'Access Allowed') {
       userId = responseData['user_id'];
       print('User ID from Login Route: $userId');
-      UserProfession = responseData['user_profession'];
+      String UserProfession = responseData['user_profession'];
 
       print('Login successful');
       print('Profession: $UserProfession');
@@ -328,7 +330,7 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
   if (causeOfBurn == Symptoms.electricity) {
     cause = 'electricity';
   } else if (causeOfBurn == Symptoms.heat) {
-    cause = 'heat';
+    cause = 'Fire/Fire Flame';
   } else if (causeOfBurn == Symptoms.chemical) {
     cause = 'chemical';
   } else if (causeOfBurn == Symptoms.radioactive) {
@@ -508,7 +510,83 @@ Future<void> sendMessageToServer(ChatMessage message) async {
   }
 }
 
-// Function to list all users with burns for the doctor
+Future<void> loginUser(String email, String password) async {
+  // Example endpoint URL (replace with your Flask server URL)
+  String url = 'https://my-trial-t8wj.onrender.com/login';
+
+  // Example request body
+  Map<String, String> body = {
+    'email': email,
+    'password': password,
+  };
+
+  try {
+    var response = await http.post(
+      Uri.parse(url),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      // Successful login, parse JSON response
+      Map<String, dynamic> data = json.decode(response.body);
+      // Update global.dart variables based on response data
+      Global.updateFromJson(data);
+    }
+  } catch (e) {
+    // Handle network or other errors
+  }
+}
+
+// Function to return the user's location to flask
+Future<void> get_user_location(
+    double user_latitude, double user_longitude) async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_user_location');
+  var request = await http.post(url, body: {
+    'latitude': user_latitude,
+    'longitude': user_longitude,
+  });
+
+  if (request.statusCode == 200 ||
+      request.statusCode == 201 ||
+      request.statusCode == 204) {
+    print(
+        'Received a successful response (Status Code: ${request.statusCode})');
+  } else if (request.statusCode == 400) {
+    // Bad Request
+    print(
+        'Bad Request: The server could not understand the request (Status Code: 400)');
+    print('Response Body: ${request.body}');
+  } else if (request.statusCode == 401) {
+    // Unauthorized
+    print(
+        'Unauthorized: The request requires user authentication (Status Code: 401)');
+    print('Response Body: ${request.body}');
+  } else if (request.statusCode == 403) {
+    // Forbidden
+    print(
+        'Forbidden: The server understood the request but refuses to authorize it (Status Code: 403)');
+    print('Response Body: ${request.body}');
+  } else if (request.statusCode == 404) {
+    // Not Found
+    print(
+        'Not Found: The requested resource could not be found (Status Code: 404)');
+    print('Response Body: ${request.body}');
+  } else if (request.statusCode == 500) {
+    // Internal Server Error
+    print(
+        'Internal Server Error: A generic error occurred on the server (Status Code: 500)');
+    print('Response Body: ${request.body}');
+  } else {
+    // Request failed, handle the error
+    print('Location Not Sent due to failed request');
+    print('Response Body: ${request.body}');
+    // Other status codes
+    print(
+        'Received an unexpected response with status code: ${request.statusCode}');
+  }
+}
+
+// Function to ....
 Future<void> respondToUser() async {
   var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
   var response = await http.post(url);

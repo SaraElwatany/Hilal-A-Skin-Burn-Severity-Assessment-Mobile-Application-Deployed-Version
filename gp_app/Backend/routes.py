@@ -45,7 +45,10 @@ def intro():
 # Route to get the username and password in the login screen (Done)
 @main.route('/login', methods = ['POST'])
 def login_info():
-   # Get the data from the Json dictionary
+
+    global USER_ID
+
+    # Get the data from the Json dictionary
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -81,6 +84,7 @@ def login_info():
         print('Success, 'f'Email: {email}', f'Password: {password}')
         # Send a JSON response back to the client
         response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession)}
+        USER_ID = user.id
         return jsonify(response)
     
 
@@ -90,6 +94,9 @@ def login_info():
 # A route for the sign up screen (Done)
 @main.route('/signup', methods = ['POST'])
 def signup_info():
+
+    global USER_ID
+
     regex_1 = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
     regex_2 = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
     data = request.form
@@ -166,17 +173,18 @@ def signup_info():
                 db.session.add(new_user)
                 db.session.commit()
                 print('user id: ', new_user.id) # Get user ID
-                response = {'response': 'Signup successful'}
+                USER_ID = new_user.id
+                response = {'response': 'Signup successful', 'user_id': str(new_user.id)}
             except OperationalError:
                 print('Operational Error Encountered')
             except IntegrityError:
                 db.session.rollback()   # Rollback the transaction
                 print('Integrity Error: User with this email already exists')
-                response = {'response': 'Email already exists'}
+                response = {'response': 'Email already exists', 'user_id': str(0)}
             except Exception as e:
                 db.session.rollback()
                 print(f'Error during signup: {str(e)}')
-                response = {'response': 'Internal Server Error'}
+                response = {'response': 'Internal Server Error', 'user_id': str(0)}
             return jsonify(response)
 
 
@@ -212,8 +220,8 @@ def upload():
         #print('Data Type: ', type(IMAGE_DATA))
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         
-        # Get the user_id from the received request 
-        USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        # # Get the user_id from the received request 
+        # USER_ID = int(request.form['user_id'])  # Cast user id to integer
         print('User ID Associated with burn:', USER_ID)
 
         # Read the image file 
@@ -249,7 +257,7 @@ def upload():
                             rigors = 0, #'None'
                             cold_extremities = 0, #'None'
                             burn_type = 'None' #'None'
-                        )
+                            )
             
             # get the burn id for the already existed user
             #burn_id = new_burn.burn_id
@@ -275,7 +283,7 @@ def upload():
                             )
 
             # get the burn id for the guest user
-            #burn_id = new_burn.burn_id
+            # burn_id = new_burn.burn_id
             # add burn item to db
             db.session.merge(new_burn)
             db.session.commit() 
@@ -309,7 +317,7 @@ def burn_new():
         data = request.form
         print('Clinical Data: ', data)
 
-        rigors, vomitting, cold_extremities, nausea, diarrhea, burn_type = 0, 0, 0, 0, 0, 'None'
+        trembling_limbs, cold_extremities, diarrhea, nausea, burn_type = 0, 0, 0, 0, 'None'
 
         if not data:
             return jsonify({'response': 'Failed to Load info...'})    
@@ -320,12 +328,10 @@ def burn_new():
         #user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
 
         # Parse the received data
-        if 'rigors' in data: rigors = 1
-        else: rigors = 0
         if 'cold_extremities' in data: cold_extremities = 1
         else: cold_extremities = 0
-        if 'vomitting' in data: vomitting = 1
-        else: vomitting = 0
+        if 'trembling_limbs' in data: trembling_limbs = 1
+        else: trembling_limbs = 0
         if 'nausea' in data: nausea = 1
         else: nausea = 0
         if 'diarrhea' in data: diarrhea = 1
@@ -342,13 +348,13 @@ def burn_new():
             # Print the user id if it exists
             try:
                 USER_ID = user.fk_burn_user_id
-                print('Updated the Clinical Data For Signed Up User With ID; ', USER_ID)
+                print('Updated the Clinical Data For Signed Up User With ID: ', USER_ID)
             # Update Clinical Data For Signed Up & GUESTS Users 
             finally:
                 # add symptoms (clinical data) if sent
-                user.vomitting = vomitting
+                user.trembling_limbs = trembling_limbs
                 user.nausea = nausea
-                user.rigors = rigors
+                user.diarrhea = diarrhea
                 user.cold_extremities = cold_extremities
                 user.burn_type = burn_type
 
@@ -364,9 +370,9 @@ def burn_new():
             burn_date = date.today(),
             burn_img = 'NULL',
             burn_class_model = 0,
-            vomitting = vomitting, #'None'
+            trembling_limbs = trembling_limbs, #'None'
             nausea = nausea, #'None'
-            rigors = rigors, #'None'
+            diarrhea = diarrhea, #'None'
             cold_extremities = cold_extremities, #'None'
             burn_type = burn_type #'None'
             )
@@ -510,6 +516,10 @@ def update_burn():
     else: return "error: wrong method"
 
 
+
+
+
+
 # Endpoint to send a message
 @main.route('/send_message', methods=['POST'])
 def send_message():
@@ -525,6 +535,8 @@ def send_message():
     db.session.add(message)
     db.session.commit()
     return jsonify(message.to_dict()), 201
+
+
 
 
 
@@ -553,17 +565,21 @@ def get_chat_history():
 
 
 
-@main.route('/upload_audio', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return 'No file part'
-    file = request.files['file']
-    if file.filename == '':
-        return 'No selected file'
-    if file:
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return 'File uploaded successfully'
+
+
+# @main.route('/upload_audio', methods=['POST'])
+# def upload_file():
+#     if 'file' not in request.files:
+#         return 'No file part'
+#     file = request.files['file']
+#     if file.filename == '':
+#         return 'No selected file'
+#     if file:
+#         filename = secure_filename(file.filename)
+#         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#         return 'File uploaded successfully'
+
+
 
 
 
@@ -574,8 +590,11 @@ def get_user_location():
 
     global user_lat, user_lon
 
-    user_lat = float(request.args.get('lat', 0))
-    user_lon = float(request.args.get('lon', 0))
+    user_lat = float(request.args.get('user_latitude', 0))
+    user_lon = float(request.args.get('user_longitude', 0))
+
+    print('Received Latitude: ', user_lat)
+    print('Received Longitude: ', user_lon)
 
     if user_lat == 0 or user_lon == 0:
         return jsonify({"error": "Invalid coordinates"}), 400
@@ -593,6 +612,8 @@ def get_user_location():
 # Route to Get the Top 5 Nearest Burn Hospitals to the user & the model's prediction
 @main.route('/respond_to_user', methods=['POST'])
 def respond_to_user():
+
+    global user_lat, user_lon
 
     # Load hospitals data
     hospitals = load_hospitals_from_file()

@@ -80,15 +80,15 @@ void loadChatHistory() async {
       introMessageShown = true; // Ensure we don't add the intro message again.
     }
 
-    if (latestPrediction.isNotEmpty) {
+    if (Global.latestPrediction.isNotEmpty) {
       messages.add(ChatMessage(
-        message: latestPrediction,
+        message: Global.latestPrediction,
         receiver: false,
         timestamp: DateTime.now(),
         senderId: userId,
         receiverId: '1'
       ));
-      latestPrediction = ''; // Clear the prediction to avoid duplication.
+      Global.latestPrediction = ''; // Clear the prediction to avoid duplication.
     }
   }
 
@@ -103,7 +103,7 @@ void loadChatHistory() async {
         setState(() {
           messages.add(ChatMessage(
             message: 'New audio message',
-            audioUrl: path,
+            // audioUrl: path,
             receiver: false,
             timestamp: DateTime.now(),
             senderId: userId,
@@ -133,7 +133,7 @@ void loadChatHistory() async {
       message: text,
       receiver: true,
       imageFile: null,
-      audioUrl: null,  // Add this line if applicable
+      // audioUrl: null,  
       timestamp: DateTime.now(),
       senderId: userId,
       receiverId: '1'
@@ -172,7 +172,7 @@ void updateChatScreenWithPrediction(String prediction) {
             itemCount: messages.length,
             itemBuilder: (context, index) {
               final chatMessage = messages[index];
-              if (chatMessage.audioUrl != null) {
+              if (chatMessage.message != null) {
                 // If there's an audio URL, display both the audio player and the message text.
                 return Column(
                   children: [
@@ -180,10 +180,10 @@ void updateChatScreenWithPrediction(String prediction) {
                       title: Text(chatMessage.message),
                       subtitle: Text(chatMessage.receiver ? "Doctor" : "Patient"), // Displaying text message if available
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
-                    ),
+                    // Padding(
+                      // padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      // child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
+                    // ),
                   ],
                 );
               } else {

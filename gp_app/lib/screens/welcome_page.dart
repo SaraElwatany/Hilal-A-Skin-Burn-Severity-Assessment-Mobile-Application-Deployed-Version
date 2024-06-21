@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/screens/main_page.dart';
+import 'package:gp_app/screens/patient_location.dart';
 import 'package:gp_app/widgets/welcome_page_en.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/login_screen.dart';
@@ -80,12 +81,11 @@ class _WelcomePageState extends State<WelcomePage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  fixedSize: const Size(166, 69),
-                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
-                  ),
-                  
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                fixedSize: const Size(166, 69),
+                backgroundColor: const Color.fromARGB(255, 29, 49, 78),
+              ),
               child: Text(
                 S.of(context).start,
                 style: const TextStyle(
@@ -95,30 +95,52 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
           ),
-          const SizedBox(height: 20,)
-          ,
+          const SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainPageScreen()),
-                );
+                context,
+                MaterialPageRoute(builder: (context) => const MainPageScreen()),
+              );
             },
             style: ElevatedButton.styleFrom(
-                             shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  fixedSize: const Size(166, 69),
-                            backgroundColor: const Color.fromARGB(255, 156, 17, 17)
-
-                            ),
-           child: Text(S.of(context).emergency,
-           style: const TextStyle(
-                  fontSize: 24,
-                  color: Color.fromARGB(255, 255, 251, 251),
-                ),
-           ),
-           
-           )
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                fixedSize: const Size(166, 69),
+                backgroundColor: const Color.fromARGB(255, 156, 17, 17)),
+            child: Text(
+              S.of(context).emergency,
+              style: const TextStyle(
+                fontSize: 24,
+                color: Color.fromARGB(255, 255, 251, 251),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Location()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                fixedSize: const Size(250, 50),
+                backgroundColor: const Color.fromARGB(255, 29, 49, 78)),
+            child: const Text(
+              "Set your current location",
+              style: TextStyle(
+                fontSize: 18,
+                color: Color.fromARGB(255, 255, 251, 251),
+              ),
+            ),
+          )
         ],
       ),
     );
