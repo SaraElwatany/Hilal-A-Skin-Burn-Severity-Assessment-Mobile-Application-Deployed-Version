@@ -22,7 +22,7 @@ class DoctorMessagesWidget extends StatelessWidget {
               alignment: Alignment.topRight,
               child: (!doctorMessage.receiver)?
               Image.asset(
-                doctorMessage.imageFile!,
+                doctorMessage.image!,
               ):null,
             )
             ,

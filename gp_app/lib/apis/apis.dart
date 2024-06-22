@@ -116,7 +116,7 @@ void login_warning(context) {
       builder: (ctx) => AlertDialog(
             title: const Text('Invalid Input'),
             content: const Text(
-              'Please Enter a valid username or password',
+              'Please Enter a valid email or password',
             ),
             backgroundColor: Colors.white,
             actions: [
@@ -475,9 +475,7 @@ Future<List<ChatMessage>> fetchChatHistory(
 
   if (response.statusCode == 200) {
     List<dynamic> messagesJson = json.decode(response.body);
-    List<ChatMessage> messages = messagesJson
-        .map((messageJson) => ChatMessage.fromJson(messageJson))
-        .toList();
+    List<ChatMessage> messages = messagesJson.map((messageJson) => ChatMessage.fromJson(messageJson)).toList();
     return messages;
   } else {
     throw Exception('Failed to load chat history');
@@ -490,18 +488,25 @@ Future<void> _requestMicrophonePermission() async {
 
 Future<void> sendMessageToServer(ChatMessage message) async {
   try {
-    var url = Uri.parse(
-        'https://my-trial-t8wj.onrender.com/send_message'); // Replace with your server URL
+    var url = Uri.parse('https://my-trial-t8wj.onrender.com/send_message'); 
     var headers = {'Content-Type': 'application/json'};
-    var body =
-        jsonEncode(message.toJson()); // Convert ChatMessage to JSON string
+    var body = jsonEncode({
+      'sender_id': message.senderId,
+      'receiver_id': message.receiverId,
+      'message': message.message,
+      'image': message.image,
+      'timestamp': message.timestamp.toIso8601String(),
+    });
+
+    print('Sending JSON: $body');  // Print the JSON payload for debugging
 
     var response = await http.post(url, headers: headers, body: body);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       print('Message sent successfully');
     } else {
       print('Failed to send message. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
       throw Exception('Failed to send message');
     }
   } catch (e) {
@@ -509,6 +514,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
     throw Exception('Error sending message: $e');
   }
 }
+
 
 Future<void> loginUser(String email, String password) async {
   // Example endpoint URL (replace with your Flask server URL)

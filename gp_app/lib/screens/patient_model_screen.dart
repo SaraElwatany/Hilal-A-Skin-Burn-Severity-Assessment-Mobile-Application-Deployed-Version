@@ -4,6 +4,7 @@ import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
+import 'package:gp_app/models/global.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
@@ -84,12 +85,9 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   void loadChatHistory() async {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
-
     try {
       List<ChatMessage> fetchedMessages =
-          await fetchChatHistory(userId, '1'); // Receiver ID set to 1
+          await fetchChatHistory(Global.user_id, '1'); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -101,9 +99,6 @@ class PatientModelChatState extends State<PatientModelChat> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
 
     if (messages.isEmpty && !introMessageShown) {
       updateChatScreenWithIntro();
@@ -117,8 +112,6 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   void _toggleRecording() async {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
 
     if (_isRecording) {
       final path = await _recorder.stopRecorder();
@@ -129,7 +122,7 @@ class PatientModelChatState extends State<PatientModelChat> {
               // audioUrl: path,
               receiver: false,
               timestamp: DateTime.now(),
-              senderId: userId,
+              senderId: Global.user_id,
               receiverId: '1'));
         });
       }
@@ -145,15 +138,15 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   void _sendMessage() {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
+  final myState = Provider.of<MyState>(context, listen: false);
+  String userId = myState.userId;
 
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final message = ChatMessage(
           message: text,
           receiver: true,
-          imageFile: null,
+          image: null,
           // audioUrl: null,
           timestamp: DateTime.now(),
           senderId: userId,
@@ -167,7 +160,9 @@ class PatientModelChatState extends State<PatientModelChat> {
         _messageController.clear();
       });
     }
+    else print('message is empty');
   }
+
 
   // Function to (Sara)
   void updateChatScreenWithIntro() {
@@ -195,7 +190,9 @@ class PatientModelChatState extends State<PatientModelChat> {
               'Your Burn Degree is $prediction. I advise you to use bla bla bla', // Modify the advice as needed
           receiver: false,
           senderId: userId,
-          receiverId: '1'));
+          receiverId: '1',
+          timestamp: DateTime.now()
+          ));
     });
   }
 
@@ -216,7 +213,8 @@ class PatientModelChatState extends State<PatientModelChat> {
             message: '$hospitalMessage\n[View on Maps]($mapsLink)',
             receiver: false,
             senderId: userId,
-            receiverId: '1'));
+            receiverId: '1',
+            timestamp: DateTime.now()));
       }
     });
   }
@@ -267,8 +265,8 @@ class PatientModelChatState extends State<PatientModelChat> {
                               )
                             : Text(chatMessage.message),
                         subtitle: Text(chatMessage.receiver
-                            ? "Doctor"
-                            : "Patient"), // Displaying text message if available
+                            ? "Patient"
+                            : "Doctor"), // Displaying text message if available
                       ),
                       // Padding(
                       // padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

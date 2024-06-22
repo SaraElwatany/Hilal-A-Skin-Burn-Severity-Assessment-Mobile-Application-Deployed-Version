@@ -91,31 +91,30 @@ class DocterModelChatState extends State<DocterModelChat> {
   }
 
   void _sendMessage() {
-
   final myState = Provider.of<MyState>(context, listen: false);
-  String userId = myState.userId;
+    String userId = myState.userId;
 
-  final text = _messageController.text.trim();
-  if (text.isNotEmpty) {
-    final message = ChatMessage(
-      message: text,
-      receiver: true,
-      imageFile: null,
-      // audioUrl: null,  
-      timestamp: DateTime.now(),
-      senderId: userId,
-      receiverId: '1'
-    );
+    final text = _messageController.text.trim();
+    if (text.isNotEmpty) {
+      final message = ChatMessage(
+          message: text,
+          receiver: true,
+          image: null,
+          // audioUrl: null,
+          timestamp: DateTime.now(),
+          senderId: userId,
+          receiverId: '1');
 
-    // Send the message to the server
-    sendMessageToServer(message);
+      // Send the message to the server
+      sendMessageToServer(message);
 
-    setState(() {
-      messages.add(message);
-      _messageController.clear();
-    });
+      setState(() {
+        messages.add(message);
+        _messageController.clear();
+      });
+    }
+    else print('message is empty');
   }
-}
 
 //marina
 
@@ -128,22 +127,22 @@ class DocterModelChatState extends State<DocterModelChat> {
           ListView.builder(
             itemCount: messages.length,
             itemBuilder: (context, index) {
-              // final chatMessage = messages[index];
-              // if (chatMessage.audioUrl != null) {
-              //   // If there's an audio URL, display both the audio player and the message text.
-              //   return Column(
-              //     children: [
-              //       ListTile(
-              //         title: Text(chatMessage.message),
-              //         subtitle:  Text(chatMessage.receiver ? "Doctor" : "Patient"),// Displaying text message if available
-              //       ),
-              //       Padding(
-              //         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              //         child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
-              //       ),
-              //     ],
-              //   );
-              // } 
+              final chatMessage = messages[index];
+              if (chatMessage.message != null) {
+                // If there's an audio URL, display both the audio player and the message text.
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(chatMessage.message),
+                      subtitle:  Text(chatMessage.receiver ? "Doctor" : "Patient"),// Displaying text message if available
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      // child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
+                    ),
+                  ],
+                );
+              } 
             },
           ),
           Align(
