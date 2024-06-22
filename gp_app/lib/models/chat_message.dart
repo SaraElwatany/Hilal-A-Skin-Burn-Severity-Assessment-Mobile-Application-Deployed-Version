@@ -18,7 +18,7 @@ class ChatMessage {
   // Factory constructor to create a ChatMessage from JSON
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
-      message: json['message'] as String,
+      message: json['message'] as String? ?? "Default message",
       receiver: json['receiver'] as bool?,
       image: json['image'] as String?,
       senderId: json['senderId'] as String,
