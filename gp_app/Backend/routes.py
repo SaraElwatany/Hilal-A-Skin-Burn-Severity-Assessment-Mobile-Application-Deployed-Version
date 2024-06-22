@@ -27,7 +27,8 @@ from .functions import load_img, transform, load_model, predict, convert_to_obj,
 
 
 main = Blueprint('main', __name__)
-socketio = SocketIO(main, cors_allowed_origins="*")
+# Initialize socketio
+socketio = SocketIO(cors_allowed_origins="*")
 
 
 # Initialize Global variables

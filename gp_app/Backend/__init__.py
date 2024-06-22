@@ -20,4 +20,8 @@ def create_app():
     socketio = SocketIO(app, cors_allowed_origins='*')
     db.init_app(app)
     app.register_blueprint(main)
+    
+    # Initialize SocketIO with the app
+    socketio.init_app(app)
+
     return app
