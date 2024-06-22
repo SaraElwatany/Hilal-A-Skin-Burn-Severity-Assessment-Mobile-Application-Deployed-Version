@@ -7,7 +7,7 @@ class Burn(db.Model):
     fk_burn_user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable= True)#, autoincrement=True
     burn_date = db.Column(db.Date, nullable=True , default=None)
     burn_class_model = db.Column(db.Integer(), nullable= True)
-    burn_img = db.Column(db.LargeBinary())
+    burn_img = db.Column(db.LargeBinary(), nullable=True)       # Allow NULL Values
     # burn_img = db.Column(db.String(1500))
     dr_id = db.Column(db.Integer())
     burn_class_dr = db.Column(db.Integer(), nullable= True)

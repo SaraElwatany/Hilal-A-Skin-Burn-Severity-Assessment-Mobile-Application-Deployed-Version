@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`burn` (
   `fk_burn_user_id` INT NULL,
   `burn_date` DATETIME NOT NULL,
   `burn_class_model` INT NULL,
-  `burn_img` LONGBLOB,  -- Storing file as BLOB
+  `burn_img` LONGBLOB NULL,  -- Allowing NULL for the image  -- Storing file as BLOB
   `dr_id` INT NULL,
   `burn_class_dr` INT NULL,
   `dr_reply` VARCHAR(500) NULL,
