@@ -471,15 +471,15 @@ Future<List<ChatMessage>> fetchChatHistory(
     String senderId, String receiverId) async {
   var url = Uri.parse(
       'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
-    try {
-          var response = await http.get(url);
+  try {
+    var response = await http.get(url);
 
-          if (response.statusCode == 200) {
-            List<dynamic> data = jsonDecode(response.body);
-              return data.map((item) => ChatMessage.fromJson(item)).toList();
-            } else {
-              throw Exception('Failed to load chat history');
-            }
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      return data.map((item) => ChatMessage.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load chat history');
+    }
   } catch (e) {
     throw Exception('Error fetching chat history: $e');
   }
@@ -491,7 +491,7 @@ Future<void> _requestMicrophonePermission() async {
 
 Future<void> sendMessageToServer(ChatMessage message) async {
   try {
-    var url = Uri.parse('https://my-trial-t8wj.onrender.com/send_message'); 
+    var url = Uri.parse('https://my-trial-t8wj.onrender.com/send_message');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({
       'sender_id': message.senderId,
@@ -501,7 +501,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       'timestamp': message.timestamp.toIso8601String(),
     });
 
-    print('Sending JSON: $body');  // Print the JSON payload for debugging
+    print('Sending JSON: $body'); // Print the JSON payload for debugging
 
     var response = await http.post(url, headers: headers, body: body);
 
@@ -517,7 +517,6 @@ Future<void> sendMessageToServer(ChatMessage message) async {
     throw Exception('Error sending message: $e');
   }
 }
-
 
 Future<void> loginUser(String email, String password) async {
   // Example endpoint URL (replace with your Flask server URL)
@@ -645,8 +644,6 @@ Future<void> getHospitals() async {
     print('Error: $e');
   }
 }
-
-
 
 // Function to ....
 Future<void> respondToUser() async {
