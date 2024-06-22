@@ -13,14 +13,14 @@ class DoctorMessagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: doctorMessage.receiver ? Alignment.topRight : Alignment.topLeft,
+      alignment: doctorMessage.receiver ?? false ? Alignment.topRight : Alignment.topLeft,
       child: Container(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Column(
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: (!doctorMessage.receiver)?
+              child: (doctorMessage.receiver == false)?
               Image.asset(
                 doctorMessage.image!,
               ):null,
@@ -28,7 +28,7 @@ class DoctorMessagesWidget extends StatelessWidget {
             ,
             const SizedBox(height: 20,),
             Row(
-              mainAxisAlignment: doctorMessage.receiver
+              mainAxisAlignment: (doctorMessage.receiver == false)
                   ? MainAxisAlignment.end
                   : MainAxisAlignment.start,
               children: [
@@ -37,7 +37,7 @@ class DoctorMessagesWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: (!doctorMessage.receiver
+                      color: ((doctorMessage.receiver == false)
                           ? Theme.of(context).colorScheme.surface
                           : const Color.fromARGB(255, 106, 105, 105)),
                     ),
@@ -45,10 +45,10 @@ class DoctorMessagesWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Visibility(
-                          visible: !doctorMessage.receiver,
+                          visible: (doctorMessage.receiver == false),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 4.0, left: 4.0),
-                            child: (!doctorMessage.receiver
+                            child: (doctorMessage.receiver == false
                                 ? Image.asset(
                                     'assets/images/Hilal.png',
                                     width: 40, 
@@ -66,7 +66,7 @@ class DoctorMessagesWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10,),
             Visibility(
-              visible:!doctorMessage.receiver, 
+              visible:(doctorMessage.receiver == false), 
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -132,7 +132,7 @@ class DocterModelChatState extends State<DocterModelChat> {
                   children: [
                     ListTile(
                       title: Text(chatMessage.message),
-                      subtitle:  Text(chatMessage.receiver ? "Doctor" : "Patient"),// Displaying text message if available
+                      subtitle:  Text(chatMessage.receiver==true ? "Doctor" : "Patient"),// Displaying text message if available
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

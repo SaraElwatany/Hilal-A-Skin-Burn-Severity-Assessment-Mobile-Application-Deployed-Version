@@ -262,7 +262,7 @@ class PatientModelChatState extends State<PatientModelChat> {
                                 ),
                               )
                             : Text(chatMessage.message),
-                        subtitle: Text(chatMessage.receiver
+                        subtitle: Text(chatMessage.receiver ?? false
                             ? "Patient"
                             : "Doctor"), // Displaying text message if available
                       ),

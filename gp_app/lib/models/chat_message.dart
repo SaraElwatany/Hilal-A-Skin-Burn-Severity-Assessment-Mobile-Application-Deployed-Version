@@ -3,7 +3,7 @@ class ChatMessage {
   final String receiverId;
   final String message;
   final String? image;
-  final bool receiver;
+  final bool? receiver;
   final DateTime timestamp;
 
   ChatMessage({
@@ -19,7 +19,7 @@ class ChatMessage {
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
       message: json['message'] as String,
-      receiver: json['receiver'] as bool,
+      receiver: json['receiver'] as bool?,
       image: json['image'] as String?,
       senderId: json['senderId'] as String,
       receiverId: json['receiverId'] as String,
