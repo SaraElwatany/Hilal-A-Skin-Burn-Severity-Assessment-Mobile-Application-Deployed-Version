@@ -114,7 +114,6 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   void _toggleRecording() async {
-
     if (_isRecording) {
       final path = await _recorder.stopRecorder();
       if (path != null) {
@@ -139,8 +138,8 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   void _sendMessage() {
-  final myState = Provider.of<MyState>(context, listen: false);
-  String userId = myState.userId;
+    final myState = Provider.of<MyState>(context, listen: false);
+    String userId = myState.userId;
 
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
@@ -159,10 +158,9 @@ class PatientModelChatState extends State<PatientModelChat> {
         messages.add(message);
         _messageController.clear();
       });
-    }
-    else print('message is empty');
+    } else
+      print('message is empty');
   }
-
 
   // Function to (Sara)
   void updateChatScreenWithIntro() {
@@ -174,7 +172,8 @@ class PatientModelChatState extends State<PatientModelChat> {
           message: S.of(context).Intro,
           receiver: false,
           timestamp: DateTime.now(),
-          senderId: userId,
+          // senderId: userId, (Sara)
+          senderId: '2',
           receiverId: '1'));
     });
   }
@@ -191,8 +190,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiver: false,
           senderId: userId,
           receiverId: '1',
-          timestamp: DateTime.now()
-          ));
+          timestamp: DateTime.now()));
     });
   }
 

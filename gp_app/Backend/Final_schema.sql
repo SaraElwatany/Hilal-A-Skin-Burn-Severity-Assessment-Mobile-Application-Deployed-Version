@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`burn` (
   `fk_burn_user_id` INT NULL,
   `burn_date` DATETIME NOT NULL,
   `burn_class_model` INT NULL,
-  `burn_img` LONGBLOB,  -- Storing file as BLOB
+  `burn_img` LONGBLOB NULL,  -- Allowing NULL for the image  -- Storing file as BLOB
   `dr_id` INT NULL,
   `burn_class_dr` INT NULL,
   `dr_reply` VARCHAR(500) NULL,
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
-    audio_url VARCHAR(500),
+    -- audio_url VARCHAR(500),
     message VARCHAR(500) NOT NULL,
     image VARCHAR(500),
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,

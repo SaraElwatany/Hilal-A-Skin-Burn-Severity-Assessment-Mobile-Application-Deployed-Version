@@ -15,16 +15,16 @@ class ChatMessage {
     required this.timestamp,
   });
 
-
   // Factory constructor to create a ChatMessage from JSON
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
       message: json['message'] as String,
       receiver: json['receiver'] as bool,
-      image: json['image'] as String?,  
+      image: json['image'] as String?,
       senderId: json['senderId'] as String,
       receiverId: json['receiverId'] as String,
-      timestamp: DateTime.parse(json['timestamp'] as String),  // Assuming 'timestamp' is in ISO 8601 format
+      timestamp: DateTime.parse(json['timestamp']
+          as String), // Assuming 'timestamp' is in ISO 8601 format
     );
   }
 
@@ -34,11 +34,9 @@ class ChatMessage {
       'message': message,
       'receiver': receiver,
       'image': image,
-       'senderId': senderId,
+      'senderId': senderId,
       'receiverId': receiverId,
       'timestamp': timestamp.toIso8601String(),
     };
   }
-
 }
-

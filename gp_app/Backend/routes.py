@@ -228,6 +228,7 @@ def upload():
         print('The file received from App: ', file)
         # Read image data as bytes
         image_data = file.read()        # BLOB File 
+        print('burn_img is a file with type:', type(image_data))
         image = convert_to_obj(image_data)
         #image = np.array(image)
         # Preprocess the image (if needed)
@@ -368,7 +369,7 @@ def burn_new():
             new_burn = Burn(
             #fk_burn_user_id = USER_ID,  # USER_ID
             burn_date = date.today(),
-            burn_img = 'NULL',
+            burn_img = None,
             burn_class_model = 0,
             trembling_limbs = trembling_limbs, #'None'
             nausea = nausea, #'None'
