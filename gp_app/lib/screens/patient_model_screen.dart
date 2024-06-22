@@ -179,7 +179,8 @@ class PatientModelChatState extends State<PatientModelChat> {
           message: S.of(context).Intro,
           receiver: false,
           timestamp: DateTime.now(),
-          senderId: userId,
+          // senderId: userId, (Sara)
+          senderId: '2',
           receiverId: '1'));
     });
   }
@@ -213,10 +214,12 @@ class PatientModelChatState extends State<PatientModelChat> {
             'https://www.google.com/maps/search/?api=1&query=${hospital['lat']},${hospital['lon']}';
 
         messages.add(ChatMessage(
-            message: '$hospitalMessage\n[View on Maps]($mapsLink)',
-            receiver: false,
-            senderId: userId,
-            receiverId: '1'));
+          message: '$hospitalMessage\n[View on Maps]($mapsLink)',
+          receiver: false,
+          timestamp: DateTime.now(),
+          senderId: '2',
+          receiverId: '1',
+        ));
       }
     });
   }
