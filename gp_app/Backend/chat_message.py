@@ -8,7 +8,6 @@ class ChatMessage(db.Model):
     receiver_id = db.Column(db.Integer, nullable=False)
     message = db.Column(db.String(500), nullable=False)
     image = db.Column(db.String(500), nullable=True)
-    # audio_url = db.Column(db.String(500), nullable=True) 
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
 
     def to_dict(self):
@@ -18,6 +17,5 @@ class ChatMessage(db.Model):
             'receiver_id': self.receiver_id,
             'message': self.message,
             'image': self.image,
-            # 'audio_url': self.audio_url,  # Add this line
             'timestamp': self.timestamp.isoformat(),
         }
