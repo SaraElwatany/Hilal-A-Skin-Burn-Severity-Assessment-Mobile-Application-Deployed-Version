@@ -10,7 +10,6 @@ import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
 import 'package:provider/provider.dart';
 
-
 String url = '';
 String username = '';
 String password = '';
@@ -30,6 +29,13 @@ class _LoginPageState extends State<LoginPage> {
   var _enteredPassword = '';
   final List<UserInfo> _userInfoList = [];
 
+  // Call logout function when the screen is first loaded
+  @override
+  void initState() {
+    super.initState();
+    logout();
+  }
+
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -46,8 +52,8 @@ class _LoginPageState extends State<LoginPage> {
       String response = await sendData(username, password, context);
       //  printUserInfoList();
       if (response == 'Access Allowed') {
-        Navigator.of(context).push(
-              MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
         // if (UserProfession == 'patient') {
         //   Navigator.of(context).push(
         //       MaterialPageRoute(builder: (ctx) => const MainPageScreen()));

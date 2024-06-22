@@ -226,6 +226,26 @@ bool isValidEmail(String email) {
   return emailRegex.hasMatch(email);
 }
 
+// Function to delete flask session when logged out from account
+void logout() async {
+  String url =
+      'https://my-trial-t8wj.onrender.com/logout'; // Replace with your actual logout endpoint URL
+
+  try {
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      // Successful logout
+      print('Logged out successfully');
+      // Optionally, navigate to another screen or perform other actions after logout
+    } else {
+      print('Failed to logout: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error during logout: $e');
+  }
+}
+
 // Function to send the captured image to the prediction
 Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   try {

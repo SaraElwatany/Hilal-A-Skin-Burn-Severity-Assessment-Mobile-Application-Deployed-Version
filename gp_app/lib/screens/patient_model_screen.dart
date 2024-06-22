@@ -74,7 +74,7 @@ class PatientModelChatState extends State<PatientModelChat> {
     super.initState();
     // loadChatHistory();
     // AudioApi.initRecorder();
-    fetchPredictionAndHospitals(); // Fetch data from the server
+    // fetchPredictionAndHospitals(); // Fetch data from the server
   }
 
   @override

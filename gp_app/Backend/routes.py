@@ -10,7 +10,7 @@ from flask_socketio import SocketIO
 from sqlalchemy.exc import IntegrityError
 from  sqlalchemy.exc import OperationalError
 from flask import Blueprint, redirect, url_for
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -89,7 +89,8 @@ def login_info():
         print('Success, 'f'Email: {email}', f'Password: {password}')
         # Send a JSON response back to the client
         response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession)}
-        USER_ID = user.id
+        # USER_ID = user.id
+        session['user_id'] = user.id  # Store user ID in session
         return jsonify(response)
     
 
@@ -178,7 +179,8 @@ def signup_info():
                 db.session.add(new_user)
                 db.session.commit()
                 print('user id: ', new_user.id) # Get user ID
-                USER_ID = new_user.id
+                # USER_ID = new_user.id
+                session['user_id'] = new_user.id    # Store new signed up user ID in session
                 response = {'response': 'Signup successful', 'user_id': str(new_user.id)}
             except OperationalError:
                 print('Operational Error Encountered')
@@ -227,7 +229,9 @@ def upload():
         
         # # Get the user_id from the received request 
         # USER_ID = int(request.form['user_id'])  # Cast user id to integer
-        print('User ID Associated with burn:', USER_ID)
+        # print('User ID Associated with burn:', USER_ID)
+        user_id = session.get('user_id')
+        print('User ID Associated with burn:', user_id)
 
         # Read the image file 
         print('The file received from App: ', file)
@@ -250,11 +254,11 @@ def upload():
 
         # Try To Get the user associated with that id, if error encountered then the user is a guest
         # If the user already exists
-        if User.query.filter_by(id=USER_ID).first():
+        if User.query.filter_by(id=user_id).first():
             print('Creating a new burn item for the pre-existing/signed up user......')
             # create new burn item and add to db
             new_burn = Burn(
-                            fk_burn_user_id = USER_ID,
+                            fk_burn_user_id = user_id,
                             burn_date = date.today(),
                             burn_img = image_data,
                             burn_class_model = int(output),
@@ -317,6 +321,8 @@ def burn_new():
 
     global BURN_ID, USER_ID, prediction 
 
+    user_id = session.get('user_id')
+
     if request.method == 'POST':
 
         print('burn item received')
@@ -328,10 +334,10 @@ def burn_new():
         if not data:
             return jsonify({'response': 'Failed to Load info...'})    
 
-        #BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
+        # BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
         print('Received Burn ID: ', BURN_ID)
         # Get the latest burn item added for that user
-        #user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
+        # user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
 
         # Parse the received data
         if 'cold_extremities' in data: cold_extremities = 1
@@ -353,8 +359,8 @@ def burn_new():
             user = Burn.query.filter_by(burn_id=BURN_ID).first()
             # Print the user id if it exists
             try:
-                USER_ID = user.fk_burn_user_id
-                print('Updated the Clinical Data For Signed Up User With ID: ', USER_ID)
+                # USER_ID = user.fk_burn_user_id
+                print('Updated the Clinical Data For Signed Up User With ID: ', user_id)
             # Update Clinical Data For Signed Up & GUESTS Users 
             finally:
                 # add symptoms (clinical data) if sent
@@ -658,3 +664,14 @@ def respond_to_user():
                }
 
     return jsonify(response)
+
+
+
+
+
+# Logout route
+@main.route('/logout', methods=['POST'])
+def logout():
+    session.pop('user_id', None)  # Clear user session data
+    print('Logged out successfully')
+    return jsonify({'response': 'Logged out successfully'})
