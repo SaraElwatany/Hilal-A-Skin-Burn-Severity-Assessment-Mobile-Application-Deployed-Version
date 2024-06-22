@@ -86,8 +86,10 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   void loadChatHistory() async {
     try {
+      final myState = Provider.of<MyState>(context, listen: false);
+      String userId = myState.userId;
       List<ChatMessage> fetchedMessages =
-          await fetchChatHistory(Global.user_id, '1'); // Receiver ID set to 1
+          await fetchChatHistory(userId, '1'); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -119,7 +121,6 @@ class PatientModelChatState extends State<PatientModelChat> {
         setState(() {
           messages.add(ChatMessage(
               message: 'New audio message',
-              // audioUrl: path,
               receiver: false,
               timestamp: DateTime.now(),
               senderId: Global.user_id,
@@ -147,7 +148,6 @@ class PatientModelChatState extends State<PatientModelChat> {
           message: text,
           receiver: true,
           image: null,
-          // audioUrl: null,
           timestamp: DateTime.now(),
           senderId: userId,
           receiverId: '1');

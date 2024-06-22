@@ -23,6 +23,7 @@ from .chat_message import ChatMessage
 from .model import MyModel
 from .functions import load_img, transform, load_model, predict, convert_to_obj, load_hospitals_from_file, haversine
 
+socketio = SocketIO(main, cors_allowed_origins="*")
 
 main = Blueprint('main', __name__)
 
@@ -540,6 +541,8 @@ def send_message():
         )
         db.session.add(message)
         db.session.commit()
+        socketio.emit('message', message.to_dict())  # Emit the message to all connected clients
+
         return jsonify(message.to_dict()), 201
     except Exception as e:
         print(f"Error: {e}")
@@ -550,26 +553,29 @@ def send_message():
 # Endpoint to retrieve chat history
 @main.route('/get_chat_history', methods=['GET'])
 def get_chat_history():
-    sender_id = request.args.get('sender_id')
-    receiver_id = request.args.get('receiver_id')
-
-    if not sender_id or not receiver_id:
-        return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
-
     try:
-        sender_id = int(sender_id)
-        receiver_id = int(receiver_id)
-    except ValueError:
-        return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
+        sender_id = request.args.get('sender_id')
+        receiver_id = request.args.get('receiver_id')
 
-    chat_history = ChatMessage.query.filter(
-        ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
-        | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
-    ).all()
+        if not sender_id or not receiver_id:
+            return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
 
-    return jsonify([message.to_dict() for message in chat_history]), 200
+        try:
+            sender_id = int(sender_id)
+            receiver_id = int(receiver_id)
+        except ValueError:
+            return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
 
+        chat_history = ChatMessage.query.filter(
+            ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
+            | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
+        ).order_by(ChatMessage.timestamp.asc()).all()
 
+        return jsonify([message.to_dict() for message in chat_history]), 200
+
+    except Exception as e:
+            print(f"Error: {e}")
+            return jsonify({'error': str(e)}), 500
 
 
 

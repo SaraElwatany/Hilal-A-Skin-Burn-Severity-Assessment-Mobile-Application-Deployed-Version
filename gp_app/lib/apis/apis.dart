@@ -471,14 +471,17 @@ Future<List<ChatMessage>> fetchChatHistory(
     String senderId, String receiverId) async {
   var url = Uri.parse(
       'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
-  var response = await http.get(url);
+    try {
+          var response = await http.get(url);
 
-  if (response.statusCode == 200) {
-    List<dynamic> messagesJson = json.decode(response.body);
-    List<ChatMessage> messages = messagesJson.map((messageJson) => ChatMessage.fromJson(messageJson)).toList();
-    return messages;
-  } else {
-    throw Exception('Failed to load chat history');
+          if (response.statusCode == 200) {
+            List<dynamic> data = jsonDecode(response.body);
+              return data.map((item) => ChatMessage.fromJson(item)).toList();
+            } else {
+              throw Exception('Failed to load chat history');
+            }
+  } catch (e) {
+    throw Exception('Error fetching chat history: $e');
   }
 }
 

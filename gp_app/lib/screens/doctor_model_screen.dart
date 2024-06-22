@@ -71,7 +71,6 @@ class DocterModelChatState extends State<DocterModelChat> {
         setState(() {
           messages.add(ChatMessage(
             message: 'New audio message',
-            // audioUrl: path,
             receiver: false,
             timestamp: DateTime.now(),
             senderId: userId,
@@ -100,7 +99,6 @@ class DocterModelChatState extends State<DocterModelChat> {
           message: text,
           receiver: true,
           image: null,
-          // audioUrl: null,
           timestamp: DateTime.now(),
           senderId: userId,
           receiverId: '1');
