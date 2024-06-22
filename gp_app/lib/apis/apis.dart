@@ -467,22 +467,26 @@ Future<List<Patient>> getPatients() async {
 //     }
 // }
 
-Future<List<ChatMessage>> fetchChatHistory(
-    String senderId, String receiverId) async {
+Future<List<ChatMessage>> fetchChatHistory(String senderId, String receiverId) async {
   var url = Uri.parse(
       'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
     try {
           var response = await http.get(url);
 
           if (response.statusCode == 200) {
-            List<dynamic> data = jsonDecode(response.body);
-              return data.map((item) => ChatMessage.fromJson(item)).toList();
+            if (response.body != null) {
+                 List<dynamic> data = jsonDecode(response.body);
+                      return data.map((item) => ChatMessage.fromJson(item)).toList();
             } else {
-              throw Exception('Failed to load chat history');
+              throw Exception('Response body is null');
             }
-  } catch (e) {
-    throw Exception('Error fetching chat history: $e');
-  }
+           
+          } else {
+            throw Exception('Failed to load chat history');
+          }
+    } catch (e) {
+      throw Exception('Error fetching chat history: $e');
+    }
 }
 
 Future<void> _requestMicrophonePermission() async {

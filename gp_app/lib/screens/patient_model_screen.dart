@@ -72,7 +72,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   @override
   void initState() {
     super.initState();
-    // loadChatHistory();
+    loadChatHistory();
     // AudioApi.initRecorder();
     fetchPredictionAndHospitals(); // Fetch data from the server
   }

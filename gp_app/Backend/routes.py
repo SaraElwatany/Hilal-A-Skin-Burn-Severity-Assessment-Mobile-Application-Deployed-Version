@@ -23,7 +23,6 @@ from .chat_message import ChatMessage
 from .model import MyModel
 from .functions import load_img, transform, load_model, predict, convert_to_obj, load_hospitals_from_file, haversine
 
-socketio = SocketIO(main, cors_allowed_origins="*")
 
 main = Blueprint('main', __name__)
 
@@ -541,7 +540,6 @@ def send_message():
         )
         db.session.add(message)
         db.session.commit()
-        socketio.emit('message', message.to_dict())  # Emit the message to all connected clients
 
         return jsonify(message.to_dict()), 201
     except Exception as e:
