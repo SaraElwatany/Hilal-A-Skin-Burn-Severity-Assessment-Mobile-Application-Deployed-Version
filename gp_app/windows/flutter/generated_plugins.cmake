@@ -3,11 +3,14 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audioplayers_windows
+  file_selector_windows
   geolocator_windows
   permission_handler_windows
+<<<<<<< HEAD
   record_windows
   url_launcher_windows
+=======
+>>>>>>> parent of aebf503 (voice note)
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
