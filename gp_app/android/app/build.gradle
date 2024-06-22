@@ -47,15 +47,25 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
+        // minSdkVersion 23
+        // targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        // multiDexEnabled true
+        
     }
 
     buildTypes {
         release {
+            // minifyEnabled false
+            // shrinkResources true
+            // minifyEnabled = true
+            // shrinkResources = true
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+                  
+
         }
     }
 }

@@ -22,7 +22,6 @@ class _HomeScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: const LocalizationIcon(),
 
@@ -89,11 +88,12 @@ class _HomeScreenState extends State<CameraScreen> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
                           // builder: (ctx) => const ChatScreen()));
-                          builder: (ctx) =>  
-                          ClinicalDataScreen(),),); //edittt recieverID
+                          builder: (ctx) => ClinicalDataScreen(),
+                        ),
+                      ); //edittt recieverID
                       // Check if nullableFile is not null before casting
                       if (imageFile != null) {
                         File nonNullableFile = imageFile as File;
@@ -257,5 +257,4 @@ class _HomeScreenState extends State<CameraScreen> {
       // reload();
     }
   }
-
 }
