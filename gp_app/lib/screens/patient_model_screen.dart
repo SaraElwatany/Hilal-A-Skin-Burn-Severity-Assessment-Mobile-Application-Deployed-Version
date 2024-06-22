@@ -52,6 +52,10 @@ class PatientModelChatState extends State<PatientModelChat> {
           List<dynamic> hospitals = responseBody['hospitals'];
 
           String prediction = responseBody['prediction'];
+          Global.latestPrediction =
+              prediction; // Store prediction in global variable
+
+          updateChatScreenWithIntro();
           updateChatScreenWithPrediction(prediction); // Display prediction
           updateChatScreenWithHospitals(hospitals); // Display hospitals
         }
@@ -67,7 +71,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   @override
   void initState() {
     super.initState();
-    loadChatHistory();
+    // loadChatHistory();
     // AudioApi.initRecorder();
     fetchPredictionAndHospitals(); // Fetch data from the server
   }
@@ -102,24 +106,13 @@ class PatientModelChatState extends State<PatientModelChat> {
     String userId = myState.userId;
 
     if (messages.isEmpty && !introMessageShown) {
-      messages.add(ChatMessage(
-          message: S.of(context).Intro,
-          receiver: false,
-          timestamp: DateTime.now(),
-          senderId: userId,
-          receiverId: '1'));
-      introMessageShown = true; // Ensure we don't add the intro message again.
+      updateChatScreenWithIntro();
+      introMessageShown = true;
     }
 
+    // Add the burn prediction message if available
     if (Global.latestPrediction.isNotEmpty) {
-      messages.add(ChatMessage(
-          message: Global.latestPrediction,
-          receiver: false,
-          timestamp: DateTime.now(),
-          senderId: userId,
-          receiverId: '1'));
-      Global.latestPrediction =
-          ''; // Clear the prediction to avoid duplication.
+      updateChatScreenWithPrediction(Global.latestPrediction);
     }
   }
 
@@ -176,20 +169,37 @@ class PatientModelChatState extends State<PatientModelChat> {
     }
   }
 
+  // Function to (Sara)
+  void updateChatScreenWithIntro() {
+    final myState = Provider.of<MyState>(context, listen: false);
+    String userId = myState.userId;
+
+    setState(() {
+      messages.add(ChatMessage(
+          message: S.of(context).Intro,
+          receiver: false,
+          timestamp: DateTime.now(),
+          senderId: userId,
+          receiverId: '1'));
+    });
+  }
+
+  // Function to display the initial message from the model (Model Prediction & the Treatment Protocol)
   void updateChatScreenWithPrediction(String prediction) {
     final myState = Provider.of<MyState>(context, listen: false);
     String userId = myState.userId;
 
     setState(() {
       messages.add(ChatMessage(
-          message: prediction,
+          message:
+              'Your Burn Degree is $prediction. I advise you to use bla bla bla', // Modify the advice as needed
           receiver: false,
           senderId: userId,
           receiverId: '1'));
     });
   }
 
-// Update chat screen with the list of nearest hospitals (Sara)
+  // Update chat screen with the list of nearest hospitals (Sara)
   void updateChatScreenWithHospitals(List<dynamic> hospitals) {
     final myState = Provider.of<MyState>(context, listen: false);
     String userId = myState.userId;
