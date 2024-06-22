@@ -6,6 +6,7 @@ import torch.nn as nn
 from datetime import date
 from torchvision import models
 from datetime import datetime
+from flask_socketio import SocketIO
 from sqlalchemy.exc import IntegrityError
 from  sqlalchemy.exc import OperationalError
 from flask import Blueprint, redirect, url_for
@@ -24,7 +25,10 @@ from .model import MyModel
 from .functions import load_img, transform, load_model, predict, convert_to_obj, load_hospitals_from_file, haversine
 
 
+
 main = Blueprint('main', __name__)
+socketio = SocketIO(main, cors_allowed_origins="*")
+
 
 # Initialize Global variables
 BURN_ID, USER_ID, prediction, user_lat, user_lon  = 0, 0, {} , 0.0 , 0.0
@@ -541,6 +545,7 @@ def send_message():
         )
         db.session.add(message)
         db.session.commit()
+        socketio.emit('message', message.to_dict())  # Emit the message to all connected clients
 
         return jsonify(message.to_dict()), 201
     except Exception as e:
