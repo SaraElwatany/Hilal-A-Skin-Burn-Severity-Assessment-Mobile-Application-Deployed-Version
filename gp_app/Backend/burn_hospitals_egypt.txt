@@ -118,12 +118,12 @@ burn_hospitals_egypt = [
     },
 
     {
-        "english_name": "Abu Qir Central Hospital",
-        "arabic_name": "مستشفى أبو قير المركزي",
+        "english_name": "Abu Qir General Hospital",
+        "arabic_name": "مستشفى أبو قير العام",
         
         "google_maps_location": "Alexandria, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.313968588968553, 
+        "lon": 30.067632609692385
     },
 
     {
@@ -131,8 +131,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى رأس التين العام",
 
         "google_maps_location": "Alexandria, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.254825409413716, 
+        "lon": 29.860431878174072
     },
 
     {

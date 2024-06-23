@@ -2,12 +2,14 @@ import os
 from flask import Flask
 from flask_socketio import SocketIO
 from .base import db
-from .routes import main
 # from .my_tokens import SECRET_KEY, SQLALCHEMY_DATABASE_URI as URI
 
 socketio = SocketIO(cors_allowed_origins='*')
 
 def create_app():
+
+    from .routes import main
+    
     print('Loading Routes..... , Please Wait')
     app = Flask(__name__)
 

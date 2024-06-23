@@ -10,7 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import OperationalError
 from flask import Blueprint, redirect, url_for, Flask, request, jsonify, render_template, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from .__init__ import socketio 
+
 
 
 
@@ -529,6 +529,9 @@ def update_burn():
 
 @main.route('/send_message', methods=['POST'])
 def send_message():
+
+    from .__init__ import socketio 
+    
     try:
         data = request.json
         print(f"Received data: {data}")  # Print received data for debugging
