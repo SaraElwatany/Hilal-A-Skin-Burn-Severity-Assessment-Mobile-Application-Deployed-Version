@@ -8,10 +8,8 @@ from torchvision import models
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 from  sqlalchemy.exc import OperationalError
-from flask import Blueprint, redirect, url_for
-from flask import Flask, request, jsonify, render_template, session
+from flask import Blueprint, redirect, url_for, Flask, request, jsonify, render_template, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_socketio import SocketIO
 from . import socketio 
 
 
