@@ -18,10 +18,9 @@ def create_app():
     socketio.init_app(app)  # Initialize SocketIO with the app
 
     app.register_blueprint(main)
+    with app.app_context():
+            db.create_all()
 
     return app
 
-if __name__ == '__main__':
-    app = create_app()
-    db.create_all(app=app) 
-    socketio.run(app)
+__all__ = ['create_app', 'socketio']
