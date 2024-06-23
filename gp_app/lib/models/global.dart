@@ -1,22 +1,43 @@
-// globals.dart
-
 class Global {
-  static String latestPrediction = ''; // Global Variable for the prediction of the associated burn
-  static String user_id = '0'; // Global Variable for doctor's ID
-  static String userProfession = ''; // Global Variable for User's Profession Detection from Login Screen
-  static bool adminPassword = false; // Global Variable for admin password, default value false
+  static String _latestPrediction = ''; // Global Variable for the prediction of the associated burn
+  static String _userId = '0'; // Global Variable for doctor's ID
+  static String _userProfession = ''; // Global Variable for User's Profession Detection from Login Screen
+  static bool _adminPassword = false; // Global Variable for admin password, default value false 'patient'
 
   // Private constructor
   Global._();
 
-  // Method to update variables from JSON data
-  static void updateFromJson(Map<String, dynamic> data) {
-    latestPrediction = data['latestPrediction'] ?? '';
-    user_id = data['user_id'] ?? '0';
-    userProfession = data['userProfession'] ?? '';
-    adminPassword = data['adminPassword'] ?? false;
+  // Getters and setters for latestPrediction
+  static String get latestPrediction => _latestPrediction;
+  static set latestPrediction(String value) {
+    _latestPrediction = value;
   }
 
+  // Getters and setters for userId
+  static String get userId => _userId;
+  static set userId(String value) {
+    _userId = value;
+  }
+
+  // Getters and setters for userProfession
+  static String get userProfession => _userProfession;
+  static set userProfession(String value) {
+    _userProfession = value;
+  }
+
+  // Getters and setters for adminPassword
+  static bool get adminPassword => _adminPassword;
+  static set adminPassword(bool value) {
+    _adminPassword = value;
+  }
+
+  // Method to update variables from JSON data
+  static void updateFromJson(Map<String, dynamic> data) {
+    latestPrediction = data['latestPrediction'] ?? latestPrediction;
+    userId = data['user_id'] ?? userId;
+    userProfession = data['userProfession'] ?? userProfession;
+    adminPassword = data['adminPassword'] ?? adminPassword;
+  }
 
   // Singleton instance
   static final Global instance = Global._();

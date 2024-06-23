@@ -81,7 +81,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   @override
   void initState() {
     super.initState();
-    // loadChatHistory();
+    loadChatHistory();
     // AudioApi.initRecorder();
     // fetchPredictionAndHospitals(); // Fetch data from the server
   }
@@ -130,29 +130,29 @@ class PatientModelChatState extends State<PatientModelChat> {
     // }
   }
 
-  void _toggleRecording() async {
-    if (_isRecording) {
-      final path = await _recorder.stopRecorder();
-      if (path != null) {
-        setState(() {
-          messages.add(ChatMessage(
-              message: 'New audio message',
-              receiver: false,
-              timestamp: DateTime.now(),
-              senderId: Global.user_id,
-              receiverId: '1'));
-        });
-      }
-      setState(() {
-        _isRecording = false;
-      });
-    } else {
-      await _recorder.startRecorder(toFile: 'audio_message.aac');
-      setState(() {
-        _isRecording = true;
-      });
-    }
-  }
+  // void _toggleRecording() async {
+  //   if (_isRecording) {
+  //     final path = await _recorder.stopRecorder();
+  //     if (path != null) {
+  //       setState(() {
+  //         messages.add(ChatMessage(
+  //             message: 'New audio message',
+  //             receiver: false,
+  //             timestamp: DateTime.now(),
+  //             senderId: Global.user_id,
+  //             receiverId: '1'));
+  //       });
+  //     }
+  //     setState(() {
+  //       _isRecording = false;
+  //     });
+  //   } else {
+  //     await _recorder.startRecorder(toFile: 'audio_message.aac');
+  //     setState(() {
+  //       _isRecording = true;
+  //     });
+  //   }
+  // }
 
   void _sendMessage() {
     final myState = Provider.of<MyState>(context, listen: false);

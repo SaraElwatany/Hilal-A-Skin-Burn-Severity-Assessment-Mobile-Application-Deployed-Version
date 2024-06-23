@@ -7,6 +7,7 @@ import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
+import 'package:gp_app/models/global.dart';
 import 'package:provider/provider.dart';
 
 String url = '';
@@ -255,8 +256,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          Global.adminPassword = true;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (ctx) => const DocterProfile()));
+
                         },
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

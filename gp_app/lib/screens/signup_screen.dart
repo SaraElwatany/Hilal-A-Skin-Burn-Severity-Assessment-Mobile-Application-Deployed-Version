@@ -97,8 +97,8 @@ class _SignUpState extends State<SignUpScreen> {
               Center(
                 child: Text(
                   (flag)
-                  ?S.of(context).signup
-                  :S.of(context).doctorInfo
+                  ?S.of(context).doctorInfo
+                  :S.of(context).signup
                   ,
                   style: Theme.of(context)
                       .textTheme
@@ -304,7 +304,7 @@ class _SignUpState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 30,
                       ),
-                      if(!flag)
+                      if(flag)
                        TextFormField(
                             onChanged: (value) {
                               _enteredLastName = value.toString();
