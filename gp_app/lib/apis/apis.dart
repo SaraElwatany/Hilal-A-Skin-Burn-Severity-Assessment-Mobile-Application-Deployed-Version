@@ -305,7 +305,6 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
     // Get the state of my widgets
     final myState = Provider.of<MyState>(context, listen: false);
     String userId = myState.userId;
-    String burnId = myState.burnId;
     print('Initial userId: $userId');
 
     // Encode the image as base64
@@ -334,15 +333,15 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
 
       // Parse the JSON response
       var responseData = json.decode(response.body);
-      var prediction = responseData['prediction'];
-      var receivedBurnId = responseData['burn_id'];
+      String prediction = responseData['prediction'];
+      String receivedBurnId = responseData['burn_id'];
+
+      print('Prediction: $prediction');
+      print('Received Burn Id: $receivedBurnId');
 
       // Save Burn Id & Model's Prediction to SharedPreferences
       await SessionManager.saveBurnId(receivedBurnId);
       await SessionManager.savePrediction(prediction);
-
-      print('Prediction: $prediction');
-      print('Received Burn Id: $receivedBurnId');
 
       // Return navigate = 1 to indicate success
       return 1;
