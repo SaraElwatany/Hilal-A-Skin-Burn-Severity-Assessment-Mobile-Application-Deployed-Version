@@ -123,6 +123,7 @@ Future<String> sendData(
 
     if (responseMessage == 'Access Allowed') {
       userId = responseData['user_id'];
+      Global.userId = userId;
       print('User ID from Login Route: $userId');
       String UserProfession = responseData['user_profession'];
 
@@ -597,32 +598,32 @@ Future<void> sendMessageToServer(ChatMessage message) async {
   }
 }
 
-Future<void> loginUser(String email, String password) async {
-  // Example endpoint URL (replace with your Flask server URL)
-  String url = 'https://my-trial-t8wj.onrender.com/login';
+// Future<void> loginUser(String email, String password) async {
+//   // Example endpoint URL (replace with your Flask server URL)
+//   String url = 'https://my-trial-t8wj.onrender.com/login';
 
-  // Example request body
-  Map<String, String> body = {
-    'email': email,
-    'password': password,
-  };
+//   // Example request body
+//   Map<String, String> body = {
+//     'email': email,
+//     'password': password,
+//   };
 
-  try {
-    var response = await http.post(
-      Uri.parse(url),
-      body: body,
-    );
+//   try {
+//     var response = await http.post(
+//       Uri.parse(url),
+//       body: body,
+//     );
 
-    if (response.statusCode == 200) {
-      // Successful login, parse JSON response
-      Map<String, dynamic> data = json.decode(response.body);
-      // Update global.dart variables based on response data
-      Global.updateFromJson(data);
-    }
-  } catch (e) {
-    // Handle network or other errors
-  }
-}
+//     if (response.statusCode == 200) {
+//       // Successful login, parse JSON response
+//       Map<String, dynamic> data = json.decode(response.body);
+//       // Update global.dart variables based on response data
+//       Global.updateFromJson(data);
+//     }
+//   } catch (e) {
+//     // Handle network or other errors
+//   }
+// }
 
 // Function to return the user's location to flask
 Future<void> get_user_location(

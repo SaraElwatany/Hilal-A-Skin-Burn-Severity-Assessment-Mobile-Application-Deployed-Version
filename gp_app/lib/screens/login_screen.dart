@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       final myState = Provider.of<MyState>(context, listen: false);
       String userId = myState.userId;
 
-      loginUser(_enteredName, _enteredPassword);
+      // loginUser(_enteredName, _enteredPassword);
 
       UserInfo userInfo = UserInfo(_enteredName, _enteredPassword, userId);
       _userInfoList.add(userInfo);
