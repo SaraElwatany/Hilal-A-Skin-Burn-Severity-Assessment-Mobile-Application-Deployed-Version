@@ -6,12 +6,11 @@ import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/chat_message.dart';
-import 'package:gp_app/models/global.dart';
 
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:path_provider/path_provider.dart';
 
 // Imports for keeping the state of variables
 import 'package:provider/provider.dart';
@@ -302,7 +301,6 @@ bool isValidEmail(String email) {
 // Function to send the captured image to the prediction
 Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   try {
-
     // Encode the image as base64
     String base64Image = base64Encode(imageFile.readAsBytesSync());
     // Get User ID From Session
@@ -314,7 +312,6 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
       Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
     );
 
-    
     // Add the base64-encoded image as a field
     request.fields['user_id'] = user_id;
     request.fields['Image'] = base64Image;
@@ -688,64 +685,6 @@ Future<void> get_user_location(
     // Other status codes
     print(
         'Received an unexpected response with status code: ${response.statusCode}');
-  }
-}
-
-Future<void> getHospitals() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
-
-  try {
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-
-      if (responseBody['error'] != null) {
-        print('Error: ${responseBody['error']}');
-      } else {
-        List<dynamic> hospitals = responseBody['hospitals'];
-
-        print('Top 5 Nearest Burn Hospitals:');
-
-        for (var i = 0; i < 5 && i < hospitals.length; i++) {
-          var hospital = hospitals[i];
-
-          print('${hospital['english_name']} - ${hospital['arabic_name']}');
-          print('Latitude: ${hospital['lat']}, Longitude: ${hospital['lon']}');
-          print('---');
-        }
-
-        String prediction = responseBody['prediction'];
-        print('Prediction: $prediction');
-      }
-    } else {
-      print('Failed to get response. Status code: ${response.statusCode}');
-    }
-  } catch (e) {
-    print('Error: $e');
-  }
-}
-
-// Function to ....
-Future<void> respondToUser() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
-  var response = await http.post(url);
-
-  // Request was successful, handle the response
-  if (response.statusCode == 200) {
-    final responseData = jsonDecode(response.body);
-    final responseMessage = responseData['message'];
-
-    final patients_ids = responseData['patients_ids'];
-    final hospitals = responseData['hospitals'];
-    final prediction = responseData['ّprediction'];
-
-    print('Received Response From get_patients route: $responseMessage');
   }
 }
 

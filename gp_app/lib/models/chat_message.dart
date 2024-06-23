@@ -1,3 +1,5 @@
+// import 'package:flutter/material.dart';
+
 class ChatMessage {
   final String senderId;
   final String receiverId;
@@ -5,6 +7,11 @@ class ChatMessage {
   final String? image;
   final bool? receiver;
   final DateTime timestamp;
+  // Variables Related to the Location
+  final double? latitude; // Add latitude
+  final double? longitude; // Add longitude
+  final String? hospitalNameEn;
+  final String? hospitalNameAr;
 
   ChatMessage({
     required this.senderId,
@@ -13,6 +20,11 @@ class ChatMessage {
     required this.receiver,
     this.image,
     required this.timestamp,
+    // Variables Related to the Location
+    this.latitude, // Initialize latitude
+    this.longitude, // Initialize longitude
+    this.hospitalNameEn,
+    this.hospitalNameAr,
   });
 
   // Factory constructor to create a ChatMessage from JSON

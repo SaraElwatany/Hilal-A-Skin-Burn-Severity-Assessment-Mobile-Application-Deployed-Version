@@ -443,7 +443,7 @@ def get_all_burns():
 
     print('User lists found', user_list)
 
-    user_ids = [user.id for user in users]
+    user_ids = [user.fk_burn_user_id for user in users] # Check
     user_names = [user.username for user in users]
     user_info = ['Weight: '+str(user.weight)+' '+'Height: '+str(user.height) for user in users]
 

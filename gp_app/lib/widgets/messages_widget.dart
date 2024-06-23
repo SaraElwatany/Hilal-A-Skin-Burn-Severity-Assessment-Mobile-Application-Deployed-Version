@@ -65,7 +65,7 @@ class MessagesWidget extends StatelessWidget {
     );
   }
 
-// Related to Clickable Links
+// Related to Location Clickable Links
   Widget _buildMessageContent(BuildContext context, String message) {
     final linkRegExp = RegExp(r'\[(.*?)\]\((.*?)\)');
 
@@ -93,10 +93,17 @@ class MessagesWidget extends StatelessWidget {
         ),
         recognizer: TapGestureRecognizer()
           ..onTap = () {
+            // Pass latitude, longitude, hospitalNameEn, and hospitalNameAr to HospitalLocationScreen
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => HospitalLocationScreen(url)),
+                builder: (context) => HospitalLocationScreen(
+                  latitude: chatMessage.latitude!,
+                  longitude: chatMessage.longitude!,
+                  hospitalNameEn: chatMessage.hospitalNameEn!,
+                  hospitalNameAr: chatMessage.hospitalNameAr!,
+                ),
+              ),
             );
           },
       ));

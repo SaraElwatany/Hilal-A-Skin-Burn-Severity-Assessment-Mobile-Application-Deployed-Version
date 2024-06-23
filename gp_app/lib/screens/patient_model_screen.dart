@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/widgets/localization_icon.dart';
-import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
-import 'package:gp_app/models/my_state.dart';
-import 'package:gp_app/models/global.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter/material.dart';
+import 'package:gp_app/models/global.dart';
+import 'package:gp_app/models/global.dart';
+import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
+import 'package:gp_app/widgets/localization_icon.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:gp_app/widgets/audio_player_widget.dart';
@@ -224,13 +223,17 @@ class PatientModelChatState extends State<PatientModelChat> {
             '${hospital['english_name']} - ${hospital['arabic_name']}';
         var mapsLink =
             'https://www.google.com/maps/search/?api=1&query=${hospital['lat']},${hospital['lon']}';
-            print('URL $i $mapsLink');
+        print('URL $i $mapsLink');
 
         messages.add(ChatMessage(
             message: '$hospitalMessage\n[View on Maps]($mapsLink)',
             receiver: false,
             senderId: '0',
             receiverId: '1',
+            latitude: hospital['lat'], // Add latitude
+            longitude: hospital['lon'], // Add longitude
+            hospitalNameEn: hospital['english_name'],
+            hospitalNameAr: hospital['arabic_name'],
             timestamp: DateTime.now()));
       }
     });
