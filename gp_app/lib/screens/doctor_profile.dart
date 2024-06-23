@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/signup_screen.dart';
-import 'package:gp_app/widgets/add_Doctor.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/models/global.dart';

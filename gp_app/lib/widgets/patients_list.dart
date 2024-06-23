@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/screens/doctor_model_screen.dart';
 import 'package:gp_app/models/patient_list.dart';
-import 'package:gp_app/models/global.dart';
 
 class PatientList extends StatefulWidget {
   final Patient patient;

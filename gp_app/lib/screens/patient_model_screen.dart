@@ -4,19 +4,19 @@ import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
-import 'package:gp_app/models/global.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:gp_app/widgets/audio_player_widget.dart';
 
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import for HTTP requests
 import 'package:flutter/gestures.dart'; // Import for gesture recognizers
 import 'package:url_launcher/url_launcher.dart'; // Import for URL launcher
+// Import for gesture recognizers
+// Import for URL launcher
 
 class PatientModelChat extends StatefulWidget {
   const PatientModelChat({Key? key}) : super(key: key);

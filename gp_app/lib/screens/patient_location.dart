@@ -152,7 +152,7 @@ class _LocationAppState extends State<Location> {
                   ElevatedButton(
                     onPressed: getCurrentLocation,
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                           const Color.fromARGB(255, 29, 49, 78)),
                     ),
                     child: Text(

@@ -5,7 +5,6 @@ import 'package:gp_app/screens/doctor_profile.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
-import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
 import 'package:provider/provider.dart';
