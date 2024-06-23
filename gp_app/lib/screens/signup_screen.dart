@@ -96,9 +96,9 @@ class _SignUpState extends State<SignUpScreen> {
             children: [
               Center(
                 child: Text(
-                  (!flag)
-                  ?S.of(context).signup
-                  :S.of(context).doctorInfo
+                  (flag)
+                  ?S.of(context).doctorInfo
+                  :S.of(context).signup
                   ,
                   style: Theme.of(context)
                       .textTheme

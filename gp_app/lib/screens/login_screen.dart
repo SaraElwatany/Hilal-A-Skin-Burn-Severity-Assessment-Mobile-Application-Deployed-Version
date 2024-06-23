@@ -5,9 +5,9 @@ import 'package:gp_app/screens/doctor_profile.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
-import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
+import 'package:gp_app/models/global.dart';
 import 'package:provider/provider.dart';
 
 String url = '';
@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       final myState = Provider.of<MyState>(context, listen: false);
       String userId = myState.userId;
 
-      loginUser(_enteredName, _enteredPassword);
+      // loginUser(_enteredName, _enteredPassword);
 
       UserInfo userInfo = UserInfo(_enteredName, _enteredPassword, userId);
       _userInfoList.add(userInfo);
@@ -256,8 +256,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          Global.adminPassword = true;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (ctx) => const DocterProfile()));
+
                         },
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

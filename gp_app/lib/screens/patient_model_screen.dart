@@ -5,17 +5,22 @@ import 'package:gp_app/models/global.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/my_state.dart';
+import 'package:gp_app/apis/apis.dart';
+import 'package:gp_app/models/my_state.dart';
+import 'package:provider/provider.dart';
+
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:gp_app/widgets/audio_player_widget.dart';
 
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import for HTTP requests
 import 'package:flutter/gestures.dart'; // Import for gesture recognizers
 import 'package:url_launcher/url_launcher.dart'; // Import for URL launcher
+// Import for gesture recognizers
+// Import for URL launcher
 
 class PatientModelChat extends StatefulWidget {
   const PatientModelChat({Key? key}) : super(key: key);
@@ -80,7 +85,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   @override
   void initState() {
     super.initState();
-    // loadChatHistory();
+    loadChatHistory();
     // AudioApi.initRecorder();
     // fetchPredictionAndHospitals(); // Fetch data from the server
   }
@@ -129,31 +134,31 @@ class PatientModelChatState extends State<PatientModelChat> {
     // }
   }
 
-  void _toggleRecording() async {
-    if (_isRecording) {
-      final path = await _recorder.stopRecorder();
-      if (path != null) {
-        setState(() {
-          messages.add(ChatMessage(
-              message: 'New audio message',
-              receiver: false,
-              timestamp: DateTime.now(),
-              senderId: Global.user_id,
-              receiverId: '1'));
-        });
-      }
-      setState(() {
-        _isRecording = false;
-      });
-    } else {
-      await _recorder.startRecorder(toFile: 'audio_message.aac');
-      setState(() {
-        _isRecording = true;
-      });
-    }
-  }
+  // void _toggleRecording() async {
+  //   if (_isRecording) {
+  //     final path = await _recorder.stopRecorder();
+  //     if (path != null) {
+  //       setState(() {
+  //         messages.add(ChatMessage(
+  //             message: 'New audio message',
+  //             receiver: false,
+  //             timestamp: DateTime.now(),
+  //             senderId: Global.user_id,
+  //             receiverId: '1'));
+  //       });
+  //     }
+  //     setState(() {
+  //       _isRecording = false;
+  //     });
+  //   } else {
+  //     await _recorder.startRecorder(toFile: 'audio_message.aac');
+  //     setState(() {
+  //       _isRecording = true;
+  //     });
+  //   }
+  // }
 
-  void _sendMessage() {
+  void _sendMessage() async {
     final myState = Provider.of<MyState>(context, listen: false);
     String userId = myState.userId;
 
@@ -168,7 +173,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiverId: '1');
 
       // Send the message to the server
-      sendMessageToServer(message);
+      await sendMessageToServer(message);
 
       setState(() {
         messages.add(message);

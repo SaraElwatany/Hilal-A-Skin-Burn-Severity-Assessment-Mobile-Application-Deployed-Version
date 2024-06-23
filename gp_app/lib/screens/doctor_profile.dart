@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/signup_screen.dart';
-import 'package:gp_app/widgets/add_Doctor.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/models/global.dart';
@@ -26,7 +25,7 @@ class DocterProfileState extends State<DocterProfile> {
  */
   String _selectedItem = 'Time'; // Default
   List<Patient> patients = [];
-  bool adminPassword = ! Global.adminPassword; 
+  bool adminPassword = Global.adminPassword; 
 
   @override
   void initState() {
@@ -109,6 +108,7 @@ class DocterProfileState extends State<DocterProfile> {
               ],
             ),
           ),
+          if(!adminPassword)(
           Expanded(
             child: ListView.builder(
               itemCount: patients.length,
@@ -118,7 +118,7 @@ class DocterProfileState extends State<DocterProfile> {
                 );
               },
             ),
-          ),
+          )),
           if(adminPassword)
            Container(
                   margin: const EdgeInsets.only(bottom: 40),

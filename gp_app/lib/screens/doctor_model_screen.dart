@@ -140,7 +140,8 @@ class DocterModelChatState extends State<DocterModelChat> {
                     ),
                   ],
                 );
-              } 
+              }
+              return null; 
             },
           ),
           Align(
