@@ -224,6 +224,7 @@ class PatientModelChatState extends State<PatientModelChat> {
             '${hospital['english_name']} - ${hospital['arabic_name']}';
         var mapsLink =
             'https://www.google.com/maps/search/?api=1&query=${hospital['lat']},${hospital['lon']}';
+            print('URL $i $mapsLink');
 
         messages.add(ChatMessage(
             message: '$hospitalMessage\n[View on Maps]($mapsLink)',
