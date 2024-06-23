@@ -6,13 +6,13 @@ import torch.nn as nn
 from datetime import date
 from torchvision import models
 from datetime import datetime
-from flask_socketio import SocketIO
 from sqlalchemy.exc import IntegrityError
 from  sqlalchemy.exc import OperationalError
 from flask import Blueprint, redirect, url_for
 from flask import Flask, request, jsonify, render_template, session
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_socketio import SocketIO
+from . import socketio 
 
 
 
@@ -28,7 +28,6 @@ from .functions import load_img, transform, load_model, predict, convert_to_obj,
 
 main = Blueprint('main', __name__)
 # Initialize socketio
-socketio = SocketIO(cors_allowed_origins="*")
 
 
 
@@ -553,8 +552,13 @@ def send_message():
         )
         db.session.add(message)
         db.session.commit()
-        socketio.emit('message', message.to_dict())  # Emit the message to all connected clients
 
+        if socketio:
+            socketio.emit('message', message.to_dict())
+        else:
+            print("SocketIO is not initialized")
+            return jsonify({'error': 'SocketIO is not initialized'}), 500
+        
         return jsonify(message.to_dict()), 201
     except Exception as e:
         print(f"Error: {e}")

@@ -154,7 +154,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   //   }
   // }
 
-  void _sendMessage() {
+  void _sendMessage() async {
     final myState = Provider.of<MyState>(context, listen: false);
     String userId = myState.userId;
 
@@ -169,7 +169,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiverId: '1');
 
       // Send the message to the server
-      sendMessageToServer(message);
+     await sendMessageToServer(message);
 
       setState(() {
         messages.add(message);

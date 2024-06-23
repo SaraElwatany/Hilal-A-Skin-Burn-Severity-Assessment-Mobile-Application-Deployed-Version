@@ -227,6 +227,7 @@ Future<String> signUp(NewUser userInfo) async {
     var responseData = jsonDecode(request.body);
     var responseMessage = responseData['response'];
     String userId = responseData['user_id'];
+    Global.userId = userId;
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Failed Password and Email') {
