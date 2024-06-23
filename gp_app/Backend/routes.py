@@ -10,7 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from  sqlalchemy.exc import OperationalError
 from flask import Blueprint, redirect, url_for, Flask, request, jsonify, render_template, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from . import socketio 
+from .__init__ import socketio 
 
 
 

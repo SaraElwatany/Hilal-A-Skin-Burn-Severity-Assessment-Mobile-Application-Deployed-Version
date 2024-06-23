@@ -98,9 +98,9 @@ class SessionManager {
 Future<String> sendData(
     String email, String password, BuildContext context) async {
   // Set The Global Variables To Null with each login
-  final myState = Provider.of<MyState>(context, listen: false);
-  String userId = myState.userId;
-  myState.updateUserId("0");
+  // final myState = Provider.of<MyState>(context, listen: false);
+  // myState.updateUserId();
+  String userId = "0";
 
   String url = 'https://my-trial-t8wj.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
@@ -123,7 +123,8 @@ Future<String> sendData(
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Access Allowed') {
-      userId = responseData['user_id'];
+      userId = responseData['user_id'] ??
+          '0'; // If received ID is NULL assign it to 0
       Global.userId = userId;
       print('User ID from Login Route: $userId');
       String UserProfession = responseData['user_profession'];
@@ -227,8 +228,11 @@ Future<String> signUp(NewUser userInfo) async {
     // Request successful, handle the response (valid http response was received == okay statement for http)
     var responseData = jsonDecode(request.body);
     var responseMessage = responseData['response'];
-    String userId = responseData['user_id'];
+    String userId = '0';
+    userId =
+        responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
     Global.userId = userId;
+    print('Signed Up User ID: $userId');
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Failed Password and Email') {
@@ -244,10 +248,10 @@ Future<String> signUp(NewUser userInfo) async {
       print('Sign up failed, an account with this email already exists');
       return 'Sign up Denied due to duplicate email';
     } else {
-      // Request was successful, and the info was correct => Sign Up
-      print('Sign up was successful');
       // Save userId to SharedPreferences
       await SessionManager.saveUserId(userId);
+      // Request was successful, and the info was correct => Sign Up
+      print('Sign up was successful');
       return 'Sign up Allowed';
     }
   } else if (request.statusCode == 400) {
@@ -306,6 +310,8 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
     String base64Image = base64Encode(imageFile.readAsBytesSync());
     // Get User ID From Session
     String user_id = (await SessionManager.getUserId()) ?? '';
+    String prediction;
+    String receivedBurnId;
 
     // Create the multipart request
     var request = http.MultipartRequest(
@@ -330,8 +336,8 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
 
       // Parse the JSON response
       var responseData = json.decode(response.body);
-      String prediction = responseData['prediction'];
-      String receivedBurnId = responseData['burn_id'];
+      prediction = responseData['prediction'];
+      receivedBurnId = responseData['burn_id'];
 
       print('Prediction: $prediction');
       print('Received Burn Id: $receivedBurnId');
@@ -453,7 +459,7 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
 Future skipClinicalData(BuildContext context) async {
   String url = 'https://my-trial-t8wj.onrender.com/add_burn';
   // Get the state of the widgets
-  final myState = Provider.of<MyState>(context, listen: false);
+  // final myState = Provider.of<MyState>(context, listen: false);
   // Get the User ID From the Shared Preferences
   String userId = (await SessionManager.getUserId()) ?? '';
   // Get the Burn ID From the Shared Preferences
@@ -474,6 +480,7 @@ Future skipClinicalData(BuildContext context) async {
       // If the call to the server was successful, parse the JSON
       final responseData = jsonDecode(request.body);
       final responseMessage = responseData['response'];
+      print('Response Message: $responseMessage');
     } else {
       print('Failed to receive response');
       // Handle failure
