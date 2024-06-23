@@ -302,13 +302,11 @@ bool isValidEmail(String email) {
 // Function to send the captured image to the prediction
 Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   try {
-    // Get the state of my widgets
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
-    print('Initial userId: $userId');
 
     // Encode the image as base64
     String base64Image = base64Encode(imageFile.readAsBytesSync());
+    // Get User ID From Session
+    String user_id = (await SessionManager.getUserId()) ?? '';
 
     // Create the multipart request
     var request = http.MultipartRequest(
@@ -316,8 +314,9 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
       Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
     );
 
+    
     // Add the base64-encoded image as a field
-    request.fields['user_id'] = (await SessionManager.getUserId()) ?? '';
+    request.fields['user_id'] = user_id;
     request.fields['Image'] = base64Image;
 
     // Attach the image file
@@ -369,6 +368,8 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
   List<String> clinicalSymptoms = [];
   String cause = '';
   int no_symptoms = symptoms.length;
+
+  print('Burn ID From Add Clinical Data Function: $burnId');
 
   print('Symptoms: $symptoms');
   print('Cause: $causeOfBurn');
@@ -748,26 +749,23 @@ Future<void> respondToUser() async {
   }
 }
 
+// Function to delete flask session when logged out from account
+void logout() async {
+  String url =
+      'https://my-trial-t8wj.onrender.com/logout'; // Replace with your actual logout endpoint URL
 
+  try {
+    final response = await http.get(Uri.parse(url));
 
-
-
-// // Function to delete flask session when logged out from account
-// void logout() async {
-//   String url =
-//       'https://my-trial-t8wj.onrender.com/logout'; // Replace with your actual logout endpoint URL
-
-//   try {
-//     final response = await http.get(Uri.parse(url));
-
-//     if (response.statusCode == 200) {
-//       // Successful logout
-//       print('Logged out successfully');
-//       // Optionally, navigate to another screen or perform other actions after logout
-//     } else {
-//       print('Failed to logout: ${response.statusCode}');
-//     }
-//   } catch (e) {
-//     print('Error during logout: $e');
-//   }
-// }
+    if (response.statusCode == 200) {
+      // Successful logout
+      await SessionManager.clearSession(); // Clear Session
+      print('Logged out successfully');
+      // Optionally, navigate to another screen or perform other actions after logout
+    } else {
+      print('Failed to logout: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error during logout: $e');
+  }
+}

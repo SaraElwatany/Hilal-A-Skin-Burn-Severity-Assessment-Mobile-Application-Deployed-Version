@@ -36,13 +36,21 @@ class PatientModelChatState extends State<PatientModelChat> {
   Future<void> fetchPredictionAndHospitals() async {
     var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
 
+    double user_lat = (await SessionManager.getLatitude()) ?? 0.0;
+    double user_long = (await SessionManager.getLongitude()) ?? 0.0;
+
+    // Construct query parameters
+    var params = {
+      'user_latitude': user_lat,
+      'user_longitude': user_long,
+    };
+
     try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      var response = await http.post(
+        url.replace(queryParameters: params),
       );
+
+      print('Latitude From Chat Screen: $user_lat');
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
@@ -52,7 +60,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         } else {
           List<dynamic> hospitals = responseBody['hospitals'];
 
-          String prediction = responseBody['prediction'];
+          String prediction = (await SessionManager.getPrediction()) ?? '';
           Global.latestPrediction =
               prediction; // Store prediction in global variable
 

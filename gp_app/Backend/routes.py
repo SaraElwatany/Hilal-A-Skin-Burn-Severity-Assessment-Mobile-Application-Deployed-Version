@@ -229,7 +229,10 @@ def upload():
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         
         # Get the user_id from the received request 
-        USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        # USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        # Get the user_id and Image data from the form
+        USER_ID = int(request.form.get('user_id', None))
+        # image_data = request.form.get('Image', None)
         print('User ID Associated with burn:', USER_ID)
         # user_id = session.get('user_id')
         # print('User ID Associated with burn:', user_id)
@@ -311,7 +314,7 @@ def upload():
         print("Associated burn_id 2: ", str(BURN_ID))
 
         response = {**burn_id_dict, **prediction}
-        
+
         return jsonify(response)
     
     
@@ -643,7 +646,10 @@ def get_user_location():
 @main.route('/respond_to_user', methods=['POST'])
 def respond_to_user():
 
-    global user_lat, user_lon
+    user_lat, user_lon = 0.0, 0.0
+
+    user_lat = float(request.args.get('user_latitude', 0))
+    user_lon = float(request.args.get('user_longitude', 0))
 
     # Load hospitals data
     hospitals = load_hospitals_from_file()
@@ -665,8 +671,7 @@ def respond_to_user():
     response = {
                 "message": "Top 5 nearest burn hospitals:",
                 "hospitals": nearest_hospitals,
-                "ّprediction": prediction['prediction'],
-               }
+            }
 
     return jsonify(response)
 
@@ -677,6 +682,5 @@ def respond_to_user():
 # Logout route
 @main.route('/logout', methods=['POST'])
 def logout():
-    session.pop('user_id', None)  # Clear user session data
-    print('Logged out successfully')
+    print('Logged out successfully & Cleared Session')
     return jsonify({'response': 'Logged out successfully'})
