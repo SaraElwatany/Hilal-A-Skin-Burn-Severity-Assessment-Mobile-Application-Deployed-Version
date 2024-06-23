@@ -2,6 +2,6 @@ services:
   - name: flask-app
     type: web
     buildCommand: pip install -r requirements.txt
-    startCommand: "gunicorn -k flask_sockets.worker wsgi:app"
+    startCommand: gunicorn -k flask_sockets.worker wsgi:app
     root: gp_app
 
