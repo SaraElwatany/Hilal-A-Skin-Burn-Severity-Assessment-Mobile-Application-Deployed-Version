@@ -31,8 +31,6 @@ main = Blueprint('main', __name__)
 socketio = SocketIO(cors_allowed_origins="*")
 
 
-# Initialize Global variables
-# BURN_ID, USER_ID, prediction, user_lat, user_lon  = 0, 0, {} , 0.0 , 0.0
 
 
 # Route to get the username and password in the login screen
@@ -50,8 +48,6 @@ def intro():
 # Route to get the username and password in the login screen (Done)
 @main.route('/login', methods = ['POST'])
 def login_info():
-
-    global USER_ID
 
     # Get the data from the Json dictionary
     email = request.form.get('email')
@@ -100,8 +96,6 @@ def login_info():
 # A route for the sign up screen (Done)
 @main.route('/signup', methods = ['POST'])
 def signup_info():
-
-    global USER_ID
 
     regex_1 = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
     regex_2 = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
@@ -203,7 +197,7 @@ def signup_info():
 @main.route('/uploadImg', methods=['POST'])
 def upload():
 
-    # global BURN_ID, USER_ID, prediction 
+    # BURN_ID, USER_ID, prediction variables
     BURN_ID, USER_ID, prediction  = 0, 0, {} 
 
     print('Entered UploadImg Route')
@@ -325,8 +319,7 @@ def upload():
 @main.route('/add_burn', methods=['POST'])
 def burn_new():
 
-    # global BURN_ID, USER_ID, prediction  
-    # user_id = session.get('user_id')
+    # BURN_ID, USER_ID, prediction Variables
     BURN_ID, USER_ID = 0, 0
 
     if request.method == 'POST':
