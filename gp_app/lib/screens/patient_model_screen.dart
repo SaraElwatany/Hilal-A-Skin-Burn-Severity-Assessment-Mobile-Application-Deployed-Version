@@ -31,18 +31,17 @@ class PatientModelChatState extends State<PatientModelChat> {
   bool _isRecording = false;
   final TextEditingController _messageController = TextEditingController();
   bool introMessageShown = false;
+  bool predictionAndHospitalsFetched = false;
 
-  // Fetch data from the server for burn prediction and nearest hospitals (Sara)
   Future<void> fetchPredictionAndHospitals() async {
     var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
 
-    double user_lat = (await SessionManager.getLatitude()) ?? 0.0;
-    double user_long = (await SessionManager.getLongitude()) ?? 0.0;
+    double userLat = (await SessionManager.getLatitude()) ?? 0.0;
+    double userLong = (await SessionManager.getLongitude()) ?? 0.0;
 
-    // Construct query parameters
     var params = {
-      'user_latitude': user_lat,
-      'user_longitude': user_long,
+      'user_latitude': userLat.toString(),
+      'user_longitude': userLong.toString(),
     };
 
     try {
@@ -50,7 +49,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         url.replace(queryParameters: params),
       );
 
-      print('Latitude From Chat Screen: $user_lat');
+      print('Latitude From Chat Screen: $userLat');
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
@@ -61,11 +60,14 @@ class PatientModelChatState extends State<PatientModelChat> {
           List<dynamic> hospitals = responseBody['hospitals'];
 
           String prediction = (await SessionManager.getPrediction()) ?? '';
-          Global.latestPrediction =
-              prediction; // Store prediction in global variable
+          Global.latestPrediction = prediction;
 
-          updateChatScreenWithPrediction(prediction); // Display prediction
-          updateChatScreenWithHospitals(hospitals); // Display hospitals
+          updateChatScreenWithPrediction(prediction);
+          updateChatScreenWithHospitals(hospitals);
+
+          setState(() {
+            predictionAndHospitalsFetched = true;
+          });
         }
       } else {
         print('Failed to get response. Status code: ${response.statusCode}');
@@ -109,20 +111,23 @@ class PatientModelChatState extends State<PatientModelChat> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (messages.isEmpty && !introMessageShown) {
+    if (!introMessageShown) {
       updateChatScreenWithIntro();
       introMessageShown = true;
-    }
-
-    // Add the Burn Class and location messages
-    if (introMessageShown) {
       fetchPredictionAndHospitals();
     }
 
-    // Add the burn prediction message if available
-    if (Global.latestPrediction.isNotEmpty) {
-      updateChatScreenWithPrediction(Global.latestPrediction);
-    }
+    // if (messages.isEmpty && !introMessageShown) {
+    //   updateChatScreenWithIntro();
+    //   introMessageShown = true;
+
+    //   fetchPredictionAndHospitals();
+    // }
+
+    // // Add the burn prediction message if available
+    // if (Global.latestPrediction.isNotEmpty) {
+    //   updateChatScreenWithPrediction(Global.latestPrediction);
+    // }
   }
 
   void _toggleRecording() async {
