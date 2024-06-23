@@ -15,8 +15,8 @@ import 'package:gp_app/widgets/audio_player_widget.dart';
 
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import for HTTP requests
-import 'package:url_launcher/url_launcher.dart'; // Import for URL launcher
 import 'package:flutter/gestures.dart'; // Import for gesture recognizers
+import 'package:url_launcher/url_launcher.dart'; // Import for URL launcher
 
 class PatientModelChat extends StatefulWidget {
   const PatientModelChat({Key? key}) : super(key: key);
@@ -64,7 +64,6 @@ class PatientModelChatState extends State<PatientModelChat> {
           Global.latestPrediction =
               prediction; // Store prediction in global variable
 
-          updateChatScreenWithIntro();
           updateChatScreenWithPrediction(prediction); // Display prediction
           updateChatScreenWithHospitals(hospitals); // Display hospitals
         }
@@ -113,6 +112,11 @@ class PatientModelChatState extends State<PatientModelChat> {
     if (messages.isEmpty && !introMessageShown) {
       updateChatScreenWithIntro();
       introMessageShown = true;
+    }
+
+    // Add the Burn Class and location messages
+    if (introMessageShown) {
+      fetchPredictionAndHospitals();
     }
 
     // Add the burn prediction message if available
@@ -181,7 +185,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiver: false,
           timestamp: DateTime.now(),
           // senderId: userId, (Sara)
-          senderId: '2',
+          senderId: '0',
           receiverId: '1'));
     });
   }
@@ -196,7 +200,8 @@ class PatientModelChatState extends State<PatientModelChat> {
           message:
               'Your Burn Degree is $prediction. I advise you to use bla bla bla', // Modify the advice as needed
           receiver: false,
-          senderId: userId,
+          // senderId: userId, (Sara)
+          senderId: '0',
           receiverId: '1',
           timestamp: DateTime.now()));
     });
@@ -227,113 +232,176 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = Provider.of<MyState>(context, listen: false).userId;
-
     return Scaffold(
-        appBar: const LocalizationIcon(),
-        body: Stack(
-          children: [
-            ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final chatMessage = messages[index];
-                if (chatMessage.message != null) {
-                  // If there's an audio URL, display both the audio player and the message text.
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: chatMessage.message.contains('View on Maps')
-                            ? RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: chatMessage.message.split(
-                                          '\n')[0], // Display hospital name
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    TextSpan(
-                                      text: '\nView on Maps',
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          launch(chatMessage.message
-                                                  .split('\n')[1]
-                                                  .split('(')[1]
-                                                  .split(')')[
-                                              0]); // Open link in browser
-                                        },
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Text(chatMessage.message),
-                        subtitle: Text(chatMessage.receiver ?? false
-                            ? "Patient"
-                            : "Doctor"), // Displaying text message if available
-                      ),
-                      // Padding(
-                      // padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      // child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
-                      // ),
-                    ],
-                  );
-                } else {
-                  // Otherwise, render the text message as usual
-                  return MessagesWidget(
-                    chatMessage: chatMessage,
-                    introMessage: null,
-                  );
-                }
-              },
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.only(left: 16, bottom: 10, right: 16),
-                  height: 60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(255, 106, 105, 105),
-                  ),
-                  child: Row(children: [
-                    IconButton(
-                      icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-                      onPressed: _toggleRecording,
-                      color: _isRecording
-                          ? Colors.red
-                          : Color.fromARGB(255, 10, 15, 153),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: _messageController,
-                        textCapitalization: TextCapitalization.sentences,
-                        autocorrect: true,
-                        enableSuggestions: true,
-                        decoration:
-                            InputDecoration(hintText: S.of(context).message),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: IconButton(
-                        onPressed: _sendMessage,
-                        icon: const Icon(
-                          Icons.send,
-                        ),
-                      ),
-                    ),
-                  ]),
+      appBar: const LocalizationIcon(),
+      body: Stack(
+        children: [
+          ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              final chatMessage = messages[index];
+
+              // Render the text message as usual
+              return MessagesWidget(
+                chatMessage: chatMessage,
+                introMessage: null,
+              );
+            },
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                padding: const EdgeInsets.only(left: 16, bottom: 10, right: 16),
+                height: 60,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(255, 106, 105, 105),
                 ),
+                child: Row(children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _messageController,
+                      textCapitalization: TextCapitalization.sentences,
+                      autocorrect: true,
+                      enableSuggestions: true,
+                      decoration:
+                          InputDecoration(hintText: S.of(context).message),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: IconButton(
+                      onPressed: _sendMessage,
+                      icon: const Icon(
+                        Icons.send,
+                      ),
+                    ),
+                  ),
+                ]),
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
+
+
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final userId = Provider.of<MyState>(context, listen: false).userId;
+
+//     return Scaffold(
+//         appBar: const LocalizationIcon(),
+//         body: Stack(
+//           children: [
+//             ListView.builder(
+//               itemCount: messages.length,
+//               itemBuilder: (context, index) {
+//                 final chatMessage = messages[index];
+//                 if (chatMessage.message != null) {
+//                   // If there's an audio URL, display both the audio player and the message text.
+//                   return Column(
+//                     children: [
+//                       ListTile(
+//                         title: chatMessage.message.contains('View on Maps')
+//                             ? RichText(
+//                                 text: TextSpan(
+//                                   children: [
+//                                     TextSpan(
+//                                       text: chatMessage.message.split(
+//                                           '\n')[0], // Display hospital name
+//                                       style: TextStyle(color: Colors.black),
+//                                     ),
+//                                     TextSpan(
+//                                       text: '\nView on Maps',
+//                                       style: TextStyle(
+//                                         color: Colors.blue,
+//                                         decoration: TextDecoration.underline,
+//                                       ),
+//                                       recognizer: TapGestureRecognizer()
+//                                         ..onTap = () {
+//                                           launch(chatMessage.message
+//                                                   .split('\n')[1]
+//                                                   .split('(')[1]
+//                                                   .split(')')[
+//                                               0]); // Open link in browser
+//                                         },
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             : Text(chatMessage.message),
+//                         subtitle: Text(chatMessage.receiver ?? false
+//                             ? "Patient"
+//                             : "Doctor"), // Displaying text message if available
+//                       ),
+//                       // Padding(
+//                       // padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+//                       // child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
+//                       // ),
+//                     ],
+//                   );
+//                 } else {
+//                   // Otherwise, render the text message as usual
+//                   return MessagesWidget(
+//                     chatMessage: chatMessage,
+//                     introMessage: null,
+//                   );
+//                 }
+//               },
+//             ),
+//             Align(
+//               alignment: Alignment.bottomCenter,
+//               child: Padding(
+//                 padding: const EdgeInsets.all(8.0),
+//                 child: Container(
+//                   padding:
+//                       const EdgeInsets.only(left: 16, bottom: 10, right: 16),
+//                   height: 60,
+//                   width: double.infinity,
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(10),
+//                     color: const Color.fromARGB(255, 106, 105, 105),
+//                   ),
+//                   child: Row(children: [
+//                     IconButton(
+//                       icon: Icon(_isRecording ? Icons.stop : Icons.mic),
+//                       onPressed: _toggleRecording,
+//                       color: _isRecording
+//                           ? Colors.red
+//                           : Color.fromARGB(255, 10, 15, 153),
+//                     ),
+//                     Expanded(
+//                       child: TextField(
+//                         controller: _messageController,
+//                         textCapitalization: TextCapitalization.sentences,
+//                         autocorrect: true,
+//                         enableSuggestions: true,
+//                         decoration:
+//                             InputDecoration(hintText: S.of(context).message),
+//                       ),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.only(top: 10),
+//                       child: IconButton(
+//                         onPressed: _sendMessage,
+//                         icon: const Icon(
+//                           Icons.send,
+//                         ),
+//                       ),
+//                     ),
+//                   ]),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ));
+//   }
+// }
