@@ -1,5 +1,6 @@
 import os
 from flask import Flask 
+# from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 
 from .base import db
@@ -20,6 +21,8 @@ def create_app():
     socketio = SocketIO(app, cors_allowed_origins='*')
     db.init_app(app)
     app.register_blueprint(main)
+
+    # CORS(app) # For Session management
     
     # Initialize SocketIO with the app
     socketio.init_app(app)

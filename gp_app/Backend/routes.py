@@ -32,7 +32,7 @@ socketio = SocketIO(cors_allowed_origins="*")
 
 
 # Initialize Global variables
-BURN_ID, USER_ID, prediction, user_lat, user_lon  = 0, 0, {} , 0.0 , 0.0
+# BURN_ID, USER_ID, prediction, user_lat, user_lon  = 0, 0, {} , 0.0 , 0.0
 
 
 # Route to get the username and password in the login screen
@@ -90,7 +90,7 @@ def login_info():
         # Send a JSON response back to the client
         response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession)}
         # USER_ID = user.id
-        session['user_id'] = user.id  # Store user ID in session
+        # session['user_id'] = user.id  # Store user ID in session
         return jsonify(response)
     
 
@@ -180,7 +180,7 @@ def signup_info():
                 db.session.commit()
                 print('user id: ', new_user.id) # Get user ID
                 # USER_ID = new_user.id
-                session['user_id'] = new_user.id    # Store new signed up user ID in session
+                # session['user_id'] = new_user.id    # Store new signed up user ID in session
                 response = {'response': 'Signup successful', 'user_id': str(new_user.id)}
             except OperationalError:
                 print('Operational Error Encountered')
@@ -203,7 +203,8 @@ def signup_info():
 @main.route('/uploadImg', methods=['POST'])
 def upload():
 
-    global BURN_ID, USER_ID, prediction 
+    # global BURN_ID, USER_ID, prediction 
+    BURN_ID, USER_ID, prediction  = 0, 0, {} 
 
     print('Entered UploadImg Route')
 
@@ -227,11 +228,11 @@ def upload():
         #print('Data Type: ', type(IMAGE_DATA))
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         
-        # # Get the user_id from the received request 
-        # USER_ID = int(request.form['user_id'])  # Cast user id to integer
-        # print('User ID Associated with burn:', USER_ID)
-        user_id = session.get('user_id')
-        print('User ID Associated with burn:', user_id)
+        # Get the user_id from the received request 
+        USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        print('User ID Associated with burn:', USER_ID)
+        # user_id = session.get('user_id')
+        # print('User ID Associated with burn:', user_id)
 
         # Read the image file 
         print('The file received from App: ', file)
@@ -254,11 +255,11 @@ def upload():
 
         # Try To Get the user associated with that id, if error encountered then the user is a guest
         # If the user already exists
-        if User.query.filter_by(id=user_id).first():
+        if User.query.filter_by(id=USER_ID).first():
             print('Creating a new burn item for the pre-existing/signed up user......')
             # create new burn item and add to db
             new_burn = Burn(
-                            fk_burn_user_id = user_id,
+                            fk_burn_user_id = USER_ID,
                             burn_date = date.today(),
                             burn_img = image_data,
                             burn_class_model = int(output),
@@ -319,9 +320,9 @@ def upload():
 @main.route('/add_burn', methods=['POST'])
 def burn_new():
 
-    global BURN_ID, USER_ID, prediction 
-
-    user_id = session.get('user_id')
+    # global BURN_ID, USER_ID, prediction  
+    # user_id = session.get('user_id')
+    BURN_ID, USER_ID = 0, 0
 
     if request.method == 'POST':
 
@@ -334,8 +335,10 @@ def burn_new():
         if not data:
             return jsonify({'response': 'Failed to Load info...'})    
 
-        # BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
+        BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
         print('Received Burn ID: ', BURN_ID)
+        USER_ID = int(request.form['user_id'])  # Cast user id from string to integer
+        print('Received USER_ID ID: ', USER_ID)
         # Get the latest burn item added for that user
         # user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
 
@@ -360,7 +363,7 @@ def burn_new():
             # Print the user id if it exists
             try:
                 # USER_ID = user.fk_burn_user_id
-                print('Updated the Clinical Data For Signed Up User With ID: ', user_id)
+                print('Updated the Clinical Data For Signed Up User With ID: ', USER_ID)
             # Update Clinical Data For Signed Up & GUESTS Users 
             finally:
                 # add symptoms (clinical data) if sent
@@ -612,7 +615,7 @@ def get_chat_history():
 @main.route('/get_user_location', methods=['POST'])
 def get_user_location():
 
-    global user_lat, user_lon
+    user_lat, user_lon = 0.0 , 0.0
 
     user_lat = float(request.args.get('user_latitude', 0))
     user_lon = float(request.args.get('user_longitude', 0))

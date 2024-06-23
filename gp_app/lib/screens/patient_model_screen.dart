@@ -210,7 +210,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         messages.add(ChatMessage(
             message: '$hospitalMessage\n[View on Maps]($mapsLink)',
             receiver: false,
-            senderId: userId,
+            senderId: '0',
             receiverId: '1',
             timestamp: DateTime.now()));
       }

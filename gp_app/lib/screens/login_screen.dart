@@ -29,13 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   var _enteredPassword = '';
   final List<UserInfo> _userInfoList = [];
 
-  // Call logout function when the screen is first loaded
-  @override
-  void initState() {
-    super.initState();
-    logout();
-  }
-
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
