@@ -26,9 +26,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SessionManager {
   static const String _userIdKey = 'userId';
   static const String _burnIdKey = 'burnId'; // Add burnId key
+  static const String _profession = 'profession';
   static const String _prediction = 'prediction';
   static const String _latitudeKey = 'latitude'; // Add latitude key
   static const String _longitudeKey = 'longitude'; // Add longitude key
+
+  // Function to initialize the session with default values
+  static Future<void> initializeSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Set initial value for user profession if not already set
+    if (!prefs.containsKey(_profession)) {
+      await prefs.setString(_profession, 'patient');
+    }
+  }
 
   // Function to Save User ID to the session
   static Future<void> saveUserId(String userId) async {
@@ -52,6 +62,18 @@ class SessionManager {
   static Future<String?> getBurnId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_burnIdKey);
+  }
+
+  // Function to Save User Profession to the session
+  static Future<void> saveUserProfession(String profession) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_profession, profession);
+  }
+
+  // Function to Get User Profession from the session
+  static Future<String?> getUserProfession() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_profession);
   }
 
   static Future<void> saveLatitude(double latitude) async {
@@ -88,6 +110,7 @@ class SessionManager {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userIdKey);
     await prefs.remove(_burnIdKey);
+    await prefs.remove(_profession);
     await prefs.remove(_prediction);
     await prefs.remove(_latitudeKey);
     await prefs.remove(_longitudeKey);
@@ -127,13 +150,16 @@ Future<String> sendData(
           '0'; // If received ID is NULL assign it to 0
       Global.userId = userId;
       print('User ID from Login Route: $userId');
-      String UserProfession = responseData['user_profession'];
+      String userProfession = 'patient';
+      userProfession = responseData['user_profession'] ?? 'patient';
 
       print('Login successful');
-      print('Profession: $UserProfession');
+      print('Profession: $userProfession');
 
       // Save userId to SharedPreferences
       await SessionManager.saveUserId(userId);
+      // Save the User Profession to the Session / SharedPreferences
+      await SessionManager.saveUserProfession(userProfession);
 
       return 'Access Allowed';
     } else {
@@ -209,8 +235,16 @@ void login_warning(context) {
 }
 
 // Function to sign up an account
-Future<String> signUp(NewUser userInfo) async {
-  var url = 'https://my-trial-t8wj.onrender.com/signup'; //
+Future<String> signUp(NewUser userInfo, String userProfession) async {
+  // Define Route For checking the sign up info based on the user profession, whether patient or admin
+  String route = '';
+  if (userProfession == 'admin') {
+    route = 'doctorsignup';
+  } else {
+    route = 'signup';
+  }
+
+  var url = 'https://my-trial-t8wj.onrender.com/$route'; //
   print('Before Request');
   var request = await http.post(Uri.parse(url), body: {
     'firstname': userInfo.firstName,
@@ -308,10 +342,11 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   try {
     // Encode the image as base64
     String base64Image = base64Encode(imageFile.readAsBytesSync());
-    // Get User ID From Session
-    String user_id = (await SessionManager.getUserId()) ?? '';
+    String user_id;
     String prediction;
     String receivedBurnId;
+    // Get User ID From Session
+    user_id = (await SessionManager.getUserId()) ?? '';
 
     // Create the multipart request
     var request = http.MultipartRequest(
@@ -702,7 +737,8 @@ void logout() async {
       'https://my-trial-t8wj.onrender.com/logout'; // Replace with your actual logout endpoint URL
 
   try {
-    final response = await http.get(Uri.parse(url));
+    final response =
+        await http.post(Uri.parse(url)); // Use http.post instead of http.get
 
     if (response.statusCode == 200) {
       // Successful logout

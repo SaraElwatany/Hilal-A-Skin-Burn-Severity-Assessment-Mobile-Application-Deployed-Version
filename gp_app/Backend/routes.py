@@ -189,6 +189,104 @@ def signup_info():
 
 
 
+# A route for the sign up screen (Done)
+@main.route('/doctorsignup', methods = ['POST'])
+def doctor_signup_info():
+
+    regex_1 = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+    regex_2 = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+    data = request.form
+    firstname = data.get('firstname').strip()
+    lastname  = data.get('lastname').strip()
+    email     = data.get('email').strip()
+    password  = data.get('password').strip()
+
+    # Convert email to lowercase
+    email = email.lower()
+
+    # Password Validation
+    capital = any(char.isupper() for char in password)
+    small = any(char.islower() for char in password)
+    special_character = bool(regex_2.search(password))
+    email_val, pass_val = 0, 0
+
+    # Check the password for small, capital & special characters
+    if capital and small and special_character:
+        pass_val = 1    # Set flag to true
+    # Check the email format
+    if(re.fullmatch(regex_1, email)):
+        email_val = 1   # Set flag to true
+
+    print('Sign Up Information, 'f'Username: {firstname} {lastname}', f'Email: {email}', f'Password: {password}')
+    print(f'Email: {bool(re.fullmatch(regex_1, email))}')
+    print(f'Capital: {capital}')
+    print(f'Small: {small}')
+    print(f'Special Character: {special_character}')
+
+    # Both, Email & Password don't match the criteria
+    if (not pass_val) and (not email_val):
+        print('Sign Up Failed Due to Password & Email')
+        response = {'response': 'Failed Password and Email'}
+        return jsonify(response)
+    # Password doesn't match the criteria
+    if not pass_val:
+        print('Sign Up Failed Due to Password')
+        print(f'Failed Password: {password}')
+        response = {'response': 'Failed Password'}
+        return jsonify(response)
+    # Email doesn't match the criteria
+    if not email_val:
+        print('Sign Up Failed Due to Email')
+        response = {'response': 'Failed Email'}
+        return jsonify(response)
+    # Email & Password accepted
+    else:
+        print('Signed Up Successfully, 'f'Username: {firstname} {lastname}', f'Email: {email}', f'Password: {password}')
+        hashed_password = generate_password_hash(password, method='pbkdf2')
+        print('Hashed Password is: ', hashed_password)
+
+        # Check if the email already exists
+        if User.query.filter_by(email=email).first():
+            print('Sign Up Failed Due to Duplicate Email')
+            response = {'response': 'Failed: Email already exists'}
+            return jsonify(response)
+        # Email doesn't exist
+        else:
+            # add info from form to user
+            new_user = User(
+            username = f'{firstname} {lastname}', 
+            password = hashed_password,
+            email = email,
+            phone = 1224355, #'None'
+            weight = 50,#'None'
+            height = 170, #'None'
+            gender = 'M', #'None'
+            dob = date(2020,4,2),#'None'
+            profession = 'doctor'
+            )
+            
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                print('user id: ', new_user.id) # Get user ID
+                # USER_ID = new_user.id
+                # session['user_id'] = new_user.id    # Store new signed up user ID in session
+                response = {'response': 'Signup successful', 'user_id': str(new_user.id)}
+            except OperationalError:
+                print('Operational Error Encountered')
+            except IntegrityError:
+                db.session.rollback()   # Rollback the transaction
+                print('Integrity Error: User with this email already exists')
+                response = {'response': 'Email already exists', 'user_id': str(0)}
+            except Exception as e:
+                db.session.rollback()
+                print(f'Error during signup: {str(e)}')
+                response = {'response': 'Internal Server Error', 'user_id': str(0)}
+            return jsonify(response)
+
+
+
+
 
 # Route to receive the burn image from user and return the model's prediction as well as the burn id  (Done)
 @main.route('/uploadImg', methods=['POST'])
@@ -531,7 +629,7 @@ def update_burn():
 def send_message():
 
     from .__init__ import socketio 
-    
+
     try:
         data = request.json
         print(f"Received data: {data}")  # Print received data for debugging

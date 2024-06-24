@@ -57,7 +57,8 @@ class PatientModelChatState extends State<PatientModelChat> {
         } else {
           List<dynamic> hospitals = responseBody['hospitals'];
 
-          String prediction = (await SessionManager.getPrediction()) ?? '';
+          String prediction;
+          prediction = (await SessionManager.getPrediction()) ?? '';
           Global.latestPrediction = prediction;
 
           updateChatScreenWithPrediction(prediction);
@@ -201,9 +202,9 @@ class PatientModelChatState extends State<PatientModelChat> {
     setState(() {
       messages.add(ChatMessage(
           message:
-              'Your Burn Degree is $prediction. I advise you to use bla bla bla', // Modify the advice as needed
+              'Your Burn Degree is $prediction.\nThe Following First Aid Protocols are Recommended:\n\n1.\n2.\n3.\n4.\n5.\n', // Modify the advice as needed
           receiver: false,
-          // senderId: userId, (Sara)
+          // senderId: userId, // (Sara)
           senderId: '0',
           receiverId: '1',
           timestamp: DateTime.now()));
@@ -214,29 +215,64 @@ class PatientModelChatState extends State<PatientModelChat> {
   void updateChatScreenWithHospitals(List<dynamic> hospitals) {
     final myState = Provider.of<MyState>(context, listen: false);
     String userId = myState.userId;
+    var fullMessage =
+        'The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n';
+
+    List<Map<String, String>> hospitalDetails = [];
+
+    for (var i = 0; i < 5 && i < hospitals.length; i++) {
+      var hospital = hospitals[i];
+      var hospitalMessage =
+          '${hospital['english_name']} - ${hospital['arabic_name']}';
+      var mapsLink =
+          'https://www.google.com/maps/search/?api=1&lat=${hospital['lat']}&lon=${hospital['lon']}';
+      print('URL $i $mapsLink');
+      fullMessage = fullMessage +
+          '${i + 1}. $hospitalMessage\n[View on Maps]($mapsLink)\n\n';
+
+      hospitalDetails.add({
+        '${hospital['lat']},${hospital['lon']}': hospitalMessage,
+      });
+    }
 
     setState(() {
-      for (var i = 0; i < 5 && i < hospitals.length; i++) {
-        var hospital = hospitals[i];
-        var hospitalMessage =
-            '${hospital['english_name']} - ${hospital['arabic_name']}';
-        var mapsLink =
-            'https://www.google.com/maps/search/?api=1&query=${hospital['lat']},${hospital['lon']}';
-        print('URL $i $mapsLink');
-
-        messages.add(ChatMessage(
-            message: '$hospitalMessage\n[View on Maps]($mapsLink)',
-            receiver: false,
-            senderId: '0',
-            receiverId: '1',
-            latitude: hospital['lat'], // Add latitude
-            longitude: hospital['lon'], // Add longitude
-            hospitalNameEn: hospital['english_name'],
-            hospitalNameAr: hospital['arabic_name'],
-            timestamp: DateTime.now()));
-      }
+      messages.add(ChatMessage(
+          message: fullMessage,
+          receiver: false,
+          senderId: '0',
+          receiverId: '1',
+          hospitalDetails: hospitalDetails,
+          timestamp: DateTime.now()));
     });
   }
+
+  // // Update chat screen with the list of nearest hospitals (Sara)
+  // void updateChatScreenWithHospitals(List<dynamic> hospitals) {
+  //   final myState = Provider.of<MyState>(context, listen: false);
+  //   String userId = myState.userId;
+
+  //   setState(() {
+  //     for (var i = 0; i < 5 && i < hospitals.length; i++) {
+  //       var hospital = hospitals[i];
+  //       var hospitalMessage =
+  //           '${hospital['english_name']} - ${hospital['arabic_name']}';
+  //       var mapsLink =
+  //           'https://www.google.com/maps/search/?api=1&query=${hospital['lat']},${hospital['lon']}';
+  //       print('URL $i $mapsLink');
+
+  //       messages.add(ChatMessage(
+  //           message: '$hospitalMessage\n[View on Maps]($mapsLink)',
+  //           receiver: false,
+  //           senderId: '0',
+  //           receiverId: '1',
+  //           latitude: hospital['lat'], // Add latitude
+  //           longitude: hospital['lon'], // Add longitude
+  //           hospitalNameEn: hospital['english_name'],
+  //           hospitalNameAr: hospital['arabic_name'],
+  //           timestamp: DateTime.now()));
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

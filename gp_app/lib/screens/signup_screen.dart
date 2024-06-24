@@ -10,7 +10,6 @@ import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/screens/login_screen.dart';
 import 'package:gp_app/screens/main_page.dart';
 
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -30,26 +29,30 @@ class _SignUpState extends State<SignUpScreen> {
   final List<NewUser> _userInfoList = [];
   bool flag = Global.adminPassword;
 
-
   void _saveItem() async {
     final userId = Provider.of<MyState>(context, listen: false).userId;
 
     NewUser userInfo = NewUser(
-    firstName: _enteredFirstName,
-    lastName: _enteredLastName,
-    email: _enteredEmail,
-    password: _enteredPassword,
-    userId: userId,
-  );
+      firstName: _enteredFirstName,
+      lastName: _enteredLastName,
+      email: _enteredEmail,
+      password: _enteredPassword,
+      userId: userId,
+    );
     _userInfoList.add(userInfo);
+    // Get the User Profession
+    String user_profession;
+    user_profession = (await SessionManager.getUserProfession()) ?? '';
 
-    output = await signUp(userInfo);
+    output = await signUp(userInfo, user_profession);
 
     if ((_formKey.currentState!.validate()) && (output == 'Sign up Allowed')) {
       _formKey.currentState!.save();
 
       // printUserInfoList();
-      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const MainPageScreen(),));
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => const MainPageScreen(),
+      ));
     } else {
       showDialog(
           context: context,
@@ -96,10 +99,7 @@ class _SignUpState extends State<SignUpScreen> {
             children: [
               Center(
                 child: Text(
-                  (flag)
-                  ?S.of(context).doctorInfo
-                  :S.of(context).signup
-                  ,
+                  (flag) ? S.of(context).doctorInfo : S.of(context).signup,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -304,43 +304,40 @@ class _SignUpState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 30,
                       ),
-                      if(flag)
-                       TextFormField(
-                            onChanged: (value) {
-                              _enteredLastName = value.toString();
-                            },
-                            maxLength: 50,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
-                                  width: 2.0,
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                              ),
-                              label: Text(
-                                S.of(context).degree,
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.grey.shade500),
+                      if (flag)
+                        TextFormField(
+                          onChanged: (value) {
+                            _enteredLastName = value.toString();
+                          },
+                          maxLength: 50,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
+                                color: Theme.of(context).colorScheme.surface,
                               ),
                             ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.surface,
+                              ),
+                            ),
+                            label: Text(
+                              S.of(context).degree,
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.grey.shade500),
+                            ),
                           ),
-
+                        ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          (flag)
-                          ? Container()
-                          :Text(S.of(context).haveAcc),
+                          (flag) ? Container() : Text(S.of(context).haveAcc),
                           const SizedBox(
                             width: 10,
                           ),
@@ -358,10 +355,9 @@ class _SignUpState extends State<SignUpScreen> {
                                 textStyle: const TextStyle(
                                   fontSize: 15,
                                 )),
-                            child: 
-                            (flag)
-                            ?Container()
-                           :Text(S.of(context).loginNw),
+                            child: (flag)
+                                ? Container()
+                                : Text(S.of(context).loginNw),
                           ),
                         ],
                       ),
@@ -376,10 +372,7 @@ class _SignUpState extends State<SignUpScreen> {
                                   borderRadius: BorderRadius.circular(15)),
                               fixedSize: const Size(130, 69)),
                           child: Text(
-                            (!flag)
-                            ?S.of(context).next
-                            : S.of(context).save
-                            ,
+                            (!flag) ? S.of(context).next : S.of(context).save,
                             style: const TextStyle(
                               fontSize: 30,
                               color: Color.fromARGB(255, 255, 251, 251),

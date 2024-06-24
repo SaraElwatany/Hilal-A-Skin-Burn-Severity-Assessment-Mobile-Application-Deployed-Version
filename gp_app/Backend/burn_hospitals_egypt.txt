@@ -140,8 +140,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى الجمهورية العام",
 
         "google_maps_location": "Alexandria, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.205840429443754, 
+        "lon": 29.89960297964069
     },
 
     {
@@ -149,26 +149,26 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى حوش عيسى المركزي",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.941815667070387, 
+        "lon": 30.39126442602032
     },
 
     {
-        "english_name": "Rasheed Central Hospital",
-        "arabic_name": "مستشفى رشيد المركزي",
+        "english_name": "Rasheed General Hospital",
+        "arabic_name": "مستشفى رشيد العام",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.421687679420977, 
+        "lon": 30.468035345437716
     },
 
     {
-        "english_name": "Eitay El-Baroud Central Hospital",
-        "arabic_name": "مستشفى إيتاي البارود المركزي",
+        "english_name": "Eitay El-Baroud General Hospital",
+        "arabic_name": "مستشفى إيتاي البارود العام",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.890698747776565, 
+        "lon": 30.67892934486816
     },
 
     {
@@ -176,8 +176,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى كفر الدوار العام",
 
         "google_maps_location": "Beheira, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.139949540889177, 
+        "lon": 30.123262823373143
     },
 
     {
@@ -185,8 +185,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى منوف العام",
 
         "google_maps_location": "Menoufia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.473481341445776, 
+        "lon": 30.93568546339525
     },
 
     {
@@ -194,8 +194,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى أشمون العام",
 
         "google_maps_location": "Menoufia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0 
+        "lat": 30.33485766911813, 
+        "lon": 30.991110932223076
     },
 
     {
@@ -203,8 +203,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى مطروح العام",
 
         "google_maps_location": "Matrouh, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.349234422976835, 
+        "lon": 27.241499086119173
     },
 
     {
@@ -212,8 +212,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى زفتى العام",
 
         "google_maps_location": "Gharbia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0 
+        "lat": 30.71179983487582, 
+        "lon": 31.250532577807117
     },
 
     {
@@ -230,8 +230,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى كفر الشيخ العام",
 
         "google_maps_location": "Gharbia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.820563635984627, 
+        "lon": 30.81987026423288
     },
 
     {

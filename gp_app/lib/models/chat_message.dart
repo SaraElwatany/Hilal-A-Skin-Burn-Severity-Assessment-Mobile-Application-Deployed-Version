@@ -12,6 +12,7 @@ class ChatMessage {
   final double? longitude; // Add longitude
   final String? hospitalNameEn;
   final String? hospitalNameAr;
+  final List<Map<String, String>>? hospitalDetails;
 
   ChatMessage({
     required this.senderId,
@@ -25,6 +26,7 @@ class ChatMessage {
     this.longitude, // Initialize longitude
     this.hospitalNameEn,
     this.hospitalNameAr,
+    this.hospitalDetails,
   });
 
   // Factory constructor to create a ChatMessage from JSON
