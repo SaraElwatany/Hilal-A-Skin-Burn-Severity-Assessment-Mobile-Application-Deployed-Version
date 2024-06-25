@@ -1,7 +1,7 @@
 class Patient {
   final String name;
   final String info;
-  final String id;
+  final int id;
 
   Patient({required this.name, required this.info, required this.id});
 }

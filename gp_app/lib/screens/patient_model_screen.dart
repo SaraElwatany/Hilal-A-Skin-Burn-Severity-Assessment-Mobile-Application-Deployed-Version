@@ -97,7 +97,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   void loadChatHistory() async {
     try {
 
-      List<ChatMessage> fetchedMessages = await fetchChatHistory(Global.userId, '1'); // Receiver ID set to 1
+      List<ChatMessage> fetchedMessages = await fetchChatHistory(Global.userId, 1); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -164,7 +164,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           image: "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
           timestamp: DateTime.now(),
           senderId: Global.userId,
-          receiverId: '1');
+          receiverId: 1);
 
       // Send the message to the server
       await sendMessageToServer(message);
@@ -189,7 +189,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           timestamp: DateTime.now(),
           // senderId: userId, (Sara)
           senderId: Global.userId,
-          receiverId: '1'));
+          receiverId: 1));
     });
   }
 
@@ -205,7 +205,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiver: false,
           // senderId: userId, // (Sara)
           senderId: Global.userId,
-          receiverId: '1',
+          receiverId: 1,
           timestamp: DateTime.now()));
     });
   }
@@ -239,7 +239,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           message: fullMessage,
           receiver: false,
           senderId: Global.userId,
-          receiverId: '1',
+          receiverId: 1,
           hospitalDetails: hospitalDetails,
           timestamp: DateTime.now()));
     });

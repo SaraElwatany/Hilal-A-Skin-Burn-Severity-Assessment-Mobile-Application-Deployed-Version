@@ -30,14 +30,13 @@ class _SignUpState extends State<SignUpScreen> {
   bool flag = Global.adminPassword;
 
   void _saveItem() async {
-    final userId = Provider.of<MyState>(context, listen: false).userId;
 
     NewUser userInfo = NewUser(
       firstName: _enteredFirstName,
       lastName: _enteredLastName,
       email: _enteredEmail,
       password: _enteredPassword,
-      userId: userId,
+      userId: Global.userId,
     );
     _userInfoList.add(userInfo);
     // Get the User Profession

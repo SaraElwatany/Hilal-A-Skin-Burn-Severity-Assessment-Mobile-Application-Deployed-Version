@@ -51,7 +51,7 @@ class DocterModelChatState extends State<DocterModelChat> {
   void loadChatHistory() async {
 
     try {
-      List<ChatMessage> fetchedMessages = await fetchChatHistory('1', '0'); // Receiver ID set to 1
+      List<ChatMessage> fetchedMessages = await fetchChatHistory(1,0); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -98,8 +98,8 @@ class DocterModelChatState extends State<DocterModelChat> {
           receiver: true,
           image: null,
           timestamp: DateTime.now(),
-          senderId: '1',
-          receiverId: '0');
+          senderId: 1,
+          receiverId: 0);
 
       // Send the message to the server
       sendMessageToServer(message);

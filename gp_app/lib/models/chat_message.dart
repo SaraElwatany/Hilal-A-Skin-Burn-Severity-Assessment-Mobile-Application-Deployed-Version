@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
 
 class ChatMessage {
-  final String senderId;
-  final String receiverId;
+  final int senderId;
+  final int receiverId;
   final String message;
   final String? image;
   final bool? receiver;
@@ -32,8 +32,8 @@ class ChatMessage {
   // Factory constructor to create a ChatMessage from JSON
  factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
-      senderId: json['sender_id'] as String,
-      receiverId: json['receiver_id'] as String,
+      senderId: json['sender_id'] as int,
+      receiverId: json['receiver_id'] as int,
       message: json['message'] as String? ?? '',
       image: json['image'] as String?,
       receiver: json['receiver'] as bool?,

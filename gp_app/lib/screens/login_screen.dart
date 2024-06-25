@@ -40,13 +40,8 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final myState = Provider.of<MyState>(context, listen: false);
-      String userId = myState.userId;
 
-
-      // loginUser(_enteredName, _enteredPassword);
-
-      UserInfo userInfo = UserInfo(_enteredName, _enteredPassword, userId);
+      UserInfo userInfo = UserInfo(_enteredName, _enteredPassword, Global.userId);
       _userInfoList.add(userInfo);
 
       // Send data & then wait for the response either to go to main page or try again

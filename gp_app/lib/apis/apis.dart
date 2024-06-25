@@ -123,7 +123,7 @@ Future<String> sendData(
   // Set The Global Variables To Null with each login
   // final myState = Provider.of<MyState>(context, listen: false);
   // myState.updateUserId();
-  String userId = "0";
+  int userId = 0;
 
   String url = 'https://my-trial-t8wj.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
@@ -157,7 +157,7 @@ Future<String> sendData(
       print('Profession: $userProfession');
 
       // Save userId to SharedPreferences
-      await SessionManager.saveUserId(userId);
+      await SessionManager.saveUserId(userId.toString()); /////////////edittttttttttttttttttttttttttttttttttt8172et8916036
       // Save the User Profession to the Session / SharedPreferences
       await SessionManager.saveUserProfession(userProfession);
 
@@ -262,9 +262,9 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
     // Request successful, handle the response (valid http response was received == okay statement for http)
     var responseData = jsonDecode(request.body);
     var responseMessage = responseData['response'];
-
-    String userId = '0';
-    userId = responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
+    print (responseData);
+    int userId = 0;
+    userId = int.tryParse(responseData['user_id']?.toString() ?? '0') ?? 0; // If received ID is NULL assign it to 0
     Global.userId = userId;
     print('Signed Up User ID: $userId');
 
@@ -284,7 +284,7 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
       return 'Sign up Denied due to duplicate email';
     } else {
       // Save userId to SharedPreferences
-      await SessionManager.saveUserId(userId);
+      await SessionManager.saveUserId(userId.toString());/////////////////////editttttttttttttttttttttt8q6w3891
       // Request was successful, and the info was correct => Sign Up
       print('Sign up was successful');
       return 'Sign up Allowed';
@@ -590,7 +590,7 @@ Future<List<Patient>> getPatients() async {
 //     }
 // }
 
-Future<List<ChatMessage>> fetchChatHistory(String senderId, String receiverId) async {
+Future<List<ChatMessage>> fetchChatHistory(int senderId, int receiverId) async {
   var url = Uri.parse(
       'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
   try {
