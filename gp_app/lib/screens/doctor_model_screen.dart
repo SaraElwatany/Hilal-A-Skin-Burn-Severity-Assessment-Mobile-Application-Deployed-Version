@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/docter_model_widget.dart';
+import 'package:gp_app/widgets/messages_widget.dart';
+
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:gp_app/widgets/audio_player_widget.dart';
@@ -47,11 +49,9 @@ class DocterModelChatState extends State<DocterModelChat> {
   }
 
   void loadChatHistory() async {
-  final myState = Provider.of<MyState>(context, listen: false);
-  String userId = myState.userId;
 
     try {
-      List<ChatMessage> fetchedMessages = await fetchChatHistory(userId, '1'); // Receiver ID set to 1
+      List<ChatMessage> fetchedMessages = await fetchChatHistory('1', '0'); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -61,37 +61,35 @@ class DocterModelChatState extends State<DocterModelChat> {
   }
     
 
-  void _toggleRecording() async {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
+  // void _toggleRecording() async {
+  //   final myState = Provider.of<MyState>(context, listen: false);
+  //   String userId = myState.userId;
 
-    if (_isRecording) {
-      final path = await _recorder.stopRecorder();
-      if (path != null) {
-        setState(() {
-          messages.add(ChatMessage(
-            message: 'New audio message',
-            receiver: false,
-            timestamp: DateTime.now(),
-            senderId: userId,
-            receiverId: '1'
-          ));
-        });
-      }
-      setState(() {
-        _isRecording = false;
-      });
-    } else {
-      await _recorder.startRecorder(toFile: 'audio_message.aac');
-      setState(() {
-        _isRecording = true;
-      });
-    }
-  }
+  //   if (_isRecording) {
+  //     final path = await _recorder.stopRecorder();
+  //     if (path != null) {
+  //       setState(() {
+  //         messages.add(ChatMessage(
+  //           message: 'New audio message',
+  //           receiver: false,
+  //           timestamp: DateTime.now(),
+  //           senderId: userId,
+  //           receiverId: '1'
+  //         ));
+  //       });
+  //     }
+  //     setState(() {
+  //       _isRecording = false;
+  //     });
+  //   } else {
+  //     await _recorder.startRecorder(toFile: 'audio_message.aac');
+  //     setState(() {
+  //       _isRecording = true;
+  //     });
+  //   }
+  // }
 
   void _sendMessage() {
-  final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
 
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
@@ -100,8 +98,8 @@ class DocterModelChatState extends State<DocterModelChat> {
           receiver: true,
           image: null,
           timestamp: DateTime.now(),
-          senderId: userId,
-          receiverId: '1');
+          senderId: '1',
+          receiverId: '0');
 
       // Send the message to the server
       sendMessageToServer(message);
@@ -126,22 +124,11 @@ class DocterModelChatState extends State<DocterModelChat> {
             itemCount: messages.length,
             itemBuilder: (context, index) {
               final chatMessage = messages[index];
-              if (chatMessage.message != null) {
-                // If there's an audio URL, display both the audio player and the message text.
-                return Column(
-                  children: [
-                    ListTile(
-                      title: Text(chatMessage.message),
-                      subtitle:  Text(chatMessage.receiver==true ? "Doctor" : "Patient"),// Displaying text message if available
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      // child: AudioPlayerWidget(audioPath: chatMessage.audioUrl!),
-                    ),
-                  ],
-                );
-              }
-              return null; 
+              // Render the text message as usual
+              return MessagesWidget(
+                chatMessage: chatMessage,
+                introMessage: null,
+              );
             },
           ),
           Align(

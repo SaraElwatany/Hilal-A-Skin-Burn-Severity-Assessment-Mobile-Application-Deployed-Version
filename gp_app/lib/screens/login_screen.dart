@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     // Initialize session when the screen is first created
-    logout();
+    // logout();
   }
 
   void _saveItem() async {
@@ -42,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
 
       final myState = Provider.of<MyState>(context, listen: false);
       String userId = myState.userId;
+
 
       // loginUser(_enteredName, _enteredPassword);
 

@@ -134,8 +134,7 @@ Future<String> sendData(
   if (request.statusCode == 200 ||
       request.statusCode == 201 ||
       request.statusCode == 204) {
-    //if (request.statusCode == 200) {
-    // Request was successful
+
     print(
         'Received a successful response (Status Code: ${request.statusCode})');
 
@@ -146,10 +145,11 @@ Future<String> sendData(
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Access Allowed') {
-      userId = responseData['user_id'] ??
-          '0'; // If received ID is NULL assign it to 0
+      userId = responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
       Global.userId = userId;
       print('User ID from Login Route: $userId');
+
+  
       String userProfession = 'patient';
       userProfession = responseData['user_profession'] ?? 'patient';
 
@@ -214,7 +214,7 @@ void login_warning(context) {
       builder: (ctx) => AlertDialog(
             title: const Text('Invalid Input'),
             content: const Text(
-              'Please Enter a valid email or password',
+              'Please Enter a valid Email or Password',
             ),
             backgroundColor: Colors.white,
             actions: [
@@ -262,13 +262,14 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
     // Request successful, handle the response (valid http response was received == okay statement for http)
     var responseData = jsonDecode(request.body);
     var responseMessage = responseData['response'];
+
     String userId = '0';
-    userId =
-        responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
+    userId = responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
     Global.userId = userId;
     print('Signed Up User ID: $userId');
-    print('Received response: $responseMessage');
 
+
+    print('Received response: $responseMessage');
     if (responseMessage == 'Failed Password and Email') {
       print('Sign up Failed due to wrong password and email');
       return 'Sign up Denied due to password & email';
@@ -589,8 +590,7 @@ Future<List<Patient>> getPatients() async {
 //     }
 // }
 
-Future<List<ChatMessage>> fetchChatHistory(
-    String senderId, String receiverId) async {
+Future<List<ChatMessage>> fetchChatHistory(String senderId, String receiverId) async {
   var url = Uri.parse(
       'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
   try {
@@ -627,7 +627,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
 
     var response = await http.post(url, headers: headers, body: body);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201 || response.statusCode == 200) {
       print('Message sent successfully');
     } else {
       print('Failed to send message. Status code: ${response.statusCode}');

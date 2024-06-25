@@ -674,16 +674,13 @@ def get_chat_history():
         if not sender_id or not receiver_id:
             return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
 
-        try:
-            sender_id = int(sender_id)
-            receiver_id = int(receiver_id)
-        except ValueError:
-            return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
-
         chat_history = ChatMessage.query.filter(
             ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
             | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
         ).order_by(ChatMessage.timestamp.asc()).all()
+
+        for message in chat_history:
+            print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}")
 
         return jsonify([message.to_dict() for message in chat_history]), 200
 
