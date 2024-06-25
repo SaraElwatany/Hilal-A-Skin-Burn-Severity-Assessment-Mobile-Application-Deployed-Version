@@ -29,6 +29,13 @@ class _LoginPageState extends State<LoginPage> {
   var _enteredPassword = '';
   final List<UserInfo> _userInfoList = [];
 
+  @override
+  void initState() {
+    super.initState();
+    // Initialize session when the screen is first created
+    logout();
+  }
+
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -259,7 +266,6 @@ class _LoginPageState extends State<LoginPage> {
                           Global.adminPassword = true;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (ctx) => const DocterProfile()));
-
                         },
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

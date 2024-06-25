@@ -8,6 +8,7 @@ import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/chat_message.dart';
 
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // Imports for keeping the state of variables
@@ -25,9 +26,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SessionManager {
   static const String _userIdKey = 'userId';
   static const String _burnIdKey = 'burnId'; // Add burnId key
+  static const String _profession = 'profession';
   static const String _prediction = 'prediction';
   static const String _latitudeKey = 'latitude'; // Add latitude key
   static const String _longitudeKey = 'longitude'; // Add longitude key
+
+  // Function to initialize the session with default values
+  static Future<void> initializeSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Set initial value for user profession if not already set
+    if (!prefs.containsKey(_profession)) {
+      await prefs.setString(_profession, 'patient');
+    }
+  }
 
   // Function to Save User ID to the session
   static Future<void> saveUserId(String userId) async {
@@ -51,6 +62,18 @@ class SessionManager {
   static Future<String?> getBurnId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_burnIdKey);
+  }
+
+  // Function to Save User Profession to the session
+  static Future<void> saveUserProfession(String profession) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_profession, profession);
+  }
+
+  // Function to Get User Profession from the session
+  static Future<String?> getUserProfession() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_profession);
   }
 
   static Future<void> saveLatitude(double latitude) async {
@@ -87,6 +110,7 @@ class SessionManager {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userIdKey);
     await prefs.remove(_burnIdKey);
+    await prefs.remove(_profession);
     await prefs.remove(_prediction);
     await prefs.remove(_latitudeKey);
     await prefs.remove(_longitudeKey);
@@ -97,9 +121,9 @@ class SessionManager {
 Future<String> sendData(
     String email, String password, BuildContext context) async {
   // Set The Global Variables To Null with each login
-  final myState = Provider.of<MyState>(context, listen: false);
-  String userId = myState.userId;
-  myState.updateUserId("0");
+  // final myState = Provider.of<MyState>(context, listen: false);
+  // myState.updateUserId();
+  String userId = "0";
 
   String url = 'https://my-trial-t8wj.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
@@ -122,16 +146,20 @@ Future<String> sendData(
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Access Allowed') {
-      userId = responseData['user_id'];
+      userId = responseData['user_id'] ??
+          '0'; // If received ID is NULL assign it to 0
       Global.userId = userId;
       print('User ID from Login Route: $userId');
-      String UserProfession = responseData['user_profession'];
+      String userProfession = 'patient';
+      userProfession = responseData['user_profession'] ?? 'patient';
 
       print('Login successful');
-      print('Profession: $UserProfession');
+      print('Profession: $userProfession');
 
       // Save userId to SharedPreferences
       await SessionManager.saveUserId(userId);
+      // Save the User Profession to the Session / SharedPreferences
+      await SessionManager.saveUserProfession(userProfession);
 
       return 'Access Allowed';
     } else {
@@ -207,8 +235,16 @@ void login_warning(context) {
 }
 
 // Function to sign up an account
-Future<String> signUp(NewUser userInfo) async {
-  var url = 'https://my-trial-t8wj.onrender.com/signup'; //
+Future<String> signUp(NewUser userInfo, String userProfession) async {
+  // Define Route For checking the sign up info based on the user profession, whether patient or admin
+  String route = '';
+  if (userProfession == 'admin') {
+    route = 'doctorsignup';
+  } else {
+    route = 'signup';
+  }
+
+  var url = 'https://my-trial-t8wj.onrender.com/$route'; //
   print('Before Request');
   var request = await http.post(Uri.parse(url), body: {
     'firstname': userInfo.firstName,
@@ -226,8 +262,11 @@ Future<String> signUp(NewUser userInfo) async {
     // Request successful, handle the response (valid http response was received == okay statement for http)
     var responseData = jsonDecode(request.body);
     var responseMessage = responseData['response'];
-    String userId = responseData['user_id'];
+    String userId = '0';
+    userId =
+        responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
     Global.userId = userId;
+    print('Signed Up User ID: $userId');
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Failed Password and Email') {
@@ -243,10 +282,10 @@ Future<String> signUp(NewUser userInfo) async {
       print('Sign up failed, an account with this email already exists');
       return 'Sign up Denied due to duplicate email';
     } else {
-      // Request was successful, and the info was correct => Sign Up
-      print('Sign up was successful');
       // Save userId to SharedPreferences
       await SessionManager.saveUserId(userId);
+      // Request was successful, and the info was correct => Sign Up
+      print('Sign up was successful');
       return 'Sign up Allowed';
     }
   } else if (request.statusCode == 400) {
@@ -301,11 +340,13 @@ bool isValidEmail(String email) {
 // Function to send the captured image to the prediction
 Future<int> sendImageToServer(File imageFile, BuildContext context) async {
   try {
-
     // Encode the image as base64
     String base64Image = base64Encode(imageFile.readAsBytesSync());
+    String user_id;
+    String prediction;
+    String receivedBurnId;
     // Get User ID From Session
-    String user_id = (await SessionManager.getUserId()) ?? '';
+    user_id = (await SessionManager.getUserId()) ?? '';
 
     // Create the multipart request
     var request = http.MultipartRequest(
@@ -313,7 +354,6 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
       Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
     );
 
-    
     // Add the base64-encoded image as a field
     request.fields['user_id'] = user_id;
     request.fields['Image'] = base64Image;
@@ -331,8 +371,8 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
 
       // Parse the JSON response
       var responseData = json.decode(response.body);
-      String prediction = responseData['prediction'];
-      String receivedBurnId = responseData['burn_id'];
+      prediction = responseData['prediction'];
+      receivedBurnId = responseData['burn_id'];
 
       print('Prediction: $prediction');
       print('Received Burn Id: $receivedBurnId');
@@ -454,7 +494,7 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
 Future skipClinicalData(BuildContext context) async {
   String url = 'https://my-trial-t8wj.onrender.com/add_burn';
   // Get the state of the widgets
-  final myState = Provider.of<MyState>(context, listen: false);
+  // final myState = Provider.of<MyState>(context, listen: false);
   // Get the User ID From the Shared Preferences
   String userId = (await SessionManager.getUserId()) ?? '';
   // Get the Burn ID From the Shared Preferences
@@ -475,6 +515,7 @@ Future skipClinicalData(BuildContext context) async {
       // If the call to the server was successful, parse the JSON
       final responseData = jsonDecode(request.body);
       final responseMessage = responseData['response'];
+      print('Response Message: $responseMessage');
     } else {
       print('Failed to receive response');
       // Handle failure
@@ -690,71 +731,14 @@ Future<void> get_user_location(
   }
 }
 
-Future<void> getHospitals() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
-
-  try {
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-
-      if (responseBody['error'] != null) {
-        print('Error: ${responseBody['error']}');
-      } else {
-        List<dynamic> hospitals = responseBody['hospitals'];
-
-        print('Top 5 Nearest Burn Hospitals:');
-
-        for (var i = 0; i < 5 && i < hospitals.length; i++) {
-          var hospital = hospitals[i];
-
-          print('${hospital['english_name']} - ${hospital['arabic_name']}');
-          print('Latitude: ${hospital['lat']}, Longitude: ${hospital['lon']}');
-          print('---');
-        }
-
-        String prediction = responseBody['prediction'];
-        print('Prediction: $prediction');
-      }
-    } else {
-      print('Failed to get response. Status code: ${response.statusCode}');
-    }
-  } catch (e) {
-    print('Error: $e');
-  }
-}
-
-// Function to ....
-Future<void> respondToUser() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
-  var response = await http.post(url);
-
-  // Request was successful, handle the response
-  if (response.statusCode == 200) {
-    final responseData = jsonDecode(response.body);
-    final responseMessage = responseData['message'];
-
-    final patients_ids = responseData['patients_ids'];
-    final hospitals = responseData['hospitals'];
-    final prediction = responseData['ّprediction'];
-
-    print('Received Response From get_patients route: $responseMessage');
-  }
-}
-
 // Function to delete flask session when logged out from account
 void logout() async {
   String url =
       'https://my-trial-t8wj.onrender.com/logout'; // Replace with your actual logout endpoint URL
 
   try {
-    final response = await http.get(Uri.parse(url));
+    final response =
+        await http.post(Uri.parse(url)); // Use http.post instead of http.get
 
     if (response.statusCode == 200) {
       // Successful logout

@@ -6,13 +6,18 @@ import 'package:gp_app/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:gp_app/models/my_state.dart'; // Import the file where you defined your state class
 
-void main() {
+import 'package:gp_app/apis/apis.dart';
+
+void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (_) => MyState(),
       child: const MyApp(),
     ),
   );
+
+  // Set the User Profession to a default value of 'patient
+  await SessionManager.initializeSession();
 }
 
 class MyApp extends StatefulWidget {
