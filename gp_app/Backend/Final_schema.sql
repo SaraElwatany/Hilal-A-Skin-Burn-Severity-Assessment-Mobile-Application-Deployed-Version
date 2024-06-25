@@ -294,11 +294,18 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
+
+ INSERT INTO  `defaultdb`.`user` 
+ (`id`, `username`, `password`, `dob`, `gender`, `height`, `weight`, `phone`, `email`, `profession`)
+VALUES (1, 'admin', 'pbkdf2:sha256:600000$xZdTyQugm5qNrx6n$b3fb45fe75fc7134415128dc81ab6bb90c08cf1c2addf557cb902288fc32b730', '1995-01-01', 'M', 180, 70, '01023456780', 'admin@hilal.com', 'admin');
+
+
 INSERT INTO `defaultdb`.`user` 
 (`id`, `username`, `password`, `dob`, `gender`, `height`, `weight`, `phone`, `email`, `profession`)
 VALUES
-(123, 'admin_dr', 'pbkdf2:sha256:600000$pAsRDiBDmxSHfdEg$92636fe0bd7e56bc65a754affa38f709298a0c754cc7a29436b1caf999fbab71',
- '1990-01-01', 'M', 180, 70, '1234567890', 'admin_dr@example.com', 'doctor');
+(2, 'dr_ali', 'pbkdf2:sha256:600000$9m4AXJ8AtIGiccP2$c72581e5a749631741631b74099ca86f197a01ba6640af69eb6c4b17b44dbee0',
+ '1990-01-01', 'M', 180, 75, '01034567899', 'aliMorad_dr@hilal.com', 'doctor');
+ 
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

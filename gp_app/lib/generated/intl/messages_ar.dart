@@ -70,9 +70,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "leg": MessageLookupByLibrary.simpleMessage("الرجل"),
         "chest": MessageLookupByLibrary.simpleMessage("الصدر و أعلى الظهر"),
         "back": MessageLookupByLibrary.simpleMessage("البطن و أسفل الظهر"),
-
         "intro": MessageLookupByLibrary.simpleMessage(
-          " أهلا, أنا هلال, رفيق الرعاية الصحة لمرضى الحروق. تقدر تسألني اسئلة متعلقة بمعالجة و\nمتابعة حروق الجلد أو إي إصابات شبهها بتحصل في البيت."),
+            " أهلا, أنا هلال, رفيق الرعاية الصحة لمرضى الحروق. تقدر تسألني اسئلة متعلقة بمعالجة و\nمتابعة حروق الجلد أو إي إصابات شبهها بتحصل في البيت."),
         "patients": MessageLookupByLibrary.simpleMessage("المرضى"),
         "time": MessageLookupByLibrary.simpleMessage("الوقت"),
         "danger": MessageLookupByLibrary.simpleMessage("الخطورة"),
@@ -87,42 +86,73 @@ class MessageLookup extends MessageLookupByLibrary {
         "degree": MessageLookupByLibrary.simpleMessage("الدرجة الوظيفية"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             " نحن طلاب كلية الهندسة الطبية والمنظومات بجامعه القاهرة. قمنا بإنشاء هذا التطبيق لمساعدة ضحايا الحروق المنزلية على التعامل مع الإصابات فى الوقت المناسب "),
-      
-        "goodLigthingTitle": MessageLookupByLibrary.simpleMessage("الإضاءة الجيدة"),
-        "goodLigthingtext": MessageLookupByLibrary.simpleMessage("تأكد من وجود إضاءة جيدة عند التقاط الصورة. الإضاءة الطبيعية خلال النهار هي الأفضل. تجنب الإضاءة القوية جدًا التي قد تسبب توهجًا أو ظلالًا شديدة."),
-
-
-        "simpleBackgroundTitle": MessageLookupByLibrary.simpleMessage("الخلفية البسيطة"),
-        "simpleBackgroundText": MessageLookupByLibrary.simpleMessage( "استخدم خلفية محايدة وغير مشتتة. خلفية بيضاء أو سادة تساعد في إبراز تفاصيل الحرق."),
-
-
-        "flashligthTitle": MessageLookupByLibrary.simpleMessage("تجنب استخدام الفلاش"),
-         "flashligthText": MessageLookupByLibrary.simpleMessage("الفلاش قد يغير من ألوان الحرق ويجعل التفاصيل غير واضحة. استخدم الضوء الطبيعي قدر الإمكان."),
- 
-
-
-        "burnDetailsTitle": MessageLookupByLibrary.simpleMessage("تفاصيل الحرق"),
-        "burnDetailsText": MessageLookupByLibrary.simpleMessage( " التقط الصور من عدة زوايا لإظهار جميع تفاصيل الحرق. صور من مسافة قريبة لتوضيح الحواف والعمق وأي تغير في اللون."),
-
-
-
-        "burnTouchTitle": MessageLookupByLibrary.simpleMessage("تجنب لمس الحرق"),
-        "burnTouchText": MessageLookupByLibrary.simpleMessage("لا تحاول تحريك أو لمس الحرق لتحسين الرؤية في الصورة، حتى لا تتسبب في تفاقم الإصابة."),
-  
-
-
+        "goodLigthingTitle":
+            MessageLookupByLibrary.simpleMessage("الإضاءة الجيدة"),
+        "goodLigthingtext": MessageLookupByLibrary.simpleMessage(
+            "تأكد من وجود إضاءة جيدة عند التقاط الصورة. الإضاءة الطبيعية خلال النهار هي الأفضل. تجنب الإضاءة القوية جدًا التي قد تسبب توهجًا أو ظلالًا شديدة."),
+        "simpleBackgroundTitle":
+            MessageLookupByLibrary.simpleMessage("الخلفية البسيطة"),
+        "simpleBackgroundText": MessageLookupByLibrary.simpleMessage(
+            "استخدم خلفية محايدة وغير مشتتة. خلفية بيضاء أو سادة تساعد في إبراز تفاصيل الحرق."),
+        "flashligthTitle":
+            MessageLookupByLibrary.simpleMessage("تجنب استخدام الفلاش"),
+        "flashligthText": MessageLookupByLibrary.simpleMessage(
+            "الفلاش قد يغير من ألوان الحرق ويجعل التفاصيل غير واضحة. استخدم الضوء الطبيعي قدر الإمكان."),
+        "burnDetailsTitle":
+            MessageLookupByLibrary.simpleMessage("تفاصيل الحرق"),
+        "burnDetailsText": MessageLookupByLibrary.simpleMessage(
+            " التقط الصور من عدة زوايا لإظهار جميع تفاصيل الحرق. صور من مسافة قريبة لتوضيح الحواف والعمق وأي تغير في اللون."),
+        "burnTouchTitle":
+            MessageLookupByLibrary.simpleMessage("تجنب لمس الحرق"),
+        "burnTouchText": MessageLookupByLibrary.simpleMessage(
+            "لا تحاول تحريك أو لمس الحرق لتحسين الرؤية في الصورة، حتى لا تتسبب في تفاقم الإصابة."),
         "foucsTitle": MessageLookupByLibrary.simpleMessage("التركيز"),
-        "foucsText": MessageLookupByLibrary.simpleMessage("استخدم وضع التركيز التلقائي على الكاميرا للتأكد من أن الصورة واضحة وغير ضبابية. تحقق من حدة الصورة قبل إرسالها."),
-  
-
-
+        "foucsText": MessageLookupByLibrary.simpleMessage(
+            "استخدم وضع التركيز التلقائي على الكاميرا للتأكد من أن الصورة واضحة وغير ضبابية. تحقق من حدة الصورة قبل إرسالها."),
         "privacyTitle": MessageLookupByLibrary.simpleMessage("احترام الخصوصية"),
-        "privacyText": MessageLookupByLibrary.simpleMessage( "تأكد من عدم ظهور معالم شخصية أو أي معلومات حساسة في الصورة"),
-         
+        "privacyText": MessageLookupByLibrary.simpleMessage(
+            "تأكد من عدم ظهور معالم شخصية أو أي معلومات حساسة في الصورة"),
         "areadetection": MessageLookupByLibrary.simpleMessage("تحديد الحجم"),
-        "areadetectionText": MessageLookupByLibrary.simpleMessage("إذا كان الحرق كبير، قد تحتاج إلى التقاط عدة صور من مسافات مختلفة لتوضيح الحجم الفعلي للحرق بالنسبة لأجزاء الجسم الأخرى."),
-  
-       
+        "areadetectionText": MessageLookupByLibrary.simpleMessage(
+            "إذا كان الحرق كبير، قد تحتاج إلى التقاط عدة صور من مسافات مختلفة لتوضيح الحجم الفعلي للحرق بالنسبة لأجزاء الجسم الأخرى."),
+        "firstDegreeMessage": MessageLookupByLibrary.simpleMessage(
+            "الحرق من الدرجة الأولى.\nالإسعافات الأولية الموصى بها:\n1. تأكد من أنك بعيد عن مصدر الحرق.\n2. رش المنطقة بماء حنفية بدرجة حرارة الغرفة.\nلا تستخدم الثلج أو الزبدة أو معجون الأسنان أو أي مواد كيميائية أخرى.\n3. اخلع أي إكسسوارات (مثل المجوهرات أو الساعات أو الخواتم).\n4. ضع ميبو أو درمازين على المنطقة المحترقة ثم غطها بضمادة نظيفة أو قماش نظيف.\n5. اطلب المساعدة الطبية إذا:\n   i. كانت المنطقة المحترقة أكبر من حجم راحة يدك.\n   ii. الحروق على الوجه أو اليدين أو القدمين أو المناطق الحساسة أو المفاصل الكبيرة.\n   iii. الحروق الكيميائية أو الكهربائية.\n   iv. الحروق التي تسبب ألمًا شديدًا أو ظهور فقاعات أو جلد أبيض أو محترق."),
+        "secondDegreeMessage":
+            MessageLookupByLibrary.simpleMessage('''\n.الحرق من الدرجة الثانية
+  \n.:يوصي بإتباع الإسعافات الأولية الآتية
+ 
+  ١. اتأكد إنك بعيد عن مصدر الحرق.\n
+  ٢. اغسل مكان الحرق بمياه حنفية في درجة حرارة الغرفة لمدة 5-10 دقايق عشان تبرد الجلد.\n
+  ٣. متستخدمش الثلج أو زبدة أو معجون أسنان أو أي مواد كيميائية تانية.\n
+  ٤. انزع أي إكسسوارات (مجوهرات، ساعات، خواتم، إلخ).\n
+  ٥. ادهن مكان الحرق بمرهم بميبو أو درمازين، بعدين غطيها بشاش و بلاستر أو قطعة قماش نظيفة.\n
+  ٦. روح المستشفى لو حصل حاجة من دول:\n
+      - كانت منطقة الحروق أكبر من حجم راحة يدك، اطلب المساعدة 
+      الطبية.\n
+      - حروق في الوجه، اليدين، القدمين، المناطق الحساسة، أو المفاصل 
+      الكبيرة.\n
+      - حروق كيماوية.\n
+      - حروق كهربائية.\n
+      - لأي حروق تسبب ألم شديد، ظهور فقاعات، أو بشرة بيضاء أو 
+      محروقة.\n'''),
+        "thirdDegreeMessage":
+            MessageLookupByLibrary.simpleMessage('''\n.الحرق من الدرجة الثالثة
+  \n.:يوصي بإتباع الإسعافات الأولية الآتية
 
+
+  ١. اتأكد إنك بعيد عن مصدر الحرق.\n
+  ٢. اغسل مكان الحرق بمياه حنفية في درجة حرارة الغرفة لمدة 5-10 دقايق عشان تبرد الجلد.\n
+  ٣. متستخدمش الثلج أو زبدة أو معجون أسنان أو أي مواد كيميائية تانية.\n
+  ٤. انزع أي إكسسوارات (مجوهرات، ساعات، خواتم، إلخ).\n
+  ٥. ادهن مكان الحرق بمرهم بميبو أو درمازين، بعدين غطيها بشاش و بلاستر أو قطعة قماش نظيفة.\n
+  ٦. روح المستشفى لو حصل حاجة من دول:\n
+      - كانت منطقة الحروق أكبر من حجم راحة يدك، اطلب المساعدة 
+      الطبية.\n
+      - حروق في الوجه، اليدين، القدمين، المناطق الحساسة، أو المفاصل 
+      الكبيرة.\n
+      - حروق كيماوية.\n
+      - حروق كهربائية.\n
+      - لأي حروق تسبب ألم شديد، ظهور فقاعات، أو بشرة بيضاء أو 
+      محروقة.\n'''),
       };
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/user_info.dart';
-import 'package:gp_app/screens/doctor_profile.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/screens/doctor_profile.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/models/global.dart';
@@ -34,6 +34,15 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     // Initialize session when the screen is first created
     logout();
+    Global.adminPassword = false;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize logout every time the screen is displayed
+    logout();
+    Global.adminPassword = false;
   }
 
   void _saveItem() async {
@@ -52,15 +61,25 @@ class _LoginPageState extends State<LoginPage> {
       String response = await sendData(username, password, context);
       //  printUserInfoList();
       if (response == 'Access Allowed') {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
-        // if (UserProfession == 'patient') {
-        //   Navigator.of(context).push(
-        //       MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
-        // } else {
-        //   Navigator.of(context)
-        //       .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
-        // }
+        // Get the user profession from Session
+        String userProfession = 'patient';
+        userProfession =
+            (await SessionManager.getUserProfession()) ?? 'patient';
+        print("Profession From Login Screen: $userProfession");
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+        if (userProfession == 'patient') {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+        } else if (userProfession == 'admin') {
+          Global.adminPassword = true;
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+        } else if (userProfession == 'doctor') {
+          //Global.adminPassword = true;
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+        }
       } else if (response == 'Access Denied') {
         login_warning(context);
       }
@@ -133,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                           username = value.toString();
                         },
                         maxLength: 50,
-                        decoration: InputDecoration(
+                    decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey.shade200,
                           focusedBorder: OutlineInputBorder(
@@ -224,7 +243,10 @@ class _LoginPageState extends State<LoginPage> {
                           // Backend:Button to go to SignUp page
 
                           TextButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              Global.adminPassword = false;
+                              await SessionManager.saveUserProfession(
+                                  'patient'); // set user profession to patient on press
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

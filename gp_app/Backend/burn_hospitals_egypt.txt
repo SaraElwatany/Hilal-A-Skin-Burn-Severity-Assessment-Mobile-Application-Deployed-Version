@@ -248,8 +248,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى فاقوس المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.731254057322076, 
+        "lon": 31.787090628338646
     },
 
     {
@@ -257,8 +257,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى بلبيس المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.430912740086107, 
+        "lon": 31.559992005010827 
     },
 
     {
@@ -266,8 +266,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى أبو حماد المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.54078846487845,
+        "lon": 31.677983417786077
     },
 
     {
@@ -275,8 +275,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى ههيا المركزي",
 
         "google_maps_location": "Sharqia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0 
+        "lat": 30.675707971622142, 
+        "lon": 31.596371792779152
     },
 
     {
@@ -284,8 +284,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى السنبلاوين العام",
 
         "google_maps_location": "Dakahlia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.890008651952243, 
+        "lon": 31.460323418101844
     },
 
     {
@@ -293,26 +293,17 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى ميت غمر المركزي",
 
         "google_maps_location": "Dakahlia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.707228914596822, 
+        "lon": 31.263323941206757
     },
 
     {
-        "english_name": "El-Mansoura Central Hospital",
-        "arabic_name": "مستشفى المنصورة المركزي",
+        "english_name": "El-Mansoura University Hospital",
+        "arabic_name": "مستشفي المنصورة الجامعي",
 
         "google_maps_location": "Dakahlia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
-    },
-
-    {
-        "english_name": "New Mansoura General Hospital",
-        "arabic_name": "مستشفى المنصورة الجديدة",
-
-        "google_maps_location": "Dakahlia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.04446598164622, 
+        "lon": 31.3637830499527
     },
 
     {
@@ -320,8 +311,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى كفر سعد المركزي",
 
         "google_maps_location": "Damietta, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.359791347914562, 
+        "lon": 31.690268289998134
     },
 
     {
@@ -329,8 +320,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى دمياط التخصصي",
 
         "google_maps_location": "Damietta, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 31.43715875956157,
+        "lon": 31.801714347635826
     },
 
     {
@@ -338,8 +329,8 @@ burn_hospitals_egypt = [
         "arabic_name": "المجمع الطبي بالإسماعيلية",
 
         "google_maps_location": "Ismailia, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 30.62019230042443, 
+        "lon": 32.28831841648115
     },
 
     {
@@ -347,8 +338,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى السويس العام",
 
         "google_maps_location": "Suez, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 29.968102358803318, 
+        "lon": 32.54740101426366 
     },
 
     {
@@ -356,17 +347,17 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى الفيوم العام",
 
         "google_maps_location": "Fayoum, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 29.316692122021482, 
+        "lon": 30.849301411079303
     },
 
     {
-        "english_name": "Beni Suef Specialized Hospital",
-        "arabic_name": "مستشفى بني سويف التخصصي",
+        "english_name": "Beni Suef University Hospital",
+        "arabic_name": "مستشفى بني سويف التعليمي",
 
         "google_maps_location": "Beni Suef, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 29.080574784229174, 
+        "lon": 31.105172195136337
     },
 
     {
@@ -374,8 +365,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى مغاغة المركزي",
 
         "google_maps_location": "Minya, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 28.655373804897422, 
+        "lon": 30.831979791551543
     },
 
     {
@@ -392,8 +383,8 @@ burn_hospitals_egypt = [
         "arabic_name": "مستشفى ملوي التخصصي",
 
         "google_maps_location": "Minya, Egypt", 
-        "lat": 30.0, 
-        "lon": 30.0
+        "lat": 27.729162959679606, 
+        "lon": 30.83163403671699
     },
 
     {

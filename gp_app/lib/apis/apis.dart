@@ -146,10 +146,11 @@ Future<String> sendData(
     print('Received response: $responseMessage');
 
     if (responseMessage == 'Access Allowed') {
-      userId = responseData['user_id'] ??
-          '0'; // If received ID is NULL assign it to 0
+      userId = responseData['user_id']?.toString() ??
+          "0"; // If received ID is NULL assign it to 0
       Global.userId = userId;
-      print('User ID from Login Route: $userId');
+      print("Recieved User ID From Route Directly: $responseData['user_id']");
+      print('Parsed User ID from Login Route: $userId');
       String userProfession = 'patient';
       userProfession = responseData['user_profession'] ?? 'patient';
 
@@ -262,9 +263,10 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
     // Request successful, handle the response (valid http response was received == okay statement for http)
     var responseData = jsonDecode(request.body);
     var responseMessage = responseData['response'];
-    String userId = '0';
-    userId =
-        responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
+    String userId = "0";
+    print("Recieved User ID: $responseData['user_id']");
+    userId = responseData['user_id']?.toString() ??
+        "0"; // If received ID is NULL assign it to 0
     Global.userId = userId;
     print('Signed Up User ID: $userId');
     print('Received response: $responseMessage');
@@ -282,8 +284,12 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
       print('Sign up failed, an account with this email already exists');
       return 'Sign up Denied due to duplicate email';
     } else {
-      // Save userId to SharedPreferences
-      await SessionManager.saveUserId(userId);
+      if (userProfession == 'admin') {
+        print('No Changes Made to User ID, The User is an Admin');
+      } else {
+        // Save userId to SharedPreferences
+        await SessionManager.saveUserId(userId);
+      }
       // Request was successful, and the info was correct => Sign Up
       print('Sign up was successful');
       return 'Sign up Allowed';
@@ -559,6 +565,39 @@ Future<List<Patient>> getPatients() async {
   }
 }
 
+// Function to list all doctor users for the admin
+Future<List<Patient>> getDoctors() async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_all_doctors');
+  var response = await http.post(url);
+
+  // Request was successful, handle the response
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    final responseMessage = responseData['message'];
+
+    final doctors_ids = responseData['user_ids'];
+    final doctors_names = responseData['user_names'];
+    final doctorss_info = responseData['user_info'];
+
+    // Get the length of doctors found
+    int no_doctors = doctors_ids.length;
+
+    print('Received Response From get_doctors route: $responseMessage');
+    print('Received doctors users: $doctors_ids');
+
+    List<Patient> doctors_list = List.generate(no_doctors, (index) {
+      return Patient(
+          name: doctors_names[index],
+          info: doctorss_info[index],
+          id: doctors_ids[index]);
+    });
+
+    return doctors_list;
+  } else {
+    throw Exception('Failed to Load Doctors');
+  }
+}
+
 // class AudioApi {
 //     static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
 //     static String? _recordFilePath;
@@ -743,6 +782,12 @@ void logout() async {
     if (response.statusCode == 200) {
       // Successful logout
       await SessionManager.clearSession(); // Clear Session
+      // Set the User Profession to a default value of 'patient
+      await SessionManager.initializeSession();
+      String userProfession =
+          (await SessionManager.getUserProfession()) ?? 'patient';
+      print("The User Profession is: $userProfession");
+
       print('Logged out successfully');
       // Optionally, navigate to another screen or perform other actions after logout
     } else {

@@ -563,6 +563,43 @@ def get_all_burns():
                 for user in users if user] """
     
 
+
+# Fetch info of all signed up doctors (Admin Screen)
+@main.route('/get_all_doctors', methods=['POST'])
+def get_all_doctors():
+
+    print("fetching all doctors...")
+    # Get all doctors from the Users table
+    users = User.query.all()
+    print('Users: ', users)
+
+    user_list = []
+    # build a dictionary of the doctor users' information only
+    for user in users:
+        # Check if the user is doctor
+        if user.profession == 'doctor':
+            user_dict = {
+                        'id': user.id,
+                        'username': user.username, 
+                        'email': user.email, 
+                        'phone': user.phone, 
+                        'weight': user.weight, 
+                        'height': user.height
+                        }
+            user_list.append(user_dict)
+
+    print('Doctor User lists found', user_list)
+    user_ids = [user.id for user in users] 
+    user_names = [user.username for user in users]
+    user_info = ['Email: '+str(user.email)+' '+'Phone: '+str(user.phone) for user in users]
+
+    # return the doctor user list
+    return {
+            'message': 'Users with burns found', 
+            'user_ids': user_ids, 
+            'user_names': user_names, 
+            'user_info': user_info 
+            }
     
 
 

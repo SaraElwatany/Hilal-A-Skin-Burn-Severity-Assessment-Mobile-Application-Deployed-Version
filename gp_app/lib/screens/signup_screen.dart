@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/screens/login_screen.dart';
 import 'package:gp_app/screens/main_page.dart';
+import 'package:gp_app/screens/doctor_profile.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -40,19 +41,24 @@ class _SignUpState extends State<SignUpScreen> {
       userId: userId,
     );
     _userInfoList.add(userInfo);
+
     // Get the User Profession
     String user_profession;
-    user_profession = (await SessionManager.getUserProfession()) ?? '';
-
+    user_profession = (await SessionManager.getUserProfession()) ?? 'patient';
     output = await signUp(userInfo, user_profession);
 
-    if ((_formKey.currentState!.validate()) && (output == 'Sign up Allowed')) {
+    if ((_formKey.currentState != null && _formKey.currentState!.validate()) &&
+        (output == 'Sign up Allowed')) {
       _formKey.currentState!.save();
 
-      // printUserInfoList();
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) => const MainPageScreen(),
-      ));
+      if (user_profession == 'patient') {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (ctx) => const MainPageScreen(),
+        ));
+      } else if (user_profession == 'admin') {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+      }
     } else {
       showDialog(
           context: context,

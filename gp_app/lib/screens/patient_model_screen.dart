@@ -80,7 +80,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   @override
   void initState() {
     super.initState();
-    loadChatHistory();
+    //loadChatHistory();
     // AudioApi.initRecorder();
     // fetchPredictionAndHospitals(); // Fetch data from the server
   }
@@ -188,21 +188,54 @@ class PatientModelChatState extends State<PatientModelChat> {
           message: S.of(context).Intro,
           receiver: false,
           timestamp: DateTime.now(),
-          // senderId: userId, (Sara)
+          // senderId: userId, // (Sara)
           senderId: '0',
           receiverId: '1'));
     });
   }
 
+  
+
   // Function to display the initial message from the model (Model Prediction & the Treatment Protocol)
   void updateChatScreenWithPrediction(String prediction) {
     final myState = Provider.of<MyState>(context, listen: false);
     String userId = myState.userId;
+    String message = '';
+    print("Message From Location: $message");
 
+    if (prediction == 'First Degree Burn') {
+      message = S.of(context).firstDegreeMessage;
+      print("Message From Location: $message");
+      //   message =
+      //       '''Your Burn Degree is $prediction.\nThe Following First Aid Protocols are Recommended:\n\n
+      //           1.Make sure that you are away from the source of burn\n
+      //           2.Douse the area with room temperature tap water.\n
+      //               DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n
+      //           3.Take off any accessories (Jewelry, watches, rings, etc.)\n
+      //           4.Apply Mebo or Dermazine to the burned area. Then cover it with a sterile bandage or a clean cloth.\n
+      //           5.Seek Medical attention if:\n
+      //               i. If the burned area is larger than the size of your palm, seek medical attention.\n
+      //               ii. Burns on the face, hands, feet, genitals, or major joints.\n
+      //               iii. Chemical burns, Electrical burns.\n
+      //               iv. For any burns that cause severe pain, blistering, or white or charred skin.\n''';
+    } else if (prediction == 'Second Degree Burn') {
+      message = S.of(context).secondDegreeMessage;
+
+      //   message =
+      //       '''Your Burn Degree is $prediction.\nThe Following First Aid Protocols are Recommended:\n\n
+      //           1.Make sure that you are away from the source of burn.\n
+      //           2.Douse the area with room temperature tap water.\n
+      //               DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n
+      //           3.Take off any accessories (Jewelry, watches, rings, etc.)\n
+      //           4.Apply Mebo or Dermazine to the burned area. Then cover it with a sterile bandage or a clean cloth.\n
+      //           5.Seek Immediate medical attention.\n
+      //       ''';
+    } else if (prediction == 'Third Degree Burn') {
+      message = S.of(context).thirdDegreeMessage;
+    }
     setState(() {
       messages.add(ChatMessage(
-          message:
-              'Your Burn Degree is $prediction.\nThe Following First Aid Protocols are Recommended:\n\n1.\n2.\n3.\n4.\n5.\n', // Modify the advice as needed
+          message: message, // message,
           receiver: false,
           // senderId: userId, // (Sara)
           senderId: '0',
