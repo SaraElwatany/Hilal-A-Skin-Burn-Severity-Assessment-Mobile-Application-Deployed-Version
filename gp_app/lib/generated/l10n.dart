@@ -733,8 +733,17 @@ class S {
   // areadetection
   String get userlocation {
     return Intl.message(
-      "Set you current location",
+      "Location",
       name: 'userlocation',
+      desc: '',
+      args: [],
+    );
+  }
+    // burnHistory
+  String get ch {
+    return Intl.message(
+      "Burn History",
+      name: 'ch',
       desc: '',
       args: [],
     );

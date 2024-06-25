@@ -41,88 +41,133 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const LocalizationIcon(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              S.of(context).clinictitle,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontSize: 30),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              S.of(context).symptoms,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                S.of(context).clinictitle,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontSize: 30),
+              ),
             ),
-          ),
-          Row(
-            children: [
-              ClinicalData(
-                symptom: Symptoms.symptom_1,
-                selectedSymptoms: selectedFirstGroupSymptoms,
-                onSymptomSelected: (symptom) {
-                  _handleFirstGroupSymptomSelected(symptom);
-                },
+            // const SizedBox(
+            //   height: 10,
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                S.of(context).symptoms,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontSize: 20),
               ),
-              ClinicalData(
-                symptom: Symptoms.symptom_2,
-                selectedSymptoms: selectedFirstGroupSymptoms,
-                onSymptomSelected: (symptom) {
-                  _handleFirstGroupSymptomSelected(symptom);
-                },
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              ClinicalData(
-                symptom: Symptoms.symptom_3,
-                selectedSymptoms: selectedFirstGroupSymptoms,
-                onSymptomSelected: (symptom) {
-                  _handleFirstGroupSymptomSelected(symptom);
-                },
-              ),
-              ClinicalData(
-                symptom: Symptoms.symptom_4,
-                selectedSymptoms: selectedFirstGroupSymptoms,
-                onSymptomSelected: (symptom) {
-                  _handleFirstGroupSymptomSelected(symptom);
-                },
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              S.of(context).cause,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontSize: 20),
             ),
-          ),
-          Row(
-            children: [
+            Row(
+              children: [
+                ClinicalData(
+                  symptom: Symptoms.symptom_1,
+                  selectedSymptoms: selectedFirstGroupSymptoms,
+                  onSymptomSelected: (symptom) {
+                    _handleFirstGroupSymptomSelected(symptom);
+                  },
+                ),
+                ClinicalData(
+                  symptom: Symptoms.symptom_2,
+                  selectedSymptoms: selectedFirstGroupSymptoms,
+                  onSymptomSelected: (symptom) {
+                    _handleFirstGroupSymptomSelected(symptom);
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                ClinicalData(
+                  symptom: Symptoms.symptom_3,
+                  selectedSymptoms: selectedFirstGroupSymptoms,
+                  onSymptomSelected: (symptom) {
+                    _handleFirstGroupSymptomSelected(symptom);
+                  },
+                ),
+                ClinicalData(
+                  symptom: Symptoms.symptom_4,
+                  selectedSymptoms: selectedFirstGroupSymptoms,
+                  onSymptomSelected: (symptom) {
+                    _handleFirstGroupSymptomSelected(symptom);
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                S.of(context).cause,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontSize: 20),
+              ),
+            ),
+            Row(
+              children: [
+                ClinicalData(
+                  symptom: Symptoms.heat,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+                ClinicalData(
+                  symptom: Symptoms.electricity,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                ClinicalData(
+                  symptom: Symptoms.chemical,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+                ClinicalData(
+                  symptom: Symptoms.radioactive,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+              
+              ],
+              
+            ),
               ClinicalData(
-                symptom: Symptoms.heat,
+                symptom: Symptoms.boiling,
                 selectedSymptoms: selectedSecondGroupSymptom != null
                     ? [selectedSecondGroupSymptom!]
                     : [],
@@ -130,96 +175,131 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                   _handleSecondGroupSymptomSelected(symptom);
                 },
               ),
-              ClinicalData(
-                symptom: Symptoms.electricity,
-                selectedSymptoms: selectedSecondGroupSymptom != null
-                    ? [selectedSecondGroupSymptom!]
-                    : [],
-                onSymptomSelected: (symptom) {
-                  _handleSecondGroupSymptomSelected(symptom);
-                },
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                S.of(context).place,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontSize: 20),
               ),
-            ],
-          ),
-          Row(
-            children: [
-              ClinicalData(
-                symptom: Symptoms.chemical,
-                selectedSymptoms: selectedSecondGroupSymptom != null
-                    ? [selectedSecondGroupSymptom!]
-                    : [],
-                onSymptomSelected: (symptom) {
-                  _handleSecondGroupSymptomSelected(symptom);
-                },
-              ),
-              ClinicalData(
-                symptom: Symptoms.radioactive,
-                selectedSymptoms: selectedSecondGroupSymptom != null
-                    ? [selectedSecondGroupSymptom!]
-                    : [],
-                onSymptomSelected: (symptom) {
-                  _handleSecondGroupSymptomSelected(symptom);
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 50),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  addClinicalData(selectedFirstGroupSymptoms,
-                      selectedSecondGroupSymptom, context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PatientModelChat()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  fixedSize: const Size(140, 45),
-                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
+            ),           
+             Column(
+              children: [
+                ClinicalData(
+                  symptom: Symptoms.head,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
                 ),
-                child: Text(
-                  S.of(context).confirm,
-                  style: const TextStyle(
-                    fontSize: 25,
-                    color: Color.fromARGB(255, 255, 251, 251),
+                ClinicalData(
+                  symptom: Symptoms.chest,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+              ],
+            ),
+               Column(
+              children: [
+                ClinicalData(
+                  symptom: Symptoms.back,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+                ClinicalData(
+                  symptom: Symptoms.leg,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+                 ClinicalData(
+                  symptom: Symptoms.arm,
+                  selectedSymptoms: selectedSecondGroupSymptom != null
+                      ? [selectedSecondGroupSymptom!]
+                      : [],
+                  onSymptomSelected: (symptom) {
+                    _handleSecondGroupSymptomSelected(symptom);
+                  },
+                ),
+              ],
+            ),
+            // const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    addClinicalData(selectedFirstGroupSymptoms,
+                        selectedSecondGroupSymptom, context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PatientModelChat()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    fixedSize: const Size(140, 45),
+                    backgroundColor: const Color.fromARGB(255, 29, 49, 78),
+                  ),
+                  child: Text(
+                    S.of(context).confirm,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: Color.fromARGB(255, 255, 251, 251),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 30),
-              ElevatedButton(
-                onPressed: () {
-                  skipClinicalData(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PatientModelChat()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                const SizedBox(width: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    skipClinicalData(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PatientModelChat()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    fixedSize: const Size(140, 45),
+                    backgroundColor: const Color.fromARGB(255, 29, 49, 78),
                   ),
-                  fixedSize: const Size(140, 45),
-                  backgroundColor: const Color.fromARGB(255, 29, 49, 78),
-                ),
-                child: Text(
-                  S.of(context).skip,
-                  style: const TextStyle(
-                    fontSize: 25,
-                    color: Color.fromARGB(255, 255, 251, 251),
+                  child: Text(
+                    S.of(context).skip,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      color: Color.fromARGB(255, 255, 251, 251),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }

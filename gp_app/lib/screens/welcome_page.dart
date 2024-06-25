@@ -113,7 +113,7 @@ class _WelcomePageState extends State<WelcomePage> {
             child: Text(
               S.of(context).emergency,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 23,
                 color: Color.fromARGB(255, 255, 251, 251),
               ),
             ),
@@ -121,26 +121,26 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(
             height: 20,
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Location()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                fixedSize: const Size(250, 50),
-                backgroundColor: const Color.fromARGB(255, 29, 49, 78)),
-            child: const Text(
-              "Set your current location",
-              style: TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 255, 251, 251),
-              ),
-            ),
-          )
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const Location()),
+          //     );
+          //   },
+          //   style: ElevatedButton.styleFrom(
+          //       shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(15)),
+          //       fixedSize: const Size(250, 50),
+          //       backgroundColor: const Color.fromARGB(255, 29, 49, 78)),
+          //   child: const Text(
+          //     "Set your current location",
+          //     style: TextStyle(
+          //       fontSize: 18,
+          //       color: Color.fromARGB(255, 255, 251, 251),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

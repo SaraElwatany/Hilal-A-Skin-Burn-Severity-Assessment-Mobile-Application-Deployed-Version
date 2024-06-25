@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/apis/apis.dart';
+import 'package:gp_app/screens/patient_location.dart';
 import 'package:provider/provider.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/generated/l10n.dart';
@@ -315,11 +316,26 @@ class PatientModelChatState extends State<PatientModelChat> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      onPressed: _sendMessage,
-                      icon: const Icon(
-                        Icons.send,
-                      ),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: _sendMessage,
+                          icon: const Icon(
+                            Icons.send,
+                          ),
+                        ),
+                         IconButton(
+                          onPressed:  () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Location()),
+                );
+                },
+                          icon: const Icon(
+                            Icons.location_on_outlined,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ]),

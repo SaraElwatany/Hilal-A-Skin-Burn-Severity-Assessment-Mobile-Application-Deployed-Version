@@ -90,6 +90,8 @@ flutter:
     - assets/images/AboutUs.png
     - assets/images/burndegree.png
     - assets/images/instructions.png
+    - assets/images/map.png
+    - assets/images/CH.png
     
     
   # An image asset can refer to one or more resolution-specific "variants", see

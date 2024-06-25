@@ -183,7 +183,7 @@ class _SignUpState extends State<SignUpScreen> {
                               label: Text(
                                 S.of(context).lastName,
                                 style: TextStyle(
-                                    fontSize: 18, color: Colors.grey.shade500),
+                                    fontSize: 17, color: Colors.grey.shade500),
                               ),
                             ),
                             validator: (value) {

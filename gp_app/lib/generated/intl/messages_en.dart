@@ -74,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "arm": MessageLookupByLibrary.simpleMessage("Arm"),
         "head": MessageLookupByLibrary.simpleMessage("Head and Neck"),
         "leg": MessageLookupByLibrary.simpleMessage("Leg"),
+        "userlocation": MessageLookupByLibrary.simpleMessage("Location"),
         "chest": MessageLookupByLibrary.simpleMessage("Chest and Upper back"),
         "back": MessageLookupByLibrary.simpleMessage("Abdomen and Lower back"),
         "intro": MessageLookupByLibrary.simpleMessage(
@@ -91,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "select_image": MessageLookupByLibrary.simpleMessage("Select Image"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "instructions": MessageLookupByLibrary.simpleMessage("Instructions"),
+        "ch": MessageLookupByLibrary.simpleMessage("Burn History"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             "We are student developers from faculty of biomedical engineering in Cairo University. We created this app to help victims of burn injuries at home find proper resources for managing their injury."),
       
