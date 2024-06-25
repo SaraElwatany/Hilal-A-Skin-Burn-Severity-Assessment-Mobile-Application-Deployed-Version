@@ -15,9 +15,10 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 
     db.init_app(app)
-    socketio.init_app(app, async_mode=None)  # Initialize SocketIO with the app
+    # socketio.init_app(app)  # Initialize SocketIO with the app
 
     app.register_blueprint(main)
+    
     with app.app_context():
             db.create_all()
 

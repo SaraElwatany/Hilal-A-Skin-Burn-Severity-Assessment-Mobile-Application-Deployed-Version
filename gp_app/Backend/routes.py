@@ -25,8 +25,6 @@ from .functions import load_img, transform, load_model, predict, convert_to_obj,
 
 
 main = Blueprint('main', __name__)
-# Initialize socketio
-
 
 
 
@@ -548,14 +546,15 @@ def send_message():
             image=data.get('image'),
             timestamp=datetime.now()
         )
+        print(message)
         db.session.add(message)
         db.session.commit()
 
-        if socketio:
-            socketio.emit('message', message.to_dict())
-        else:
-            print("SocketIO is not initialized")
-            return jsonify({'error': 'SocketIO is not initialized'}), 500
+        # if socketio:
+        #     socketio.emit('message', message.to_dict())
+        # else:
+        #     print("SocketIO is not initialized")
+        #     return jsonify({'error': 'SocketIO is not initialized'}), 500
         
         return jsonify(message.to_dict()), 201
     except Exception as e:

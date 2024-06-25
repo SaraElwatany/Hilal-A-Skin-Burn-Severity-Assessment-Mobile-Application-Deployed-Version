@@ -163,7 +163,7 @@ class PatientModelChatState extends State<PatientModelChat> {
       final message = ChatMessage(
           message: text,
           receiver: true,
-          image: null,
+          image: "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
           timestamp: DateTime.now(),
           senderId: userId,
           receiverId: '1');

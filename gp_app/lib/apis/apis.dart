@@ -586,7 +586,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
 
     var response = await http.post(url, headers: headers, body: body);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       print('Message sent successfully');
     } else {
       print('Failed to send message. Status code: ${response.statusCode}');
