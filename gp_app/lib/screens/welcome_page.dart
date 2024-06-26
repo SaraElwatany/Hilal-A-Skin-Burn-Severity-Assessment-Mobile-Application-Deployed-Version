@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/patient_location.dart';
+import 'package:gp_app/screens/voice_note_screen.dart';
 import 'package:gp_app/widgets/welcome_page_en.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/screens/login_screen.dart';
@@ -121,26 +122,27 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(
             height: 20,
           ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const Location()),
-          //     );
-          //   },
-          //   style: ElevatedButton.styleFrom(
-          //       shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(15)),
-          //       fixedSize: const Size(250, 50),
-          //       backgroundColor: const Color.fromARGB(255, 29, 49, 78)),
-          //   child: const Text(
-          //     "Set your current location",
-          //     style: TextStyle(
-          //       fontSize: 18,
-          //       color: Color.fromARGB(255, 255, 251, 251),
-          //     ),
-          //   ),
-          // )
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const VoiceNoteScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                fixedSize: const Size(100, 50),
+                backgroundColor: const Color.fromARGB(255, 29, 49, 78)),
+            child: const Text(
+              "Voice",
+              style: TextStyle(
+                fontSize: 18,
+                color: Color.fromARGB(255, 255, 251, 251),
+              ),
+            ),
+          )
         ],
       ),
     );

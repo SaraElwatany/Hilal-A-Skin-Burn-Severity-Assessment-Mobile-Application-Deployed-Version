@@ -7,12 +7,11 @@ import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/models/global.dart';
 
-
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 
-import 'package:flutter_sound/flutter_sound.dart';
+// import 'package:flutter_sound/flutter_sound.dart';
 
 import 'dart:convert'; // Import for JSON decoding
 import 'package:http/http.dart' as http; // Import for HTTP requests
@@ -97,8 +96,8 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   void loadChatHistory() async {
     try {
-
-      List<ChatMessage> fetchedMessages = await fetchChatHistory(Global.userId, 1); // Receiver ID set to 1
+      List<ChatMessage> fetchedMessages =
+          await fetchChatHistory(Global.userId, 1); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -156,13 +155,13 @@ class PatientModelChatState extends State<PatientModelChat> {
   // }
 
   void _sendMessage() async {
-
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final message = ChatMessage(
           message: text,
           receiver: true,
-          image: "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
+          image:
+              "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
           timestamp: DateTime.now(),
           senderId: Global.userId,
           receiverId: 1);
@@ -324,13 +323,14 @@ class PatientModelChatState extends State<PatientModelChat> {
                             Icons.send,
                           ),
                         ),
-                         IconButton(
-                          onPressed:  () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Location()),
-                );
-                },
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Location()),
+                            );
+                          },
                           icon: const Icon(
                             Icons.location_on_outlined,
                           ),
