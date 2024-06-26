@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/apis/apis.dart';
-import 'package:gp_app/models/my_state.dart';
+// import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/models/global.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/screens/login_screen.dart';
@@ -190,7 +190,7 @@ class _SignUpState extends State<SignUpScreen> {
                               label: Text(
                                 S.of(context).lastName,
                                 style: TextStyle(
-                                    fontSize: 18, color: Colors.grey.shade500),
+                                    fontSize: 17, color: Colors.grey.shade500),
                               ),
                             ),
                             validator: (value) {

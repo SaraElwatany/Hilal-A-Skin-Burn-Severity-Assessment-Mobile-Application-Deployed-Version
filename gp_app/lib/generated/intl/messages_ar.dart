@@ -83,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "select_image": MessageLookupByLibrary.simpleMessage("اختر صورة"),
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
         "instructions": MessageLookupByLibrary.simpleMessage("تعليمات"),
+        "userlocation": MessageLookupByLibrary.simpleMessage("سجل موقعك"),
+        "ch": MessageLookupByLibrary.simpleMessage("تاريخ الإصابات"),
         "degree": MessageLookupByLibrary.simpleMessage("الدرجة الوظيفية"),
         "aboutUsMessage": MessageLookupByLibrary.simpleMessage(
             " نحن طلاب كلية الهندسة الطبية والمنظومات بجامعه القاهرة. قمنا بإنشاء هذا التطبيق لمساعدة ضحايا الحروق المنزلية على التعامل مع الإصابات فى الوقت المناسب "),

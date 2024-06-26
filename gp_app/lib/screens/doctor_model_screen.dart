@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/models/global.dart';
+// import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
-import 'package:gp_app/models/my_state.dart';
-import 'package:provider/provider.dart';
+// import 'package:gp_app/models/my_state.dart';
+// import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
-import 'package:gp_app/widgets/docter_model_widget.dart';
+// import 'package:gp_app/widgets/docter_model_widget.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 
-
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:gp_app/widgets/audio_player_widget.dart';
-
-
+// import 'package:flutter_sound/flutter_sound.dart';
+// import 'package:gp_app/widgets/audio_player_widget.dart';
 
 class DocterModelChat extends StatefulWidget {
-
   const DocterModelChat({
     Key? key,
   }) : super(key: key);
@@ -27,11 +23,10 @@ class DocterModelChat extends StatefulWidget {
 }
 
 class DocterModelChatState extends State<DocterModelChat> {
-
   //marina
   List<ChatMessage> messages = [];
-  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  bool _isRecording = false;
+  // final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  // bool _isRecording = false;
   final TextEditingController _messageController = TextEditingController();
 
   @override
@@ -41,7 +36,7 @@ class DocterModelChatState extends State<DocterModelChat> {
     // AudioApi.initRecorder();
   }
 
- @override
+  @override
   void dispose() {
     // AudioApi.closeRecorder();
     _messageController.dispose();
@@ -49,9 +44,9 @@ class DocterModelChatState extends State<DocterModelChat> {
   }
 
   void loadChatHistory() async {
-
     try {
-      List<ChatMessage> fetchedMessages = await fetchChatHistory(1,0); // Receiver ID set to 1
+      List<ChatMessage> fetchedMessages =
+          await fetchChatHistory(1, 0); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -59,7 +54,6 @@ class DocterModelChatState extends State<DocterModelChat> {
       print("Failed to load chat history: $e");
     }
   }
-    
 
   // void _toggleRecording() async {
   //   final myState = Provider.of<MyState>(context, listen: false);
@@ -90,7 +84,6 @@ class DocterModelChatState extends State<DocterModelChat> {
   // }
 
   void _sendMessage() {
-
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final message = ChatMessage(
@@ -108,8 +101,8 @@ class DocterModelChatState extends State<DocterModelChat> {
         messages.add(message);
         _messageController.clear();
       });
-    }
-    else print('message is empty');
+    } else
+      print('message is empty');
   }
 
 //marina
@@ -154,19 +147,18 @@ class DocterModelChatState extends State<DocterModelChat> {
                           InputDecoration(hintText: S.of(context).message),
                     ),
                   ),
-                  // IconButton(
-                  //   icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-                  //   onPressed: _toggleRecording,
-                  //   color: _isRecording ? Colors.red : Colors.white,
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      onPressed: () {}, // Implement send message logic here
-                      icon: const Icon(
-                        Icons.send,
-                      ),
+                  IconButton(
+                    onPressed: () {}, // Implement send message logic here
+                    icon: const Icon(
+                      Icons.send,
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // Handle recording logic here
+                      // Example: _toggleRecording()
+                    },
+                    icon: const Icon(Icons.mic),
                   ),
                 ]),
               ),

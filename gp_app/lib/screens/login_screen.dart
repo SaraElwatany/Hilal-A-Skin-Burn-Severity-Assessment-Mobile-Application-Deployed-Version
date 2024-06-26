@@ -279,25 +279,25 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Global.adminPassword = true;
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (ctx) => const DocterProfile()));
-                        },
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            fixedSize: const Size(210, 60)),
-                        child: Text(
-                          S.of(context).asadmin,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: Color.fromARGB(255, 255, 251, 251),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      )
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     Global.adminPassword = true;
+                      //     Navigator.of(context).push(MaterialPageRoute(
+                      //         builder: (ctx) => const DocterProfile()));
+                      //   },
+                      //   style: ElevatedButton.styleFrom(
+                      //       shape: RoundedRectangleBorder(
+                      //           borderRadius: BorderRadius.circular(15)),
+                      //       fixedSize: const Size(210, 60)),
+                      //   child: Text(
+                      //     S.of(context).asadmin,
+                      //     style: const TextStyle(
+                      //       fontSize: 25,
+                      //       color: Color.fromARGB(255, 255, 251, 251),
+                      //     ),
+                      //     textAlign: TextAlign.center,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),

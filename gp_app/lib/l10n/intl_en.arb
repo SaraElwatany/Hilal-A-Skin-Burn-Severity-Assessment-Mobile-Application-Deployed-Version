@@ -58,8 +58,9 @@
     "degree": "Professional degree",
     "save": "Save",
     "instructions":"Instructions",
-    "userlocation":"Set you current location ",
+    "userlocation":"Location ",
     "location":"Get current location",
+    "ch":"Burn History",
     
    
     "goodLigthingTitle": "Good lighting",
