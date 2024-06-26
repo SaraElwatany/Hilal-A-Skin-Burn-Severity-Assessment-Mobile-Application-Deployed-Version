@@ -3,6 +3,7 @@ class NewUser {
   String lastName;
   String email;
   String password;
+  String speciality;
   int userId;
 
   NewUser({
@@ -10,6 +11,7 @@ class NewUser {
     required this.lastName,
     required this.email,
     required this.password,
+    required this.speciality,
     required this.userId,
   });
 }

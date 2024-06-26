@@ -26,17 +26,18 @@ class _SignUpState extends State<SignUpScreen> {
   var _enteredLastName = '';
   var _enteredEmail = '';
   var _enteredPassword = '';
+  var _speciality = '';
   var output = '';
   final List<NewUser> _userInfoList = [];
   bool flag = Global.adminPassword;
 
   void _saveItem() async {
-
     NewUser userInfo = NewUser(
       firstName: _enteredFirstName,
       lastName: _enteredLastName,
       email: _enteredEmail,
       password: _enteredPassword,
+      speciality: _speciality,
       userId: Global.userId,
     );
     _userInfoList.add(userInfo);
@@ -312,7 +313,8 @@ class _SignUpState extends State<SignUpScreen> {
                       if (flag)
                         TextFormField(
                           onChanged: (value) {
-                            _enteredLastName = value.toString();
+                            _speciality =
+                                value.toString(); // Check Speciality of Doctor
                           },
                           maxLength: 50,
                           decoration: InputDecoration(

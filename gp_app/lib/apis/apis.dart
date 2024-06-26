@@ -30,6 +30,7 @@ class SessionManager {
   static const String _prediction = 'prediction';
   static const String _latitudeKey = 'latitude'; // Add latitude key
   static const String _longitudeKey = 'longitude'; // Add longitude key
+  static const String _burnCondition = 'burnCondition';
 
   // Function to initialize the session with default values
   static Future<void> initializeSession() async {
@@ -106,6 +107,18 @@ class SessionManager {
     return prefs.getString(_prediction);
   }
 
+  // Function to set if new burn item added or not
+  static Future<void> saveBurnCondition(String burnCondition) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_burnCondition, burnCondition);
+  }
+
+  // Function to determine if new burn item added or not
+  static Future<String?> getBurnCondition() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_burnCondition);
+  }
+
   static Future<void> clearSession() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userIdKey);
@@ -114,6 +127,7 @@ class SessionManager {
     await prefs.remove(_prediction);
     await prefs.remove(_latitudeKey);
     await prefs.remove(_longitudeKey);
+    await prefs.remove(_burnCondition);
   }
 }
 
@@ -123,7 +137,7 @@ Future<String> sendData(
   // Set The Global Variables To Null with each login
   // final myState = Provider.of<MyState>(context, listen: false);
   // myState.updateUserId();
-  int userId = 0;
+  String userId = "0";
 
   String url = 'https://my-trial-t8wj.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
@@ -134,6 +148,8 @@ Future<String> sendData(
   if (request.statusCode == 200 ||
       request.statusCode == 201 ||
       request.statusCode == 204) {
+    //if (request.statusCode == 200) {
+    // Request was successful
     print(
         'Received a successful response (Status Code: ${request.statusCode})');
 
@@ -146,7 +162,7 @@ Future<String> sendData(
     if (responseMessage == 'Access Allowed') {
       userId = responseData['user_id']?.toString() ??
           "0"; // If received ID is NULL assign it to 0
-      Global.userId = userId;
+      Global.userId = int.parse(userId);
       print("Recieved User ID From Route Directly: $responseData['user_id']");
       print('Parsed User ID from Login Route: $userId');
       String userProfession = 'patient';
@@ -154,10 +170,14 @@ Future<String> sendData(
 
       print('Login successful');
       print('Profession: $userProfession');
+      if (userProfession == 'admin') {
+        Global.adminPassword = true;
+      } else {
+        Global.adminPassword = false;
+      }
 
       // Save userId to SharedPreferences
-      await SessionManager.saveUserId(userId
-          .toString()); /////////////edittttttttttttttttttttttttttttttttttt8172et8916036
+      await SessionManager.saveUserId(userId);
       // Save the User Profession to the Session / SharedPreferences
       await SessionManager.saveUserProfession(userProfession);
 
@@ -214,7 +234,7 @@ void login_warning(context) {
       builder: (ctx) => AlertDialog(
             title: const Text('Invalid Input'),
             content: const Text(
-              'Please Enter a valid Email or Password',
+              'Please Enter a valid email or password',
             ),
             backgroundColor: Colors.white,
             actions: [
@@ -238,20 +258,35 @@ void login_warning(context) {
 Future<String> signUp(NewUser userInfo, String userProfession) async {
   // Define Route For checking the sign up info based on the user profession, whether patient or admin
   String route = '';
+  var body;
   if (userProfession == 'admin') {
     route = 'doctorsignup';
+    body = {
+      'firstname': userInfo.firstName,
+      'lastname': userInfo.lastName,
+      'email': userInfo.email,
+      'password': userInfo.password,
+      'speciality': userInfo.speciality,
+    };
   } else {
     route = 'signup';
+    body = {
+      'firstname': userInfo.firstName,
+      'lastname': userInfo.lastName,
+      'email': userInfo.email,
+      'password': userInfo.password,
+    };
   }
 
   var url = 'https://my-trial-t8wj.onrender.com/$route'; //
   print('Before Request');
-  var request = await http.post(Uri.parse(url), body: {
-    'firstname': userInfo.firstName,
-    'lastname': userInfo.lastName,
-    'email': userInfo.email,
-    'password': userInfo.password,
-  });
+  var request = await http.post(Uri.parse(url), body: body);
+  // var request = await http.post(Uri.parse(url), body: {
+  //   'firstname': userInfo.firstName,
+  //   'lastname': userInfo.lastName,
+  //   'email': userInfo.email,
+  //   'password': userInfo.password,
+  // });
   print('After Request');
 
   if (request.statusCode == 200 ||
@@ -262,13 +297,14 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
     // Request successful, handle the response (valid http response was received == okay statement for http)
     var responseData = jsonDecode(request.body);
     var responseMessage = responseData['response'];
-    String userId = '0';
-    userId =
-        responseData['user_id'] ?? '0'; // If received ID is NULL assign it to 0
-    Global.userId = userId;
+    String userId = "0";
+    print("Recieved User ID: $responseData['user_id']");
+    userId = responseData['user_id']?.toString() ??
+        "0"; // If received ID is NULL assign it to 0
+    Global.userId = int.parse(userId);
     print('Signed Up User ID: $userId');
-
     print('Received response: $responseMessage');
+
     if (responseMessage == 'Failed Password and Email') {
       print('Sign up Failed due to wrong password and email');
       return 'Sign up Denied due to password & email';
@@ -350,7 +386,7 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
     String prediction;
     String receivedBurnId;
     // Get User ID From Session
-    user_id = (await SessionManager.getUserId()) ?? '';
+    user_id = (await SessionManager.getUserId()) ?? '0';
 
     // Create the multipart request
     var request = http.MultipartRequest(
@@ -372,9 +408,9 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
     // Check the response status code
     if (response.statusCode == 200) {
       print('Image sent and prediction received');
-
       // Parse the JSON response
       var responseData = json.decode(response.body);
+      print("Received Burn Id Before Parsing: $responseData['burn_id']");
       prediction = responseData['prediction'];
       receivedBurnId = responseData['burn_id'];
 
@@ -384,6 +420,7 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
       // Save Burn Id & Model's Prediction to SharedPreferences
       await SessionManager.saveBurnId(receivedBurnId);
       await SessionManager.savePrediction(prediction);
+      await SessionManager.saveBurnCondition('true');
 
       // Return navigate = 1 to indicate success
       return 1;
@@ -404,9 +441,9 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
     BuildContext context) async {
   String url = 'https://my-trial-t8wj.onrender.com/add_burn';
   // Get the User ID From the Shared Preferences
-  String userId = (await SessionManager.getUserId()) ?? '';
+  String userId = (await SessionManager.getUserId()) ?? '0';
   // Get the Burn ID From the Shared Preferences
-  String burnId = (await SessionManager.getBurnId()) ?? '';
+  String burnId = (await SessionManager.getBurnId()) ?? '0';
 
   List<String> clinicalSymptoms = [];
   String cause = '';
@@ -657,11 +694,14 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       'message': message.message,
       'image': message.image,
       'timestamp': message.timestamp.toIso8601String(),
+      'receiver': message.receiver, // Include the receiver field
     });
 
     print('Sending JSON: $body'); // Print the JSON payload for debugging
 
-    var response = await http.post(url, headers: headers, body: body);
+    var response = await http
+        .post(url, headers: headers, body: body)
+        .timeout(const Duration(seconds: 60));
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       print('Message sent successfully');
@@ -675,33 +715,6 @@ Future<void> sendMessageToServer(ChatMessage message) async {
     throw Exception('Error sending message: $e');
   }
 }
-
-// Future<void> loginUser(String email, String password) async {
-//   // Example endpoint URL (replace with your Flask server URL)
-//   String url = 'https://my-trial-t8wj.onrender.com/login';
-
-//   // Example request body
-//   Map<String, String> body = {
-//     'email': email,
-//     'password': password,
-//   };
-
-//   try {
-//     var response = await http.post(
-//       Uri.parse(url),
-//       body: body,
-//     );
-
-//     if (response.statusCode == 200) {
-//       // Successful login, parse JSON response
-//       Map<String, dynamic> data = json.decode(response.body);
-//       // Update global.dart variables based on response data
-//       Global.updateFromJson(data);
-//     }
-//   } catch (e) {
-//     // Handle network or other errors
-//   }
-// }
 
 // Function to return the user's location to flask
 Future<void> get_user_location(
@@ -773,8 +786,7 @@ void logout() async {
       'https://my-trial-t8wj.onrender.com/logout'; // Replace with your actual logout endpoint URL
 
   try {
-    final response =
-        await http.post(Uri.parse(url)); // Use http.post instead of http.get
+    final response = await http.post(Uri.parse(url)); //
 
     if (response.statusCode == 200) {
       // Successful logout
@@ -794,3 +806,33 @@ void logout() async {
     print('Error during logout: $e');
   }
 }
+
+
+
+
+// Future<void> loginUser(String email, String password) async {
+//   // Example endpoint URL (replace with your Flask server URL)
+//   String url = 'https://my-trial-t8wj.onrender.com/login';
+
+//   // Example request body
+//   Map<String, String> body = {
+//     'email': email,
+//     'password': password,
+//   };
+
+//   try {
+//     var response = await http.post(
+//       Uri.parse(url),
+//       body: body,
+//     );
+
+//     if (response.statusCode == 200) {
+//       // Successful login, parse JSON response
+//       Map<String, dynamic> data = json.decode(response.body);
+//       // Update global.dart variables based on response data
+//       Global.updateFromJson(data);
+//     }
+//   } catch (e) {
+//     // Handle network or other errors
+//   }
+// }

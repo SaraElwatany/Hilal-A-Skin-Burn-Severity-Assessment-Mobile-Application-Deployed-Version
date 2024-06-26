@@ -79,7 +79,7 @@ def login_info():
     else:
         print('Success, 'f'Email: {email}', f'Password: {password}')
         # Send a JSON response back to the client
-        response = {'response': 'Access Allowed', 'user_id': str(user.id), 'user_profession': str(user.profession)}
+        response = {'response': 'Access Allowed', 'user_id': user.id, 'user_profession': user.profession}
         # USER_ID = user.id
         # session['user_id'] = user.id  # Store user ID in session
         return jsonify(response)
@@ -198,6 +198,7 @@ def doctor_signup_info():
     lastname  = data.get('lastname').strip()
     email     = data.get('email').strip()
     password  = data.get('password').strip()
+    speciality  = data.get('speciality').strip()
 
     # Convert email to lowercase
     email = email.lower()
@@ -260,6 +261,7 @@ def doctor_signup_info():
             height = 170, #'None'
             gender = 'M', #'None'
             dob = date(2020,4,2),#'None'
+            speciality= speciality,
             profession = 'doctor'
             )
             
@@ -316,9 +318,9 @@ def upload():
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         
         # Get the user_id from the received request 
-        # USER_ID = int(request.form['user_id'])  # Cast user id to eger
+        # USER_ID = int(request.form['user_id'])  # Cast user id to integer
         # Get the user_id and Image data from the form
-        USER_ID = request.form.get('user_id', None)
+        USER_ID = int(request.form.get('user_id', None))
         # image_data = request.form.get('Image', None)
         print('User ID Associated with burn:', USER_ID)
         # user_id = session.get('user_id')
@@ -428,7 +430,7 @@ def burn_new():
 
         BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
         print('Received Burn ID: ', BURN_ID)
-        USER_ID = request.form['user_id'] # Cast user id from string to integer
+        USER_ID = int(request.form['user_id']) # Cast user id from string to integer
         print('Received USER_ID ID: ', USER_ID)
         # Get the latest burn item added for that user
         # user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
@@ -521,10 +523,11 @@ def get_all_burns():
                         }
             user_list.append(user_dict)
         else:
-            # Generate a random integer between 0 and 1000
-            random_number = random.randint(0, 1000)
+            # Generate a random integer for the guest user
+            last_user = User.query.order_by(User.id.desc()).first()
+            last_user_id = last_user.id
             user_dict = {
-                         'id': random_number,
+                         'id': last_user_id+1,
                          'username': 'Guest', 
                          'email': 'None', 
                          'phone': None, 
@@ -536,9 +539,10 @@ def get_all_burns():
 
     print('User lists found', user_list)
 
-    user_ids = [user.fk_burn_user_id for user in users] # Check
-    user_names = [user.username for user in users]
-    user_info = ['Weight: '+str(user.weight)+' '+'Height: '+str(user.height) for user in users]
+    user_ids = [user.get('id') for user in user_list] 
+    user_names = [user.get('username') for user in user_list]
+    user_info = ['Email: '+str(user.get('email')) for user in user_list]
+    # user_info = ['email: '+str(user.get('email'))+' '+'Height: '+str(user.height) for user in users]
 
     # return the user list
     return {
@@ -582,14 +586,15 @@ def get_all_doctors():
                         'email': user.email, 
                         'phone': user.phone, 
                         'weight': user.weight, 
-                        'height': user.height
+                        'height': user.height,
+                        'speciality':user.speciality
                         }
             user_list.append(user_dict)
 
     print('Doctor User lists found', user_list)
-    user_ids = [user.id for user in users] 
-    user_names = [user.username for user in users]
-    user_info = ['Email: '+str(user.email)+' '+'Phone: '+str(user.phone) for user in users]
+    user_ids = [user.get('id') for user in user_list] 
+    user_names = [user.get('username') for user in user_list]
+    user_info = ['Email: '+str(user.get('email'))+' Speciality: '+str(user.get('speciality'))+' Phone: '+str(user.get('phone')) for user in user_list]
 
     # return the doctor user list
     return {
@@ -672,7 +677,7 @@ def send_message():
         if not data:
             return jsonify({'error': 'No data provided'}), 400
 
-        required_keys = ['sender_id', 'receiver_id', 'message']
+        required_keys = ['sender_id', 'receiver_id', 'message', 'receiver']
         for key in required_keys:
             if key not in data:
                 return jsonify({'error': f'Missing key: {key}'}), 400
@@ -681,6 +686,7 @@ def send_message():
             sender_id=data['sender_id'],
             receiver_id=data['receiver_id'],
             message=data['message'],
+            receiver=data['receiver'],
             image=data.get('image'),
             timestamp=datetime.now()
         )

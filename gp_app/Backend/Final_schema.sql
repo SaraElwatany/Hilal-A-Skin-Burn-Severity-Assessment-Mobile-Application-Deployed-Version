@@ -244,9 +244,10 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
+    receiver BOOLEAN NOT NULL DEFAULT FALSE,
     -- audio_url VARCHAR(500),
-    message VARCHAR(500) NOT NULL,
-    image VARCHAR(500),
+    message VARCHAR(2000) NOT NULL,
+    image VARCHAR(10000),  -- Allowing NULL for the image 
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     INDEX sender_id_idx (sender_id),
     INDEX receiver_id_idx (receiver_id)
@@ -295,16 +296,24 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
- INSERT INTO  `defaultdb`.`user` 
- (`id`, `username`, `password`, `dob`, `gender`, `height`, `weight`, `phone`, `email`, `profession`)
-VALUES (1, 'admin', 'pbkdf2:sha256:600000$xZdTyQugm5qNrx6n$b3fb45fe75fc7134415128dc81ab6bb90c08cf1c2addf557cb902288fc32b730', '1995-01-01', 'M', 180, 70, '01023456780', 'admin@hilal.com', 'admin');
-
 
 INSERT INTO `defaultdb`.`user` 
 (`id`, `username`, `password`, `dob`, `gender`, `height`, `weight`, `phone`, `email`, `profession`)
 VALUES
-(2, 'dr_ali', 'pbkdf2:sha256:600000$9m4AXJ8AtIGiccP2$c72581e5a749631741631b74099ca86f197a01ba6640af69eb6c4b17b44dbee0',
+(1, 'dr_ali', 'pbkdf2:sha256:600000$9m4AXJ8AtIGiccP2$c72581e5a749631741631b74099ca86f197a01ba6640af69eb6c4b17b44dbee0',
  '1990-01-01', 'M', 180, 75, '01034567899', 'aliMorad_dr@hilal.com', 'doctor');
+ 
+  INSERT INTO  `defaultdb`.`user` 
+ (`id`, `username`, `password`, `dob`, `gender`, `height`, `weight`, `phone`, `email`, `profession`)
+VALUES (2, 'admin', 'pbkdf2:sha256:600000$xZdTyQugm5qNrx6n$b3fb45fe75fc7134415128dc81ab6bb90c08cf1c2addf557cb902288fc32b730', '1995-01-01', 'M', 180, 70, '01023456780', 'admin@hilal.com', 'admin');
+
+
+
+ INSERT INTO  `defaultdb`.`user` 
+ (`id`, `username`, `password`, `dob`, `gender`, `height`, `weight`, `phone`, `email`, `profession`)
+VALUES (3, 'model', 'pbkdf2:sha256:600000$xZdTyQugm5qNrx6n$b3fb45fe75fc7134415128dc81ab6bb90c08cf1c2addf557cb902288fc32b730', '2000-01-01', 'F', 180, 70, '01023456780', 'model@hilal.com', 'model');
+
+
  
 
 

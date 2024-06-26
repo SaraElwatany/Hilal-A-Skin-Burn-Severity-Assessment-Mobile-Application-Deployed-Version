@@ -81,9 +81,27 @@ class PatientModelChatState extends State<PatientModelChat> {
   @override
   void initState() {
     super.initState();
-    //loadChatHistory();
+    print('Intro Message: $introMessageShown');
+    // Ensure the intro message and data fetch is triggered when chat history is loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeSession();
+    });
+    loadChatHistory();
     // AudioApi.initRecorder();
-    // fetchPredictionAndHospitals(); // Fetch data from the server
+  }
+
+  void _initializeSession() async {
+    String userProfession =
+        (await SessionManager.getUserProfession()) ?? 'patient';
+    String newBurn = (await SessionManager.getBurnCondition()) ?? 'true';
+
+    if (userProfession == 'patient' &&
+        // !introMessageShown &&
+        newBurn == 'true') {
+      updateChatScreenWithIntro();
+      introMessageShown = true;
+      fetchPredictionAndHospitals();
+    }
   }
 
   @override
@@ -100,34 +118,30 @@ class PatientModelChatState extends State<PatientModelChat> {
       setState(() {
         messages = fetchedMessages;
       });
+
       print('chat is loaded');
     } catch (e) {
       print("Failed to load chat history: $e");
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  // String userProfession = (await Session.Manager.getUserProfession()) ?? 'patient';
+  // String newBurn = (await Session.Manager.getBurnCondition()) ?? 'true';
+  //   if ((userProfession=='patient') && (!introMessageShown) && (newBurn=='true')) {
+  //     updateChatScreenWithIntro();
+  //     introMessageShown = true;
+  //     fetchPredictionAndHospitals();
+  //   }
 
-    if (!introMessageShown) {
-      updateChatScreenWithIntro();
-      introMessageShown = true;
-      fetchPredictionAndHospitals();
-    }
-
-    // if (messages.isEmpty && !introMessageShown) {
-    //   updateChatScreenWithIntro();
-    //   introMessageShown = true;
-
-    //   fetchPredictionAndHospitals();
-    // }
-
-    // // Add the burn prediction message if available
-    // if (Global.latestPrediction.isNotEmpty) {
-    //   updateChatScreenWithPrediction(Global.latestPrediction);
-    // }
-  }
+  //   // if (messages.isEmpty && !introMessageShown) {
+  //   //   updateChatScreenWithIntro();
+  //   //   introMessageShown = true;
+  //   //   fetchPredictionAndHospitals();
+  //   // }
+  // }
 
   // void _toggleRecording() async {
   //   if (_isRecording) {
@@ -153,99 +167,93 @@ class PatientModelChatState extends State<PatientModelChat> {
   //   }
   // }
 
-  void _sendMessage() async {
-    final text = _messageController.text.trim();
-    if (text.isNotEmpty) {
+  void _sendMessage(bool model, String mess_age) async {
+    if (model == true) {
       final message = ChatMessage(
-          message: text,
-          receiver: true,
-          image:
-              "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
-          timestamp: DateTime.now(),
-          senderId: Global.userId,
-          receiverId: 1);
+        message: mess_age,
+        receiver: false,
+        image:
+            "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
+        timestamp: DateTime.now(),
+        senderId: 1,
+        receiverId: Global.userId,
+      );
 
       // Send the message to the server
       await sendMessageToServer(message);
-
       setState(() {
         messages.add(message);
         _messageController.clear();
       });
-    } else
-      print('message is empty');
+    } else {
+      final text = _messageController.text.trim();
+      if (text.isNotEmpty) {
+        final message = ChatMessage(
+            message: text,
+            receiver: true,
+            image:
+                "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
+            timestamp: DateTime.now(),
+            senderId: Global.userId,
+            receiverId: 1);
+
+        // Send the message to the server
+        await sendMessageToServer(message);
+
+        setState(() {
+          messages.add(message);
+          _messageController.clear();
+        });
+      } else
+        print('message is empty');
+    }
   }
 
   // Function to (Sara)
   void updateChatScreenWithIntro() {
-    // final myState = Provider.of<MyState>(context, listen: false);
-    // String userId = myState.userId;
-
-    setState(() {
-      messages.add(ChatMessage(
-          message: S.of(context).Intro,
-          receiver: false,
-          timestamp: DateTime.now(),
-          // senderId: userId, (Sara)
-          senderId: Global.userId,
-          receiverId: 1));
-    });
+    _sendMessage(
+        true, S.of(context).Intro); // send intro message to the database
+    // setState(() {
+    //   messages.add(ChatMessage(
+    //       message: S.of(context).Intro,
+    //       receiver: false,
+    //       timestamp: DateTime.now(),
+    //       // senderId: userId, (Sara)
+    //       senderId: Global.userId,
+    //       receiverId: 1));
+    // });
   }
 
   // Function to display the initial message from the model (Model Prediction & the Treatment Protocol)
   void updateChatScreenWithPrediction(String prediction) {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
     String message = '';
     print("Message From Location: $message");
 
     if (prediction == 'First Degree Burn') {
       message = S.of(context).firstDegreeMessage;
       print("Message From Location: $message");
-      //   message =
-      //       '''Your Burn Degree is $prediction.\nThe Following First Aid Protocols are Recommended:\n\n
-      //           1.Make sure that you are away from the source of burn\n
-      //           2.Douse the area with room temperature tap water.\n
-      //               DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n
-      //           3.Take off any accessories (Jewelry, watches, rings, etc.)\n
-      //           4.Apply Mebo or Dermazine to the burned area. Then cover it with a sterile bandage or a clean cloth.\n
-      //           5.Seek Medical attention if:\n
-      //               i. If the burned area is larger than the size of your palm, seek medical attention.\n
-      //               ii. Burns on the face, hands, feet, genitals, or major joints.\n
-      //               iii. Chemical burns, Electrical burns.\n
-      //               iv. For any burns that cause severe pain, blistering, or white or charred skin.\n''';
     } else if (prediction == 'Second Degree Burn') {
       message = S.of(context).secondDegreeMessage;
-
-      //   message =
-      //       '''Your Burn Degree is $prediction.\nThe Following First Aid Protocols are Recommended:\n\n
-      //           1.Make sure that you are away from the source of burn.\n
-      //           2.Douse the area with room temperature tap water.\n
-      //               DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n
-      //           3.Take off any accessories (Jewelry, watches, rings, etc.)\n
-      //           4.Apply Mebo or Dermazine to the burned area. Then cover it with a sterile bandage or a clean cloth.\n
-      //           5.Seek Immediate medical attention.\n
-      //       ''';
     } else if (prediction == 'Third Degree Burn') {
       message = S.of(context).thirdDegreeMessage;
     }
-    setState(() {
-      messages.add(ChatMessage(
-          message: message, // message,
-          receiver: false,
-          // senderId: userId, // (Sara)
-          senderId: Global.userId,
-          receiverId: 1,
-          timestamp: DateTime.now()));
-    });
+    _sendMessage(true, message); // send prediction message to the database
+    // setState(() {
+    //   messages.add(ChatMessage(
+    //       message: message, // message,
+    //       receiver: false,
+    //       // senderId: userId, // (Sara)
+    //       senderId: Global.userId,
+    //       receiverId: 1,
+    //       timestamp: DateTime.now()));
+    // });
   }
 
   // Update chat screen with the list of nearest hospitals (Sara)
   void updateChatScreenWithHospitals(List<dynamic> hospitals) {
     // final myState = Provider.of<MyState>(context, listen: false);
     // String userId = myState.userId;
-    var fullMessage =
-        'The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n';
+    var fullMessage = S.of(context).locationMessage;
 
     List<Map<String, String>> hospitalDetails = [];
 
@@ -264,15 +272,18 @@ class PatientModelChatState extends State<PatientModelChat> {
       });
     }
 
-    setState(() {
-      messages.add(ChatMessage(
-          message: fullMessage,
-          receiver: false,
-          senderId: Global.userId,
-          receiverId: 1,
-          hospitalDetails: hospitalDetails,
-          timestamp: DateTime.now()));
-    });
+    _sendMessage(
+        true, fullMessage); // send hospital locations message to the database
+
+    // setState(() {
+    //   messages.add(ChatMessage(
+    //       message: fullMessage,
+    //       receiver: false,
+    //       senderId: Global.userId,
+    //       receiverId: 1,
+    //       hospitalDetails: hospitalDetails,
+    //       timestamp: DateTime.now()));
+    // });
   }
 
   // // Update chat screen with the list of nearest hospitals (Sara)
@@ -346,7 +357,7 @@ class PatientModelChatState extends State<PatientModelChat> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: IconButton(
-                      onPressed: _sendMessage,
+                      onPressed: () => _sendMessage(false, ''),
                       icon: const Icon(
                         Icons.send,
                       ),

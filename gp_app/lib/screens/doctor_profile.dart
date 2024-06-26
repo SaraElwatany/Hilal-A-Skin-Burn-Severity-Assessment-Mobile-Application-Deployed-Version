@@ -16,12 +16,14 @@ class DocterProfile extends StatefulWidget {
 }
 
 class DocterProfileState extends State<DocterProfile> {
-/*   // Just for test
+/* // Just for test
   List<Patient> patients = [
     Patient(name: 'Patient 1', info: 'Info for Patient 1'),
     Patient(name: 'Patient 2', info: 'Info for Patient 2'),
   ];
+
  */
+
   String _selectedItem = 'Time'; // Default
   List<Patient> patients = [];
   bool adminPassword = Global.adminPassword;
@@ -36,9 +38,10 @@ class DocterProfileState extends State<DocterProfile> {
     try {
       String userProfession =
           (await SessionManager.getUserProfession()) ?? 'patient';
-      if (userProfession == 'doctor') {
+      if (!adminPassword) {
         await _fetchPatients();
       } else {
+        print('Hiiiiiiiiiiiiiiiiiii ADMIN');
         await _fetchDoctors();
       }
     } catch (error) {
@@ -152,7 +155,7 @@ class DocterProfileState extends State<DocterProfile> {
                   onPressed: () async {
                     await SessionManager.saveUserProfession(
                         'admin'); // set user profession to patient on press
-                        Global.adminPassword = true;
+                    Global.adminPassword = true;
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (ctx) => const SignUpScreen()));
                   },
@@ -175,10 +178,6 @@ class DocterProfileState extends State<DocterProfile> {
     );
   }
 }
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:gp_app/generated/l10n.dart';
@@ -281,7 +280,7 @@ class DocterProfileState extends State<DocterProfile> {
 //             child: ListView.builder(
 //               itemCount: patients.length,
 //               itemBuilder: (BuildContext context, int index) {
-//                 return 
+//                 return
 //                 PatientList(
 //                   patient: patients[index],
 //                 );
@@ -300,7 +299,7 @@ class DocterProfileState extends State<DocterProfile> {
 //                         shape: RoundedRectangleBorder(
 //                             borderRadius: BorderRadius.circular(15)),
 //                         fixedSize: const Size(210, 60)),
-                        
+
 //                          label: Text(S.of(context).addDoctors,
 //                           style: const TextStyle(
 //                               fontSize: 25,
@@ -311,9 +310,9 @@ class DocterProfileState extends State<DocterProfile> {
 //                          ),
 //                 )
 //         ],
-        
+
 //       ),
-      
+
 //     );
 //   }
 // }

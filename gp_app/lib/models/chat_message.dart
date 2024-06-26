@@ -30,7 +30,7 @@ class ChatMessage {
   });
 
   // Factory constructor to create a ChatMessage from JSON
- factory ChatMessage.fromJson(Map<String, dynamic> json) {
+  factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
       senderId: json['sender_id'] as int,
       receiverId: json['receiver_id'] as int,

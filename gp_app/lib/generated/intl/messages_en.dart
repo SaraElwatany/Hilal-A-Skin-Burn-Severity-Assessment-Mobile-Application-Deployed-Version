@@ -123,22 +123,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "areadetectionText": MessageLookupByLibrary.simpleMessage(
             "If the burn is large, you may need to take several pictures from different distances to show the actual size of the burn in relation to other parts of the body."),
         "firstDegreeMessage": MessageLookupByLibrary.simpleMessage(
-            "Your Burn Degree is First Degree Burn.\nThe Following First Aid Protocols are Recommended:\n1.Make sure that you are away from the source of burn.\n2.Douse the area with room temperature tap water.\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n6.Seek Medical attention if:\n i. If the burned area is larger than the size of your palm, seek medical attention.\n ii. Burns on the face, hands, feet, genitals, or major joints.\n iii. Chemical burns, Electrical burns.\n iv. For any burns that cause severe pain, blistering, or white or charred skin."),
+            "Your Burn Degree is First Degree Burn.The Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Medical attention if:\n    i. If the burned area is larger than the size of your     palm, seek medical attention.\n    ii. Burns on the face, hands, feet, genitals, or     major joints.\n    iii. Chemical burns, Electrical burns.\n    iv. For any burns that cause severe pain,     blistering, or white or charred skin.\n "),
         "secondDegreeMessage": MessageLookupByLibrary.simpleMessage(
-            '''Your Burn Degree is Second Degree Burn.\nThe Following First Aid Protocols are Recommended:\n
-                1.Make sure that you are away from the source of burn.\n
-                2.Douse the area with room temperature tap water.\n
-                    DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n
-                3.Take off any accessories (Jewelry, watches, rings, etc.)\n
-                4.Apply Mebo or Dermazine to the burned area. Then cover it with a sterile bandage or a clean cloth.\n
-                5.Seek Immediate medical attention.\n'''),
+            "Your Burn Degree is Second Degree Burn.\nThe Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Immediate medical attention.\n"),
         "thirdDegreeMessage": MessageLookupByLibrary.simpleMessage(
-            '''Your Burn Degree is Third Degree Burn.\nThe Following First Aid Protocols are Recommended:\n
-                1.Make sure that you are away from the source of burn.\n
-                2.Douse the area with room temperature tap water.\n
-                    DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n
-                3.Take off any accessories (Jewelry, watches, rings, etc.)\n
-                4.Apply Mebo or Dermazine to the burned area. Then cover it with a sterile bandage or a clean cloth.\n
-                5.Seek Immediate medical attention.\n'''),
+            "Your Burn Degree is Third Degree Burn.\nThe Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Immediate medical attention.\n"),
+        "locationMessage": MessageLookupByLibrary.simpleMessage(
+            "The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n"),
+        "viewMaps": MessageLookupByLibrary.simpleMessage("View on Maps"),
+        "numberOne": MessageLookupByLibrary.simpleMessage("1."),
+        "numberTwo": MessageLookupByLibrary.simpleMessage("2."),
+        "numberThree": MessageLookupByLibrary.simpleMessage("3."),
+        "numberFour": MessageLookupByLibrary.simpleMessage("4."),
+        "numberFive": MessageLookupByLibrary.simpleMessage("5."),
+        "numberSix": MessageLookupByLibrary.simpleMessage("6."),
+        "numberSeven": MessageLookupByLibrary.simpleMessage("7."),
       };
 }

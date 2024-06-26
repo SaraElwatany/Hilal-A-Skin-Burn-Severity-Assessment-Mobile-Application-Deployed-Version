@@ -89,8 +89,18 @@
     "areadetection":"Determine size",
     "areadetectionText":"If the burn is large, you may need to take several pictures from different distances to show the actual size of the burn in relation to other parts of the body.",
 
-    "firstDegreeMessage":"Your Burn Degree is First Degree Burn.\nThe Following First Aid Protocols are Recommended:\n1.Make sure that you are away from the source of burn.\n2.Douse the area with room temperature tap water.\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n6.Seek Medical attention if:\n i. If the burned area is larger than the size of your palm, seek medical attention.\n ii. Burns on the face, hands, feet, genitals, or major joints.\n iii. Chemical burns, Electrical burns.\n iv. For any burns that cause severe pain, blistering, or white or charred skin.",
-    "secondDegreeMessage":"Your Burn Degree is Second Degree Burn.The Following First Aid Protocols are Recommended:1.Make sure that you are away from the source of burn.2.Douse the area with room temperature tap water.3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.4.Take off any accessories (Jewelry, watches, rings, etc.)5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.6.Seek Immediate medical attention.",
-    "thirdDegreeMessage":"Your Burn Degree is Third Degree Burn.The Following First Aid Protocols are Recommended:1.Make sure that you are away from the source of burn.2.Douse the area with room temperature tap water.3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.4.Take off any accessories (Jewelry, watches, rings, etc.)5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.6.Seek Immediate medical attention."
+    "firstDegreeMessage":"Your Burn Degree is First Degree Burn.The Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Medical attention if:\n    i. If the burned area is larger than the size of your     palm, seek medical attention.\n    ii. Burns on the face, hands, feet, genitals, or     major joints.\n    iii. Chemical burns, Electrical burns.\n    iv. For any burns that cause severe pain,     blistering, or white or charred skin.\n ",
+    "secondDegreeMessage":"Your Burn Degree is Second Degree Burn.\nThe Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Immediate medical attention.\n",
+    "thirdDegreeMessage":"Your Burn Degree is Third Degree Burn.\nThe Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Immediate medical attention.\n",
  
+    "locationMessage":"The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n",
+    "viewMaps":"View on Maps",
+    "numberOne":"1.",
+    "numberTwo":"2.",
+    "numberThree":"3.",
+    "numberFour":"4.",
+    "numberFive":"5.",
+    "numberSix":"6.",
+    "numberSeven":"7."
+
   }

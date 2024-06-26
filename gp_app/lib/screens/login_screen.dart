@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Initialize logout every time the screen is displayed
-    logout();
+    //logout();
     Global.adminPassword = false;
   }
 

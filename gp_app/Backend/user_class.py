@@ -16,5 +16,6 @@ class User(db.Model):
     weight = db.Column(db.Integer, nullable=True, default=None)
   
     profession = db.Column(db.String(20), nullable=False, default='patient')
+    speciality = db.Column(db.String(20), nullable=True, default='specialist')
     
     burns = db.relationship('Burn', backref='user', lazy=True)
