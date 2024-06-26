@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/screens/main_page.dart';
-import 'package:gp_app/screens/patient_location.dart';
 import 'package:gp_app/screens/voice_note_screen.dart';
 import 'package:gp_app/widgets/welcome_page_en.dart';
 import 'package:gp_app/generated/l10n.dart';

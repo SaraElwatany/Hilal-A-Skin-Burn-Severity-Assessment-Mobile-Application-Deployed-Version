@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/apis/apis.dart';
-import 'package:gp_app/models/my_state.dart';
+// import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/models/global.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/screens/login_screen.dart';
@@ -30,7 +30,6 @@ class _SignUpState extends State<SignUpScreen> {
   bool flag = Global.adminPassword;
 
   void _saveItem() async {
-
     NewUser userInfo = NewUser(
       firstName: _enteredFirstName,
       lastName: _enteredLastName,

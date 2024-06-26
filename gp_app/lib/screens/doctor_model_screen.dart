@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/generated/l10n.dart';
-import 'package:gp_app/models/global.dart';
+// import 'package:gp_app/models/global.dart';
 import 'package:gp_app/apis/apis.dart';
-import 'package:gp_app/models/my_state.dart';
-import 'package:provider/provider.dart';
+// import 'package:gp_app/models/my_state.dart';
+// import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
-import 'package:gp_app/widgets/docter_model_widget.dart';
+// import 'package:gp_app/widgets/docter_model_widget.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 
 // import 'package:flutter_sound/flutter_sound.dart';
-import 'package:gp_app/widgets/audio_player_widget.dart';
+// import 'package:gp_app/widgets/audio_player_widget.dart';
 
 class DocterModelChat extends StatefulWidget {
   const DocterModelChat({
@@ -26,7 +26,7 @@ class DocterModelChatState extends State<DocterModelChat> {
   //marina
   List<ChatMessage> messages = [];
   // final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  bool _isRecording = false;
+  // bool _isRecording = false;
   final TextEditingController _messageController = TextEditingController();
 
   @override
