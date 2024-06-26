@@ -674,6 +674,8 @@ def send_message():
         data = request.json
         print(f"Received data: {data}")  # Print received data for debugging
 
+        print(f"Message Receiver State For the User: {data['receiver']}")
+
         if not data:
             return jsonify({'error': 'No data provided'}), 400
 

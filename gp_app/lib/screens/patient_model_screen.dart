@@ -244,15 +244,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:gp_app/apis/apis.dart';
-import 'package:gp_app/screens/patient_location.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/my_state.dart';
-import 'package:gp_app/models/global.dart';
-
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/screens/patient_location.dart';
 import 'package:gp_app/manager/voice_note_manager/audio_recorder_file.dart';
 import 'package:gp_app/manager/voice_note_manager/voice_note_state.dart';
 import 'package:gp_app/manager/voice_note_manager/voive_noter_cubit.dart';
@@ -261,6 +259,8 @@ import 'package:gp_app/widgets/audio_recorder_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:gp_app/utils/app_bottom_sheet.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http; // Add this import
+import 'dart:convert'; // Add this import for jsonDecode
 // import 'package:gp_app/widgets/voice_note_card.dart';
 
 class PatientModelChat extends StatefulWidget {
@@ -278,6 +278,51 @@ class PatientModelChatState extends State<PatientModelChat> {
   final PagingController<int, VoiceNoteModel> pagingController =
       PagingController<int, VoiceNoteModel>(
           firstPageKey: 1, invisibleItemsThreshold: 6);
+
+  Future<void> fetchPredictionAndHospitals() async {
+    var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
+
+    double userLat = (await SessionManager.getLatitude()) ?? 0.0;
+    double userLong = (await SessionManager.getLongitude()) ?? 0.0;
+
+    var params = {
+      'user_latitude': userLat.toString(),
+      'user_longitude': userLong.toString(),
+    };
+
+    try {
+      var response = await http.post(
+        url.replace(queryParameters: params),
+      );
+
+      print('Latitude From Chat Screen: $userLat');
+
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+
+        if (responseBody['error'] != null) {
+          print('Error: ${responseBody['error']}');
+        } else {
+          List<dynamic> hospitals = responseBody['hospitals'];
+
+          String prediction;
+          prediction = (await SessionManager.getPrediction()) ?? '';
+          Global.latestPrediction = prediction;
+
+          updateChatScreenWithPrediction(prediction);
+          updateChatScreenWithHospitals(hospitals);
+
+          setState(() {
+            predictionAndHospitalsFetched = true;
+          });
+        }
+      } else {
+        print('Failed to get response. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   @override
   void initState() {
@@ -392,7 +437,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         image:
             "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
         timestamp: DateTime.now(),
-        senderId: 1,
+        senderId: 3,
         receiverId: Global.userId,
       );
 
