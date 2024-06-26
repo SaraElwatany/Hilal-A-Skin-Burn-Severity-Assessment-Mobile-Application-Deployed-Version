@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
 
 class ChatMessage {
-  final String senderId;
-  final String receiverId;
+  final int senderId;
+  final int receiverId;
   final String message;
   final String? image;
   final bool? receiver;
@@ -30,26 +30,25 @@ class ChatMessage {
   });
 
   // Factory constructor to create a ChatMessage from JSON
-  factory ChatMessage.fromJson(Map<String, dynamic> json) {
+ factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
-      message: json['message'] as String? ?? "Default message",
-      receiver: json['receiver'] as bool?,
+      senderId: json['sender_id'] as int,
+      receiverId: json['receiver_id'] as int,
+      message: json['message'] as String? ?? '',
       image: json['image'] as String?,
-      senderId: json['senderId'] as String,
-      receiverId: json['receiverId'] as String,
-      timestamp: DateTime.parse(json['timestamp']
-          as String), // Assuming 'timestamp' is in ISO 8601 format
+      receiver: json['receiver'] as bool?,
+      timestamp: DateTime.parse(json['timestamp'] as String),
     );
   }
 
   // Convert instance back to JSON, useful for sending data back to a server or saving locally
   Map<String, dynamic> toJson() {
     return {
+      'sender_id': senderId,
+      'receiver_id': receiverId,
       'message': message,
-      'receiver': receiver,
       'image': image,
-      'senderId': senderId,
-      'receiverId': receiverId,
+      'receiver': receiver,
       'timestamp': timestamp.toIso8601String(),
     };
   }

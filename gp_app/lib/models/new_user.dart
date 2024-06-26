@@ -3,7 +3,7 @@ class NewUser {
   String lastName;
   String email;
   String password;
-  String userId;
+  int userId;
 
   NewUser({
     required this.firstName,

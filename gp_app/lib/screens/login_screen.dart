@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     // Initialize session when the screen is first created
-    logout();
+    //logout();
     Global.adminPassword = false;
   }
 
@@ -49,12 +49,8 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final myState = Provider.of<MyState>(context, listen: false);
-      String userId = myState.userId;
-
-      // loginUser(_enteredName, _enteredPassword);
-
-      UserInfo userInfo = UserInfo(_enteredName, _enteredPassword, userId);
+      UserInfo userInfo =
+          UserInfo(_enteredName, _enteredPassword, Global.userId);
       _userInfoList.add(userInfo);
 
       // Send data & then wait for the response either to go to main page or try again
@@ -152,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                           username = value.toString();
                         },
                         maxLength: 50,
-                    decoration: InputDecoration(
+                        decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey.shade200,
                           focusedBorder: OutlineInputBorder(

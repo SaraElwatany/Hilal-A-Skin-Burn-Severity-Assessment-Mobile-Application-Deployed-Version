@@ -1,6 +1,6 @@
 class Global {
   static String _latestPrediction = ''; // Global Variable for the prediction of the associated burn
-  static String _userId = '0'; // Global Variable for doctor's ID
+  static int _userId = 0; // Global Variable for doctor's ID
   static String _userProfession = ''; // Global Variable for User's Profession Detection from Login Screen
   static bool _adminPassword = false; // Global Variable for admin password, default value false 'patient'
 
@@ -14,8 +14,8 @@ class Global {
   }
 
   // Getters and setters for userId
-  static String get userId => _userId;
-  static set userId(String value) {
+  static int get userId => _userId;
+  static set userId(int value) {
     _userId = value;
   }
 

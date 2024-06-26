@@ -25,8 +25,6 @@ from .functions import load_img, transform, load_model, predict, convert_to_obj,
 
 
 main = Blueprint('main', __name__)
-# Initialize socketio
-
 
 
 
@@ -172,17 +170,17 @@ def signup_info():
                 print('user id: ', new_user.id) # Get user ID
                 # USER_ID = new_user.id
                 # session['user_id'] = new_user.id    # Store new signed up user ID in session
-                response = {'response': 'Signup successful', 'user_id': str(new_user.id)}
+                response = {'response': 'Signup successful', 'user_id': new_user.id}
             except OperationalError:
                 print('Operational Error Encountered')
             except IntegrityError:
                 db.session.rollback()   # Rollback the transaction
                 print('Integrity Error: User with this email already exists')
-                response = {'response': 'Email already exists', 'user_id': str(0)}
+                response = {'response': 'Email already exists', 'user_id': 0}
             except Exception as e:
                 db.session.rollback()
                 print(f'Error during signup: {str(e)}')
-                response = {'response': 'Internal Server Error', 'user_id': str(0)}
+                response = {'response': 'Internal Server Error', 'user_id': 0}
             return jsonify(response)
 
 
@@ -271,17 +269,17 @@ def doctor_signup_info():
                 print('user id: ', new_user.id) # Get user ID
                 # USER_ID = new_user.id
                 # session['user_id'] = new_user.id    # Store new signed up user ID in session
-                response = {'response': 'Signup successful', 'user_id': str(new_user.id)}
+                response = {'response': 'Signup successful', 'user_id': new_user.id}
             except OperationalError:
                 print('Operational Error Encountered')
             except IntegrityError:
                 db.session.rollback()   # Rollback the transaction
                 print('Integrity Error: User with this email already exists')
-                response = {'response': 'Email already exists', 'user_id': str(0)}
+                response = {'response': 'Email already exists', 'user_id': 0}
             except Exception as e:
                 db.session.rollback()
-                print(f'Error during signup: {str(e)}')
-                response = {'response': 'Internal Server Error', 'user_id': str(0)}
+                print(f'Error during signup: {e}')
+                response = {'response': 'Internal Server Error', 'user_id': 0}
             return jsonify(response)
 
 
@@ -318,9 +316,9 @@ def upload():
         #IMAGE_DATA_OBJECT = convert_to_obj(IMAGE_DATA)    # Convert binary data to image object (if needed)
         
         # Get the user_id from the received request 
-        # USER_ID = int(request.form['user_id'])  # Cast user id to integer
+        # USER_ID = int(request.form['user_id'])  # Cast user id to eger
         # Get the user_id and Image data from the form
-        USER_ID = int(request.form.get('user_id', None))
+        USER_ID = request.form.get('user_id', None)
         # image_data = request.form.get('Image', None)
         print('User ID Associated with burn:', USER_ID)
         # user_id = session.get('user_id')
@@ -430,7 +428,7 @@ def burn_new():
 
         BURN_ID = int(request.form['burn_id'])  # Cast user id from string to integer
         print('Received Burn ID: ', BURN_ID)
-        USER_ID = int(request.form['user_id'])  # Cast user id from string to integer
+        USER_ID = request.form['user_id'] # Cast user id from string to integer
         print('Received USER_ID ID: ', USER_ID)
         # Get the latest burn item added for that user
         # user = Burn.query.filter_by(fk_burn_user_id=USER_ID).order_by(Burn.burn_id.desc()).first()
@@ -686,14 +684,15 @@ def send_message():
             image=data.get('image'),
             timestamp=datetime.now()
         )
+        print(message)
         db.session.add(message)
         db.session.commit()
 
-        if socketio:
-            socketio.emit('message', message.to_dict())
-        else:
-            print("SocketIO is not initialized")
-            return jsonify({'error': 'SocketIO is not initialized'}), 500
+        # if socketio:
+        #     socketio.emit('message', message.to_dict())
+        # else:
+        #     print("SocketIO is not initialized")
+        #     return jsonify({'error': 'SocketIO is not initialized'}), 500
         
         return jsonify(message.to_dict()), 201
     except Exception as e:
@@ -712,16 +711,13 @@ def get_chat_history():
         if not sender_id or not receiver_id:
             return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
 
-        try:
-            sender_id = int(sender_id)
-            receiver_id = int(receiver_id)
-        except ValueError:
-            return jsonify({'error': 'Invalid sender_id or receiver_id'}), 400
-
         chat_history = ChatMessage.query.filter(
             ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
             | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
         ).order_by(ChatMessage.timestamp.asc()).all()
+
+        for message in chat_history:
+            print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}")
 
         return jsonify([message.to_dict() for message in chat_history]), 200
 

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/my_state.dart';
+import 'package:gp_app/models/global.dart';
 
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
@@ -25,8 +26,8 @@ class PatientModelChat extends StatefulWidget {
 
 class PatientModelChatState extends State<PatientModelChat> {
   List<ChatMessage> messages = [];
-  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  bool _isRecording = false;
+  // final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  // bool _isRecording = false;
   final TextEditingController _messageController = TextEditingController();
   bool introMessageShown = false;
   bool predictionAndHospitalsFetched = false;
@@ -94,13 +95,12 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   void loadChatHistory() async {
     try {
-      final myState = Provider.of<MyState>(context, listen: false);
-      String userId = myState.userId;
       List<ChatMessage> fetchedMessages =
-          await fetchChatHistory(userId, '1'); // Receiver ID set to 1
+          await fetchChatHistory(Global.userId, 1); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
+      print('chat is loaded');
     } catch (e) {
       print("Failed to load chat history: $e");
     }
@@ -154,18 +154,16 @@ class PatientModelChatState extends State<PatientModelChat> {
   // }
 
   void _sendMessage() async {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
-
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final message = ChatMessage(
           message: text,
           receiver: true,
-          image: null,
+          image:
+              "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
           timestamp: DateTime.now(),
-          senderId: userId,
-          receiverId: '1');
+          senderId: Global.userId,
+          receiverId: 1);
 
       // Send the message to the server
       await sendMessageToServer(message);
@@ -180,21 +178,19 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   // Function to (Sara)
   void updateChatScreenWithIntro() {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
+    // final myState = Provider.of<MyState>(context, listen: false);
+    // String userId = myState.userId;
 
     setState(() {
       messages.add(ChatMessage(
           message: S.of(context).Intro,
           receiver: false,
           timestamp: DateTime.now(),
-          // senderId: userId, // (Sara)
-          senderId: '0',
-          receiverId: '1'));
+          // senderId: userId, (Sara)
+          senderId: Global.userId,
+          receiverId: 1));
     });
   }
-
-  
 
   // Function to display the initial message from the model (Model Prediction & the Treatment Protocol)
   void updateChatScreenWithPrediction(String prediction) {
@@ -238,16 +234,16 @@ class PatientModelChatState extends State<PatientModelChat> {
           message: message, // message,
           receiver: false,
           // senderId: userId, // (Sara)
-          senderId: '0',
-          receiverId: '1',
+          senderId: Global.userId,
+          receiverId: 1,
           timestamp: DateTime.now()));
     });
   }
 
   // Update chat screen with the list of nearest hospitals (Sara)
   void updateChatScreenWithHospitals(List<dynamic> hospitals) {
-    final myState = Provider.of<MyState>(context, listen: false);
-    String userId = myState.userId;
+    // final myState = Provider.of<MyState>(context, listen: false);
+    // String userId = myState.userId;
     var fullMessage =
         'The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n';
 
@@ -272,8 +268,8 @@ class PatientModelChatState extends State<PatientModelChat> {
       messages.add(ChatMessage(
           message: fullMessage,
           receiver: false,
-          senderId: '0',
-          receiverId: '1',
+          senderId: Global.userId,
+          receiverId: 1,
           hospitalDetails: hospitalDetails,
           timestamp: DateTime.now()));
     });
@@ -317,7 +313,6 @@ class PatientModelChatState extends State<PatientModelChat> {
             itemCount: messages.length,
             itemBuilder: (context, index) {
               final chatMessage = messages[index];
-
               // Render the text message as usual
               return MessagesWidget(
                 chatMessage: chatMessage,
