@@ -147,19 +147,18 @@ class DocterModelChatState extends State<DocterModelChat> {
                           InputDecoration(hintText: S.of(context).message),
                     ),
                   ),
-                  // IconButton(
-                  //   icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-                  //   onPressed: _toggleRecording,
-                  //   color: _isRecording ? Colors.red : Colors.white,
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      onPressed: () {}, // Implement send message logic here
-                      icon: const Icon(
-                        Icons.send,
-                      ),
+                  IconButton(
+                    onPressed: () {}, // Implement send message logic here
+                    icon: const Icon(
+                      Icons.send,
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // Handle recording logic here
+                      // Example: _toggleRecording()
+                    },
+                    icon: const Icon(Icons.mic),
                   ),
                 ]),
               ),

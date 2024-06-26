@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gp_app/manager/voice_note_manager/audio_recorder_file.dart';
 import 'package:gp_app/manager/voice_note_manager/voice_note_state.dart';
 import 'package:gp_app/manager/voice_note_manager/voive_noter_cubit.dart';
@@ -76,22 +75,6 @@ class _HomeBodyState extends State<_HomeBody> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 28),
-                      child: Text(
-                        "Voice Notes",
-                        style: AppTextStyles.bold(
-                          fontSize: 24,
-                          color: AppColors.black900,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
                     Expanded(
                       child: BlocListener<VoiceNotesCubit, VoiceNotesState>(
                         listener: (context, state) {
@@ -117,65 +100,46 @@ class _HomeBodyState extends State<_HomeBody> {
                               right: 24, left: 24, bottom: 80),
                           builderDelegate: PagedChildBuilderDelegate(
                             noItemsFoundIndicatorBuilder: (context) {
-                              return Column(children: [
-                                const SizedBox(
+                              return const Column(children: [
+                                SizedBox(
                                   height: 55,
-                                ),
-                                SvgPicture.asset(
-                                  "assets/images/no_voice_notes.svg",
-                                  width: 350,
-                                  height: 340,
-                                  placeholderBuilder: (context) {
-                                    return const SizedBox(
-                                      width: 350,
-                                      height: 340,
-                                    );
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                Text(
-                                  "No voice notes yet!",
-                                  style: AppTextStyles.medium(
-                                      color: AppColors.grey, fontSize: 24),
                                 ),
                               ]);
                             },
-                            firstPageErrorIndicatorBuilder: (context) {
-                              return Center(
-                                child: Column(
-                                  children: [
-                                    Text(pagingController.error.toString()),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    GestureDetector(
-                                        onTap: () {
-                                          pagingController
-                                              .retryLastFailedRequest();
-                                        },
-                                        child: Text(
-                                          "Retry",
-                                          style: AppTextStyles.medium(),
-                                        ))
-                                  ],
-                                ),
-                              );
-                            },
-                            firstPageProgressIndicatorBuilder: (context) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                            newPageProgressIndicatorBuilder: (context) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                            noMoreItemsIndicatorBuilder: (context) {
-                              return const SizedBox.shrink();
-                            },
+                            // firstPageErrorIndicatorBuilder: (context) {
+                            //   return Center(
+                            //     child: Column(
+                            //       children: [
+                            //         Text(pagingController.error.toString()),
+                            //         const SizedBox(
+                            //           height: 8,
+                            //         ),
+                            //         GestureDetector(
+                            //             onTap: () {
+                            //               pagingController
+                            //                   .retryLastFailedRequest();
+                            //             },
+                            //             child: Text(
+                            //               "Retry",
+                            //               style: AppTextStyles.medium(),
+                            //             ))
+                            //       ],
+                            //     ),
+                            //   );
+                            // },
+                            // firstPageProgressIndicatorBuilder: (context) {
+                            //   return const Center(
+                            //     child: CircularProgressIndicator(),
+                            //   );
+                            // },
+                            // newPageProgressIndicatorBuilder: (context) {
+                            //   return const Center(
+                            //     child: CircularProgressIndicator(),
+                            //   );
+                            // },
+                            // noMoreItemsIndicatorBuilder: (context) {
+                            //   return const SizedBox.shrink();
+                            // },
                             itemBuilder: (context, item, index) {
                               return VoiceNoteCard(voiceNoteInfo: item);
                             },
