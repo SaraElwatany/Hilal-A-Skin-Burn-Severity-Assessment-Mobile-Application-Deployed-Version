@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
+import 'package:gp_app/screens/doctor_model_screen.dart';
 import 'package:gp_app/screens/signup_screen.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/models/patient_list.dart';
@@ -133,13 +134,16 @@ class DocterProfileState extends State<DocterProfile> {
                 return PatientList(
                   patient: patients[index],
                   index: index,
-                  onTap: () {
+                  onTap: () async {
                     print('Tapped patient at index: $index');
                     int patientId = patients[index].id;
                     String patientInfo = patients[index].info;
+                    await SessionManager.saveScreenIndex(patientId);
                     print('Selected Patient ID: $patientId');
                     print('Selected Patient Info: $patientInfo');
-                    // Perform any action with the selected patient ID and Info
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => const DocterModelChat(),
+                    ));
                   },
                 );
               },
