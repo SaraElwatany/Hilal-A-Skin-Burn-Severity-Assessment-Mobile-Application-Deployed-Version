@@ -10,6 +10,7 @@ class ChatMessage(db.Model):
     image =  db.Column(db.String(16000), nullable=True)
     receiver = db.Column(db.Boolean, nullable=False, default=False)
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
+    # user_id = db.Column(db.Integer, nullable=False)
 
     def to_dict(self):
         return {
@@ -20,4 +21,5 @@ class ChatMessage(db.Model):
             'image': self.image,
             'receiver': self.receiver,
             'timestamp': self.timestamp.isoformat(),
+            #'user_id': self.user_id,
         }

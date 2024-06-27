@@ -13,6 +13,20 @@ import 'package:gp_app/widgets/messages_widget.dart';
 // import 'package:flutter_sound/flutter_sound.dart';
 // import 'package:gp_app/widgets/audio_player_widget.dart';
 
+// Newly Added Imports
+import 'dart:convert'; // Add this import for jsonDecode
+import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gp_app/models/voice_note_model.dart';
+import 'package:gp_app/screens/patient_location.dart';
+import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/widgets/audio_recorder_view.dart';
+import 'package:gp_app/manager/voice_note_manager/voice_note_state.dart';
+import 'package:gp_app/manager/voice_note_manager/voive_noter_cubit.dart';
+import 'package:gp_app/manager/voice_note_manager/audio_recorder_file.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:gp_app/utils/app_bottom_sheet.dart';
+
 class DocterModelChat extends StatefulWidget {
   const DocterModelChat({
     Key? key,
@@ -46,7 +60,7 @@ class DocterModelChatState extends State<DocterModelChat> {
   void loadChatHistory() async {
     try {
       List<ChatMessage> fetchedMessages =
-          await fetchChatHistory(1, 0); // Receiver ID set to 1
+          await fetchChatHistory(1, 4); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -92,7 +106,7 @@ class DocterModelChatState extends State<DocterModelChat> {
           image: null,
           timestamp: DateTime.now(),
           senderId: 1,
-          receiverId: 0);
+          receiverId: 4);
 
       // Send the message to the server
       sendMessageToServer(message);
@@ -105,66 +119,87 @@ class DocterModelChatState extends State<DocterModelChat> {
       print('message is empty');
   }
 
-//marina
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const LocalizationIcon(),
-      body: Stack(
-        children: [
-          ListView.builder(
-            itemCount: messages.length,
-            itemBuilder: (context, index) {
-              final chatMessage = messages[index];
-              // Render the text message as usual
-              return MessagesWidget(
-                chatMessage: chatMessage,
-                introMessage: null,
-              );
-            },
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                padding: const EdgeInsets.only(left: 16, bottom: 10, right: 16),
-                height: 60,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color.fromARGB(255, 106, 105, 105),
+    return BlocProvider(
+      create: (context) => VoiceNotesCubit(AudioRecorderFileHelper()),
+      child: Scaffold(
+        appBar: const LocalizationIcon(),
+        body: Stack(
+          children: [
+            ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final chatMessage = messages[index];
+                return MessagesWidget(
+                  chatMessage: chatMessage,
+                  introMessage: null,
+                );
+              },
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding:
+                      const EdgeInsets.only(left: 16, bottom: 10, right: 16),
+                  height: 60,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromARGB(255, 106, 105, 105),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _messageController,
+                          textCapitalization: TextCapitalization.sentences,
+                          autocorrect: true,
+                          enableSuggestions: true,
+                          decoration: InputDecoration(
+                            hintText: S.of(context).message,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => _sendMessage(),
+                        icon: const Icon(Icons.send),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Location()),
+                          );
+                        },
+                        icon: const Icon(Icons.location_on_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final VoiceNoteModel? newVoiceNote =
+                              await showAppBottomSheet(context,
+                                  builder: (context) {
+                            return const AudioRecorderView();
+                          });
+
+                          if (newVoiceNote != null && context.mounted) {
+                            context
+                                .read<VoiceNotesCubit>()
+                                .addToVoiceNotes(newVoiceNote);
+                          }
+                        },
+                        icon: const Icon(Icons.mic),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Row(children: [
-                  Expanded(
-                    child: TextField(
-                      // controller: _messageController,
-                      textCapitalization: TextCapitalization.sentences,
-                      autocorrect: true,
-                      enableSuggestions: true,
-                      decoration:
-                          InputDecoration(hintText: S.of(context).message),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {}, // Implement send message logic here
-                    icon: const Icon(
-                      Icons.send,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      // Handle recording logic here
-                      // Example: _toggleRecording()
-                    },
-                    icon: const Icon(Icons.mic),
-                  ),
-                ]),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -429,7 +429,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   //   }
   // }
 
-  void _sendMessage(bool model, String mess_age) async {
+  void _sendMessage(int model, String mess_age) async {
     if (model == true) {
       final message = ChatMessage(
         message: mess_age,
@@ -437,7 +437,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         image:
             "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
         timestamp: DateTime.now(),
-        senderId: 3,
+        senderId: model,
         receiverId: Global.userId,
       );
 
@@ -473,8 +473,7 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   // Function to (Sara)
   void updateChatScreenWithIntro() {
-    _sendMessage(
-        true, S.of(context).Intro); // send intro message to the database
+    _sendMessage(1, S.of(context).Intro); // send intro message to the database
     // setState(() {
     //   messages.add(ChatMessage(
     //       message: S.of(context).Intro,
@@ -498,7 +497,7 @@ class PatientModelChatState extends State<PatientModelChat> {
     } else if (prediction == 'Third Degree Burn') {
       message = S.of(context).thirdDegreeMessage;
     }
-    _sendMessage(true, message); // send prediction message to the database
+    _sendMessage(1, message); // send prediction message to the database
     // setState(() {
     //   messages.add(ChatMessage(
     //       message: message, // message,
@@ -533,7 +532,9 @@ class PatientModelChatState extends State<PatientModelChat> {
     }
 
     _sendMessage(
-        true, fullMessage); // send hospital locations message to the database
+      1,
+      fullMessage,
+    ); // send hospital locations message to the database
 
     // setState(() {
     //   messages.add(ChatMessage(
@@ -619,7 +620,7 @@ class PatientModelChatState extends State<PatientModelChat> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => _sendMessage(false, ''),
+                        onPressed: () => _sendMessage(0, ''),
                         icon: const Icon(Icons.send),
                       ),
                       IconButton(

@@ -605,29 +605,25 @@ Future<List<Patient>> getDoctors() async {
   var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_all_doctors');
   var response = await http.post(url);
 
-  // Request was successful, handle the response
+  bool admin = Global.adminPassword;
+  print('Admin State: $admin');
+
   if (response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
-    final responseMessage = responseData['message'];
+    final doctorsIds = responseData['user_ids'];
+    final doctorsNames = responseData['user_names'];
+    final doctorsInfo = responseData['user_info'];
 
-    final doctors_ids = responseData['user_ids'];
-    final doctors_names = responseData['user_names'];
-    final doctorss_info = responseData['user_info'];
+    List<Patient> doctorsList = [];
+    for (int i = 0; i < doctorsIds.length; i++) {
+      doctorsList.add(Patient(
+        id: doctorsIds[i],
+        name: doctorsNames[i],
+        info: doctorsInfo[i],
+      ));
+    }
 
-    // Get the length of doctors found
-    int no_doctors = doctors_ids.length;
-
-    print('Received Response From get_doctors route: $responseMessage');
-    print('Received doctors users: $doctors_ids');
-
-    List<Patient> doctors_list = List.generate(no_doctors, (index) {
-      return Patient(
-          name: doctors_names[index],
-          info: doctorss_info[index],
-          id: doctors_ids[index]);
-    });
-
-    return doctors_list;
+    return doctorsList;
   } else {
     throw Exception('Failed to Load Doctors');
   }
