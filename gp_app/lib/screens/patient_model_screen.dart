@@ -429,24 +429,44 @@ class PatientModelChatState extends State<PatientModelChat> {
   //   }
   // }
 
-  void _sendMessage(int model, String mess_age) async {
+  void _sendMessage(
+      bool model, bool doctor, String mess_age, int receive_r) async {
     if (model == true) {
-      final message = ChatMessage(
-        message: mess_age,
-        receiver: false,
-        image:
-            "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
-        timestamp: DateTime.now(),
-        senderId: model,
-        receiverId: Global.userId,
-      );
+      if (doctor == true) {
+        final message = ChatMessage(
+          message: mess_age,
+          receiver: false,
+          image:
+              "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
+          timestamp: DateTime.now(),
+          senderId: 3,
+          receiverId: receive_r,
+        );
 
-      // Send the message to the server
-      await sendMessageToServer(message);
-      setState(() {
-        messages.add(message);
-        _messageController.clear();
-      });
+        // Send the message to the server
+        await sendMessageToServer(message);
+        setState(() {
+          messages.add(message);
+          _messageController.clear();
+        });
+      } else {
+        final message = ChatMessage(
+          message: mess_age,
+          receiver: false,
+          image:
+              "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
+          timestamp: DateTime.now(),
+          senderId: 3,
+          receiverId: Global.userId,
+        );
+
+        // Send the message to the server
+        await sendMessageToServer(message);
+        setState(() {
+          messages.add(message);
+          _messageController.clear();
+        });
+      }
     } else {
       final text = _messageController.text.trim();
       if (text.isNotEmpty) {
@@ -457,7 +477,7 @@ class PatientModelChatState extends State<PatientModelChat> {
                 "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
             timestamp: DateTime.now(),
             senderId: Global.userId,
-            receiverId: 1);
+            receiverId: receive_r);
 
         // Send the message to the server
         await sendMessageToServer(message);
@@ -473,7 +493,9 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   // Function to (Sara)
   void updateChatScreenWithIntro() {
-    _sendMessage(1, S.of(context).Intro); // send intro message to the database
+    // (bool model, bool doctor, String mess_age, int receive_r)
+    _sendMessage(true, false, S.of(context).Intro,
+        Global.userId); // send intro message to the database
     // setState(() {
     //   messages.add(ChatMessage(
     //       message: S.of(context).Intro,
@@ -485,19 +507,35 @@ class PatientModelChatState extends State<PatientModelChat> {
     // });
   }
 
-  void updateChatScreenWithPrediction(String prediction) {
+  void updateChatScreenWithPrediction(String prediction) async {
     String message = '';
+    String drMessage = '';
+    String clinical_flag = '0';
     print("Message From Location: $message");
 
     if (prediction == 'First Degree Burn') {
       message = S.of(context).firstDegreeMessage;
+      drMessage = "The User's Burn is a First Degree Burn.\n";
       print("Message From Location: $message");
     } else if (prediction == 'Second Degree Burn') {
       message = S.of(context).secondDegreeMessage;
+      drMessage = "The User's Burn is a Second Degree Burn.\n";
     } else if (prediction == 'Third Degree Burn') {
       message = S.of(context).thirdDegreeMessage;
+      drMessage = "The User's Burn is a Third Degree Burn.\n";
     }
-    _sendMessage(1, message); // send prediction message to the database
+
+    clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
+    // If clinical Data was Provided Display it
+    if (clinical_flag == '1') {
+      drMessage = drMessage + 'The Clinical Data Provided:\n';
+    }
+
+    // (bool model, bool doctor, String mess_age, int receive_r)
+    _sendMessage(true, false, message,
+        Global.userId); // send prediction message to the database
+    _sendMessage(
+        true, true, drMessage, 1); // send prediction message to the database
     // setState(() {
     //   messages.add(ChatMessage(
     //       message: message, // message,
@@ -531,10 +569,9 @@ class PatientModelChatState extends State<PatientModelChat> {
       });
     }
 
-    _sendMessage(
-      1,
-      fullMessage,
-    ); // send hospital locations message to the database
+    // (bool model, bool doctor, String mess_age, int receive_r)
+    _sendMessage(true, false, fullMessage,
+        Global.userId); // send hospital locations message to the database
 
     // setState(() {
     //   messages.add(ChatMessage(
@@ -620,7 +657,8 @@ class PatientModelChatState extends State<PatientModelChat> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => _sendMessage(0, ''),
+                        onPressed: () => _sendMessage(false, false, '',
+                            1), // (bool model, bool doctor, String mess_age, int receive_r)
                         icon: const Icon(Icons.send),
                       ),
                       IconButton(

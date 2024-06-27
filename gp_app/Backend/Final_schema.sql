@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`burn` (
   `diarrhea` INT NULL,
   `cold_extremities` INT NULL,
   `burn_type` VARCHAR(15) NULL,
+  `burn_place` VARCHAR(15) NULL,
   INDEX `id_idx` (`fk_burn_user_id` ASC) VISIBLE,
   PRIMARY KEY (`burn_id`),
   CONSTRAINT `id`
@@ -269,6 +270,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`user` (
   `phone` INT NULL DEFAULT NULL,
   `email` VARCHAR(255) NULL DEFAULT NULL,
   `profession` VARCHAR(20) NOT NULL DEFAULT 'patient',
+  `speciality` VARCHAR(20) NULL DEFAULT 'specialist',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4

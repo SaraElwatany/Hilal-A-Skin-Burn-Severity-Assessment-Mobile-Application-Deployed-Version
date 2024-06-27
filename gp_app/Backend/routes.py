@@ -359,7 +359,8 @@ def upload():
                             nausea = 0, #'None'
                             diarrhea = 0, #'None'
                             cold_extremities = 0, #'None'
-                            burn_type = 'None' #'None'
+                            burn_type = 'None', #'None'
+                            burn_place = 'None' #'None'
                             )
             
             # get the burn id for the already existed user
@@ -382,7 +383,8 @@ def upload():
                             nausea = 0, #'None'
                             diarrhea = 0, #'None'
                             cold_extremities = 0, #'None'
-                            burn_type = 'None' #'None'
+                            burn_type = 'None', #'None'
+                            burn_place = 'None' #'None'
                             )
 
             # get the burn id for the guest user
@@ -419,11 +421,11 @@ def burn_new():
 
     if request.method == 'POST':
 
-        print('burn item received')
+        print('Burn Item Received')
         data = request.form
         print('Clinical Data: ', data)
 
-        trembling_limbs, cold_extremities, diarrhea, nausea, burn_type = 0, 0, 0, 0, 'None'
+        trembling_limbs, cold_extremities, diarrhea, nausea, burn_type, burn_place = 0, 0, 0, 0, 'None', 'None'
 
         if not data:
             return jsonify({'response': 'Failed to Load info...'})    
@@ -444,11 +446,14 @@ def burn_new():
         else: nausea = 0
         if 'diarrhea' in data: diarrhea = 1
         else: diarrhea = 0
-        if 'cause' in data: burn_type = data['cause']
+        if 'Cause of Burn' in data: burn_type = data['Cause of Burn']
         else: burn_type = 'None'
+        if 'Place of Burn' in data: burn_place = data['Place of Burn']
+        else: burn_place = 'None'
 
         print('Nausea: ', nausea)
         print('Burn Type: ', burn_type)
+        print('Burn Place: ', burn_place)
 
         # Check if burn item already exists 
         if Burn.query.filter_by(burn_id=BURN_ID).first(): 
@@ -465,6 +470,7 @@ def burn_new():
                 user.diarrhea = diarrhea
                 user.cold_extremities = cold_extremities
                 user.burn_type = burn_type
+                user.burn_place = burn_place
 
             db.session.commit()
 
@@ -482,7 +488,8 @@ def burn_new():
             nausea = nausea, #'None'
             diarrhea = diarrhea, #'None'
             cold_extremities = cold_extremities, #'None'
-            burn_type = burn_type #'None'
+            burn_type = burn_type, #'None'
+            burn_place = burn_place #'None'
             )
 
             # add burn item to db
@@ -552,17 +559,16 @@ def get_all_burns():
             'user_info': user_info 
             }
 
-""" # build a dictionary of the users
-    user_list = [{
-    
-                'id': user.id, 
-                'username': user.username, 
-                'email': user.email, 
-                'phone': user.phone, 
-                'weight': user.weight, 
-                'height': user.height}
+# # build a dictionary of the users
+#     user_list = [{
+#                 'id': user.id, 
+#                 'username': user.username, 
+#                 'email': user.email, 
+#                 'phone': user.phone, 
+#                 'weight': user.weight, 
+#                 'height': user.height}
                 
-                for user in users if user] """
+#                 for user in users if user] 
     
 
 
@@ -713,19 +719,28 @@ def send_message():
 @main.route('/get_chat_history', methods=['GET'])
 def get_chat_history():
     try:
-        sender_id = request.args.get('sender_id')
-        receiver_id = request.args.get('receiver_id')
+        sender_id = int(request.args.get('sender_id'))
+        receiver_id = int(request.args.get('receiver_id'))
 
         if not sender_id or not receiver_id:
             return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
+        
 
+        # Fetch the Chat History, and include the model messages
         chat_history = ChatMessage.query.filter(
             ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
             | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
+            | (ChatMessage.sender_id == 3)  # Include messages where sender_id is 3 , represents the model
         ).order_by(ChatMessage.timestamp.asc()).all()
+
 
         for message in chat_history:
             print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}")
+            # Modify the receiver field according to the user id to adjust the message color
+            if message.sender_id != sender_id:    # if the sender of the message wasn't the user
+                message.receiver = True
+            else:
+                message.receiver = False
 
         return jsonify([message.to_dict() for message in chat_history]), 200
 

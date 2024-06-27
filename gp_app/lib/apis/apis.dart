@@ -31,6 +31,7 @@ class SessionManager {
   static const String _latitudeKey = 'latitude'; // Add latitude key
   static const String _longitudeKey = 'longitude'; // Add longitude key
   static const String _burnCondition = 'burnCondition';
+  static const String _clinicalData = 'clinicalData';
 
   // Function to initialize the session with default values
   static Future<void> initializeSession() async {
@@ -119,6 +120,18 @@ class SessionManager {
     return prefs.getString(_burnCondition);
   }
 
+  // Function to set clinical data if it was provided
+  static Future<void> saveClinicalData(String clinicalData) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_clinicalData, clinicalData);
+  }
+
+  // Function to determine if clinical data was provided
+  static Future<String?> getClinicalData() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_clinicalData);
+  }
+
   static Future<void> clearSession() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userIdKey);
@@ -128,6 +141,7 @@ class SessionManager {
     await prefs.remove(_latitudeKey);
     await prefs.remove(_longitudeKey);
     await prefs.remove(_burnCondition);
+    await prefs.remove(_clinicalData);
   }
 }
 
@@ -438,7 +452,7 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
 
 // Function to fetch the symptoms and cause of burn from the user
 Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
-    BuildContext context) async {
+    Symptoms? placeOfBurn, BuildContext context) async {
   String url = 'https://my-trial-t8wj.onrender.com/add_burn';
   // Get the User ID From the Shared Preferences
   String userId = (await SessionManager.getUserId()) ?? '0';
@@ -447,12 +461,14 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
 
   List<String> clinicalSymptoms = [];
   String cause = '';
+  String place = '';
   int no_symptoms = symptoms.length;
 
   print('Burn ID From Add Clinical Data Function: $burnId');
 
   print('Symptoms: $symptoms');
-  print('Cause: $causeOfBurn');
+  print('Cause Of Burn: $causeOfBurn');
+  print('Place Of Burn: $placeOfBurn');
 
   // Encode the symtoms after a burn in the form of dictionary
   for (int indx = 0; indx < no_symptoms; indx++) {
@@ -481,17 +497,33 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
 
   // Encode the cause of burn in the form of dictionary
   if (causeOfBurn == Symptoms.electricity) {
-    cause = 'electricity';
+    cause = 'Electricity';
   } else if (causeOfBurn == Symptoms.heat) {
     cause = 'Fire/Fire Flame';
   } else if (causeOfBurn == Symptoms.chemical) {
-    cause = 'chemical';
+    cause = 'Chemical';
   } else if (causeOfBurn == Symptoms.radioactive) {
-    cause = 'radioactive';
+    cause = 'Radioactive';
+  } else if (causeOfBurn == Symptoms.boiling) {
+    cause = 'Boiling Water';
+  }
+
+  // Encode the place of burn in the form of dictionary
+  if (placeOfBurn == Symptoms.arm) {
+    place = 'Arm';
+  } else if (placeOfBurn == Symptoms.leg) {
+    place = 'Leg';
+  } else if (placeOfBurn == Symptoms.head) {
+    place = 'Head';
+  } else if (placeOfBurn == Symptoms.back) {
+    place = 'Back';
+  } else if (placeOfBurn == Symptoms.chest) {
+    place = 'Chest';
   }
 
   // Concatenate the clinical data dictionaries
-  Map<String, dynamic> causeMap = {'cause': cause};
+  Map<String, dynamic> causeMap = {'Cause of Burn': cause};
+  Map<String, dynamic> placeMap = {'Place of Burn': place};
   Map<String, dynamic> user_id = {'user_id': userId};
   Map<String, dynamic> burn_id = {'burn_id': burnId};
 
@@ -499,11 +531,15 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
   Map<String, dynamic> concatenatedDict = {
     ...symptomsMap,
     ...causeMap,
+    ...placeMap,
     ...user_id,
     ...burn_id
   };
 
+  // Display the Concatenated Dictionary
   print(concatenatedDict);
+  await SessionManager.saveClinicalData(
+      '1'); // Set the clinical data flag to true
 
   try {
     // Try sending a request with the clinical data
@@ -546,6 +582,8 @@ Future skipClinicalData(BuildContext context) async {
 
   // Concatenating dictionaries using the spread operator
   Map<String, dynamic> concatenatedDict = {...user_id, ...burn_id};
+  await SessionManager.saveClinicalData(
+      '0'); // Set the clinical data flag to false
 
   try {
     // Try sending a request with the empty clinical data
@@ -802,9 +840,6 @@ void logout() async {
     print('Error during logout: $e');
   }
 }
-
-
-
 
 // Future<void> loginUser(String email, String password) async {
 //   // Example endpoint URL (replace with your Flask server URL)

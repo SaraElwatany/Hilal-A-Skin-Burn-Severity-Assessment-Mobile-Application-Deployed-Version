@@ -162,19 +162,17 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                     _handleSecondGroupSymptomSelected(symptom);
                   },
                 ),
-              
               ],
-              
             ),
-              ClinicalData(
-                symptom: Symptoms.boiling,
-                selectedSymptoms: selectedSecondGroupSymptom != null
-                    ? [selectedSecondGroupSymptom!]
-                    : [],
-                onSymptomSelected: (symptom) {
-                  _handleSecondGroupSymptomSelected(symptom);
-                },
-              ),
+            ClinicalData(
+              symptom: Symptoms.boiling,
+              selectedSymptoms: selectedSecondGroupSymptom != null
+                  ? [selectedSecondGroupSymptom!]
+                  : [],
+              onSymptomSelected: (symptom) {
+                _handleSecondGroupSymptomSelected(symptom);
+              },
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -187,8 +185,8 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                     .titleLarge!
                     .copyWith(fontSize: 20),
               ),
-            ),           
-             Column(
+            ),
+            Column(
               children: [
                 ClinicalData(
                   symptom: Symptoms.head,
@@ -210,7 +208,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                 ),
               ],
             ),
-               Column(
+            Column(
               children: [
                 ClinicalData(
                   symptom: Symptoms.back,
@@ -230,7 +228,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                     _handleSecondGroupSymptomSelected(symptom);
                   },
                 ),
-                 ClinicalData(
+                ClinicalData(
                   symptom: Symptoms.arm,
                   selectedSymptoms: selectedSecondGroupSymptom != null
                       ? [selectedSecondGroupSymptom!]
@@ -247,8 +245,11 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    addClinicalData(selectedFirstGroupSymptoms,
-                        selectedSecondGroupSymptom, context);
+                    addClinicalData(
+                        selectedFirstGroupSymptoms,
+                        selectedSecondGroupSymptom,
+                        selectedSecondGroupSymptom,
+                        context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
