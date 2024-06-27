@@ -17,10 +17,6 @@ class DocterProfile extends StatefulWidget {
 class DocterProfileState extends State<DocterProfile> {
   String _selectedItem = 'Time';
   List<Patient> patients = [];
-  //     patients = [
-  //       Patient(name: 'Patient 1', info: 'Info for Patient 1',id: 5),
-  //       Patient(name: 'Patient 2', info: 'Info for Patient 2', id: 7),
-  //     ];
   bool adminPassword = Global.adminPassword;
 
   @override
@@ -134,7 +130,18 @@ class DocterProfileState extends State<DocterProfile> {
               itemCount: patients.length,
               itemBuilder: (BuildContext context, int index) {
                 print('Building list item for: ${patients[index]}');
-                return PatientList(patient: patients[index]);
+                return PatientList(
+                  patient: patients[index],
+                  index: index,
+                  onTap: () {
+                    print('Tapped patient at index: $index');
+                    int patientId = patients[index].id;
+                    String patientInfo = patients[index].info;
+                    print('Selected Patient ID: $patientId');
+                    print('Selected Patient Info: $patientInfo');
+                    // Perform any action with the selected patient ID and Info
+                  },
+                );
               },
             ),
           ),
@@ -168,6 +175,7 @@ class DocterProfileState extends State<DocterProfile> {
     );
   }
 }
+
 
 
 

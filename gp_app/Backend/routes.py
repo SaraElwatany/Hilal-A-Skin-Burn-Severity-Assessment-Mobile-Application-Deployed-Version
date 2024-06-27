@@ -730,7 +730,7 @@ def get_chat_history():
         chat_history = ChatMessage.query.filter(
             ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
             | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
-            | (ChatMessage.sender_id == 3)  # Include messages where sender_id is 3 , represents the model
+            | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id)) # Include messages where sender_id is 3 , represents the model
         ).order_by(ChatMessage.timestamp.asc()).all()
 
 
@@ -738,9 +738,9 @@ def get_chat_history():
             print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}")
             # Modify the receiver field according to the user id to adjust the message color
             if message.sender_id != sender_id:    # if the sender of the message wasn't the user
-                message.receiver = True
-            else:
                 message.receiver = False
+            else:
+                message.receiver = True
 
         return jsonify([message.to_dict() for message in chat_history]), 200
 

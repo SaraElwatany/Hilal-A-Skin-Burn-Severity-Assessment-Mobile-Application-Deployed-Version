@@ -435,7 +435,7 @@ class PatientModelChatState extends State<PatientModelChat> {
       if (doctor == true) {
         final message = ChatMessage(
           message: mess_age,
-          receiver: false,
+          receiver: true,
           image:
               "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
           timestamp: DateTime.now(),
@@ -445,10 +445,6 @@ class PatientModelChatState extends State<PatientModelChat> {
 
         // Send the message to the server
         await sendMessageToServer(message);
-        setState(() {
-          messages.add(message);
-          _messageController.clear();
-        });
       } else {
         final message = ChatMessage(
           message: mess_age,

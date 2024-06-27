@@ -32,6 +32,7 @@ class SessionManager {
   static const String _longitudeKey = 'longitude'; // Add longitude key
   static const String _burnCondition = 'burnCondition';
   static const String _clinicalData = 'clinicalData';
+  static const String _screenIndex = 'screenIndex'; // Add screenIndex key
 
   // Function to initialize the session with default values
   static Future<void> initializeSession() async {
@@ -48,7 +49,7 @@ class SessionManager {
     await prefs.setString(_userIdKey, userId);
   }
 
-  // Function to Get Burn User ID from the session
+  // Function to Get User ID from the session
   static Future<String?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_userIdKey);
@@ -132,6 +133,18 @@ class SessionManager {
     return prefs.getString(_clinicalData);
   }
 
+  // Function to save screen index to the session
+  static Future<void> saveScreenIndex(int screenIndex) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_screenIndex, screenIndex);
+  }
+
+  // Function to get screen index from the session
+  static Future<int?> getScreenIndex() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_screenIndex);
+  }
+
   static Future<void> clearSession() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userIdKey);
@@ -142,6 +155,7 @@ class SessionManager {
     await prefs.remove(_longitudeKey);
     await prefs.remove(_burnCondition);
     await prefs.remove(_clinicalData);
+    await prefs.remove(_screenIndex); // Clear screenIndex key
   }
 }
 

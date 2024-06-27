@@ -4,10 +4,14 @@ import 'package:gp_app/models/patient_list.dart';
 
 class PatientList extends StatefulWidget {
   final Patient patient;
+  final int index;
+  final Function() onTap;
 
   const PatientList({
     Key? key,
     required this.patient,
+    required this.index,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -31,14 +35,7 @@ class _PatientListState extends State<PatientList> {
         });
       },
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-             builder: (ctx) => DocterModelChat(),
-            ),
-          );
-        },
+        onTap: widget.onTap,
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
@@ -60,7 +57,6 @@ class _PatientListState extends State<PatientList> {
             ),
             title: Text(widget.patient.name),
             subtitle: Text(widget.patient.info),
-            // if new messages
             trailing: Container(
               width: 24,
               height: 24,
