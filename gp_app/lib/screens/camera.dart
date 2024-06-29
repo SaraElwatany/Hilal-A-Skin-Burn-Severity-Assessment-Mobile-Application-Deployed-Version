@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 // Define your global variables here
 int navigate = 0; // Flag to navigate to the chat screen
+bool isNavigating = false; // Add this flag to track navigation
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -22,7 +23,6 @@ class _HomeScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: const LocalizationIcon(),
 
@@ -88,17 +88,28 @@ class _HomeScreenState extends State<CameraScreen> {
                   width: 20,
                 ),
                 ElevatedButton(
-                    onPressed: () {
-
-                      Navigator.of(context).push(MaterialPageRoute(
-                          // builder: (ctx) => const ChatScreen()));
-                          builder: (ctx) =>  
-                          ClinicalDataScreen(),),); //edittt recieverID
-                      // Check if nullableFile is not null before casting
+                    onPressed: () async {
+                      // Check if imageFile is not null before proceeding
                       if (imageFile != null) {
-                        File nonNullableFile = imageFile as File;
-                        sendImageToServer(nonNullableFile, context);
+                        if (!isNavigating) {
+                          isNavigating = true; // Set the flag to true
+                          // File nonNullableFile = imageFile as File;
+                          File nonNullableFile = imageFile!;
+                          navigate =
+                              await sendImageToServer(nonNullableFile, context);
+                          if (navigate == 1) {
+                            // Navigate to ChatScreen
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => ClinicalDataScreen(),
+                              ),
+                            );
+                          }
+                          isNavigating =
+                              false; // Reset the flag after navigation
+                        }
                       } else {
+                        print('No image selected');
                         // Handle the case when nullableFile is null
                       }
                     },
@@ -247,7 +258,7 @@ class _HomeScreenState extends State<CameraScreen> {
       setState(() {
         imageFile = File(croppedFile.path);
       });
-      navigate = await sendImageToServer(File(croppedFile.path), context);
+      // navigate = await sendImageToServer(File(croppedFile.path), context);
 /*       if (navigate == 1) {
         // Navigate to ChatScreen
         Navigator.of(context).pushReplacement(
@@ -257,5 +268,4 @@ class _HomeScreenState extends State<CameraScreen> {
       // reload();
     }
   }
-
 }

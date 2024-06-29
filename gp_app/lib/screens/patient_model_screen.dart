@@ -67,9 +67,15 @@ class PatientModelChatState extends State<PatientModelChat> {
 
           if (guest == 1) {
             updateChatScreenWithPredictionGuest(prediction);
+            // Ensure the prediction message is added first
+            await Future.delayed(Duration(
+                milliseconds: 10)); // Adding a small delay to ensure the order
             updateChatScreenWithHospitalsGuest(hospitals);
           } else {
             updateChatScreenWithPrediction(prediction);
+            // Ensure the prediction message is added first
+            await Future.delayed(Duration(
+                milliseconds: 10)); // Adding a small delay to ensure the order
             updateChatScreenWithHospitals(hospitals);
           }
 
@@ -139,6 +145,9 @@ class PatientModelChatState extends State<PatientModelChat> {
     if (userProfession == 'patient' &&
         // !introMessageShown &&
         newBurn == 'true') {
+      String burn_id = await SessionManager.getBurnId() ?? '0';
+      print('Burn ID Before Messages: $burn_id');
+
       updateChatScreenWithIntro();
       introMessageShown = true;
       fetchPredictionAndHospitals(0);
@@ -235,6 +244,9 @@ class PatientModelChatState extends State<PatientModelChat> {
 
     if (model == true) {
       if (doctor == true) {
+        String burnId = await SessionManager.getBurnId() ?? '0';
+        print('Burn ID For Doctor Messages: $burnId');
+
         final message = ChatMessage(
           message: mess_age,
           receiver: true,
@@ -249,6 +261,9 @@ class PatientModelChatState extends State<PatientModelChat> {
         // Send the message to the server
         await sendMessageToServer(message);
       } else {
+        String burnId = await SessionManager.getBurnId() ?? '0';
+        print('Burn ID For Model/Patient Interface Messages: $burnId');
+
         final message = ChatMessage(
           message: mess_age,
           receiver: false,
@@ -269,6 +284,10 @@ class PatientModelChatState extends State<PatientModelChat> {
       }
     } else {
       final text = _messageController.text.trim();
+
+      String burnId = await SessionManager.getBurnId() ?? '0';
+      print('Burn ID For Patient/Doctor Messages: $burnId');
+
       if (text.isNotEmpty) {
         final message = ChatMessage(
             message: text,
@@ -293,7 +312,10 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   // Function to Provide the Intro Message For Every New Burn Thread Created
-  void updateChatScreenWithIntro() {
+  void updateChatScreenWithIntro() async {
+    String burn_id = await SessionManager.getBurnId() ?? '0';
+    print('Burn ID For Doctor Messages: $burn_id');
+    print('Burn ID Before Messages: $burn_id');
     // (bool model, bool doctor, String mess_age, int receive_r)
     _sendMessage(true, false, S.of(context).Intro,
         Global.userId); // send intro message to the database
