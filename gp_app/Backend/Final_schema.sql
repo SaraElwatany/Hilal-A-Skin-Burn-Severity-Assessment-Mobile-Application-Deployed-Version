@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
     receiver_id INT NOT NULL,
     receiver BOOLEAN NOT NULL DEFAULT FALSE,
     burn_id INT NOT NULL,
-    voice_note VARCHAR(1000),
+    voice_note_path VARCHAR(1000),
     message VARCHAR(2000) NOT NULL,
     image VARCHAR(10000),  -- Allowing NULL for the image 
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
