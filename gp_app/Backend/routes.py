@@ -511,60 +511,60 @@ def get_all_burns():
 
     print("fetching users with burns...")
 
-    # Fetch distinct users from the Burns table
-    users_with_burns = db.session.query(User).join(Burn, User.id == Burn.fk_burn_user_id).distinct().all()
-
-    # Prepare user data for JSON response
+    # Get all burns from the Burn table
+    users = Burn.query.all()
+    print('Users: ', users)
+    # Check if each user from Burn table exists in Users table
     user_list = []
-    for user in users_with_burns:
-        user_data = {
-                    'id': user.id,
-                    'username': user.username,
-                    'email': user.email,
-                    'phone': user.phone,
-                    'weight': user.weight,
-                    'height': user.height,
-                    'gender': user.gender,
-                    'dob': user.dob,
-                    'profession': user.profession
-                }
-        user_list.append(user_data)
+    # build a dictionary of the users
+    for burn_user in users:
+        user_in_users_table = User.query.filter_by(id=burn_user.fk_burn_user_id).first()
+        if user_in_users_table:
+            user_dict = {
+                         'id': user_in_users_table.id,
+                         'username': user_in_users_table.username, 
+                         'email': user_in_users_table.email, 
+                         'phone': user_in_users_table.phone, 
+                         'weight': user_in_users_table.weight, 
+                         'height': user_in_users_table.height
+                        }
+            user_list.append(user_dict)
+        else:
+            # Generate a random integer for the guest user
+            last_user = User.query.order_by(User.id.desc()).first()
+            last_user_id = last_user.id
+            user_dict = {
+                         'id': last_user_id+1,
+                         'username': 'Guest', 
+                         'email': 'None', 
+                         'phone': None, 
+                         'weight': None, 
+                         'height': None
+                        }
+            user_list.append(user_dict)
 
-    # # Get all users from the Burn table
-    # users = Burn.query.all()
-    # print('Users: ', users)
-    # # Check if each user from Burn table exists in Users table
+
+    # # Fetch distinct users from the Burns table
+    # users_with_burns = db.session.query(User).join(Burn, User.id == Burn.fk_burn_user_id).distinct().all()
+
+    # # Prepare user data for JSON response
     # user_list = []
-    # # build a dictionary of the users
-    # for burn_user in users:
-    #     user_in_users_table = User.query.filter_by(id=burn_user.fk_burn_user_id).first()
-    #     if user_in_users_table:
-    #         user_dict = {
-    #                      'id': user_in_users_table.id,
-    #                      'username': user_in_users_table.username, 
-    #                      'email': user_in_users_table.email, 
-    #                      'phone': user_in_users_table.phone, 
-    #                      'weight': user_in_users_table.weight, 
-    #                      'height': user_in_users_table.height
-    #                     }
-    #         user_list.append(user_dict)
-    #     else:
-    #         # Generate a random integer for the guest user
-    #         last_user = User.query.order_by(User.id.desc()).first()
-    #         last_user_id = last_user.id
-    #         user_dict = {
-    #                      'id': last_user_id+1,
-    #                      'username': 'Guest', 
-    #                      'email': 'None', 
-    #                      'phone': None, 
-    #                      'weight': None, 
-    #                      'height': None
-    #                     }
-    #         user_list.append(user_dict)
+    # for user in users_with_burns:
+    #     user_data = {
+    #                 'id': user.id,
+    #                 'username': user.username,
+    #                 'email': user.email,
+    #                 'phone': user.phone,
+    #                 'weight': user.weight,
+    #                 'height': user.height,
+    #                 'gender': user.gender,
+    #                 'dob': user.dob,
+    #                 'profession': user.profession
+    #             }
+    #     user_list.append(user_data)
 
 
     print('User lists found', user_list)
-
     user_ids = [user.get('id') for user in user_list] 
     user_names = [user.get('username') for user in user_list]
     user_info = ['Email: '+str(user.get('email')) for user in user_list]
@@ -714,25 +714,29 @@ def send_message():
             if key not in data:
                 return jsonify({'error': f'Missing key: {key}'}), 400
 
+        # Handle file upload (voice note)
+        voice_note_file = request.files.get('voice_note')
+        if voice_note_file:
+            voice_note_path = 'path/to/store/voice_notes/' + voice_note_file.filename
+            voice_note_file.save(voice_note_path)
+        else:
+            voice_note_path = None
+
         message = ChatMessage(
             sender_id=data['sender_id'],
             receiver_id=data['receiver_id'],
             message=data['message'],
             receiver=data['receiver'],
-            burn_id=data['burn_id'],
+            burn_id=data.get('burn_id'),
             image=data.get('image'),
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
+            voice_note_path=voice_note_path 
         )
 
         print(message)
         db.session.add(message)
         db.session.commit()
 
-        # if socketio:
-        #     socketio.emit('message', message.to_dict())
-        # else:
-        #     print("SocketIO is not initialized")
-        #     return jsonify({'error': 'SocketIO is not initialized'}), 500
         
         return jsonify(message.to_dict()), 201
     except Exception as e:

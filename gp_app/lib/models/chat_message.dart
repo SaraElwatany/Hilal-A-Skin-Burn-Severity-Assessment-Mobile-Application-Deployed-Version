@@ -6,6 +6,7 @@ class ChatMessage {
   final int? burnId;
   final String message;
   final String? image;
+  final String? voiceNote; 
   final bool? receiver;
   final DateTime timestamp;
   // Variables Related to the Location
@@ -22,6 +23,7 @@ class ChatMessage {
     required this.message,
     required this.receiver,
     this.image,
+    this.voiceNote,
     required this.timestamp,
     // Variables Related to the Location
     this.latitude, // Initialize latitude
@@ -39,6 +41,7 @@ class ChatMessage {
       burnId: json['burn_id'] as int,
       message: json['message'] as String? ?? '',
       image: json['image'] as String?,
+      voiceNote: json['voice_note'] as String?,
       receiver: json['receiver'] as bool?,
       timestamp: DateTime.parse(json['timestamp'] as String),
     );
@@ -52,6 +55,7 @@ class ChatMessage {
       'burn_id': burnId,
       'message': message,
       'image': image,
+      'voice_note': voiceNote,
       'receiver': receiver,
       'timestamp': timestamp.toIso8601String(),
     };

@@ -789,6 +789,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       'image': message.image,
       'timestamp': message.timestamp.toIso8601String(),
       'receiver': message.receiver, // Include the receiver field
+      'voice_note_path': message.voiceNote?? '',
     });
 
     print('Sending JSON: $body'); // Print the JSON payload for debugging

@@ -277,6 +277,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                 const SizedBox(width: 30),
                 ElevatedButton(
                   onPressed: () {
+                    print('Entered SKip');
                     skipClinicalData(context);
                     Navigator.push(
                       context,
@@ -324,7 +325,6 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
     });
   }
 
-  
   void _handleThirdGroupSymptomSelected(Symptoms symptom) {
     setState(() {
       selectedThirdGroupSymptom = symptom;

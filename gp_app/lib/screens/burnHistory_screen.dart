@@ -74,7 +74,7 @@ class _BurnHistoryScreenState extends State<BurnHistoryScreen> {
     // Old Burn Thread
     await SessionManager.saveBurnCondition('false');
     await SessionManager.saveBurnId(burn_id.toString());
-    print('Burn ID: $burn_id');
+    print('Burn ID For that Index On Tap: $burn_id');
     // Navigate to another screen or perform any other action with the selected burn
     Navigator.push(
       context,
