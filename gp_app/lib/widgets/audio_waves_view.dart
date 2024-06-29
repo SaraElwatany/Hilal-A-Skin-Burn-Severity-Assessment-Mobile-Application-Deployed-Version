@@ -73,7 +73,7 @@ class _AudioWavesViewState extends State<AudioWavesView> {
                 },
                 child: DecoratedBox(
                     decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: const Color.fromARGB(255, 29, 49, 78),
                         borderRadius: BorderRadius.circular(8))),
               ),
             ),

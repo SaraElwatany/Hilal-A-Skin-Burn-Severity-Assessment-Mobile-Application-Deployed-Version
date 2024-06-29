@@ -3,7 +3,6 @@ import 'package:gp_app/manager/voice_note_manager/audio_recorder_controller.dart
 import 'package:gp_app/manager/voice_note_manager/audio_recorder_file.dart';
 import 'package:gp_app/widgets/play_pause.dart';
 import 'package:record/record.dart';
-import 'package:gp_app/utils/constants/app_colors.dart';
 import 'package:gp_app/utils/constants/app_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -72,7 +71,8 @@ class _AudioRecorderViewBodyState extends State<_AudioRecorderViewBody> {
                   child: Text(
                     "Save note",
                     style: AppTextStyles.medium(
-                        color: AppColors.background, fontSize: 18),
+                        color: const Color.fromARGB(255, 29, 49, 78),
+                        fontSize: 18),
                   ),
                 ),
                 const Spacer(),
@@ -112,7 +112,8 @@ class _AudioRecorderViewBodyState extends State<_AudioRecorderViewBody> {
                   child: Text(
                     "Dismiss",
                     style: AppTextStyles.medium(
-                        color: AppColors.red, fontSize: 18),
+                        color: const Color.fromARGB(255, 29, 49, 78),
+                        fontSize: 18),
                   ),
                 )
               ],
@@ -140,7 +141,7 @@ class _TimerText extends StatelessWidget {
 
           return Text(
             '${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}',
-            style: AppTextStyles.medium(color: AppColors.background),
+            style: AppTextStyles.medium(color: Color.fromARGB(255, 29, 49, 78)),
           );
         },
       ),

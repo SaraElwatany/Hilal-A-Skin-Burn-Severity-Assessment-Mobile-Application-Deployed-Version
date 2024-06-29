@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/manager/voice_note_manager/audio_player_controller.dart';
-import 'package:gp_app/utils/constants/app_colors.dart';
 import 'package:gp_app/utils/constants/app_styles.dart';
 import 'package:gp_app/widgets/play_pause.dart';
 
@@ -63,13 +62,13 @@ class _AudioPlayerViewState extends State<AudioPlayerView> {
                     sliderTempValue = null;
                     audioPlayerController.play();
                   },
-                  activeColor: AppColors.primary,
+                  activeColor: const Color.fromARGB(255, 29, 49, 78),
                 ),
                 Text(
                   _formatToDateTime(progress.toInt()),
                   style: AppTextStyles.medium(
                     fontSize: 14,
-                    color: AppColors.white,
+                    color: const Color.fromARGB(255, 29, 49, 78),
                   ),
                 ),
                 const SizedBox(
