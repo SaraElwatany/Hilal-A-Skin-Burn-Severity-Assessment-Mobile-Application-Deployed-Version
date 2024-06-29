@@ -60,6 +60,7 @@ class DocterModelChatState extends State<DocterModelChat> {
   void loadChatHistory() async {
     try {
       int patientID = await SessionManager.getScreenIndex() ?? 0;
+      print("Patient ID Associated With the pressed thread");
       List<ChatMessage> fetchedMessages =
           await fetchChatHistory(1, patientID, 0); // Receiver ID set to 1
       setState(() {

@@ -737,6 +737,8 @@ def get_chat_history():
             return jsonify({'error': "User with this ID doesn't exist"}), 404
         else:
             user_profession = user.profession
+
+        print('User Profession: ', user_profession)
         
 
         if user_profession == 'patient':
