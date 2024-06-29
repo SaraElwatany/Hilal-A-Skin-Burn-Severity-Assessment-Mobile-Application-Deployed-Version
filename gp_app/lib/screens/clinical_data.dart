@@ -35,6 +35,7 @@ enum Symptoms {
 class ClinicalDataState extends State<ClinicalDataScreen> {
   List<Symptoms> selectedFirstGroupSymptoms = [];
   Symptoms? selectedSecondGroupSymptom;
+  Symptoms? selectedThirdGroupSymptom;
 
   @override
   @override
@@ -190,20 +191,20 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
               children: [
                 ClinicalData(
                   symptom: Symptoms.head,
-                  selectedSymptoms: selectedSecondGroupSymptom != null
-                      ? [selectedSecondGroupSymptom!]
+                  selectedSymptoms: selectedThirdGroupSymptom != null
+                      ? [selectedThirdGroupSymptom!]
                       : [],
                   onSymptomSelected: (symptom) {
-                    _handleSecondGroupSymptomSelected(symptom);
+                    _handleThirdGroupSymptomSelected(symptom);
                   },
                 ),
                 ClinicalData(
                   symptom: Symptoms.chest,
-                  selectedSymptoms: selectedSecondGroupSymptom != null
-                      ? [selectedSecondGroupSymptom!]
+                  selectedSymptoms: selectedThirdGroupSymptom != null
+                      ? [selectedThirdGroupSymptom!]
                       : [],
                   onSymptomSelected: (symptom) {
-                    _handleSecondGroupSymptomSelected(symptom);
+                    _handleThirdGroupSymptomSelected(symptom);
                   },
                 ),
               ],
@@ -212,29 +213,29 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
               children: [
                 ClinicalData(
                   symptom: Symptoms.back,
-                  selectedSymptoms: selectedSecondGroupSymptom != null
-                      ? [selectedSecondGroupSymptom!]
+                  selectedSymptoms: selectedThirdGroupSymptom != null
+                      ? [selectedThirdGroupSymptom!]
                       : [],
                   onSymptomSelected: (symptom) {
-                    _handleSecondGroupSymptomSelected(symptom);
+                    _handleThirdGroupSymptomSelected(symptom);
                   },
                 ),
                 ClinicalData(
                   symptom: Symptoms.leg,
-                  selectedSymptoms: selectedSecondGroupSymptom != null
-                      ? [selectedSecondGroupSymptom!]
+                  selectedSymptoms: selectedThirdGroupSymptom != null
+                      ? [selectedThirdGroupSymptom!]
                       : [],
                   onSymptomSelected: (symptom) {
-                    _handleSecondGroupSymptomSelected(symptom);
+                    _handleThirdGroupSymptomSelected(symptom);
                   },
                 ),
                 ClinicalData(
                   symptom: Symptoms.arm,
-                  selectedSymptoms: selectedSecondGroupSymptom != null
-                      ? [selectedSecondGroupSymptom!]
+                  selectedSymptoms: selectedThirdGroupSymptom != null
+                      ? [selectedThirdGroupSymptom!]
                       : [],
                   onSymptomSelected: (symptom) {
-                    _handleSecondGroupSymptomSelected(symptom);
+                    _handleThirdGroupSymptomSelected(symptom);
                   },
                 ),
               ],
@@ -320,6 +321,13 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
   void _handleSecondGroupSymptomSelected(Symptoms symptom) {
     setState(() {
       selectedSecondGroupSymptom = symptom;
+    });
+  }
+
+  
+  void _handleThirdGroupSymptomSelected(Symptoms symptom) {
+    setState(() {
+      selectedThirdGroupSymptom = symptom;
     });
   }
 }
