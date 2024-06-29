@@ -75,12 +75,12 @@ class DoctorMessagesWidget extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
-                            fixedSize: const Size(105, 43),
+                            fixedSize: const Size(110, 43),
                             backgroundColor: Color.fromARGB(255,3, 206, 164)
                             ),
                     child: Text(S.of(context).confirm,
                      style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             color: Color.fromARGB(255, 255, 251, 251),
                           ),),
                     ),
