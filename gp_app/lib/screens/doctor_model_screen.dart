@@ -61,7 +61,7 @@ class DocterModelChatState extends State<DocterModelChat> {
     try {
       int patientID = await SessionManager.getScreenIndex() ?? 0;
       List<ChatMessage> fetchedMessages =
-          await fetchChatHistory(1, patientID); // Receiver ID set to 1
+          await fetchChatHistory(1, patientID, 0); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });

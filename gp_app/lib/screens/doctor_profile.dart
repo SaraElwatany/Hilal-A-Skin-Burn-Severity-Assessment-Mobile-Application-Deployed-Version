@@ -141,9 +141,12 @@ class DocterProfileState extends State<DocterProfile> {
                     await SessionManager.saveScreenIndex(patientId);
                     print('Selected Patient ID: $patientId');
                     print('Selected Patient Info: $patientInfo');
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (ctx) => const DocterModelChat(),
-                    ));
+                    bool check = Global.adminPassword;
+                    if (!check) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => const DocterModelChat(),
+                      ));
+                    }
                   },
                 );
               },

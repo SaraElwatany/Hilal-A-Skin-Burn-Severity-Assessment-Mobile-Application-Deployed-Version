@@ -246,6 +246,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     receiver BOOLEAN NOT NULL DEFAULT FALSE,
+    burn_id INT NOT NULL,
     -- audio_url VARCHAR(500),
     message VARCHAR(2000) NOT NULL,
     image VARCHAR(10000),  -- Allowing NULL for the image 

@@ -3,6 +3,7 @@
 class ChatMessage {
   final int senderId;
   final int receiverId;
+  final int? burnId;
   final String message;
   final String? image;
   final bool? receiver;
@@ -17,6 +18,7 @@ class ChatMessage {
   ChatMessage({
     required this.senderId,
     required this.receiverId,
+    this.burnId,
     required this.message,
     required this.receiver,
     this.image,
@@ -34,6 +36,7 @@ class ChatMessage {
     return ChatMessage(
       senderId: json['sender_id'] as int,
       receiverId: json['receiver_id'] as int,
+      burnId: json['burn_id'] as int,
       message: json['message'] as String? ?? '',
       image: json['image'] as String?,
       receiver: json['receiver'] as bool?,
@@ -46,6 +49,7 @@ class ChatMessage {
     return {
       'sender_id': senderId,
       'receiver_id': receiverId,
+      'burn_id': burnId,
       'message': message,
       'image': image,
       'receiver': receiver,

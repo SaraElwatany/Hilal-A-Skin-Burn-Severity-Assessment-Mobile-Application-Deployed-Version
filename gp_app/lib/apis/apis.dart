@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/models/new_user.dart';
 import 'package:gp_app/models/patient_list.dart';
+import 'package:gp_app/models/burn_history.dart';
 import 'package:gp_app/screens/clinical_data.dart';
 import 'package:gp_app/models/chat_message.dart';
 
@@ -681,6 +682,35 @@ Future<List<Patient>> getDoctors() async {
   }
 }
 
+// Function to list all users with burns for the doctor
+Future<List<BurnHistory>> getBurns() async {
+  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_user_burns');
+  var response = await http.post(url);
+
+  // Request was successful, handle the response
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    final responseMessage = responseData['message'];
+
+    final burn_ids = responseData['burn_ids'];
+    final burn_degrees = responseData['burn_degrees'];
+
+    // Get the length of patients with burns found
+    int no_burns = burn_ids.length;
+
+    print('Received Response From get_user_burns route: $responseMessage');
+    print('Received burns: $burn_ids');
+
+    List<BurnHistory> burns_list = List.generate(no_burns, (index) {
+      return BurnHistory(degree: burn_degrees[index], id: burn_ids[index]);
+    });
+
+    return burns_list;
+  } else {
+    throw Exception('Failed to load burns');
+  }
+}
+
 // class AudioApi {
 //     static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
 //     static String? _recordFilePath;
@@ -711,9 +741,10 @@ Future<List<Patient>> getDoctors() async {
 //     }
 // }
 
-Future<List<ChatMessage>> fetchChatHistory(int senderId, int receiverId) async {
+Future<List<ChatMessage>> fetchChatHistory(
+    int senderId, int receiverId, int burn_id) async {
   var url = Uri.parse(
-      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId');
+      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId&receiver_id=$burn_id');
   try {
     var response = await http.get(url);
 

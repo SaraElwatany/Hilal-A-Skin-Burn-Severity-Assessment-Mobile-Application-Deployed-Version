@@ -613,29 +613,36 @@ def get_all_doctors():
 
 
 # fetch burns associated with a user
-@main.route('/get_user_burns', methods=['GET', 'POST'])
+@main.route('/get_user_burns', methods=['POST'])
 def get_user_burns():
-    if request.method == 'POST':
-        print('get burns request received. User ID:', request.get_json()['fk_burn_user_id'] )
-        data = request.get_json()
-        # get the burns associated with the user id
-        burn_list = Burn.query.filter_by(fk_burn_user_id=data['fk_burn_user_id']).all()
 
-        # build a dictionary of the burns
-        burn_list = [{
-            'burn_id': burn.burn_id, 
-            'fk_burn_user_id': burn.fk_burn_user_id,
-            'burn_date': burn.burn_date, 
-            'burn_img_path': burn.burn_img_path, 
-            'dr_id': burn.dr_id,
-            'burn_class_dr': burn.burn_class_dr,
-            'burn_class_model': burn.burn_class_model,
-            'dr_reply': burn.dr_reply,
-            }
-                 for burn in burn_list] 
-        # return the burn list
-        return { 'message': 'Burns found', 'burns': burn_list}
-    else: return "error: wrong method"
+    if request.method == 'POST':
+
+        degree_map = {
+                        0: 'First Degree Burn',
+                        1: 'Second Degree Burn',
+                        2: 'Third Degree Burn',
+                    }
+
+        USER_ID = int(request.form['user_id']) # Cast user id from string to integer
+        print('Get burns request received. User ID:', USER_ID)
+        print("fetching user's burns...")
+
+        # get the burns associated with the user id
+        burn_list = Burn.query.filter_by(fk_burn_user_id=USER_ID).all()
+        print('User Burns: ', burn_list)
+            
+        burn_ids = [burn.get('burn_id') for burn in burn_list] 
+        burn_degrees = [degree_map.get(burn.get('burn_class_model')) for burn in burn_list]
+
+        # return the doctor user list
+        return {
+                'message': 'Burns associated with user was found', 
+                'burn_ids': burn_ids, 
+                'burn_degrees': burn_degrees
+                }
+
+
 
 
 
@@ -695,9 +702,11 @@ def send_message():
             receiver_id=data['receiver_id'],
             message=data['message'],
             receiver=data['receiver'],
+            burn_id=data['burn_id'],
             image=data.get('image'),
             timestamp=datetime.now()
         )
+
         print(message)
         db.session.add(message)
         db.session.commit()
@@ -715,15 +724,18 @@ def send_message():
 
 
 
+
+
 # Endpoint to retrieve chat history
 @main.route('/get_chat_history', methods=['GET'])
 def get_chat_history():
     try:
         sender_id = int(request.args.get('sender_id'))
         receiver_id = int(request.args.get('receiver_id'))
+        burn_id = int(request.args.get('burn_id'))
 
-        if not sender_id or not receiver_id:
-            return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
+        if (not sender_id) or (not receiver_id) or (not burn_id):
+            return jsonify({'error': 'Missing sender_id or receiver_id or burn_id'}), 400
         
 
         # Fetch the Chat History, and include the model messages
@@ -735,7 +747,7 @@ def get_chat_history():
 
 
         for message in chat_history:
-            print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}")
+            print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}, Burn: {message.burn_id}")
             # Modify the receiver field according to the user id to adjust the message color
             if message.sender_id != sender_id:    # if the sender of the message wasn't the user
                 message.receiver = False
@@ -823,7 +835,7 @@ def respond_to_user():
     response = {
                 "message": "Top 5 nearest burn hospitals:",
                 "hospitals": nearest_hospitals,
-            }
+                }
 
     return jsonify(response)
 

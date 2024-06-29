@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gp_app/models/burn_history.dart';
 // import 'package:gp_app/screens/doctor_model_screen.dart';
-import 'package:gp_app/screens/patient_model_screen.dart';
 
 class BurnHistoryWidget extends StatefulWidget {
   final BurnHistory burnhistory;
+  final int index;
+  final Function(int) onTap;
 
   const BurnHistoryWidget({
     Key? key,
     required this.burnhistory,
+    required this.index,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -20,12 +23,7 @@ class _BurnHistoryState extends State<BurnHistoryWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (ctx) => const PatientModelChat(),
-          ),
-        );
+        widget.onTap(widget.index); // Use widget index here
       },
       child: Container(
         decoration: BoxDecoration(
