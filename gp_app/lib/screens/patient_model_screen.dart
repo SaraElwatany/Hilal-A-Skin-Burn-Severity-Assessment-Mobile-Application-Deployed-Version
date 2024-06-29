@@ -4,6 +4,7 @@ import 'package:gp_app/models/global.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/models/chat_message.dart';
+import 'package:gp_app/widgets/docter_model_widget.dart';
 import 'package:gp_app/widgets/messages_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/screens/patient_location.dart';
@@ -489,9 +490,8 @@ class PatientModelChatState extends State<PatientModelChat> {
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final chatMessage = messages[index];
-                return MessagesWidget(
-                  chatMessage: chatMessage,
-                  introMessage: null,
+                return DoctorMessagesWidget(
+                  doctorMessage: chatMessage,
                 );
               },
             ),

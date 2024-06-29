@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gp_app/widgets/docter_model_widget.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/generated/l10n.dart';
 // import 'package:gp_app/models/global.dart';
@@ -39,6 +40,7 @@ class DocterModelChat extends StatefulWidget {
 class DocterModelChatState extends State<DocterModelChat> {
   //marina
   List<ChatMessage> messages = [];
+
   // final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   // bool _isRecording = false;
   final TextEditingController _messageController = TextEditingController();
@@ -133,9 +135,8 @@ class DocterModelChatState extends State<DocterModelChat> {
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final chatMessage = messages[index];
-                return MessagesWidget(
-                  chatMessage: chatMessage,
-                  introMessage: null,
+                return DoctorMessagesWidget(
+                  doctorMessage: chatMessage,
                 );
               },
             ),
