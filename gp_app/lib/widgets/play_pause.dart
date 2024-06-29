@@ -12,7 +12,7 @@ class PlayPauseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       shape: const CircleBorder(),
-      color: AppColors.primary,
+      color: const Color.fromARGB(255, 29, 49, 78),
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: onTap,

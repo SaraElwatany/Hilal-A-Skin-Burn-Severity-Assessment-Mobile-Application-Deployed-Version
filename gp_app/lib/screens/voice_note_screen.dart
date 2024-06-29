@@ -106,40 +106,6 @@ class _HomeBodyState extends State<_HomeBody> {
                                 ),
                               ]);
                             },
-                            // firstPageErrorIndicatorBuilder: (context) {
-                            //   return Center(
-                            //     child: Column(
-                            //       children: [
-                            //         Text(pagingController.error.toString()),
-                            //         const SizedBox(
-                            //           height: 8,
-                            //         ),
-                            //         GestureDetector(
-                            //             onTap: () {
-                            //               pagingController
-                            //                   .retryLastFailedRequest();
-                            //             },
-                            //             child: Text(
-                            //               "Retry",
-                            //               style: AppTextStyles.medium(),
-                            //             ))
-                            //       ],
-                            //     ),
-                            //   );
-                            // },
-                            // firstPageProgressIndicatorBuilder: (context) {
-                            //   return const Center(
-                            //     child: CircularProgressIndicator(),
-                            //   );
-                            // },
-                            // newPageProgressIndicatorBuilder: (context) {
-                            //   return const Center(
-                            //     child: CircularProgressIndicator(),
-                            //   );
-                            // },
-                            // noMoreItemsIndicatorBuilder: (context) {
-                            //   return const SizedBox.shrink();
-                            // },
                             itemBuilder: (context, item, index) {
                               return VoiceNoteCard(voiceNoteInfo: item);
                             },
@@ -151,56 +117,7 @@ class _HomeBodyState extends State<_HomeBody> {
                 ),
               ),
             ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                width: 150,
-                height: 50,
-                decoration: const BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(70),
-                      topLeft: Radius.circular(70),
-                    )),
-              ),
-            ),
-            const Positioned(bottom: 10, child: _AddRecordButton())
           ],
         ));
-  }
-}
-
-class _AddRecordButton extends StatelessWidget {
-  const _AddRecordButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.primary,
-      borderRadius: BorderRadius.circular(27),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        splashColor: Colors.white12,
-        onTap: () async {
-          final VoiceNoteModel? newVoiceNote =
-              await showAppBottomSheet(context, builder: (context) {
-            return const AudioRecorderView();
-          });
-
-          if (newVoiceNote != null && context.mounted) {
-            context.read<VoiceNotesCubit>().addToVoiceNotes(newVoiceNote);
-          }
-        },
-        child: const SizedBox(
-          width: 75,
-          height: 75,
-          child: Icon(
-            FeatherIcons.plus,
-            color: AppColors.background,
-            size: 28,
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:gp_app/manager/voice_note_manager/audio_recorder_file.dart';
 import 'package:gp_app/manager/voice_note_manager/voice_note_state.dart';
-
 import 'package:gp_app/models/voice_note_model.dart';
 
 class VoiceNotesCubit extends Cubit<VoiceNotesState> {
@@ -15,7 +14,6 @@ class VoiceNotesCubit extends Cubit<VoiceNotesState> {
       final voiceNotes = await audioRecorderFileHelper.fetchVoiceNotes(pageKey);
       emit(VoiceNotesFetched(voiceNotes: voiceNotes));
     } catch (e) {
-      //todo: handle errors
       emit(const VoiceNotesError(message: 'error'));
     }
   }
