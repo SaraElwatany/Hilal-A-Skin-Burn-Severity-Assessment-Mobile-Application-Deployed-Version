@@ -86,32 +86,48 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   @override
-  void initState() async {
+  void initState() {
     pagingController.addPageRequestListener((pageKey) {
       context.read<VoiceNotesCubit>().getAllVoiceNotes(pageKey);
     });
+
     super.initState();
     print('Intro Message: $introMessageShown');
-    // Ensure the intro message and data fetch is triggered when chat history is loaded
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeSession();
-    });
+    // // variable to assess whether this was a new burn or not
+    // String newBurn = (await SessionManager.getBurnCondition()) ?? 'false';
+    // print('Burn Condition: $newBurn');
+    // int burn_id = int.parse((await SessionManager.getBurnId()) ?? '0');
+    // print('Burn ID: $burn_id');
 
-    // variable to assess whether this was a new burn or not
-    String newBurn = (await SessionManager.getBurnCondition()) ?? 'false';
-    int burn_id = int.parse((await SessionManager.getBurnId()) ?? '0');
+    // // Ensure the intro message and data fetch is triggered when chat history is loaded
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _initializeSession();
+    // });
 
-    if (newBurn != 'true') {
-      loadChatHistory(burn_id);
-    }
+    // if (newBurn != 'true') {
+    //   print('New Burn Detected !!');
+    //   loadChatHistory(burn_id);
+    // }
     // AudioApi.initRecorder();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Access inherited widgets or context-dependent values here
+    _initializeSession();
   }
 
   void _initializeSession() async {
     String userProfession =
         (await SessionManager.getUserProfession()) ?? 'patient';
+    print('User Profession: $userProfession');
+
     int user_id = Global.userId;
     String newBurn = (await SessionManager.getBurnCondition()) ?? 'true';
+
+    print('User ID: $user_id');
+    print('New Burn Condition: $newBurn');
 
     if (userProfession == 'patient' &&
         // !introMessageShown &&
@@ -120,7 +136,7 @@ class PatientModelChatState extends State<PatientModelChat> {
       introMessageShown = true;
       fetchPredictionAndHospitals(0);
     }
-    // the user is
+    // The user is a Guest (So only display the output messages, no saving in the db occur)
     else if (user_id == 0 && newBurn == 'true') {
       updateChatScreenWithIntroGuest();
       introMessageShown = true;
@@ -208,6 +224,8 @@ class PatientModelChatState extends State<PatientModelChat> {
   // Function To Send The Messages To The Server & Save It In The DB For The Signed Up User
   void _sendMessage(
       bool model, bool doctor, String mess_age, int receive_r) async {
+    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
+
     if (model == true) {
       if (doctor == true) {
         final message = ChatMessage(
@@ -218,6 +236,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           timestamp: DateTime.now(),
           senderId: 3,
           receiverId: receive_r,
+          burnId: burn_id,
         );
 
         // Send the message to the server
@@ -231,6 +250,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           timestamp: DateTime.now(),
           senderId: 3,
           receiverId: Global.userId,
+          burnId: burn_id,
         );
 
         // Send the message to the server
@@ -250,6 +270,7 @@ class PatientModelChatState extends State<PatientModelChat> {
                 "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
             timestamp: DateTime.now(),
             senderId: Global.userId,
+            burnId: burn_id,
             receiverId: receive_r);
 
         // Send the message to the server
@@ -272,7 +293,8 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   // Function to Provide the Intro Message If The User Was A Guest
-  void updateChatScreenWithIntroGuest() {
+  void updateChatScreenWithIntroGuest() async {
+    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
     setState(() {
       messages.add(ChatMessage(
           message: S.of(context).Intro,
@@ -280,6 +302,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           timestamp: DateTime.now(),
           // senderId: userId, (Sara)
           senderId: Global.userId,
+          burnId: burn_id,
           receiverId: 1));
     });
   }
@@ -321,6 +344,7 @@ class PatientModelChatState extends State<PatientModelChat> {
     String message = '';
     String drMessage = '';
     String clinical_flag = '0';
+    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
     print("Message From Location: $message");
 
     if (prediction == 'First Degree Burn') {
@@ -347,6 +371,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiver: false,
           // senderId: userId, // (Sara)
           senderId: Global.userId,
+          burnId: burn_id,
           receiverId: 1,
           timestamp: DateTime.now()));
     });
@@ -379,9 +404,8 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   // Function To Display The List Of Nearest Hospitals For The Guest User
-  void updateChatScreenWithHospitalsGuest(List<dynamic> hospitals) {
-    // final myState = Provider.of<MyState>(context, listen: false);
-    // String userId = myState.userId;
+  void updateChatScreenWithHospitalsGuest(List<dynamic> hospitals) async {
+    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
     var fullMessage = S.of(context).locationMessage;
 
     List<Map<String, String>> hospitalDetails = [];
@@ -407,6 +431,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiver: false,
           senderId: Global.userId,
           receiverId: 1,
+          burnId: burn_id,
           hospitalDetails: hospitalDetails,
           timestamp: DateTime.now()));
     });

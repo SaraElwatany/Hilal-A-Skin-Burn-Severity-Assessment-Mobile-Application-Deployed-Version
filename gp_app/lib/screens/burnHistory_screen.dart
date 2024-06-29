@@ -62,7 +62,7 @@ class _BurnHistoryScreenState extends State<BurnHistoryScreen> {
         burnshistory = fetchedBurns;
       });
     } catch (error) {
-      print('Error fetching patients: $error');
+      print('Error fetching burns: $error');
     }
   }
 

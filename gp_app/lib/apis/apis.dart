@@ -685,7 +685,21 @@ Future<List<Patient>> getDoctors() async {
 // Function to list all users with burns for the doctor
 Future<List<BurnHistory>> getBurns() async {
   var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_user_burns');
-  var response = await http.post(url);
+
+  int user_id = Global.userId;
+
+  // Create a map with the user_id to send in the request body
+  var body = {
+    'user_id': user_id.toString(),
+  };
+
+  // Send a POST request with the user_id in the body
+  var response = await http.post(
+    url,
+    body: body,
+  );
+
+  print('Entered Function');
 
   // Request was successful, handle the response
   if (response.statusCode == 200) {
@@ -770,6 +784,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
     var body = jsonEncode({
       'sender_id': message.senderId,
       'receiver_id': message.receiverId,
+      'burn_id': message.burnId,
       'message': message.message,
       'image': message.image,
       'timestamp': message.timestamp.toIso8601String(),

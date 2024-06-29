@@ -245,6 +245,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    print('Entered Here');
                     addClinicalData(
                         selectedFirstGroupSymptoms,
                         selectedSecondGroupSymptom,
@@ -255,6 +256,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                       MaterialPageRoute(
                           builder: (context) => const PatientModelChat()),
                     );
+                    print('Left From Clinical Screen Here');
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

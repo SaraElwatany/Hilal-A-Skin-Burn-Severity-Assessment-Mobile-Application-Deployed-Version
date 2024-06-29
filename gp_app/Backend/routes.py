@@ -45,8 +45,8 @@ def intro():
 def login_info():
 
     # Get the data from the Json dictionary
-    email = request.form.get('email')
-    password = request.form.get('password')
+    email = request.form.get('email').strip().replace(" ", "")  # Remove spaces from email
+    password = request.form.get('password').strip().replace(" ", "")  # Remove spaces from email
 
     # Convert email to lowercase
     email = email.lower()
@@ -97,8 +97,8 @@ def signup_info():
     data = request.form
     firstname = data.get('firstname').strip()
     lastname  = data.get('lastname').strip()
-    email     = data.get('email').strip()
-    password  = data.get('password').strip()
+    email     = data.get('email').strip().replace(" ", "")  # Remove spaces from email
+    password  = data.get('password').strip().replace(" ", "")  # Remove spaces from email
 
     # Convert email to lowercase
     email = email.lower()
@@ -196,8 +196,8 @@ def doctor_signup_info():
     data = request.form
     firstname = data.get('firstname').strip()
     lastname  = data.get('lastname').strip()
-    email     = data.get('email').strip()
-    password  = data.get('password').strip()
+    email     = data.get('email').strip().replace(" ", "")  # Remove spaces from email
+    password  = data.get('password').strip().replace(" ", "")  # Remove spaces from email
     speciality  = data.get('speciality').strip()
 
     # Convert email to lowercase
@@ -559,16 +559,6 @@ def get_all_burns():
             'user_info': user_info 
             }
 
-# # build a dictionary of the users
-#     user_list = [{
-#                 'id': user.id, 
-#                 'username': user.username, 
-#                 'email': user.email, 
-#                 'phone': user.phone, 
-#                 'weight': user.weight, 
-#                 'height': user.height}
-                
-#                 for user in users if user] 
     
 
 
@@ -600,7 +590,8 @@ def get_all_doctors():
     print('Doctor User lists found', user_list)
     user_ids = [user.get('id') for user in user_list] 
     user_names = [user.get('username') for user in user_list]
-    user_info = ['Email: '+str(user.get('email'))+' Speciality: '+str(user.get('speciality'))+' Phone: '+str(user.get('phone')) for user in user_list]
+    # user_info = ['Email: '+str(user.get('email'))+' Speciality: '+str(user.get('speciality'))+' Phone: '+str(user.get('phone')) for user in user_list]
+    user_info = ['Speciality: '+str(user.get('speciality'))+' Phone: '+str(user.get('phone')) for user in user_list]
 
     # return the doctor user list
     return {
@@ -612,7 +603,7 @@ def get_all_doctors():
     
 
 
-# fetch burns associated with a user
+# Fetch all burns associated with a user
 @main.route('/get_user_burns', methods=['POST'])
 def get_user_burns():
 
@@ -632,8 +623,8 @@ def get_user_burns():
         burn_list = Burn.query.filter_by(fk_burn_user_id=USER_ID).all()
         print('User Burns: ', burn_list)
             
-        burn_ids = [burn.get('burn_id') for burn in burn_list] 
-        burn_degrees = [degree_map.get(burn.get('burn_class_model')) for burn in burn_list]
+        burn_ids = [burn.burn_id for burn in burn_list] 
+        burn_degrees = [degree_map.get(burn.burn_class_model) for burn in burn_list]
 
         # return the doctor user list
         return {
