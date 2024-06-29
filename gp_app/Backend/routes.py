@@ -581,6 +581,8 @@ def get_all_burns():
     
 
 
+
+
 # Fetch info of all signed up doctors (Admin Screen)
 @main.route('/get_all_doctors', methods=['POST'])
 def get_all_doctors():
@@ -620,6 +622,9 @@ def get_all_doctors():
             'user_info': user_info 
             }
     
+
+
+
 
 
 # Fetch all burns associated with a user
@@ -688,6 +693,8 @@ def update_burn():
 
 
 
+
+
 @main.route('/send_message', methods=['POST'])
 def send_message():
 
@@ -731,6 +738,8 @@ def send_message():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
+
+
 
 
 
@@ -789,6 +798,8 @@ def get_chat_history():
     except Exception as e:
             print(f"Error: {e}")
             return jsonify({'error': str(e)}), 500
+
+
 
 
 
