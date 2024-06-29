@@ -320,7 +320,7 @@ def upload():
         # Get the user_id from the received request 
         # USER_ID = int(request.form['user_id'])  # Cast user id to integer
         # Get the user_id and Image data from the form
-        USER_ID = int(request.form.get('user_id', None))
+        USER_ID = int(request.form['user_id'])   # int(request.form.get('user_id', None))
         # image_data = request.form.get('Image', None)
         print('User ID Associated with burn:', USER_ID)
         # user_id = session.get('user_id')
@@ -368,6 +368,8 @@ def upload():
             # add burn item to db
             db.session.add(new_burn)
             db.session.commit()
+
+            print('New Burn Item Was Successfully Added')
 
         # If the user doesn't exist then it is a guest & autoincrement the burn id
         else:

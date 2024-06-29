@@ -93,11 +93,6 @@ class PatientModelChatState extends State<PatientModelChat> {
 
     super.initState();
     print('Intro Message: $introMessageShown');
-    // // variable to assess whether this was a new burn or not
-    // String newBurn = (await SessionManager.getBurnCondition()) ?? 'false';
-    // print('Burn Condition: $newBurn');
-    // int burn_id = int.parse((await SessionManager.getBurnId()) ?? '0');
-    // print('Burn ID: $burn_id');
 
     // // Ensure the intro message and data fetch is triggered when chat history is loaded
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -112,10 +107,22 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
-    // Access inherited widgets or context-dependent values here
-    _initializeSession();
+
+    // variable to assess whether this was a new burn or not
+    String newBurn = (await SessionManager.getBurnCondition()) ?? 'false';
+    print('Burn Condition: $newBurn');
+    int burn_id = int.parse((await SessionManager.getBurnId()) ?? '0');
+    print('Burn ID: $burn_id');
+
+    if (newBurn != 'true') {
+      print('Old Burn Thread !!');
+      loadChatHistory(burn_id);
+    } else {
+      // Access inherited widgets or context-dependent values
+      _initializeSession();
+    }
   }
 
   void _initializeSession() async {
