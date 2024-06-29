@@ -35,6 +35,161 @@ class PatientModelChatState extends State<PatientModelChat> {
       PagingController<int, VoiceNoteModel>(
           firstPageKey: 1, invisibleItemsThreshold: 6);
 
+   // Function to Provide the Intro Message For Every New Burn Thread Created
+  void updateChatScreenWithIntro() async {
+    String burn_id = await SessionManager.getBurnId() ?? '0';
+    print('Burn ID For Doctor Messages: $burn_id');
+    print('Burn ID Before Messages: $burn_id');
+    // (bool model, bool doctor, String mess_age, int receive_r)
+    _sendMessage(true, false, S.of(context).Intro,
+        Global.userId, null); // send intro message to the database
+  }
+
+  // Function to Provide the Intro Message If The User Was A Guest
+  void updateChatScreenWithIntroGuest() async {
+    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
+    setState(() {
+      messages.add(ChatMessage(
+          message: S.of(context).Intro,
+          receiver: false,
+          timestamp: DateTime.now(),
+          // senderId: userId, (Sara)
+          senderId: Global.userId,
+          burnId: burn_id,
+          receiverId: 1));
+    });
+  }
+
+  // Function To Display The Model's Output & The Treatment Protocol For The Signed Up User
+  void updateChatScreenWithPrediction(String prediction) async {
+    String message = '';
+    String drMessage = '';
+    String clinical_flag = '0';
+    print("Message From Location: $message");
+
+    if (prediction == 'First Degree Burn') {
+      message = S.of(context).firstDegreeMessage;
+      drMessage = "The User's Burn is a First Degree Burn.\n";
+      print("Message From Location: $message");
+    } else if (prediction == 'Second Degree Burn') {
+      message = S.of(context).secondDegreeMessage;
+      drMessage = "The User's Burn is a Second Degree Burn.\n";
+    } else if (prediction == 'Third Degree Burn') {
+      message = S.of(context).thirdDegreeMessage;
+      drMessage = "The User's Burn is a Third Degree Burn.\n";
+    }
+
+    clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
+    // If clinical Data was Provided Display it
+    if (clinical_flag == '1') {
+      drMessage = drMessage + 'The Clinical Data Provided:\n';
+    }
+
+    // (bool model, bool doctor, String mess_age, int receive_r)
+    _sendMessage(true, false, message,
+        Global.userId, null); // send prediction message to the database
+    _sendMessage(
+        true, true, drMessage, 1, null); // send prediction message to the database
+  }
+
+  // Function To Display The Model's Output & The Treatment Protocol For The Guest User
+  void updateChatScreenWithPredictionGuest(String prediction) async {
+    String message = '';
+    String drMessage = '';
+    String clinical_flag = '0';
+    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
+    print("Message From Location: $message");
+
+    if (prediction == 'First Degree Burn') {
+      message = S.of(context).firstDegreeMessage;
+      drMessage = "The User's Burn is a First Degree Burn.\n";
+      print("Message From Location: $message");
+    } else if (prediction == 'Second Degree Burn') {
+      message = S.of(context).secondDegreeMessage;
+      drMessage = "The User's Burn is a Second Degree Burn.\n";
+    } else if (prediction == 'Third Degree Burn') {
+      message = S.of(context).thirdDegreeMessage;
+      drMessage = "The User's Burn is a Third Degree Burn.\n";
+    }
+
+    clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
+    // If clinical Data was Provided Display it
+    if (clinical_flag == '1') {
+      drMessage = drMessage + 'The Clinical Data Provided:\n';
+    }
+
+    setState(() {
+      messages.add(ChatMessage(
+          message: message, // message,
+          receiver: false,
+          // senderId: userId, // (Sara)
+          senderId: Global.userId,
+          burnId: burn_id,
+          receiverId: 1,
+          timestamp: DateTime.now()));
+    });
+  }
+
+  // Function To Display The List Of Nearest Hospitals For The Signed Up User
+  void updateChatScreenWithHospitals(List<dynamic> hospitals) {
+    var fullMessage = S.of(context).locationMessage;
+
+    List<Map<String, String>> hospitalDetails = [];
+
+    for (var i = 0; i < 5 && i < hospitals.length; i++) {
+      var hospital = hospitals[i];
+      var hospitalMessage =
+          '${hospital['english_name']} - ${hospital['arabic_name']}';
+      var mapsLink =
+          'https://www.google.com/maps/search/?api=1&lat=${hospital['lat']}&lon=${hospital['lon']}';
+
+      fullMessage = fullMessage +
+          '${i + 1}. $hospitalMessage\n[View on Maps]($mapsLink)\n\n';
+
+      hospitalDetails.add({
+        '${hospital['lat']},${hospital['lon']}': hospitalMessage,
+      });
+    }
+
+    // (bool model, bool doctor, String mess_age, int receive_r)
+    _sendMessage(true, false, fullMessage,
+        Global.userId, null); // send hospital locations message to the database
+  }
+
+  // Function To Display The List Of Nearest Hospitals For The Guest User
+  void updateChatScreenWithHospitalsGuest(List<dynamic> hospitals) async {
+    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
+    var fullMessage = S.of(context).locationMessage;
+
+    List<Map<String, String>> hospitalDetails = [];
+
+    for (var i = 0; i < 5 && i < hospitals.length; i++) {
+      var hospital = hospitals[i];
+      var hospitalMessage =
+          '${hospital['english_name']} - ${hospital['arabic_name']}';
+      var mapsLink =
+          'https://www.google.com/maps/search/?api=1&lat=${hospital['lat']}&lon=${hospital['lon']}';
+
+      fullMessage = fullMessage +
+          '${i + 1}. $hospitalMessage\n[View on Maps]($mapsLink)\n\n';
+
+      hospitalDetails.add({
+        '${hospital['lat']},${hospital['lon']}': hospitalMessage,
+      });
+    }
+
+    setState(() {
+      messages.add(ChatMessage(
+          message: fullMessage,
+          receiver: false,
+          senderId: Global.userId,
+          receiverId: 1,
+          burnId: burn_id,
+          hospitalDetails: hospitalDetails,
+          timestamp: DateTime.now()));
+    });
+  }
+
   Future<void> fetchPredictionAndHospitals(int guest) async {
     var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
 
@@ -238,8 +393,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   // }
 
   // Function To Send The Messages To The Server & Save It In The DB For The Signed Up User
-  void _sendMessage(
-      bool model, bool doctor, String mess_age, int receive_r) async {
+  void _sendMessage(bool model, bool doctor, String mess_age, int receive_r, String? voiceNotePath) async {
     int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
 
     if (model == true) {
@@ -283,6 +437,24 @@ class PatientModelChatState extends State<PatientModelChat> {
         });
       }
     } else {
+    if (voiceNotePath != null) {
+      final voiceNoteMessage = ChatMessage(
+        message: mess_age,
+        receiver: false,
+        image: voiceNotePath,
+        timestamp: DateTime.now(),
+        senderId: Global.userId,
+        receiverId: receive_r,
+        burnId: burn_id,
+      );
+
+      // Send the voice note message to the server
+      await sendMessageToServer(voiceNoteMessage);
+      setState(() {
+        messages.add(voiceNoteMessage);
+        _messageController.clear();
+      });
+    } else {
       final text = _messageController.text.trim();
 
       String burnId = await SessionManager.getBurnId() ?? '0';
@@ -310,161 +482,8 @@ class PatientModelChatState extends State<PatientModelChat> {
         print('message is empty');
     }
   }
-
-  // Function to Provide the Intro Message For Every New Burn Thread Created
-  void updateChatScreenWithIntro() async {
-    String burn_id = await SessionManager.getBurnId() ?? '0';
-    print('Burn ID For Doctor Messages: $burn_id');
-    print('Burn ID Before Messages: $burn_id');
-    // (bool model, bool doctor, String mess_age, int receive_r)
-    _sendMessage(true, false, S.of(context).Intro,
-        Global.userId); // send intro message to the database
   }
-
-  // Function to Provide the Intro Message If The User Was A Guest
-  void updateChatScreenWithIntroGuest() async {
-    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
-    setState(() {
-      messages.add(ChatMessage(
-          message: S.of(context).Intro,
-          receiver: false,
-          timestamp: DateTime.now(),
-          // senderId: userId, (Sara)
-          senderId: Global.userId,
-          burnId: burn_id,
-          receiverId: 1));
-    });
-  }
-
-  // Function To Display The Model's Output & The Treatment Protocol For The Signed Up User
-  void updateChatScreenWithPrediction(String prediction) async {
-    String message = '';
-    String drMessage = '';
-    String clinical_flag = '0';
-    print("Message From Location: $message");
-
-    if (prediction == 'First Degree Burn') {
-      message = S.of(context).firstDegreeMessage;
-      drMessage = "The User's Burn is a First Degree Burn.\n";
-      print("Message From Location: $message");
-    } else if (prediction == 'Second Degree Burn') {
-      message = S.of(context).secondDegreeMessage;
-      drMessage = "The User's Burn is a Second Degree Burn.\n";
-    } else if (prediction == 'Third Degree Burn') {
-      message = S.of(context).thirdDegreeMessage;
-      drMessage = "The User's Burn is a Third Degree Burn.\n";
-    }
-
-    clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
-    // If clinical Data was Provided Display it
-    if (clinical_flag == '1') {
-      drMessage = drMessage + 'The Clinical Data Provided:\n';
-    }
-
-    // (bool model, bool doctor, String mess_age, int receive_r)
-    _sendMessage(true, false, message,
-        Global.userId); // send prediction message to the database
-    _sendMessage(
-        true, true, drMessage, 1); // send prediction message to the database
-  }
-
-  // Function To Display The Model's Output & The Treatment Protocol For The Guest User
-  void updateChatScreenWithPredictionGuest(String prediction) async {
-    String message = '';
-    String drMessage = '';
-    String clinical_flag = '0';
-    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
-    print("Message From Location: $message");
-
-    if (prediction == 'First Degree Burn') {
-      message = S.of(context).firstDegreeMessage;
-      drMessage = "The User's Burn is a First Degree Burn.\n";
-      print("Message From Location: $message");
-    } else if (prediction == 'Second Degree Burn') {
-      message = S.of(context).secondDegreeMessage;
-      drMessage = "The User's Burn is a Second Degree Burn.\n";
-    } else if (prediction == 'Third Degree Burn') {
-      message = S.of(context).thirdDegreeMessage;
-      drMessage = "The User's Burn is a Third Degree Burn.\n";
-    }
-
-    clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
-    // If clinical Data was Provided Display it
-    if (clinical_flag == '1') {
-      drMessage = drMessage + 'The Clinical Data Provided:\n';
-    }
-
-    setState(() {
-      messages.add(ChatMessage(
-          message: message, // message,
-          receiver: false,
-          // senderId: userId, // (Sara)
-          senderId: Global.userId,
-          burnId: burn_id,
-          receiverId: 1,
-          timestamp: DateTime.now()));
-    });
-  }
-
-  // Function To Display The List Of Nearest Hospitals For The Signed Up User
-  void updateChatScreenWithHospitals(List<dynamic> hospitals) {
-    var fullMessage = S.of(context).locationMessage;
-
-    List<Map<String, String>> hospitalDetails = [];
-
-    for (var i = 0; i < 5 && i < hospitals.length; i++) {
-      var hospital = hospitals[i];
-      var hospitalMessage =
-          '${hospital['english_name']} - ${hospital['arabic_name']}';
-      var mapsLink =
-          'https://www.google.com/maps/search/?api=1&lat=${hospital['lat']}&lon=${hospital['lon']}';
-
-      fullMessage = fullMessage +
-          '${i + 1}. $hospitalMessage\n[View on Maps]($mapsLink)\n\n';
-
-      hospitalDetails.add({
-        '${hospital['lat']},${hospital['lon']}': hospitalMessage,
-      });
-    }
-
-    // (bool model, bool doctor, String mess_age, int receive_r)
-    _sendMessage(true, false, fullMessage,
-        Global.userId); // send hospital locations message to the database
-  }
-
-  // Function To Display The List Of Nearest Hospitals For The Guest User
-  void updateChatScreenWithHospitalsGuest(List<dynamic> hospitals) async {
-    int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
-    var fullMessage = S.of(context).locationMessage;
-
-    List<Map<String, String>> hospitalDetails = [];
-
-    for (var i = 0; i < 5 && i < hospitals.length; i++) {
-      var hospital = hospitals[i];
-      var hospitalMessage =
-          '${hospital['english_name']} - ${hospital['arabic_name']}';
-      var mapsLink =
-          'https://www.google.com/maps/search/?api=1&lat=${hospital['lat']}&lon=${hospital['lon']}';
-
-      fullMessage = fullMessage +
-          '${i + 1}. $hospitalMessage\n[View on Maps]($mapsLink)\n\n';
-
-      hospitalDetails.add({
-        '${hospital['lat']},${hospital['lon']}': hospitalMessage,
-      });
-    }
-
-    setState(() {
-      messages.add(ChatMessage(
-          message: fullMessage,
-          receiver: false,
-          senderId: Global.userId,
-          receiverId: 1,
-          burnId: burn_id,
-          hospitalDetails: hospitalDetails,
-          timestamp: DateTime.now()));
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -545,7 +564,7 @@ class PatientModelChatState extends State<PatientModelChat> {
                       ),
                       IconButton(
                         onPressed: () => _sendMessage(false, false, '',
-                            1), // (bool model, bool doctor, String mess_age, int receive_r)
+                            1, null), // (bool model, bool doctor, String mess_age, int receive_r)
                         icon: const Icon(Icons.send),
                       ),
                       IconButton(
@@ -584,4 +603,4 @@ class PatientModelChatState extends State<PatientModelChat> {
       ),
     );
   }
-}
+  }

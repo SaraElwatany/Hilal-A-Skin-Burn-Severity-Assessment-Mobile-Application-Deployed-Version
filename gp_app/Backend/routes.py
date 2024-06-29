@@ -730,18 +730,13 @@ def send_message():
             burn_id=data.get('burn_id'),
             image=data.get('image'),
             timestamp=datetime.now(),
-            voice_note_path=voice_note_path  # Save voice note path in the model
+            voice_note_path=voice_note_path 
         )
 
         print(message)
         db.session.add(message)
         db.session.commit()
 
-        # if socketio:
-        #     socketio.emit('message', message.to_dict())
-        # else:
-        #     print("SocketIO is not initialized")
-        #     return jsonify({'error': 'SocketIO is not initialized'}), 500
         
         return jsonify(message.to_dict()), 201
     except Exception as e:
