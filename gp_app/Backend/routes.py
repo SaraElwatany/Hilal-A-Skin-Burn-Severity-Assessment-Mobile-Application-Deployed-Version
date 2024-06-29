@@ -625,8 +625,8 @@ def get_user_burns():
         burn_list = Burn.query.filter_by(fk_burn_user_id=USER_ID).all()
         print('User Burns: ', burn_list)
             
-        burn_ids = [burn.burn_id for burn in burn_list] 
-        burn_degrees = [degree_map.get(burn.burn_class_model) for burn in burn_list]
+        burn_ids = [burn.burn_id for burn in burn_list][::-1]  # Reverse the list to get the most recent burns first
+        burn_degrees = [degree_map.get(burn.burn_class_model) for burn in burn_list][::-1]  # Reverse the list to get the most recent burns first
 
         # return the doctor user list
         return {
@@ -726,17 +726,34 @@ def get_chat_history():
         sender_id = int(request.args.get('sender_id'))
         receiver_id = int(request.args.get('receiver_id'))
         burn_id = int(request.args.get('burn_id'))
+        user_profession = ''
 
         if (not sender_id) or (not receiver_id) or (not burn_id):
             return jsonify({'error': 'Missing sender_id or receiver_id or burn_id'}), 400
         
+        # Check If the User Exists in the database first
+        user = User.query.filter_by(id=sender_id).first()
+        if not user:
+            return jsonify({'error': "User with this ID doesn't exist"}), 404
+        else:
+            user_profession = user.profession
+        
 
-        # Fetch the Chat History, and include the model messages
-        chat_history = ChatMessage.query.filter(
-            ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
-            | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
-            | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id)) # Include messages where sender_id is 3 , represents the model
-        ).order_by(ChatMessage.timestamp.asc()).all()
+        if user_profession == 'patient':
+            # Fetch the Chat History, and include the model messages
+            chat_history = ChatMessage.query.filter(
+                (((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
+                 | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
+                 | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id))) # Include messages where sender_id is 3, representing the model
+                & (ChatMessage.burn_id == burn_id)
+            ).order_by(ChatMessage.timestamp.asc()).all()
+        else:
+            # Fetch the Chat History, and include the model messages
+            chat_history = ChatMessage.query.filter(
+                ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
+                | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
+                | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id)) # Include messages where sender_id is 3 , represents the model
+            ).order_by(ChatMessage.timestamp.asc()).all()
 
 
         for message in chat_history:
@@ -748,6 +765,7 @@ def get_chat_history():
                 message.receiver = True
 
         return jsonify([message.to_dict() for message in chat_history]), 200
+    
 
     except Exception as e:
             print(f"Error: {e}")

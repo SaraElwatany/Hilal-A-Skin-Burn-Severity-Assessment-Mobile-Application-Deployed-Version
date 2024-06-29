@@ -758,7 +758,7 @@ Future<List<BurnHistory>> getBurns() async {
 Future<List<ChatMessage>> fetchChatHistory(
     int senderId, int receiverId, int burn_id) async {
   var url = Uri.parse(
-      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId&receiver_id=$burn_id');
+      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId&burn_id=$burn_id');
   try {
     var response = await http.get(url);
 
