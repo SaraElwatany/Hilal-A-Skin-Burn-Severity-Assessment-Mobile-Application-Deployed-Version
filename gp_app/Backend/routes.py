@@ -511,39 +511,56 @@ def get_all_burns():
 
     print("fetching users with burns...")
 
-    # Get all users from the Burn table
-    users = Burn.query.all()
-    print('Users: ', users)
+    # Fetch distinct users from the Burns table
+    users_with_burns = db.session.query(User).join(Burn, User.id == Burn.fk_burn_user_id).distinct().all()
 
-    # Check if each user from Burn table exists in Users table
+    # Prepare user data for JSON response
     user_list = []
+    for user in users_with_burns:
+        user_data = {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                    'phone': user.phone,
+                    'weight': user.weight,
+                    'height': user.height,
+                    'gender': user.gender,
+                    'dob': user.dob,
+                    'profession': user.profession
+                }
+        user_list.append(user_data)
 
-    # build a dictionary of the users
-    for burn_user in users:
-        user_in_users_table = User.query.filter_by(id=burn_user.fk_burn_user_id).first()
-        if user_in_users_table:
-            user_dict = {
-                         'id': user_in_users_table.id,
-                         'username': user_in_users_table.username, 
-                         'email': user_in_users_table.email, 
-                         'phone': user_in_users_table.phone, 
-                         'weight': user_in_users_table.weight, 
-                         'height': user_in_users_table.height
-                        }
-            user_list.append(user_dict)
-        else:
-            # Generate a random integer for the guest user
-            last_user = User.query.order_by(User.id.desc()).first()
-            last_user_id = last_user.id
-            user_dict = {
-                         'id': last_user_id+1,
-                         'username': 'Guest', 
-                         'email': 'None', 
-                         'phone': None, 
-                         'weight': None, 
-                         'height': None
-                        }
-            user_list.append(user_dict)
+    # # Get all users from the Burn table
+    # users = Burn.query.all()
+    # print('Users: ', users)
+    # # Check if each user from Burn table exists in Users table
+    # user_list = []
+    # # build a dictionary of the users
+    # for burn_user in users:
+    #     user_in_users_table = User.query.filter_by(id=burn_user.fk_burn_user_id).first()
+    #     if user_in_users_table:
+    #         user_dict = {
+    #                      'id': user_in_users_table.id,
+    #                      'username': user_in_users_table.username, 
+    #                      'email': user_in_users_table.email, 
+    #                      'phone': user_in_users_table.phone, 
+    #                      'weight': user_in_users_table.weight, 
+    #                      'height': user_in_users_table.height
+    #                     }
+    #         user_list.append(user_dict)
+    #     else:
+    #         # Generate a random integer for the guest user
+    #         last_user = User.query.order_by(User.id.desc()).first()
+    #         last_user_id = last_user.id
+    #         user_dict = {
+    #                      'id': last_user_id+1,
+    #                      'username': 'Guest', 
+    #                      'email': 'None', 
+    #                      'phone': None, 
+    #                      'weight': None, 
+    #                      'height': None
+    #                     }
+    #         user_list.append(user_dict)
 
 
     print('User lists found', user_list)
