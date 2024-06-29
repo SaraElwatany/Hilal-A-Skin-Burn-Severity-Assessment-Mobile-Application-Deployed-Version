@@ -12,6 +12,7 @@ class ChatMessage(db.Model):
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
     burn_id = db.Column(db.Integer, nullable=False)
     # user_id = db.Column(db.Integer, nullable=False)
+    voice_note_path = db.Column(db.String(255), nullable=True) 
 
     def to_dict(self):
         return {
@@ -24,4 +25,5 @@ class ChatMessage(db.Model):
             'timestamp': self.timestamp.isoformat(),
             'burn_id': self.burn_id,
             #'user_id': self.user_id,
+            'voice_note_path': self.voice_note_path,
         }
