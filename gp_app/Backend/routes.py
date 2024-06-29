@@ -728,8 +728,8 @@ def get_chat_history():
         burn_id = int(request.args.get('burn_id'))
         user_profession = ''
 
-        if (not sender_id) or (not receiver_id) or (not burn_id):
-            return jsonify({'error': 'Missing sender_id or receiver_id or burn_id'}), 400
+        if (not sender_id) or (not receiver_id):
+            return jsonify({'error': 'Missing sender_id or receiver_id'}), 400
         
         # Check If the User Exists in the database first
         user = User.query.filter_by(id=sender_id).first()
