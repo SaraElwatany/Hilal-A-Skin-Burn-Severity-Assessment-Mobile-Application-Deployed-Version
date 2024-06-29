@@ -714,14 +714,6 @@ def send_message():
             if key not in data:
                 return jsonify({'error': f'Missing key: {key}'}), 400
 
-        # Handle file upload (voice note)
-        voice_note_file = request.files.get('voice_note')
-        if voice_note_file:
-            voice_note_path = 'path/to/store/voice_notes/' + voice_note_file.filename
-            voice_note_file.save(voice_note_path)
-        else:
-            voice_note_path = None
-
         message = ChatMessage(
             sender_id=data['sender_id'],
             receiver_id=data['receiver_id'],
@@ -729,8 +721,8 @@ def send_message():
             receiver=data['receiver'],
             burn_id=data.get('burn_id'),
             image=data.get('image'),
-            timestamp=datetime.now(),
-            voice_note_path=voice_note_path 
+            timestamp=data.get('timestamp'),
+            voice_note_path=data.get('voice_note_path') 
         )
 
         print(message)

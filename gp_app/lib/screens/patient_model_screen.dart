@@ -442,7 +442,8 @@ class PatientModelChatState extends State<PatientModelChat> {
       final voiceNoteMessage = ChatMessage(
         message: mess_age,
         receiver: false,
-        image: voiceNotePath,
+        image: null,
+        voiceNote: voiceNotePath,
         timestamp: DateTime.now(),
         senderId: Global.userId,
         receiverId: receive_r,
@@ -466,7 +467,7 @@ class PatientModelChatState extends State<PatientModelChat> {
             message: text,
             receiver: true,
             image:
-                "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
+              null,
             timestamp: DateTime.now(),
             senderId: Global.userId,
             burnId: burn_id,
@@ -531,8 +532,9 @@ class PatientModelChatState extends State<PatientModelChat> {
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final chatMessage = messages[index];
-                return DoctorMessagesWidget(
-                  doctorMessage: chatMessage,
+                return MessagesWidget(
+                  chatMessage: chatMessage,
+                  introMessage: null,
                 );
               },
             ),
