@@ -773,9 +773,6 @@ Future<List<ChatMessage>> fetchChatHistory(
   }
 }
 
-Future<void> _requestMicrophonePermission() async {
-  await Permission.microphone.request();
-}
 
 Future<void> sendMessageToServer(ChatMessage message) async {
   try {
@@ -902,29 +899,4 @@ void logout() async {
   }
 }
 
-// Future<void> loginUser(String email, String password) async {
-//   // Example endpoint URL (replace with your Flask server URL)
-//   String url = 'https://my-trial-t8wj.onrender.com/login';
 
-//   // Example request body
-//   Map<String, String> body = {
-//     'email': email,
-//     'password': password,
-//   };
-
-//   try {
-//     var response = await http.post(
-//       Uri.parse(url),
-//       body: body,
-//     );
-
-//     if (response.statusCode == 200) {
-//       // Successful login, parse JSON response
-//       Map<String, dynamic> data = json.decode(response.body);
-//       // Update global.dart variables based on response data
-//       Global.updateFromJson(data);
-//     }
-//   } catch (e) {
-//     // Handle network or other errors
-//   }
-// }

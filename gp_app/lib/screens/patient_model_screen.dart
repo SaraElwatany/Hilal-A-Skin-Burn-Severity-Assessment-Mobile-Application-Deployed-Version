@@ -589,7 +589,10 @@ class PatientModelChatState extends State<PatientModelChat> {
                             context
                                 .read<VoiceNotesCubit>()
                                 .addToVoiceNotes(newVoiceNote);
-                          }
+                            _sendMessage(false, false, '', 1, newVoiceNote.path); // Pass voice note path
+                            } else {
+                              _sendMessage(false, false, '', 1, null); // Pass null if no voice note
+                            }
                         },
                         icon: const Icon(Icons.mic),
                       ),

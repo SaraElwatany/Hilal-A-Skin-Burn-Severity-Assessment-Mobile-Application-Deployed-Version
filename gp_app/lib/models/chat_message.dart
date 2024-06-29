@@ -41,7 +41,7 @@ class ChatMessage {
       burnId: json['burn_id'] as int,
       message: json['message'] as String? ?? '',
       image: json['image'] as String?,
-      voiceNote: json['voice_note'] as String?,
+      voiceNote: json['voice_note_path'] as String?,
       receiver: json['receiver'] as bool?,
       timestamp: DateTime.parse(json['timestamp'] as String),
     );
