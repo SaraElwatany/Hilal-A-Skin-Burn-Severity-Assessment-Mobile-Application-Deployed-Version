@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gp_app/widgets/docter_model_widget.dart';
-import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/generated/l10n.dart';
 // import 'package:gp_app/models/global.dart';
-import 'package:gp_app/apis/apis.dart';
+import 'package:gp_app/widgets/localization_icon.dart';
 // import 'package:gp_app/models/my_state.dart';
 // import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
 // import 'package:gp_app/widgets/docter_model_widget.dart';
-import 'package:gp_app/widgets/messages_widget.dart';
-
-// import 'package:flutter_sound/flutter_sound.dart';
-// import 'package:gp_app/widgets/audio_player_widget.dart';
+import 'package:gp_app/widgets/docter_model_widget.dart';
 
 // Newly Added Imports
 import 'dart:convert'; // Add this import for jsonDecode
@@ -40,7 +36,6 @@ class DocterModelChat extends StatefulWidget {
 class DocterModelChatState extends State<DocterModelChat> {
   //marina
   List<ChatMessage> messages = [];
-
   // final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   // bool _isRecording = false;
   final TextEditingController _messageController = TextEditingController();
@@ -73,41 +68,14 @@ class DocterModelChatState extends State<DocterModelChat> {
     }
   }
 
-  // void _toggleRecording() async {
-  //   final myState = Provider.of<MyState>(context, listen: false);
-  //   String userId = myState.userId;
-
-  //   if (_isRecording) {
-  //     final path = await _recorder.stopRecorder();
-  //     if (path != null) {
-  //       setState(() {
-  //         messages.add(ChatMessage(
-  //           message: 'New audio message',
-  //           receiver: false,
-  //           timestamp: DateTime.now(),
-  //           senderId: userId,
-  //           receiverId: '1'
-  //         ));
-  //       });
-  //     }
-  //     setState(() {
-  //       _isRecording = false;
-  //     });
-  //   } else {
-  //     await _recorder.startRecorder(toFile: 'audio_message.aac');
-  //     setState(() {
-  //       _isRecording = true;
-  //     });
-  //   }
-  // }
-
   void _sendMessage() {
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final message = ChatMessage(
           message: text,
           receiver: true,
-          image: null,
+          image:
+              "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
           timestamp: DateTime.now(),
           senderId: 1,
           receiverId: 4);

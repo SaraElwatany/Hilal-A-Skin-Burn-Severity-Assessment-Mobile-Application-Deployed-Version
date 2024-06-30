@@ -5,7 +5,7 @@ class ChatMessage {
   final int receiverId;
   final int? burnId;
   final String message;
-  final String? image;
+  final String? image; // Updated to store base64 encoded image
   final String? voiceNote; 
   final bool? receiver;
   final DateTime timestamp;
@@ -38,12 +38,18 @@ class ChatMessage {
     return ChatMessage(
       senderId: json['sender_id'] as int,
       receiverId: json['receiver_id'] as int,
-      burnId: json['burn_id'] as int,
+      burnId: json['burn_id'] as int?,
       message: json['message'] as String? ?? '',
-      image: json['image'] as String?,
+      image: json['image'] as String?, // Store base64 encoded image
       voiceNote: json['voice_note_path'] as String?,
       receiver: json['receiver'] as bool?,
       timestamp: DateTime.parse(json['timestamp'] as String),
+      latitude: json['latitude'] as double?,
+      longitude: json['longitude'] as double?,
+      hospitalNameEn: json['hospital_name_en'] as String?,
+      hospitalNameAr: json['hospital_name_ar'] as String?,
+      hospitalDetails: (json['hospital_details'] as List<dynamic>?)
+          ?.cast<Map<String, String>>(),
     );
   }
 
@@ -54,10 +60,16 @@ class ChatMessage {
       'receiver_id': receiverId,
       'burn_id': burnId,
       'message': message,
-      'image': image,
+      'image': image, // Store base64 encoded image
       'voice_note': voiceNote,
       'receiver': receiver,
       'timestamp': timestamp.toIso8601String(),
+      'latitude': latitude,
+      'longitude': longitude,
+      'hospital_name_en': hospitalNameEn,
+      'hospital_name_ar': hospitalNameAr,
+      'hospital_details': hospitalDetails,
     };
   }
 }
+

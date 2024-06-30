@@ -13,20 +13,25 @@ class DoctorMessagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: doctorMessage.receiver ?? false ? Alignment.topRight : Alignment.topLeft,
+      alignment: doctorMessage.receiver ?? false
+          ? Alignment.topRight
+          : Alignment.topLeft,
       child: Container(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Column(
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: (doctorMessage.receiver == false)?
-              Image.asset(
-                doctorMessage.image!,
-              ):null,
-            )
-            ,
-            const SizedBox(height: 20,),
+              child: (doctorMessage.receiver == false)
+                  ? Image.asset(
+                      doctorMessage.image!,
+                    )
+                  : null,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: (doctorMessage.receiver == false)
                   ? MainAxisAlignment.end
@@ -51,8 +56,8 @@ class DoctorMessagesWidget extends StatelessWidget {
                             child: (doctorMessage.receiver == false
                                 ? Image.asset(
                                     'assets/images/Hilal.png',
-                                    width: 40, 
-                                    height: 40, 
+                                    width: 40,
+                                    height: 40,
                                   )
                                 : null),
                           ),
@@ -64,44 +69,47 @@ class DoctorMessagesWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             Visibility(
-              visible:(doctorMessage.receiver == false), 
+              visible: (doctorMessage.receiver == false),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: (){}, 
-                      style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            fixedSize: const Size(110, 43),
-                            backgroundColor: Color.fromARGB(255,3, 206, 164)
-                            ),
-                    child: Text(S.of(context).confirm,
-                     style: const TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 255, 251, 251),
-                          ),),
-                    ),
-                  const SizedBox(width: 20,),
-                  ElevatedButton(
-                    onPressed: (){}, 
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            fixedSize: const Size(105, 43),
-                            backgroundColor: Color.fromARGB(255, 255, 115, 115)
-
-                            ),
-                    child: Text(S.of(context).edit,
-                     style: const TextStyle(
-                            fontSize: 20,
-                            color: Color.fromARGB(255, 255, 251, 251),
-                          ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        fixedSize: const Size(105, 43),
+                        backgroundColor: Color.fromARGB(255, 3, 206, 164)),
+                    child: Text(
+                      S.of(context).confirm,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 255, 251, 251),
+                      ),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        fixedSize: const Size(105, 43),
+                        backgroundColor: Color.fromARGB(255, 255, 115, 115)),
+                    child: Text(
+                      S.of(context).edit,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 255, 251, 251),
+                      ),
                     ),
-
+                  ),
                 ],
               ),
             )
@@ -111,4 +119,3 @@ class DoctorMessagesWidget extends StatelessWidget {
     );
   }
 }
-

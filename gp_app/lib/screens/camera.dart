@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:gp_app/apis/apis.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
@@ -93,10 +94,17 @@ class _HomeScreenState extends State<CameraScreen> {
                       if (imageFile != null) {
                         if (!isNavigating) {
                           isNavigating = true; // Set the flag to true
+
                           // File nonNullableFile = imageFile as File;
                           File nonNullableFile = imageFile!;
                           navigate =
                               await sendImageToServer(nonNullableFile, context);
+
+                          List<int> imageBytes = await imageFile!.readAsBytes();
+                          String base64Image = base64Encode(imageBytes);
+                          // Save base64Image to session
+                          SessionManager.saveImageBlob(base64Image);
+
                           if (navigate == 1) {
                             // Navigate to ChatScreen
                             Navigator.of(context).push(

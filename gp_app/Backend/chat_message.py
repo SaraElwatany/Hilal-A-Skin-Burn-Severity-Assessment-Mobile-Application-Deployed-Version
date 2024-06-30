@@ -7,7 +7,7 @@ class ChatMessage(db.Model):
     sender_id = db.Column(db.Integer, nullable=False)
     receiver_id = db.Column(db.Integer, nullable=False)
     message = db.Column(db.String(2000), nullable=True)
-    image =  db.Column(db.String(16000), nullable=True)
+    image =  db.Column(db.LargeBinary(), nullable=True)
     receiver = db.Column(db.Boolean, nullable=False, default=False)
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
     burn_id = db.Column(db.Integer, nullable=False)

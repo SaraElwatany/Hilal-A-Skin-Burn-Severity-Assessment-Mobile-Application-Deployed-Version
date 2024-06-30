@@ -34,6 +34,7 @@ class SessionManager {
   static const String _burnCondition = 'burnCondition';
   static const String _clinicalData = 'clinicalData';
   static const String _screenIndex = 'screenIndex'; // Add screenIndex key
+  static const String _imageKey = 'blobImage'; // Store the blob globally
 
   // Function to initialize the session with default values
   static Future<void> initializeSession() async {
@@ -42,6 +43,34 @@ class SessionManager {
     if (!prefs.containsKey(_profession)) {
       await prefs.setString(_profession, 'patient');
     }
+  }
+
+  static Future<void> saveImageBlob(String base64Image) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_imageKey, base64Image);
+  }
+
+  static Future<String?> getImageBlob() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_imageKey);
+  }
+
+  static Future<void> clearImageBlob() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_imageKey);
+  }
+
+  static Future<void> saveImageBytes(List<int> bytes) async {
+    String base64Image = base64Encode(bytes);
+    await saveImageBlob(base64Image);
+  }
+
+  static Future<List<int>?> getImageBytes() async {
+    String? base64Image = await getImageBlob();
+    if (base64Image != null) {
+      return base64Decode(base64Image);
+    }
+    return null;
   }
 
   // Function to Save User ID to the session
@@ -773,7 +802,6 @@ Future<List<ChatMessage>> fetchChatHistory(
   }
 }
 
-
 Future<void> sendMessageToServer(ChatMessage message) async {
   try {
     var url = Uri.parse('https://my-trial-t8wj.onrender.com/send_message');
@@ -786,7 +814,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       'image': message.image,
       'timestamp': message.timestamp.toIso8601String(),
       'receiver': message.receiver, // Include the receiver field
-      'voice_note_path': message.voiceNote?? '',
+      'voice_note_path': message.voiceNote ?? '',
     });
 
     print('Sending JSON: $body'); // Print the JSON payload for debugging
@@ -898,5 +926,3 @@ void logout() async {
     print('Error during logout: $e');
   }
 }
-
-

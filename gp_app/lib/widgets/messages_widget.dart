@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/screens/HospitalLocationScreen.dart';
 
@@ -15,6 +18,11 @@ class MessagesWidget extends StatelessWidget {
   final ChatMessage chatMessage;
   final String? introMessage;
   final bool isIntro;
+
+  // // Helper function to decode base64 string to Uint8List
+  // Uint8List _decodeBase64ToImage(String base64String) {
+  //   return Uint8List.fromList(base64.decode(base64String));
+  // }
 
   get context => null;
 
@@ -47,28 +55,27 @@ class MessagesWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (isIntro) ...[
-                        Image.asset(
-                          'assets/images/burndegree.png',
-                          fit: BoxFit.fill,
+                      // Display image if available
+                      if (chatMessage.image != null &&
+                          chatMessage.image!.isNotEmpty)
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: MemoryImage(
+                                base64Decode(chatMessage.image!),
+                              ),
+                            ),
+                          ),
                         ),
-                      ],
-                      Visibility(
-                        visible: chatMessage.receiver == false,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 4.0, left: 4.0),
-                          child: chatMessage.receiver == false
-                              ? Image.asset(
-                                  'assets/images/Hilal.png',
-                                  width: 40,
-                                  height: 40,
-                                )
-                              : null,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
+
+                      const SizedBox(height: 8),
                       // VoiceNoteCard(voiceNoteInfo: voiceNoteInfo),
 
+                      // Display text message
                       _buildMessageContent(context, chatMessage),
                     ],
                   ),
