@@ -16,6 +16,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from .base import db
+from base64 import b64decode
 from .burn_item import Burn
 from .user_class import User
 from .chat_message import ChatMessage
@@ -742,9 +743,14 @@ def send_message():
 
         # Decode the base64 image data
         image_data = None
-        image_base64 = data.get('image')
-        if image_base64 :
-            image_data = base64.b64decode(image_base64)
+        image_base64 = data.get('image')  # Retrieve base64-encoded image data from 'data'
+        print(image_base64)  # Debug print to see the base64 data
+        if image_base64:
+            # Decode the base64 image data
+            try:
+                image_data = b64decode(image_base64)
+            except ValueError as e:
+                print(f"Error decoding base64 image: {e}")
 
         message = ChatMessage(
             sender_id=data['sender_id'],
