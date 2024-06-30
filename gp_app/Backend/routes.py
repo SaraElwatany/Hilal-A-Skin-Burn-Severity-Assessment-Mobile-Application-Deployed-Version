@@ -722,6 +722,8 @@ def send_message():
 
     from .__init__ import socketio 
 
+    print('Entered Sen Message Route')
+
     try:
         data = request.json
         print(f"Received data: {data}")  # Print received data for debugging
@@ -820,10 +822,10 @@ def get_chat_history():
             else:
                 message.receiver = True
 
-            # Assign Images to messages Separatly
-            burn_item = Burn.query.filter_by(burn_id=burn_id).first()
-            if message.img_flag == 1:
-                 message.image = base64.b64encode(burn_item.burn_img).decode('utf-8')
+            # # Assign Images to messages Separatly
+            # burn_item = Burn.query.filter_by(burn_id=burn_id).first()
+            # if message.img_flag == 1:
+            #      message.image = base64.b64encode(burn_item.burn_img).decode('utf-8')
 
 
         return jsonify([message.to_dict() for message in chat_history]), 200

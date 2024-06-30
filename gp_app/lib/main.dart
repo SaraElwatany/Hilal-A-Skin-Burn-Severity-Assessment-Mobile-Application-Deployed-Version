@@ -6,9 +6,11 @@ import 'package:gp_app/manager/voice_note_manager/audio_recorder_file.dart';
 import 'package:gp_app/manager/voice_note_manager/voive_noter_cubit.dart';
 import 'package:gp_app/screens/splash_screen.dart';
 
+
+import 'package:gp_app/apis/apis.dart';
 import 'package:provider/provider.dart';
 import 'package:gp_app/models/my_state.dart'; // Import the file where you defined your state class
-import 'package:gp_app/apis/apis.dart';
+
 
 // void main() async {
 //   runApp(
@@ -18,6 +20,8 @@ import 'package:gp_app/apis/apis.dart';
 //     ),
 //   );
 // }
+
+
 void main() {
   runApp(
     MultiBlocProvider(

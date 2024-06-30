@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -816,7 +817,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       'image': message.image,
       'img_flag': message.imgFlag,
       'timestamp': message.timestamp.toIso8601String(),
-      'receiver': message.receiver, // Include the receiver field
+      'receiver': message.receiver,
       'voice_note_path': message.voiceNote ?? '',
     });
 
@@ -833,6 +834,9 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       print('Response body: ${response.body}');
       throw Exception('Failed to send message');
     }
+  } on TimeoutException catch (e) {
+    print('Timeout sending message: $e');
+    throw Exception('Timeout sending message: $e');
   } catch (e) {
     print('Error sending message: $e');
     throw Exception('Error sending message: $e');

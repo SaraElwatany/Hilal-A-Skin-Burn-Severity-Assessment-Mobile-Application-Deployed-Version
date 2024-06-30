@@ -1,11 +1,116 @@
+// import 'dart:convert';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/gestures.dart';
+// import 'package:gp_app/apis/apis.dart';
+// import 'package:gp_app/models/chat_message.dart';
+// import 'package:gp_app/screens/HospitalLocationScreen.dart';
+// import 'package:gp_app/models/voice_note_model.dart';
+// import 'package:gp_app/widgets/voice_note_card.dart';
+
+// class MessagesWidget extends StatelessWidget {
+//   MessagesWidget({
+//     Key? key,
+//     required this.chatMessage,
+//     required this.introMessage,
+//     this.isIntro =
+//         true, // Add a parameter to check if the message is the intro message
+//   }) : super(key: key);
+
+//   final ChatMessage chatMessage;
+//   final String? introMessage;
+//   final bool isIntro;
+
+//   // // Helper function to decode base64 string to Uint8List
+//   // Uint8List _decodeBase64ToImage(String base64String) {
+//   //   return Uint8List.fromList(base64.decode(base64String));
+//   // }
+
+//   get context => null;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding:
+//           const EdgeInsets.only(bottom: 16), // Adjust as per your requirement
+//       child: Align(
+//         alignment: chatMessage.receiver == true
+//             ? Alignment.topRight
+//             : Alignment.topLeft,
+//         child: Container(
+//           padding:
+//               const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+//           child: Row(
+//             mainAxisAlignment: chatMessage.receiver == true
+//                 ? MainAxisAlignment.end
+//                 : MainAxisAlignment.start,
+//             children: [
+//               Expanded(
+//                 child: Container(
+//                   padding: const EdgeInsets.all(16),
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(10),
+//                     color: chatMessage.receiver == false
+//                         ? Theme.of(context).colorScheme.surface
+//                         : const Color.fromARGB(255, 106, 105, 105),
+//                   ),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       // Display image if available
+//                       if (chatMessage.image != null &&
+//                           chatMessage.image!.isNotEmpty)
+//                         Container(
+//                           width: 100,
+//                           height: 100,
+//                           decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(10),
+//                             image: DecorationImage(
+//                               fit: BoxFit.cover,
+//                               image: MemoryImage(
+//                                 base64Decode(chatMessage
+//                                     .image!), //  base64Decode(chatMessage.image!)
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+
+//                       const SizedBox(height: 8),
+//                       // VoiceNoteCard(voiceNoteInfo: voiceNoteInfo),
+
+//                       // Display text message
+//                       _buildMessageContent(context, chatMessage),
+//                       if (chatMessage.voiceNote != null)
+//                         VoiceNoteCard(
+//                           voiceNoteInfo: VoiceNoteModel(
+//                             name:
+//                                 'Voice Note', // Provide a name for the voice note
+//                             createAt:
+//                                 DateTime.now(), // Timestamp for voice note
+//                             path: chatMessage.voiceNote!, // Voice note path
+//                           ),
+//                         ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }}
+
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/screens/HospitalLocationScreen.dart';
-import 'package:gp_app/models/voice_note_model.dart';
-import 'package:gp_app/widgets/voice_note_card.dart';
+
+// Helper method to decode base64 string to Uint8List (image bytes)
+Uint8List _decodeBase64ToImage(String base64String) {
+  return base64Decode(base64String);
+}
 
 class MessagesWidget extends StatelessWidget {
   MessagesWidget({
@@ -19,11 +124,6 @@ class MessagesWidget extends StatelessWidget {
   final ChatMessage chatMessage;
   final String? introMessage;
   final bool isIntro;
-
-  // // Helper function to decode base64 string to Uint8List
-  // Uint8List _decodeBase64ToImage(String base64String) {
-  //   return Uint8List.fromList(base64.decode(base64String));
-  // }
 
   get context => null;
 
@@ -56,39 +156,48 @@ class MessagesWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Display image if available
-                      if (chatMessage.image != null &&
-                          chatMessage.image!.isNotEmpty)
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: MemoryImage(
-                                base64Decode(chatMessage
-                                    .image!), //  base64Decode(chatMessage.image!)
-                              ),
-                            ),
-                          ),
+                      if (chatMessage.image != null) ...[
+                        Image.memory(
+                          // Assuming chatMessage.image is a base64 encoded string
+                          _decodeBase64ToImage(chatMessage.image!),
+                          fit: BoxFit.fill,
                         ),
-
-                      const SizedBox(height: 8),
+                      ],
+                      // if (isIntro) ...[
+                      //   Image.asset(
+                      //     'assets/images/burndegree.png',
+                      //     fit: BoxFit.fill,
+                      //   ),
+                      // ],
+                      Visibility(
+                        visible: chatMessage.receiver == false,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 4.0, left: 4.0),
+                          child: chatMessage.receiver == false
+                              // ? (chatMessage.image != null
+                              //     ? Image.memory(
+                              //         _decodeBase64ToImage(chatMessage.image!),
+                              //         width: 40,
+                              //         height: 40,
+                              //       )
+                              //     : Image.asset(
+                              //         'assets/images/Hilal.png',
+                              //         width: 40,
+                              //         height: 40,
+                              //       ))
+                              // : null,
+                              ? Image.asset(
+                                  'assets/images/Hilal.png',
+                                  width: 40,
+                                  height: 40,
+                                )
+                              : null,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       // VoiceNoteCard(voiceNoteInfo: voiceNoteInfo),
 
-                      // Display text message
                       _buildMessageContent(context, chatMessage),
-                      if (chatMessage.voiceNote != null)
-                        VoiceNoteCard(
-                          voiceNoteInfo: VoiceNoteModel(
-                            name:
-                                'Voice Note', // Provide a name for the voice note
-                            createAt:
-                                DateTime.now(), // Timestamp for voice note
-                            path: chatMessage.voiceNote!, // Voice note path
-                          ),
-                        ),
                     ],
                   ),
                 ),
