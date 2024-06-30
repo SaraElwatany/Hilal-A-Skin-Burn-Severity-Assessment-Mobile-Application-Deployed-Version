@@ -37,17 +37,19 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   // Function to Provide the Intro Message For Every New Burn Thread Created
   void updateChatScreenWithIntro() async {
-    String burn_id = await SessionManager.getBurnId() ?? '0';
-    print('Burn ID For Doctor Messages: $burn_id');
-    print('Burn ID Before Messages: $burn_id');
+    // String burn_id = await SessionManager.getBurnId() ?? '0';
+    // print('Burn ID For Doctor Messages: $burn_id');
+    // print('Burn ID Before Messages: $burn_id');
+
     // (bool model, bool doctor, String mess_age, int receive_r)
-    _sendMessage(true, false, S.of(context).Intro, Global.userId, null,
-        0); // send intro message to the database
+    _sendMessage(true, false, S.of(context).Intro, Global.userId, null, 0,
+        null); // send intro message to the database
   }
 
   // Function to Provide the Intro Message If The User Was A Guest
   void updateChatScreenWithIntroGuest() async {
     int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
+
     setState(() {
       messages.add(ChatMessage(
           message: S.of(context).Intro,
@@ -61,17 +63,24 @@ class PatientModelChatState extends State<PatientModelChat> {
     });
   }
 
+  // Function to Provide the Intro Message For Every New Burn Thread Created
+  void updateChatScreenWithWaitingMessage() async {
+    String waitingMessage = S.of(context).waitingMessage;
+    _sendMessage(true, false, waitingMessage, Global.userId, null, 0,
+        null); // Display waiting Message
+  }
+
   // Function To Display The Model's Output & The Treatment Protocol For The Signed Up User
-  void updateChatScreenWithPrediction(String prediction) async {
+  void updateChatScreenWithPrediction(
+      String prediction, String? base64Img) async {
     String message = '';
     String drMessage = '';
-    String waitingMessage = S.of(context).waitingMessage;
     String clinical_flag = '0';
     print("Message From Location: $message");
 
     // Retrieve the base64 encoded image string from session
-    String? base64Image = await SessionManager.getImageBlob();
-    print("Blob Image Retrieved: $base64Image");
+    String? base64Img = await SessionManager.getImageBlob();
+    print("Blob Image Retrieved: $base64Img");
 
     if (prediction == 'First Degree Burn') {
       message = S.of(context).firstDegreeMessage;
@@ -92,16 +101,15 @@ class PatientModelChatState extends State<PatientModelChat> {
     }
 
     // (bool model, bool doctor, String mess_age, int receive_r, voice_path, display_img)
-    _sendMessage(true, false, message, Global.userId, null,
-        1); // send prediction message to the database
-    _sendMessage(true, false, waitingMessage, Global.userId, null,
-        0); // Display waiting Message
-    _sendMessage(true, true, drMessage, 1, null,
-        1); // send prediction message to the database
+    _sendMessage(true, false, message, Global.userId, null, 1,
+        base64Img); // send prediction message to the database
+    _sendMessage(true, true, drMessage, 1, null, 1,
+        base64Img); // send prediction message to the database
   }
 
   // Function To Display The Model's Output & The Treatment Protocol For The Guest User
-  void updateChatScreenWithPredictionGuest(String prediction) async {
+  void updateChatScreenWithPredictionGuest(
+      String prediction, String? base64Img) async {
     String message = '';
     String drMessage = '';
     String waitingMessage = S.of(context).waitingMessage;
@@ -140,7 +148,7 @@ class PatientModelChatState extends State<PatientModelChat> {
       messages.add(ChatMessage(
           message: message, // message,
           receiver: false,
-          image: null,
+          image: base64Img,
           senderId: Global.userId,
           burnId: burn_id,
           receiverId: 1,
@@ -173,8 +181,8 @@ class PatientModelChatState extends State<PatientModelChat> {
     }
 
     // (bool model, bool doctor, String mess_age, int receive_r)
-    _sendMessage(true, false, fullMessage, Global.userId, null,
-        0); // send hospital locations message to the database
+    _sendMessage(true, false, fullMessage, Global.userId, null, 0,
+        null); // send hospital locations message to the database
   }
 
   // Function To Display The List Of Nearest Hospitals For The Guest User
@@ -191,8 +199,10 @@ class PatientModelChatState extends State<PatientModelChat> {
       var mapsLink =
           'https://www.google.com/maps/search/?api=1&lat=${hospital['lat']}&lon=${hospital['lon']}';
 
-      fullMessage = fullMessage +
-          '${i + 1}. $hospitalMessage\n[View on Maps]($mapsLink)\n\n';
+      var map = S.of(context).viewMapsMessage;
+
+      fullMessage =
+          fullMessage + '${i + 1}. $hospitalMessage\n[$map]($mapsLink)\n\n';
 
       hospitalDetails.add({
         '${hospital['lat']},${hospital['lon']}': hospitalMessage,
@@ -213,8 +223,8 @@ class PatientModelChatState extends State<PatientModelChat> {
     });
   }
 
-  Future<void> fetchPredictionAndHospitals(int guest) async {
-    var url = Uri.parse('https://my-trial-t8wj.onrender.com/respond_to_user');
+  Future<void> fetchPredictionAndHospitals(int guest, String? base64Img) async {
+    var url = Uri.parse('https://deploy-2uif.onrender.com/respond_to_user');
 
     double userLat = (await SessionManager.getLatitude()) ?? 0.0;
     double userLong = (await SessionManager.getLongitude()) ?? 0.0;
@@ -244,7 +254,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           Global.latestPrediction = prediction;
 
           if (guest == 1) {
-            updateChatScreenWithPredictionGuest(prediction);
+            updateChatScreenWithPredictionGuest(prediction, base64Img);
             // Ensure the prediction message is added first
             await Future.delayed(Duration(
                 milliseconds: 20)); // Adding a small delay to ensure the order
@@ -253,14 +263,19 @@ class PatientModelChatState extends State<PatientModelChat> {
               updateChatScreenWithHospitalsGuest(hospitals);
             }
           } else {
-            updateChatScreenWithPrediction(prediction);
+            updateChatScreenWithPrediction(prediction, base64Img);
             // Ensure the prediction message is added first
             await Future.delayed(Duration(
                 milliseconds: 20)); // Adding a small delay to ensure the order
-            if (prediction != 'First Degree Burn') {
-              updateChatScreenWithHospitals(hospitals);
-            }
+
+            updateChatScreenWithHospitals(
+                hospitals); //////////////////////////////////////////////
+            // if (prediction != 'First Degree Burn') {
+            //   updateChatScreenWithHospitals(hospitals);
+            // }
           }
+
+          updateChatScreenWithWaitingMessage();
 
           setState(() {
             predictionAndHospitalsFetched = true;
@@ -317,6 +332,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   void _initializeSession() async {
     String userProfession =
         (await SessionManager.getUserProfession()) ?? 'patient';
+    String? base64Img = await SessionManager.getImageBlob() ?? null;
     print('User Profession: $userProfession');
 
     int user_id = Global.userId;
@@ -333,13 +349,13 @@ class PatientModelChatState extends State<PatientModelChat> {
 
       updateChatScreenWithIntro();
       introMessageShown = true;
-      fetchPredictionAndHospitals(0);
+      fetchPredictionAndHospitals(0, base64Img);
     }
     // The user is a Guest (So only display the output messages, no saving in the db occur)
     else if (user_id == 0 && newBurn == 'true') {
       updateChatScreenWithIntroGuest();
       introMessageShown = true;
-      fetchPredictionAndHospitals(1);
+      fetchPredictionAndHospitals(1, base64Img);
     }
   }
 
@@ -378,51 +394,9 @@ class PatientModelChatState extends State<PatientModelChat> {
     }
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  // String userProfession = (await Session.Manager.getUserProfession()) ?? 'patient';
-  // String newBurn = (await Session.Manager.getBurnCondition()) ?? 'true';
-  //   if ((userProfession=='patient') && (!introMessageShown) && (newBurn=='true')) {
-  //     updateChatScreenWithIntro();
-  //     introMessageShown = true;
-  //     fetchPredictionAndHospitals();
-  //   }
-
-  //   // if (messages.isEmpty && !introMessageShown) {
-  //   //   updateChatScreenWithIntro();
-  //   //   introMessageShown = true;
-  //   //   fetchPredictionAndHospitals();
-  //   // }
-  // }
-
-  // void _toggleRecording() async {
-  //   if (_isRecording) {
-  //     final path = await _recorder.stopRecorder();
-  //     if (path != null) {
-  //       setState(() {
-  //         messages.add(ChatMessage(
-  //             message: 'New audio message',
-  //             receiver: false,
-  //             timestamp: DateTime.now(),
-  //             senderId: Global.user_id,
-  //             receiverId: '1'));
-  //       });
-  //     }
-  //     setState(() {
-  //       _isRecording = false;
-  //     });
-  //   } else {
-  //     await _recorder.startRecorder(toFile: 'audio_message.aac');
-  //     setState(() {
-  //       _isRecording = true;
-  //     });
-  //   }
-  // }
-
   // Function To Send The Messages To The Server & Save It In The DB For The Signed Up User
   void _sendMessage(bool model, bool doctor, String mess_age, int receive_r,
-      String? voiceNotePath, int img_flag) async {
+      String? voiceNotePath, int img_flag, String? base64Img) async {
     int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
 
     if (model == true) {
@@ -433,7 +407,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         final message = ChatMessage(
           message: mess_age,
           receiver: true,
-          image: null,
+          image: base64Img,
           imgFlag: img_flag,
           timestamp: DateTime.now(),
           senderId: 3,
@@ -450,7 +424,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         final message = ChatMessage(
           message: mess_age,
           receiver: false,
-          image: null,
+          image: base64Img,
           imgFlag: img_flag,
           timestamp: DateTime.now(),
           senderId: 3,
@@ -470,7 +444,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         final voiceNoteMessage = ChatMessage(
           message: mess_age,
           receiver: false,
-          image: null,
+          image: base64Img,
           imgFlag: img_flag,
           voiceNote: voiceNotePath,
           timestamp: DateTime.now(),
@@ -495,7 +469,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           final message = ChatMessage(
               message: text,
               receiver: true,
-              image: null,
+              image: base64Img,
               imgFlag: img_flag,
               timestamp: DateTime.now(),
               senderId: Global.userId,
@@ -593,8 +567,14 @@ class PatientModelChatState extends State<PatientModelChat> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => _sendMessage(false, false, '', 1, null,
-                            0), // (bool model, bool doctor, String mess_age, int receive_r)
+                        onPressed: () => _sendMessage(
+                            false,
+                            false,
+                            '',
+                            1,
+                            null,
+                            0,
+                            null), // (bool model, bool doctor, String mess_age, int receive_r)
                         icon: const Icon(Icons.send),
                       ),
                       IconButton(
@@ -620,10 +600,10 @@ class PatientModelChatState extends State<PatientModelChat> {
                                 .read<VoiceNotesCubit>()
                                 .addToVoiceNotes(newVoiceNote);
                             _sendMessage(false, false, '', 1, newVoiceNote.path,
-                                0); // Pass voice note path
+                                0, null); // Pass voice note path
                           } else {
-                            _sendMessage(false, false, '', 1, null,
-                                0); // Pass null if no voice note
+                            _sendMessage(false, false, '', 1, null, 0,
+                                null); // Pass null if no voice note
                           }
                         },
                         icon: const Icon(Icons.mic),
@@ -639,3 +619,48 @@ class PatientModelChatState extends State<PatientModelChat> {
     );
   }
 }
+
+
+
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  // String userProfession = (await Session.Manager.getUserProfession()) ?? 'patient';
+  // String newBurn = (await Session.Manager.getBurnCondition()) ?? 'true';
+  //   if ((userProfession=='patient') && (!introMessageShown) && (newBurn=='true')) {
+  //     updateChatScreenWithIntro();
+  //     introMessageShown = true;
+  //     fetchPredictionAndHospitals();
+  //   }
+
+  //   // if (messages.isEmpty && !introMessageShown) {
+  //   //   updateChatScreenWithIntro();
+  //   //   introMessageShown = true;
+  //   //   fetchPredictionAndHospitals();
+  //   // }
+  // }
+
+  // void _toggleRecording() async {
+  //   if (_isRecording) {
+  //     final path = await _recorder.stopRecorder();
+  //     if (path != null) {
+  //       setState(() {
+  //         messages.add(ChatMessage(
+  //             message: 'New audio message',
+  //             receiver: false,
+  //             timestamp: DateTime.now(),
+  //             senderId: Global.user_id,
+  //             receiverId: '1'));
+  //       });
+  //     }
+  //     setState(() {
+  //       _isRecording = false;
+  //     });
+  //   } else {
+  //     await _recorder.startRecorder(toFile: 'audio_message.aac');
+  //     setState(() {
+  //       _isRecording = true;
+  //     });
+  //   }
+  // }

@@ -21,7 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Local Host For Android Emulator => http://10.0.2.2:19999
 // Local Host For Windows => http://127.0.0.1:19999
 // Local Host For Chrome => http://localhost:58931  120.0.6099.111
-// https://my-trial-t8wj.onrender.com
+// https://deploy-2uif.onrender.com
 
 // Session Class to store and retrieve states
 class SessionManager {
@@ -197,7 +197,7 @@ Future<String> sendData(
   // myState.updateUserId();
   String userId = "0";
 
-  String url = 'https://my-trial-t8wj.onrender.com/login';
+  String url = 'https://deploy-2uif.onrender.com/login';
   var request = await http.post(Uri.parse(url), body: {
     'email': email,
     'password': password,
@@ -336,7 +336,7 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
     };
   }
 
-  var url = 'https://my-trial-t8wj.onrender.com/$route'; //
+  var url = 'https://deploy-2uif.onrender.com/$route'; //
   print('Before Request');
   var request = await http.post(Uri.parse(url), body: body);
   // var request = await http.post(Uri.parse(url), body: {
@@ -449,7 +449,7 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
     // Create the multipart request
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://my-trial-t8wj.onrender.com/uploadImg'),
+      Uri.parse('https://deploy-2uif.onrender.com/uploadImg'),
     );
 
     // Add the base64-encoded image as a field
@@ -497,7 +497,7 @@ Future<int> sendImageToServer(File imageFile, BuildContext context) async {
 // Function to fetch the symptoms and cause of burn from the user
 Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
     Symptoms? placeOfBurn, BuildContext context) async {
-  String url = 'https://my-trial-t8wj.onrender.com/add_burn';
+  String url = 'https://deploy-2uif.onrender.com/add_burn';
   // Get the User ID From the Shared Preferences
   String userId = (await SessionManager.getUserId()) ?? '0';
   // Get the Burn ID From the Shared Preferences
@@ -613,7 +613,7 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
 // Skip the acquiring of clinical data for now
 // Function to fetch the symptoms and cause of burn from the user
 Future skipClinicalData(BuildContext context) async {
-  String url = 'https://my-trial-t8wj.onrender.com/add_burn';
+  String url = 'https://deploy-2uif.onrender.com/add_burn';
   // Get the state of the widgets
   // final myState = Provider.of<MyState>(context, listen: false);
   // Get the User ID From the Shared Preferences
@@ -651,7 +651,7 @@ Future skipClinicalData(BuildContext context) async {
 
 // Function to list all users with burns for the doctor
 Future<List<Patient>> getPatients() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_all_burns');
+  var url = Uri.parse('https://deploy-2uif.onrender.com/get_all_burns');
   var response = await http.post(url);
 
   // Request was successful, handle the response
@@ -686,7 +686,7 @@ Future<List<Patient>> getPatients() async {
 
 // Function to list all doctor users for the admin
 Future<List<Patient>> getDoctors() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_all_doctors');
+  var url = Uri.parse('https://deploy-2uif.onrender.com/get_all_doctors');
   var response = await http.post(url);
 
   bool admin = Global.adminPassword;
@@ -715,7 +715,7 @@ Future<List<Patient>> getDoctors() async {
 
 // Function to list all users with burns for the doctor
 Future<List<BurnHistory>> getBurns() async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_user_burns');
+  var url = Uri.parse('https://deploy-2uif.onrender.com/get_user_burns');
 
   int user_id = Global.userId;
 
@@ -789,7 +789,7 @@ Future<List<BurnHistory>> getBurns() async {
 Future<List<ChatMessage>> fetchChatHistory(
     int senderId, int receiverId, int burn_id) async {
   var url = Uri.parse(
-      'https://my-trial-t8wj.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId&burn_id=$burn_id');
+      'https://deploy-2uif.onrender.com/get_chat_history?sender_id=$senderId&receiver_id=$receiverId&burn_id=$burn_id');
   try {
     var response = await http.get(url);
 
@@ -806,7 +806,7 @@ Future<List<ChatMessage>> fetchChatHistory(
 
 Future<void> sendMessageToServer(ChatMessage message) async {
   try {
-    var url = Uri.parse('https://my-trial-t8wj.onrender.com/send_message');
+    var url = Uri.parse('https://deploy-2uif.onrender.com/send_message');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({
       'sender_id': message.senderId,
@@ -842,7 +842,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
 // Function to return the user's location to flask
 Future<void> get_user_location(
     double user_latitude, double user_longitude) async {
-  var url = Uri.parse('https://my-trial-t8wj.onrender.com/get_user_location');
+  var url = Uri.parse('https://deploy-2uif.onrender.com/get_user_location');
   // Save User's latitude & longitude to SharedPreferences
   await SessionManager.saveLatitude(user_latitude);
   await SessionManager.saveLongitude(user_longitude);
@@ -906,7 +906,7 @@ Future<void> get_user_location(
 // Function to delete flask session when logged out from account
 void logout() async {
   String url =
-      'https://my-trial-t8wj.onrender.com/logout'; // Replace with your actual logout endpoint URL
+      'https://deploy-2uif.onrender.com/logout'; // Replace with your actual logout endpoint URL
 
   try {
     final response = await http.post(Uri.parse(url)); //

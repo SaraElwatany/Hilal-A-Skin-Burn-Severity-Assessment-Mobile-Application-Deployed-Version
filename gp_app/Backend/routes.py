@@ -823,7 +823,7 @@ def get_chat_history():
             # Assign Images to messages Separatly
             burn_item = Burn.query.filter_by(burn_id=burn_id).first()
             if message.img_flag == 1:
-                message.image = burn_item.burn_img
+                 message.image = base64.b64encode(burn_item.burn_img).decode('utf-8')
 
 
         return jsonify([message.to_dict() for message in chat_history]), 200

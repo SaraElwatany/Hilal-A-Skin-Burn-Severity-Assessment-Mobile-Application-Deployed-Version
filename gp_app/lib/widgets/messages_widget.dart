@@ -67,7 +67,8 @@ class MessagesWidget extends StatelessWidget {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: MemoryImage(
-                                base64Decode(chatMessage.image!),
+                                base64Decode(chatMessage
+                                    .image!), //  base64Decode(chatMessage.image!)
                               ),
                             ),
                           ),
