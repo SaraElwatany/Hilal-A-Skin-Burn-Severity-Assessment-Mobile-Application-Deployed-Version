@@ -739,7 +739,8 @@ class S {
       args: [],
     );
   }
-    // burnHistory
+
+  // burnHistory
   String get ch {
     return Intl.message(
       "Burn History",
@@ -861,6 +862,16 @@ class S {
     return Intl.message(
       "The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n",
       name: 'locationMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // locationMessage
+  String get waitingMessage {
+    return Intl.message(
+      "Our Doctors will get to you shortly.",
+      name: 'waitingMessage',
       desc: '',
       args: [],
     );

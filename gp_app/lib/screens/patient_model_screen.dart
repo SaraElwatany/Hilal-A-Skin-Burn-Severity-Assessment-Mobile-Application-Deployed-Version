@@ -65,6 +65,7 @@ class PatientModelChatState extends State<PatientModelChat> {
   void updateChatScreenWithPrediction(String prediction) async {
     String message = '';
     String drMessage = '';
+    String waitingMessage = S.of(context).waitingMessage;
     String clinical_flag = '0';
     print("Message From Location: $message");
 
@@ -90,9 +91,11 @@ class PatientModelChatState extends State<PatientModelChat> {
       drMessage = drMessage + 'The Clinical Data Provided:\n';
     }
 
-    // (bool model, bool doctor, String mess_age, int receive_r)
+    // (bool model, bool doctor, String mess_age, int receive_r, voice_path, display_img)
     _sendMessage(true, false, message, Global.userId, null,
         1); // send prediction message to the database
+    _sendMessage(true, false, waitingMessage, Global.userId, null,
+        0); // Display waiting Message
     _sendMessage(true, true, drMessage, 1, null,
         1); // send prediction message to the database
   }
@@ -101,7 +104,9 @@ class PatientModelChatState extends State<PatientModelChat> {
   void updateChatScreenWithPredictionGuest(String prediction) async {
     String message = '';
     String drMessage = '';
+    String waitingMessage = S.of(context).waitingMessage;
     String clinical_flag = '0';
+
     int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
     print("Message From Location: $message");
 
@@ -124,8 +129,12 @@ class PatientModelChatState extends State<PatientModelChat> {
     clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
     // If clinical Data was Provided Display it
     if (clinical_flag == '1') {
-      drMessage = drMessage + 'The Clinical Data Provided:\n';
+      drMessage =
+          drMessage + 'The Clinical Data Provided by user:\n1.Symptoms:';
     }
+
+    // _sendMessage(true, false, waitingMessage, Global.userId, null,
+    //     0); // Display waiting Message
 
     setState(() {
       messages.add(ChatMessage(
@@ -153,8 +162,10 @@ class PatientModelChatState extends State<PatientModelChat> {
       var mapsLink =
           'https://www.google.com/maps/search/?api=1&lat=${hospital['lat']}&lon=${hospital['lon']}';
 
-      fullMessage = fullMessage +
-          '${i + 1}. $hospitalMessage\n[View on Maps]($mapsLink)\n\n';
+      var map = S.of(context).viewMapsMessage;
+
+      fullMessage =
+          fullMessage + '${i + 1}. $hospitalMessage\n[$map]($mapsLink)\n\n';
 
       hospitalDetails.add({
         '${hospital['lat']},${hospital['lon']}': hospitalMessage,
@@ -237,13 +248,18 @@ class PatientModelChatState extends State<PatientModelChat> {
             // Ensure the prediction message is added first
             await Future.delayed(Duration(
                 milliseconds: 20)); // Adding a small delay to ensure the order
-            updateChatScreenWithHospitalsGuest(hospitals);
+
+            if (prediction != 'First Degree Burn') {
+              updateChatScreenWithHospitalsGuest(hospitals);
+            }
           } else {
             updateChatScreenWithPrediction(prediction);
             // Ensure the prediction message is added first
             await Future.delayed(Duration(
                 milliseconds: 20)); // Adding a small delay to ensure the order
-            updateChatScreenWithHospitals(hospitals);
+            if (prediction != 'First Degree Burn') {
+              updateChatScreenWithHospitals(hospitals);
+            }
           }
 
           setState(() {

@@ -250,7 +250,7 @@ class ClinicalDataState extends State<ClinicalDataScreen> {
                     addClinicalData(
                         selectedFirstGroupSymptoms,
                         selectedSecondGroupSymptom,
-                        selectedSecondGroupSymptom,
+                        selectedThirdGroupSymptom,
                         context);
                     Navigator.push(
                       context,

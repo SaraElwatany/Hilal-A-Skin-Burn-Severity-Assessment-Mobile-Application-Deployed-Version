@@ -250,6 +250,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
     voice_note_path VARCHAR(1000),
     message VARCHAR(2000) NOT NULL,
     image LONGBLOB NULL, -- Allowing NULL for the image 
+    img_flag INT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     INDEX sender_id_idx (sender_id),
     INDEX receiver_id_idx (receiver_id)

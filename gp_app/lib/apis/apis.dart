@@ -660,6 +660,7 @@ Future<List<Patient>> getPatients() async {
     final responseMessage = responseData['message'];
 
     final patients_ids = responseData['user_ids'];
+    final burn_ids = responseData['burn_ids'];
     final patients_names = responseData['user_names'];
     final patients_info = responseData['user_info'];
 
@@ -673,6 +674,7 @@ Future<List<Patient>> getPatients() async {
       return Patient(
           name: patients_names[index],
           info: patients_info[index],
+          burn_id: burn_ids[index],
           id: patients_ids[index]);
     });
 

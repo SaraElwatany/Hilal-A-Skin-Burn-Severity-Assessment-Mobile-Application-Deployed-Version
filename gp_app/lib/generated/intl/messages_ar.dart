@@ -125,6 +125,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "الحرق من الدرجة الثالثة.\nالإسعافات الأولية الموصى بها:\n1. اتأكد من أنك بعيد عن مصدر الحرق.\n2. اغسل مكان الحرق بمياه حنفية في درجة حرارة الغرفة لمدة ١٠-١٥ دقايق عشان تبرد الجلد.\nمتستخدمش الثلج أو زبدة أو معجون أسنان أو أي مواد كيميائية تانية.\n3. اخلع أي إكسسوارات (مثل المجوهرات أو الساعات أو الخواتم).\n4. ادهن مرهم ميبو أو درمازين على المنطقة المحروقة  بعدين غطيها بشاش و بلاستر أو قطعة قماش نظيفة.\n5. روح المستشفى علي طول."),
         "locationMessage": MessageLookupByLibrary.simpleMessage(
             "المعروض هو قايمة بأقرب خمس مستشفيات حسب المكان الانت متواجد فيه:\n"),
+        "waitingMessage": MessageLookupByLibrary.simpleMessage(
+            "دكاترتنا هيتواصلوا معاك علي طول"),
         "viewMaps": MessageLookupByLibrary.simpleMessage("عرض علي الخرائط"),
         "numberOne": MessageLookupByLibrary.simpleMessage("١."),
         "numberTwo": MessageLookupByLibrary.simpleMessage("٢."),

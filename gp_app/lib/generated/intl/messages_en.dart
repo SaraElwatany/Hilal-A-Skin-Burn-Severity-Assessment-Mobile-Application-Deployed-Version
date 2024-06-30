@@ -132,7 +132,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Your Burn Degree is Third Degree Burn.\nThe Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Immediate medical attention.\n"),
         "locationMessage": MessageLookupByLibrary.simpleMessage(
             "The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n"),
-        "viewMaps": MessageLookupByLibrary.simpleMessage("View on Maps"),
+        "viewMaps": MessageLookupByLibrary.simpleMessage(
+            "Our Doctors will get to you shortly."),
+        "waitingMessage": MessageLookupByLibrary.simpleMessage("View on Maps"),
         "numberOne": MessageLookupByLibrary.simpleMessage("1."),
         "numberTwo": MessageLookupByLibrary.simpleMessage("2."),
         "numberThree": MessageLookupByLibrary.simpleMessage("3."),

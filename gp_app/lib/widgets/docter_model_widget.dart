@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:gp_app/apis/apis.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/chat_message.dart';
@@ -21,14 +23,21 @@ class DoctorMessagesWidget extends StatelessWidget {
             const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: (doctorMessage.receiver == false)
-                  ? Image.asset(
-                      doctorMessage.image!,
-                    )
-                  : null,
-            ),
+            // Display image if available
+            if (doctorMessage.image != null && doctorMessage.image!.isNotEmpty)
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: MemoryImage(
+                      base64Decode(doctorMessage.image!),
+                    ),
+                  ),
+                ),
+              ),
             const SizedBox(
               height: 20,
             ),
@@ -49,19 +58,22 @@ class DoctorMessagesWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Visibility(
-                          visible: (doctorMessage.receiver == false),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 4.0, left: 4.0),
-                            child: (doctorMessage.receiver == false
-                                ? Image.asset(
-                                    'assets/images/Hilal.png',
-                                    width: 40,
-                                    height: 40,
-                                  )
-                                : null),
+                        // Display image if available
+                        if (doctorMessage.image != null &&
+                            doctorMessage.image!.isNotEmpty)
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: MemoryImage(
+                                  base64Decode(doctorMessage.image!),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
                         const SizedBox(width: 8),
                       ],
                     ),
@@ -78,7 +90,27 @@ class DoctorMessagesWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      print('Confirm Button');
+
+                      int patientID =
+                          await SessionManager.getScreenIndex() ?? 0;
+                      print("Patient ID Associated With the pressed thread");
+
+                      String reply =
+                          "The Degree of Burn Was Confirmed By the Doctor";
+
+                      final message = ChatMessage(
+                          message: reply,
+                          receiver: true,
+                          image: null,
+                          timestamp: DateTime.now(),
+                          senderId: 1,
+                          receiverId: patientID);
+
+                      // Send the message to the server
+                      sendMessageToServer(message);
+                    },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
@@ -96,7 +128,26 @@ class DoctorMessagesWidget extends StatelessWidget {
                     width: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      print('Reject Button');
+
+                      int patientID =
+                          await SessionManager.getScreenIndex() ?? 0;
+                      print("Patient ID Associated With the pressed thread");
+
+                      String reply =
+                          "The Degree of Burn Was Rejected By the Doctor, Please wait for additional information about your condition";
+                      final message = ChatMessage(
+                          message: reply,
+                          receiver: true,
+                          image: null,
+                          timestamp: DateTime.now(),
+                          senderId: 1,
+                          receiverId: patientID);
+
+                      // Send the message to the server
+                      sendMessageToServer(message);
+                    },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),

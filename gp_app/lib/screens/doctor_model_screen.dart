@@ -7,12 +7,9 @@ import 'package:gp_app/widgets/localization_icon.dart';
 // import 'package:provider/provider.dart';
 
 import 'package:gp_app/models/chat_message.dart';
-// import 'package:gp_app/widgets/docter_model_widget.dart';
 import 'package:gp_app/widgets/docter_model_widget.dart';
 
 // Newly Added Imports
-import 'dart:convert'; // Add this import for jsonDecode
-import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gp_app/models/voice_note_model.dart';
 import 'package:gp_app/screens/patient_location.dart';
@@ -58,8 +55,12 @@ class DocterModelChatState extends State<DocterModelChat> {
     try {
       int patientID = await SessionManager.getScreenIndex() ?? 0;
       print("Patient ID Associated With the pressed thread");
+
+      int burnId = int.parse(await SessionManager.getBurnId() ?? '0');
+      print("Burn ID Associated with that index tapped");
+
       List<ChatMessage> fetchedMessages =
-          await fetchChatHistory(1, patientID, 0); // Receiver ID set to 1
+          await fetchChatHistory(1, patientID, burnId); // Receiver ID set to 1
       setState(() {
         messages = fetchedMessages;
       });
@@ -68,17 +69,19 @@ class DocterModelChatState extends State<DocterModelChat> {
     }
   }
 
-  void _sendMessage() {
+  void _sendMessage() async {
+    int patientID = await SessionManager.getScreenIndex() ?? 0;
+    print("Patient ID Associated With the pressed thread");
+
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final message = ChatMessage(
           message: text,
           receiver: true,
-          image:
-              "C:\Users\Marina\OneDrive\Pictures\Screenshots\Screenshot 2024-06-22 160114.png",
+          image: null,
           timestamp: DateTime.now(),
           senderId: 1,
-          receiverId: 4);
+          receiverId: patientID);
 
       // Send the message to the server
       sendMessageToServer(message);

@@ -136,11 +136,18 @@ class DocterProfileState extends State<DocterProfile> {
                   index: index,
                   onTap: () async {
                     print('Tapped patient at index: $index');
+
                     int patientId = patients[index].id;
+                    int burnId = patients[index].burn_id!;
                     String patientInfo = patients[index].info;
+
                     await SessionManager.saveScreenIndex(patientId);
                     print('Selected Patient ID: $patientId');
                     print('Selected Patient Info: $patientInfo');
+
+                    await SessionManager.saveBurnId(burnId.toString());
+                    print('Burn ID For that Index On Tap: $burnId');
+
                     bool check = Global.adminPassword;
                     if (!check) {
                       Navigator.of(context).push(MaterialPageRoute(

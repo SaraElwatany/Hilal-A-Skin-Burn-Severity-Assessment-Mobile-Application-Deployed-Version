@@ -6,6 +6,7 @@ import torch.nn as nn
 from datetime import date
 from torchvision import models
 from datetime import datetime
+from sqlalchemy import desc, func
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import OperationalError
 from flask import Blueprint, redirect, url_for, Flask, request, jsonify, render_template, session
@@ -511,9 +512,14 @@ def get_all_burns():
 
     print("fetching users with burns...")
 
-    # Get all burns from the Burn table
-    users = Burn.query.all()
-    print('Users: ', users)
+    # # Get all burns from the Burn table
+    # users = Burn.query.all()
+    # print('Users: ', users)
+
+    # Query to get burns ordered by the most recent message date
+    query = db.session.query(Burn).outerjoin((ChatMessage, Burn.burn_id == ChatMessage.burn_id)).group_by(Burn.burn_id).order_by(desc(func.max(ChatMessage.timestamp)))                                             
+    users = query.all()
+
     # Check if each user from Burn table exists in Users table
     user_list = []
     # build a dictionary of the users
@@ -526,7 +532,14 @@ def get_all_burns():
                          'email': user_in_users_table.email, 
                          'phone': user_in_users_table.phone, 
                          'weight': user_in_users_table.weight, 
-                         'height': user_in_users_table.height
+                         'height': user_in_users_table.height,
+                         'burn_id': burn_user.burn_id,
+                         'trembling_limbs': burn_user.trembling_limbs,
+                         'diarrhea': burn_user.diarrhea,
+                         'cold_extremities': burn_user.cold_extremities,
+                         'nausea': burn_user.nausea,
+                         'cause': burn_user.burn_type,
+                         'place': burn_user.burn_place
                         }
             user_list.append(user_dict)
         else:
@@ -539,7 +552,14 @@ def get_all_burns():
                          'email': 'None', 
                          'phone': None, 
                          'weight': None, 
-                         'height': None
+                         'height': None,
+                         'burn_id': burn_user.burn_id,
+                         'trembling_limbs': burn_user.trembling_limbs,
+                         'diarrhea': burn_user.diarrhea,
+                         'cold_extremities': burn_user.cold_extremities,
+                         'nausea': burn_user.nausea,
+                         'cause': burn_user.burn_type,
+                         'place': burn_user.burn_place
                         }
             user_list.append(user_dict)
 
@@ -566,6 +586,7 @@ def get_all_burns():
 
     print('User lists found', user_list)
     user_ids = [user.get('id') for user in user_list] 
+    burns_ids = [user.get('burn_id') for user in user_list] 
     user_names = [user.get('username') for user in user_list]
     user_info = ['Email: '+str(user.get('email')) for user in user_list]
     # user_info = ['email: '+str(user.get('email'))+' '+'Height: '+str(user.height) for user in users]
@@ -574,6 +595,7 @@ def get_all_burns():
     return {
             'message': 'Users with burns found', 
             'user_ids': user_ids, 
+            'burns_ids': burns_ids,
             'user_names': user_names, 
             'user_info': user_info 
             }
@@ -770,7 +792,8 @@ def get_chat_history():
         print('User Profession: ', user_profession)
         
 
-        if user_profession == 'patient':
+        # if user_profession == 'patient':
+        if user_profession == 'patient' or user_profession == 'doctor':
             # Fetch the Chat History, and include the model messages
             chat_history = ChatMessage.query.filter(
                 (((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
