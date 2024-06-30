@@ -141,7 +141,7 @@ def signup_info():
         return jsonify(response)
     # Email & Password accepted
     else:
-        print('Signed Up Successfully, 'f'Username: {firstname} {lastname}', f'Email: {email}', f'Password: {password}')
+        print('Signed Up Information Restrictions Are Correct, 'f'Username: {firstname} {lastname}', f'Email: {email}', f'Password: {password}')
         hashed_password = generate_password_hash(password, method='pbkdf2')
         print('Hashed Password is: ', hashed_password)
 
@@ -168,6 +168,7 @@ def signup_info():
             try:
                 db.session.add(new_user)
                 db.session.commit()
+                print('Signed Up Successfully')
                 print('user id: ', new_user.id) # Get user ID
                 # USER_ID = new_user.id
                 # session['user_id'] = new_user.id    # Store new signed up user ID in session
