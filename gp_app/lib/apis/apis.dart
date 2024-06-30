@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:gp_app/models/global.dart';
@@ -796,7 +797,15 @@ Future<List<ChatMessage>> fetchChatHistory(
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      return data.map((item) => ChatMessage.fromJson(item)).toList();
+
+      return data.map((item) {
+        if (item['image'] != null) {
+          Uint8List imageBytes = base64Decode(item['image']);
+          String base64Image = base64Encode(imageBytes);
+          item['image'] = base64Image; // Convert to base64 string
+        }
+        return ChatMessage.fromJson(item);
+      }).toList();
     } else {
       throw Exception('Failed to load chat history');
     }

@@ -816,17 +816,17 @@ def get_chat_history():
 
         for message in chat_history:
 
-            print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}, Burn: {message.burn_id}")
+            print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}, Burn: {message.burn_id}, Image: { message.image}")
             # Modify the receiver field according to the user id to adjust the message color
             if message.sender_id != sender_id:    # if the sender of the message wasn't the user
                 message.receiver = False
             else:
                 message.receiver = True
 
-            # # Assign Images to messages Separatly
-            # burn_item = Burn.query.filter_by(burn_id=burn_id).first()
-            # if message.img_flag == 1:
-            #      message.image = base64.b64encode(burn_item.burn_img).decode('utf-8')
+            # Assign Images to messages Separatly
+            burn_item = Burn.query.filter_by(burn_id=burn_id).first()
+            if message.img_flag == 1:
+                 message.image = base64.b64encode(burn_item.burn_img).decode('utf-8')   # Convert Base64 Images to string for JSON
 
 
         return jsonify([message.to_dict() for message in chat_history]), 200
