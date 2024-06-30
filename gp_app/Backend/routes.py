@@ -739,12 +739,12 @@ def send_message():
             if key not in data:
                 return jsonify({'error': f'Missing key: {key}'}), 400
             
-        # Get the Image if present
+
+        # Decode the base64 image data
         image_data = None
-        if 'file' in request.files:
-            file = request.files['file']
-            image_data = file.read()
-            print('Burn Image is a file with type:', type(image_data))
+        image_base64 = data.get('image')
+        if image_base64 :
+            image_data = base64.b64decode(image_base64)
 
         message = ChatMessage(
             sender_id=data['sender_id'],
