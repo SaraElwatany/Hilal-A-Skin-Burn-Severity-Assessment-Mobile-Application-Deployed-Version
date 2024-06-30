@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredPassword = '';
+  bool isNavigating = false; // Add this flag to track navigation
   final List<UserInfo> _userInfoList = [];
 
   @override
@@ -46,63 +47,67 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _saveItem() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+    if (!isNavigating) {
+      isNavigating = true; // Set the flag to true
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
 
-      UserInfo userInfo =
-          UserInfo(_enteredName, _enteredPassword, Global.userId);
-      _userInfoList.add(userInfo);
+        UserInfo userInfo =
+            UserInfo(_enteredName, _enteredPassword, Global.userId);
+        _userInfoList.add(userInfo);
 
-      // Send data & then wait for the response either to go to main page or try again
-      String response = await sendData(username, password, context);
-      //  printUserInfoList();
-      if (response == 'Access Allowed') {
-        // Get the user profession from Session
-        String userProfession = 'patient';
-        userProfession =
-            (await SessionManager.getUserProfession()) ?? 'patient';
-        print("Profession From Login Screen: $userProfession");
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
-        if (userProfession == 'patient') {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
-        } else if (userProfession == 'admin') {
-          Global.adminPassword = true;
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
-        } else if (userProfession == 'doctor') {
-          //Global.adminPassword = true;
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+        // Send data & then wait for the response either to go to main page or try again
+        String response = await sendData(username, password, context);
+        //  printUserInfoList();
+        if (response == 'Access Allowed') {
+          // Get the user profession from Session
+          String userProfession = 'patient';
+          userProfession =
+              (await SessionManager.getUserProfession()) ?? 'patient';
+          print("Profession From Login Screen: $userProfession");
+          // Navigator.of(context)
+          //     .push(MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+          if (userProfession == 'patient') {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const MainPageScreen()));
+          } else if (userProfession == 'admin') {
+            Global.adminPassword = true;
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+          } else if (userProfession == 'doctor') {
+            //Global.adminPassword = true;
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+          }
+        } else if (response == 'Access Denied') {
+          login_warning(context);
         }
-      } else if (response == 'Access Denied') {
-        login_warning(context);
-      }
-    } else {
-      showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: const Text('Invalid Input'),
-                content: const Text(
-                  'Please fill in all required fields correctly',
-                ),
-                backgroundColor: Colors.white,
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                    },
-                    child: Text(
-                      'Okay',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
-                        fontSize: 15,
+      } else {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text('Invalid Input'),
+                  content: const Text(
+                    'Please fill in all required fields correctly',
+                  ),
+                  backgroundColor: Colors.white,
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: Text(
+                        'Okay',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.surface,
+                          fontSize: 15,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ));
+                  ],
+                ));
+      }
+      isNavigating = false; // Reset the flag after navigation
     }
   }
 

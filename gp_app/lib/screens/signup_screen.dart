@@ -30,6 +30,7 @@ class _SignUpState extends State<SignUpScreen> {
   var output = '';
   final List<NewUser> _userInfoList = [];
   bool flag = Global.adminPassword;
+  bool isNavigating = false; // Add this flag to track navigation
 
   void _saveItem() async {
     NewUser userInfo = NewUser(
@@ -42,47 +43,53 @@ class _SignUpState extends State<SignUpScreen> {
     );
     _userInfoList.add(userInfo);
 
-    // Get the User Profession
-    String user_profession;
-    user_profession = (await SessionManager.getUserProfession()) ?? 'patient';
-    output = await signUp(userInfo, user_profession);
+    if (!isNavigating) {
+      isNavigating = true; // Set the flag to true
 
-    if ((_formKey.currentState != null && _formKey.currentState!.validate()) &&
-        (output == 'Sign up Allowed')) {
-      _formKey.currentState!.save();
+      // Get the User Profession
+      String user_profession;
+      user_profession = (await SessionManager.getUserProfession()) ?? 'patient';
+      output = await signUp(userInfo, user_profession);
 
-      if (user_profession == 'patient') {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (ctx) => const MainPageScreen(),
-        ));
-      } else if (user_profession == 'admin') {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
-      }
-    } else {
-      showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: const Text('Invalid Input'),
-                content: const Text(
-                  'Please fill in all required fields correctly',
-                ),
-                backgroundColor: Colors.white,
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                    },
-                    child: Text(
-                      'Okay',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
-                        fontSize: 15,
+      if ((_formKey.currentState != null &&
+              _formKey.currentState!.validate()) &&
+          (output == 'Sign up Allowed')) {
+        _formKey.currentState!.save();
+
+        if (user_profession == 'patient') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (ctx) => const MainPageScreen(),
+          ));
+        } else if (user_profession == 'admin') {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => const DocterProfile()));
+        }
+      } else {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text('Invalid Input'),
+                  content: const Text(
+                    'Please fill in all required fields correctly',
+                  ),
+                  backgroundColor: Colors.white,
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: Text(
+                        'Okay',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.surface,
+                          fontSize: 15,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ));
+                  ],
+                ));
+      }
+      isNavigating = false; // Reset the flag after navigation
     }
   }
 
