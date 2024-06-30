@@ -257,7 +257,7 @@ class PatientModelChatState extends State<PatientModelChat> {
             updateChatScreenWithPredictionGuest(prediction, base64Img);
             // Ensure the prediction message is added first
             await Future.delayed(Duration(
-                milliseconds: 20)); // Adding a small delay to ensure the order
+                milliseconds: 500)); // Adding a small delay to ensure the order
 
             if (prediction != 'First Degree Burn') {
               updateChatScreenWithHospitalsGuest(hospitals);
@@ -266,7 +266,7 @@ class PatientModelChatState extends State<PatientModelChat> {
             updateChatScreenWithPrediction(prediction, base64Img);
             // Ensure the prediction message is added first
             await Future.delayed(Duration(
-                milliseconds: 20)); // Adding a small delay to ensure the order
+                milliseconds: 500)); // Adding a small delay to ensure the order
 
             updateChatScreenWithHospitals(
                 hospitals); //////////////////////////////////////////////
