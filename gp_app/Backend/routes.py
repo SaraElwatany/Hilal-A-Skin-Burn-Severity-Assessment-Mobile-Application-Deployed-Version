@@ -720,7 +720,7 @@ def send_message():
             message=data['message'],
             receiver=data['receiver'],
             burn_id=data.get('burn_id'),
-            image=data.get('image'),
+            image=data.get('image').read(),
             timestamp=data.get('timestamp'),
             voice_note_path=data.get('voice_note_path') 
         )
