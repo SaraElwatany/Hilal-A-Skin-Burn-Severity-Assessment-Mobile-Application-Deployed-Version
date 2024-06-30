@@ -736,11 +736,12 @@ def send_message():
             if key not in data:
                 return jsonify({'error': f'Missing key: {key}'}), 400
             
-        # Get the Image
-        file = request.files['file']
-        # Read image data as bytes
-        image_data = file.read()        # BLOB File 
-        print('Burn Image is a file with type:', type(image_data))
+        # Get the Image if present
+        image_data = None
+        if 'file' in request.files:
+            file = request.files['file']
+            image_data = file.read()
+            print('Burn Image is a file with type:', type(image_data))
 
         message = ChatMessage(
             sender_id=data['sender_id'],
@@ -748,7 +749,7 @@ def send_message():
             message=data['message'],
             receiver=data['receiver'],
             burn_id=data.get('burn_id'),
-            image=data.get('image'),
+            image=image_data,
             img_flag=data.get('img_flag'),
             timestamp=data.get('timestamp'),
             voice_note_path=data.get('voice_note_path') 
