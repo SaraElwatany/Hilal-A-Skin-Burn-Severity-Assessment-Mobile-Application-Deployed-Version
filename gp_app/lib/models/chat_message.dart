@@ -6,7 +6,8 @@ class ChatMessage {
   final int? burnId;
   final String message;
   final String? image; // Updated to store base64 encoded image
-  final String? voiceNote; 
+  final int? imgFlag;
+  final String? voiceNote;
   final bool? receiver;
   final DateTime timestamp;
   // Variables Related to the Location
@@ -20,6 +21,7 @@ class ChatMessage {
     required this.senderId,
     required this.receiverId,
     this.burnId,
+    this.imgFlag,
     required this.message,
     required this.receiver,
     this.image,
@@ -41,6 +43,7 @@ class ChatMessage {
       burnId: json['burn_id'] as int?,
       message: json['message'] as String? ?? '',
       image: json['image'] as String?, // Store base64 encoded image
+      imgFlag: json['img_flag'] as int?,
       voiceNote: json['voice_note_path'] as String?,
       receiver: json['receiver'] as bool?,
       timestamp: DateTime.parse(json['timestamp'] as String),
@@ -66,10 +69,10 @@ class ChatMessage {
       'timestamp': timestamp.toIso8601String(),
       'latitude': latitude,
       'longitude': longitude,
+      'img_flag': imgFlag,
       'hospital_name_en': hospitalNameEn,
       'hospital_name_ar': hospitalNameAr,
       'hospital_details': hospitalDetails,
     };
   }
 }
-

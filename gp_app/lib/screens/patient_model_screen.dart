@@ -42,7 +42,7 @@ class PatientModelChatState extends State<PatientModelChat> {
     print('Burn ID Before Messages: $burn_id');
     // (bool model, bool doctor, String mess_age, int receive_r)
     _sendMessage(true, false, S.of(context).Intro, Global.userId, null,
-        null); // send intro message to the database
+        0); // send intro message to the database
   }
 
   // Function to Provide the Intro Message If The User Was A Guest
@@ -56,6 +56,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           senderId: Global.userId,
           burnId: burn_id,
           image: null,
+          imgFlag: 0,
           receiverId: 1));
     });
   }
@@ -73,14 +74,14 @@ class PatientModelChatState extends State<PatientModelChat> {
 
     if (prediction == 'First Degree Burn') {
       message = S.of(context).firstDegreeMessage;
-      drMessage = "The User's Burn is a First Degree Burn.\n";
+      drMessage = "The Suggested User's Burn is First Degree Burn.\n";
       print("Message From Location: $message");
     } else if (prediction == 'Second Degree Burn') {
       message = S.of(context).secondDegreeMessage;
-      drMessage = "The User's Burn is a Second Degree Burn.\n";
+      drMessage = "The Suggested User's Burn is Second Degree Burn.\n";
     } else if (prediction == 'Third Degree Burn') {
       message = S.of(context).thirdDegreeMessage;
-      drMessage = "The User's Burn is a Third Degree Burn.\n";
+      drMessage = "The Suggested User's Burn is Third Degree Burn.\n";
     }
 
     clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
@@ -91,9 +92,9 @@ class PatientModelChatState extends State<PatientModelChat> {
 
     // (bool model, bool doctor, String mess_age, int receive_r)
     _sendMessage(true, false, message, Global.userId, null,
-        base64Image); // send prediction message to the database
+        1); // send prediction message to the database
     _sendMessage(true, true, drMessage, 1, null,
-        base64Image); // send prediction message to the database
+        1); // send prediction message to the database
   }
 
   // Function To Display The Model's Output & The Treatment Protocol For The Guest User
@@ -130,10 +131,11 @@ class PatientModelChatState extends State<PatientModelChat> {
       messages.add(ChatMessage(
           message: message, // message,
           receiver: false,
-          image: base64Image,
+          image: null,
           senderId: Global.userId,
           burnId: burn_id,
           receiverId: 1,
+          imgFlag: 1,
           timestamp: DateTime.now()));
     });
   }
@@ -161,7 +163,7 @@ class PatientModelChatState extends State<PatientModelChat> {
 
     // (bool model, bool doctor, String mess_age, int receive_r)
     _sendMessage(true, false, fullMessage, Global.userId, null,
-        null); // send hospital locations message to the database
+        0); // send hospital locations message to the database
   }
 
   // Function To Display The List Of Nearest Hospitals For The Guest User
@@ -194,6 +196,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           receiverId: 1,
           burnId: burn_id,
           image: null,
+          imgFlag: 0,
           hospitalDetails: hospitalDetails,
           timestamp: DateTime.now()));
     });
@@ -403,7 +406,7 @@ class PatientModelChatState extends State<PatientModelChat> {
 
   // Function To Send The Messages To The Server & Save It In The DB For The Signed Up User
   void _sendMessage(bool model, bool doctor, String mess_age, int receive_r,
-      String? voiceNotePath, String? blobImage) async {
+      String? voiceNotePath, int img_flag) async {
     int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
 
     if (model == true) {
@@ -414,7 +417,8 @@ class PatientModelChatState extends State<PatientModelChat> {
         final message = ChatMessage(
           message: mess_age,
           receiver: true,
-          image: blobImage,
+          image: null,
+          imgFlag: img_flag,
           timestamp: DateTime.now(),
           senderId: 3,
           receiverId: receive_r,
@@ -430,7 +434,8 @@ class PatientModelChatState extends State<PatientModelChat> {
         final message = ChatMessage(
           message: mess_age,
           receiver: false,
-          image: blobImage,
+          image: null,
+          imgFlag: img_flag,
           timestamp: DateTime.now(),
           senderId: 3,
           receiverId: Global.userId,
@@ -450,6 +455,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           message: mess_age,
           receiver: false,
           image: null,
+          imgFlag: img_flag,
           voiceNote: voiceNotePath,
           timestamp: DateTime.now(),
           senderId: Global.userId,
@@ -474,6 +480,7 @@ class PatientModelChatState extends State<PatientModelChat> {
               message: text,
               receiver: true,
               image: null,
+              imgFlag: img_flag,
               timestamp: DateTime.now(),
               senderId: Global.userId,
               burnId: burn_id,
@@ -571,7 +578,7 @@ class PatientModelChatState extends State<PatientModelChat> {
                       ),
                       IconButton(
                         onPressed: () => _sendMessage(false, false, '', 1, null,
-                            null), // (bool model, bool doctor, String mess_age, int receive_r)
+                            0), // (bool model, bool doctor, String mess_age, int receive_r)
                         icon: const Icon(Icons.send),
                       ),
                       IconButton(
@@ -597,10 +604,10 @@ class PatientModelChatState extends State<PatientModelChat> {
                                 .read<VoiceNotesCubit>()
                                 .addToVoiceNotes(newVoiceNote);
                             _sendMessage(false, false, '', 1, newVoiceNote.path,
-                                null); // Pass voice note path
+                                0); // Pass voice note path
                           } else {
                             _sendMessage(false, false, '', 1, null,
-                                null); // Pass null if no voice note
+                                0); // Pass null if no voice note
                           }
                         },
                         icon: const Icon(Icons.mic),

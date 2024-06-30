@@ -8,6 +8,7 @@ class ChatMessage(db.Model):
     receiver_id = db.Column(db.Integer, nullable=False)
     message = db.Column(db.String(2000), nullable=True)
     image =  db.Column(db.LargeBinary(), nullable=True)
+    img_flag = db.Column(db.Integer, nullable=True)
     receiver = db.Column(db.Boolean, nullable=False, default=False)
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
     burn_id = db.Column(db.Integer, nullable=False)
@@ -21,6 +22,7 @@ class ChatMessage(db.Model):
             'receiver_id': self.receiver_id,
             'message': self.message,
             'image': self.image,
+            'img_flag': self.img_flag,
             'receiver': self.receiver,
             'timestamp': self.timestamp.isoformat(),
             'burn_id': self.burn_id,

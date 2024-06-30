@@ -713,6 +713,12 @@ def send_message():
         for key in required_keys:
             if key not in data:
                 return jsonify({'error': f'Missing key: {key}'}), 400
+            
+        # Get the Image
+        file = request.files['file']
+        # Read image data as bytes
+        image_data = file.read()        # BLOB File 
+        print('Burn Image is a file with type:', type(image_data))
 
         message = ChatMessage(
             sender_id=data['sender_id'],
@@ -720,7 +726,8 @@ def send_message():
             message=data['message'],
             receiver=data['receiver'],
             burn_id=data.get('burn_id'),
-            image=data.get('image').read(),
+            image=data.get('image'),
+            img_flag=data.get('img_flag'),
             timestamp=data.get('timestamp'),
             voice_note_path=data.get('voice_note_path') 
         )
@@ -781,12 +788,19 @@ def get_chat_history():
 
 
         for message in chat_history:
+
             print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}, Burn: {message.burn_id}")
             # Modify the receiver field according to the user id to adjust the message color
             if message.sender_id != sender_id:    # if the sender of the message wasn't the user
                 message.receiver = False
             else:
                 message.receiver = True
+
+            # Assign Images to messages Separatly
+            burn_item = Burn.query.filter_by(burn_id=burn_id).first()
+            if message.img_flag == 1:
+                message.image = burn_item.burn_img
+
 
         return jsonify([message.to_dict() for message in chat_history]), 200
     

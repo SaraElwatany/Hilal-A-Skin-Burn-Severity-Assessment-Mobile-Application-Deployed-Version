@@ -812,6 +812,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       'burn_id': message.burnId,
       'message': message.message,
       'image': message.image,
+      'img_flag': message.imgFlag,
       'timestamp': message.timestamp.toIso8601String(),
       'receiver': message.receiver, // Include the receiver field
       'voice_note_path': message.voiceNote ?? '',

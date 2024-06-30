@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gp_app/apis/apis.dart';
@@ -7,6 +6,7 @@ import 'package:gp_app/models/chat_message.dart';
 import 'package:gp_app/screens/HospitalLocationScreen.dart';
 import 'package:gp_app/models/voice_note_model.dart';
 import 'package:gp_app/widgets/voice_note_card.dart';
+
 class MessagesWidget extends StatelessWidget {
   MessagesWidget({
     Key? key,
@@ -81,8 +81,10 @@ class MessagesWidget extends StatelessWidget {
                       if (chatMessage.voiceNote != null)
                         VoiceNoteCard(
                           voiceNoteInfo: VoiceNoteModel(
-                            name: 'Voice Note', // Provide a name for the voice note
-                            createAt: DateTime.now(), // Timestamp for voice note
+                            name:
+                                'Voice Note', // Provide a name for the voice note
+                            createAt:
+                                DateTime.now(), // Timestamp for voice note
                             path: chatMessage.voiceNote!, // Voice note path
                           ),
                         ),
