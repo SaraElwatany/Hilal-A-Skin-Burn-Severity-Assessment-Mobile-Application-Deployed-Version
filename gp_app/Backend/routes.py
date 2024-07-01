@@ -822,49 +822,47 @@ def get_chat_history():
 
         print('User Profession: ', user_profession)
         
-
-        # if user_profession == 'patient':
-        if user_profession == 'patient' or user_profession == 'doctor':
-            # Fetch the Chat History, and include the model messages
+        # Fetch the Chat History
+        if user_profession in ['patient', 'doctor']:
             chat_history = ChatMessage.query.filter(
                 (((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
                  | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
-                 | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id))) # Include messages where sender_id is 3, representing the model
+                 | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id)))
                 & (ChatMessage.burn_id == burn_id)
             ).order_by(ChatMessage.timestamp.asc()).all()
         else:
-            # Fetch the Chat History, and include the model messages
             chat_history = ChatMessage.query.filter(
                 ((ChatMessage.sender_id == sender_id) & (ChatMessage.receiver_id == receiver_id))
                 | ((ChatMessage.sender_id == receiver_id) & (ChatMessage.receiver_id == sender_id))
-                | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id)) # Include messages where sender_id is 3 , represents the model
+                | ((ChatMessage.sender_id == 3) & (ChatMessage.receiver_id == sender_id))
             ).order_by(ChatMessage.timestamp.asc()).all()
 
-
+        # Process messages
+        processed_messages = []
         for message in chat_history:
+            message_dict = message.to_dict()
+            
+            # Modify the receiver field
+            message_dict['receiver'] = message.sender_id == sender_id
 
-            print(f"Message: {message.message}, Sender: {message.sender_id}, Receiver: {message.receiver_id}, Burn: {message.burn_id}, Image: { message.image}")
-            # Modify the receiver field according to the user id to adjust the message color
-            if message.sender_id != sender_id:    # if the sender of the message wasn't the user
-                message.receiver = False
+            # Handle image data
+            if message.image and message.img_flag == 1:
+                try:
+                    # Assuming message.image is binary data
+                    message_dict['image'] = base64.b64encode(message.image).decode('utf-8')
+                except Exception as e:
+                    print(f"Error encoding image for message {message.id}: {e}")
+                    message_dict['image'] = None
             else:
-                message.receiver = True
+                message_dict['image'] = None
 
-            print(type(message.image))
+            processed_messages.append(message_dict)
 
-            # Assign Images to messages Separatly
-            burn_item = Burn.query.filter_by(burn_id=burn_id).first()
-            if message.img_flag == 1:
-                 message.image = base64.b64encode(burn_item.burn_img).decode('utf-8')   # Convert Base64 Images to string for JSON
-
-
-        return jsonify([message.to_dict() for message in chat_history]), 200
-    
+        return jsonify(processed_messages), 200
 
     except Exception as e:
-            print(f"Error: {e}")
-            return jsonify({'error': str(e)}), 500
-
+        print(f"Error: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 
