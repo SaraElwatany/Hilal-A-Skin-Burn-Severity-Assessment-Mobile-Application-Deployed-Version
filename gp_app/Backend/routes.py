@@ -752,7 +752,8 @@ def send_message():
             except ValueError as e:
                 print(f"Error decoding base64 image: {e}")
 
-        message = ChatMessage(
+        # Message Object For the Database
+        message_db = ChatMessage(
             sender_id=data['sender_id'],
             receiver_id=data['receiver_id'],
             message=data['message'],
@@ -764,8 +765,22 @@ def send_message():
             voice_note_path=data.get('voice_note_path') 
         )
 
+        # Message Object For the Mobile Application
+        message = ChatMessage(
+            sender_id=data['sender_id'],
+            receiver_id=data['receiver_id'],
+            message=data['message'],
+            receiver=data['receiver'],
+            burn_id=data.get('burn_id'),
+            image=data.get('image'),
+            img_flag=data.get('img_flag'),
+            timestamp=data.get('timestamp'),
+            voice_note_path=data.get('voice_note_path') 
+        )
+
+
         print(message)
-        db.session.add(message)
+        db.session.add(message_db)
         db.session.commit()
 
         
