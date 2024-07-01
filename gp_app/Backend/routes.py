@@ -519,7 +519,10 @@ def get_all_burns():
     # print('Users: ', users)
 
     # Query to get burns ordered by the most recent message date
-    query = db.session.query(Burn).outerjoin((ChatMessage, Burn.burn_id == ChatMessage.burn_id)).group_by(Burn.burn_id).order_by(desc(func.max(ChatMessage.timestamp)))                                             
+    query = (db.session.query(Burn)
+         .outerjoin(ChatMessage, Burn.burn_id == ChatMessage.burn_id)
+         .group_by(Burn.burn_id)
+         .order_by(desc(func.max(ChatMessage.timestamp))))                                            
     users = query.all()
 
     # Check if each user from Burn table exists in Users table
@@ -748,7 +751,7 @@ def send_message():
         if image_base64:
             # Decode the base64 image data
             try:
-                image_data = b64decode(image_base64)
+                image_data = b64decode(image_base64)  
             except ValueError as e:
                 print(f"Error decoding base64 image: {e}")
 
