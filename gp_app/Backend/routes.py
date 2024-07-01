@@ -508,6 +508,8 @@ def burn_new():
 
 
 
+
+
 # Fetch info of all users with burns (Doctor Screen)
 @main.route('/get_all_burns', methods=['POST'])
 def get_all_burns():
@@ -522,7 +524,7 @@ def get_all_burns():
     query = (db.session.query(Burn)
          .outerjoin(ChatMessage, Burn.burn_id == ChatMessage.burn_id)
          .group_by(Burn.burn_id)
-         .order_by(desc(func.max(ChatMessage.timestamp))))                                            
+         .order_by(desc(func.max(ChatMessage.timestamp))))                                       
     users = query.all()
 
     # Check if each user from Burn table exists in Users table

@@ -23,19 +23,11 @@ class DoctorMessagesWidget extends StatelessWidget {
             const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Column(
           children: [
-            // Display image if available
-            if (doctorMessage.image != null && doctorMessage.image!.isNotEmpty)
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: MemoryImage(
-                      base64Decode(doctorMessage.image!),
-                    ),
-                  ),
+            if (doctorMessage.image != null && doctorMessage.receiver == false)
+              Align(
+                alignment: Alignment.topRight,
+                child: Image.memory(
+                  base64Decode(doctorMessage.image!),
                 ),
               ),
             const SizedBox(
@@ -58,22 +50,19 @@ class DoctorMessagesWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Display image if available
-                        if (doctorMessage.image != null &&
-                            doctorMessage.image!.isNotEmpty)
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: MemoryImage(
-                                  base64Decode(doctorMessage.image!),
-                                ),
-                              ),
-                            ),
+                        Visibility(
+                          visible: (doctorMessage.receiver == false),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 4.0, left: 4.0),
+                            child: (doctorMessage.receiver == false
+                                ? Image.asset(
+                                    'assets/images/Hilal.png',
+                                    width: 40,
+                                    height: 40,
+                                  )
+                                : null),
                           ),
+                        ),
                         const SizedBox(width: 8),
                       ],
                     ),
@@ -114,12 +103,12 @@ class DoctorMessagesWidget extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
-                        fixedSize: const Size(105, 43),
+                        fixedSize: const Size(110, 43),
                         backgroundColor: Color.fromARGB(255, 3, 206, 164)),
                     child: Text(
                       S.of(context).confirm,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 16,
                         color: Color.fromARGB(255, 255, 251, 251),
                       ),
                     ),
