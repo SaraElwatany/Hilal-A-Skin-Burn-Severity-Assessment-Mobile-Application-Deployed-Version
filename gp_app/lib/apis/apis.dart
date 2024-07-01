@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:gp_app/models/global.dart';
 import 'package:gp_app/models/new_user.dart';
+import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/patient_list.dart';
 import 'package:gp_app/models/burn_history.dart';
 import 'package:gp_app/screens/clinical_data.dart';
@@ -37,6 +38,7 @@ class SessionManager {
   static const String _clinicalData = 'clinicalData';
   static const String _screenIndex = 'screenIndex'; // Add screenIndex key
   static const String _imageKey = 'blobImage'; // Store the blob globally
+  static Map<String, dynamic> _dictionary = {};
 
   // Function to initialize the session with default values
   static Future<void> initializeSession() async {
@@ -45,6 +47,16 @@ class SessionManager {
     if (!prefs.containsKey(_profession)) {
       await prefs.setString(_profession, 'patient');
     }
+  }
+
+  // Function to save clinical data in the dictionary
+  static void saveClinicalDataDetails(Map<String, dynamic> clinicalData) {
+    _dictionary['clinical_data'] = clinicalData;
+  }
+
+  // Function to retrieve clinical data from the dictionary
+  static Map<String, dynamic>? getClinicalDataDetails() {
+    return _dictionary['clinical_data'];
   }
 
   static Future<void> saveImageBlob(String base64Image) async {
@@ -521,13 +533,13 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
     String value = '';
 
     if (symptoms[indx] == Symptoms.symptom_1) {
-      value = 'trembling_limbs';
+      value = S.of(context).symptom_1; //'trembling_limbs';
     } else if (symptoms[indx] == Symptoms.symptom_2) {
-      value = 'diarrhea';
+      value = S.of(context).symptom_2; //'diarrhea';
     } else if (symptoms[indx] == Symptoms.symptom_3) {
-      value = 'cold_extremities';
+      value = S.of(context).symptom_3; //'cold_extremities';
     } else if (symptoms[indx] == Symptoms.symptom_4) {
-      value = 'nausea';
+      value = S.of(context).symptom_4; //'nausea';
     }
 
     print(value);
@@ -543,28 +555,28 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
 
   // Encode the cause of burn in the form of dictionary
   if (causeOfBurn == Symptoms.electricity) {
-    cause = 'Electricity';
+    cause = S.of(context).electricity; //'Electricity';
   } else if (causeOfBurn == Symptoms.heat) {
-    cause = 'Fire/Fire Flame';
+    cause = S.of(context).heat; //'Fire/Fire Flame';
   } else if (causeOfBurn == Symptoms.chemical) {
-    cause = 'Chemical';
+    cause = S.of(context).chemical; //'Chemical';
   } else if (causeOfBurn == Symptoms.radioactive) {
-    cause = 'Radioactive';
+    cause = S.of(context).radioactive; //'Radioactive';
   } else if (causeOfBurn == Symptoms.boiling) {
-    cause = 'Boiling Water';
+    cause = S.of(context).boiling; //'Boiling Liquid';
   }
 
   // Encode the place of burn in the form of dictionary
   if (placeOfBurn == Symptoms.arm) {
-    place = 'Arm';
+    place = S.of(context).arm; //'Arm';
   } else if (placeOfBurn == Symptoms.leg) {
-    place = 'Leg';
+    place = S.of(context).leg; //'Leg';
   } else if (placeOfBurn == Symptoms.head) {
-    place = 'Head';
+    place = S.of(context).head; //'Head and Neck';
   } else if (placeOfBurn == Symptoms.back) {
-    place = 'Back';
+    place = S.of(context).back; //'Abdomen and Lower Back';
   } else if (placeOfBurn == Symptoms.chest) {
-    place = 'Chest';
+    place = S.of(context).chest; //'Chest and Upper Back';
   }
 
   // Concatenate the clinical data dictionaries
@@ -581,6 +593,9 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
     ...user_id,
     ...burn_id
   };
+
+  // Save clinical data to shared preferences
+  SessionManager.saveClinicalDataDetails(concatenatedDict);
 
   // Display the Concatenated Dictionary
   print(concatenatedDict);

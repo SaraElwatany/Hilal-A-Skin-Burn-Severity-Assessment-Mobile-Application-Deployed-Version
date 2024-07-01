@@ -132,6 +132,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Your Burn Degree is Third Degree Burn.\nThe Following First Aid Protocols are Recommended:\n\n1.Make sure that you are away from the source of burn.\n\n2.Douse the area with room temperature tap water.\n\n3.DO NOT USE ICE, BUTTER, TOOTHPASTE, OR OTHER CHEMICALS.\n\n4.Take off any accessories (Jewelry, watches, rings, etc.)\n\n5.Apply Mebo or Dermazine to the burned area, then cover it with a sterile bandage or a clean cloth.\n\n6.Seek Immediate medical attention.\n"),
         "locationMessage": MessageLookupByLibrary.simpleMessage(
             "The Following is a List of The Nearest Five Burn Hospitals According to your Location:\n\n"),
+        "locationDisabledMessage": MessageLookupByLibrary.simpleMessage(
+            "Your Location is disabeled but here is a List Five Burn Hospitals in Cairo:\n\n"),
         "viewMaps": MessageLookupByLibrary.simpleMessage("View on Maps"),
         "waitingMessage": MessageLookupByLibrary.simpleMessage(
             "Our Doctors will get to you shortly."),
@@ -142,5 +144,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "numberFive": MessageLookupByLibrary.simpleMessage("5."),
         "numberSix": MessageLookupByLibrary.simpleMessage("6."),
         "numberSeven": MessageLookupByLibrary.simpleMessage("7."),
+        "doctorFirstDegreeMessage": MessageLookupByLibrary.simpleMessage(
+            "The Suggested User's Burn is First Degree Burn."),
+        "doctorSecondDegreeMessage": MessageLookupByLibrary.simpleMessage(
+            "The Suggested User's Burn is Second Degree Burn."),
+        "doctorThirdDegreeMessage": MessageLookupByLibrary.simpleMessage(
+            "The Suggested User's Burn is Third Degree Burn."),
+        "clinicalDataMessage": MessageLookupByLibrary.simpleMessage(
+            "The Clinical Data Provided: "),
+        "symptomss": MessageLookupByLibrary.simpleMessage("Symptoms"),
       };
 }

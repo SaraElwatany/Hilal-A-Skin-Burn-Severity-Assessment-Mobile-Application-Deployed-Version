@@ -84,20 +84,48 @@ class PatientModelChatState extends State<PatientModelChat> {
 
     if (prediction == 'First Degree Burn') {
       message = S.of(context).firstDegreeMessage;
-      drMessage = "The Suggested User's Burn is First Degree Burn.\n";
+      drMessage = S.of(context).doctorFirstDegreeMessage;
       print("Message From Location: $message");
     } else if (prediction == 'Second Degree Burn') {
       message = S.of(context).secondDegreeMessage;
-      drMessage = "The Suggested User's Burn is Second Degree Burn.\n";
+      drMessage = S.of(context).doctorSecondDegreeMessage;
     } else if (prediction == 'Third Degree Burn') {
       message = S.of(context).thirdDegreeMessage;
-      drMessage = "The Suggested User's Burn is Third Degree Burn.\n";
+      drMessage = S.of(context).doctorThirdDegreeMessage;
     }
 
     clinical_flag = (await SessionManager.getClinicalData()) ?? '0';
     // If clinical Data was Provided Display it
     if (clinical_flag == '1') {
-      drMessage = drMessage + 'The Clinical Data Provided:\n';
+      // Retrieve clinical data details
+      Map<String, dynamic>? clinicalData =
+          SessionManager.getClinicalDataDetails();
+      drMessage += '\n' + S.of(context).clinicalDataMessage + '\n';
+
+      if (clinicalData != null) {
+        if (clinicalData['symptoms'] != null &&
+            clinicalData['symptoms'].isNotEmpty) {
+          drMessage += S.of(context).numberOne +
+              S.of(context).symptoms +
+              ': ' +
+              clinicalData['symptoms'].join(', ') +
+              '\n';
+        }
+        if (clinicalData['cause'] != null && clinicalData['cause'].isNotEmpty) {
+          drMessage += S.of(context).numberTwo +
+              S.of(context).cause +
+              ': ' +
+              clinicalData['cause'] +
+              '\n';
+        }
+        if (clinicalData['place'] != null && clinicalData['place'].isNotEmpty) {
+          drMessage += S.of(context).numberThree +
+              S.of(context).place +
+              ': ' +
+              clinicalData['place'] +
+              '\n';
+        }
+      }
     }
 
     // (bool model, bool doctor, String mess_age, int receive_r, voice_path, display_img)
@@ -158,8 +186,16 @@ class PatientModelChatState extends State<PatientModelChat> {
   }
 
   // Function To Display The List Of Nearest Hospitals For The Signed Up User
-  void updateChatScreenWithHospitals(List<dynamic> hospitals) {
-    var fullMessage = S.of(context).locationMessage;
+  void updateChatScreenWithHospitals(List<dynamic> hospitals) async {
+    var fullMessage = '';
+
+    double lat = (await SessionManager.getLongitude()) ?? 0.0;
+
+    if (lat == 0.0) {
+      fullMessage = S.of(context).locationDisabledMessage;
+    } else {
+      fullMessage = S.of(context).locationMessage;
+    }
 
     List<Map<String, String>> hospitalDetails = [];
 
@@ -188,7 +224,16 @@ class PatientModelChatState extends State<PatientModelChat> {
   // Function To Display The List Of Nearest Hospitals For The Guest User
   void updateChatScreenWithHospitalsGuest(List<dynamic> hospitals) async {
     int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
-    var fullMessage = S.of(context).locationMessage;
+
+    var fullMessage = '';
+
+    double lat = (await SessionManager.getLongitude()) ?? 0.0;
+
+    if (lat == 0.0) {
+      fullMessage = S.of(context).locationDisabledMessage;
+    } else {
+      fullMessage = S.of(context).locationMessage;
+    }
 
     List<Map<String, String>> hospitalDetails = [];
 

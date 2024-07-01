@@ -95,7 +95,7 @@ class DoctorMessagesWidget extends StatelessWidget {
                                     receiver: true,
                                     image: null,
                                     timestamp: DateTime.now(),
-                                    senderId: 1,
+                                    senderId: 3,
                                     receiverId: patientID,
                                     imgFlag: 0,
                                     burnId: burnId);
@@ -141,7 +141,7 @@ class DoctorMessagesWidget extends StatelessWidget {
                                     receiver: true,
                                     image: null,
                                     timestamp: DateTime.now(),
-                                    senderId: 1,
+                                    senderId: 3,
                                     receiverId: patientID,
                                     imgFlag: 0,
                                     burnId: burnId);

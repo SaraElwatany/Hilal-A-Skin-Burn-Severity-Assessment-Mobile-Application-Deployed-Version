@@ -867,6 +867,16 @@ class S {
     );
   }
 
+  // locationDisabledMessage
+  String get locationDisabledMessage {
+    return Intl.message(
+      "Your Location is disabeled but here is a List Five Burn Hospitals in Cairo:\n\n",
+      name: 'locationDisabledMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   // locationMessage
   String get waitingMessage {
     return Intl.message(
@@ -952,6 +962,56 @@ class S {
     return Intl.message(
       "7.",
       name: 'numberSeven',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // doctorFirstDegreeMessage
+  String get doctorFirstDegreeMessage {
+    return Intl.message(
+      "The Suggested User's Burn is First Degree Burn.",
+      name: 'doctorFirstDegreeMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // doctorSecondDegreeMessage
+  String get doctorSecondDegreeMessage {
+    return Intl.message(
+      "The Suggested User's Burn is Second Degree Burn.",
+      name: 'doctorSecondDegreeMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // doctorThirdDegreeMessage
+  String get doctorThirdDegreeMessage {
+    return Intl.message(
+      "The Suggested User's Burn is Third Degree Burn.",
+      name: 'doctorThirdDegreeMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // clinicalDataMessage
+  String get clinicalDataMessage {
+    return Intl.message(
+      "The Clinical Data Provided: ",
+      name: 'clinicalDataMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // symptomssMessage
+  String get symptomssMessage {
+    return Intl.message(
+      "Symptoms",
+      name: 'symptomss',
       desc: '',
       args: [],
     );

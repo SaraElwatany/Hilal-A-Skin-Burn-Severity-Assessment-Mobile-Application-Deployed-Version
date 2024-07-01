@@ -17,7 +17,7 @@ class Burn(db.Model):
     nausea = db.Column(db.Integer(), nullable = True, default=0)
     diarrhea = db.Column(db.Integer(), nullable = True, default=0)
     cold_extremities = db.Column(db.Integer(), nullable = True, default=0)
-    burn_type = db.Column(db.String(15), nullable = True, default='None')
-    burn_place = db.Column(db.String(15), nullable = True, default='None')
+    burn_type = db.Column(db.String(30), nullable = True, default='None')
+    burn_place = db.Column(db.String(30), nullable = True, default='None')
     
 

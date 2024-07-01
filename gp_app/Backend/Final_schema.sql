@@ -97,8 +97,8 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`burn` (
   `nausea` INT NULL,
   `diarrhea` INT NULL,
   `cold_extremities` INT NULL,
-  `burn_type` VARCHAR(15) NULL,
-  `burn_place` VARCHAR(15) NULL,
+  `burn_type` VARCHAR(30) NULL,
+  `burn_place` VARCHAR(30) NULL,
   INDEX `id_idx` (`fk_burn_user_id` ASC) VISIBLE,
   PRIMARY KEY (`burn_id`),
   CONSTRAINT `id`

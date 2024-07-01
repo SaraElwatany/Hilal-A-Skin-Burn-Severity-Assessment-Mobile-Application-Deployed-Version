@@ -514,7 +514,7 @@ def burn_new():
 @main.route('/get_all_burns', methods=['POST'])
 def get_all_burns():
 
-    print("fetching users with burns...")
+    print("fetching users with burns. according to time..")
 
     # # Get all burns from the Burn table
     # users = Burn.query.all()
@@ -615,16 +615,17 @@ def get_all_burns():
 
 
 # Fetch info of all users with burns (Doctor Screen)
+# Fetch info of all users with burns (Doctor Screen)
 @main.route('/get_all_burns_danger', methods=['POST'])
 def get_all_burns_danger():
 
-    print("fetching users with burns...")
+    print("Fetching users with burns according to danger...")
 
-    # Query to get burns ordered by the most recent message date and then by burn_class_model (2, 1, 0)
+    # Query to get burns ordered by burn_class_model (2, 1, 0) and then by the most recent message date
     query = (db.session.query(Burn)
              .outerjoin(ChatMessage, Burn.burn_id == ChatMessage.burn_id)
              .group_by(Burn.burn_id)
-             .order_by(desc(func.max(ChatMessage.timestamp)), desc(Burn.burn_class_model)))
+             .order_by(desc(Burn.burn_class_model), desc(func.max(ChatMessage.timestamp))))
     burns = query.all()
 
     # Check if each user from Burn table exists in Users table
@@ -635,10 +636,10 @@ def get_all_burns_danger():
         if user_in_users_table:
             user_dict = {
                 'id': user_in_users_table.id,
-                'username': user_in_users_table.username, 
-                'email': user_in_users_table.email, 
-                'phone': user_in_users_table.phone, 
-                'weight': user_in_users_table.weight, 
+                'username': user_in_users_table.username,
+                'email': user_in_users_table.email,
+                'phone': user_in_users_table.phone,
+                'weight': user_in_users_table.weight,
                 'height': user_in_users_table.height,
                 'burn_id': burn.burn_id,
                 'trembling_limbs': burn.trembling_limbs,
@@ -656,10 +657,10 @@ def get_all_burns_danger():
             last_user_id = last_user.id
             user_dict = {
                 'id': last_user_id + 1,
-                'username': 'Guest', 
-                'email': 'None', 
-                'phone': None, 
-                'weight': None, 
+                'username': 'Guest',
+                'email': 'None',
+                'phone': None,
+                'weight': None,
                 'height': None,
                 'burn_id': burn.burn_id,
                 'trembling_limbs': burn.trembling_limbs,
@@ -673,19 +674,20 @@ def get_all_burns_danger():
             user_list.append(user_dict)
 
     print('User lists found', user_list)
-    user_ids = [user.get('id') for user in user_list] 
-    burns_ids = [user.get('burn_id') for user in user_list] 
+    user_ids = [user.get('id') for user in user_list]
+    burns_ids = [user.get('burn_id') for user in user_list]
     user_names = [user.get('username') for user in user_list]
     user_info = ['Email: ' + str(user.get('email')) for user in user_list]
 
-    # return the user list
+    # Return the user list
     return {
-        'message': 'Users with burns found', 
-        'user_ids': user_ids, 
+        'message': 'Users with burns found',
+        'user_ids': user_ids,
         'burns_ids': burns_ids,
-        'user_names': user_names, 
-        'user_info': user_info 
+        'user_names': user_names,
+        'user_info': user_info
     }
+
 
 
 
