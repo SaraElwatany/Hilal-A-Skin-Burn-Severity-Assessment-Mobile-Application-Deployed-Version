@@ -834,7 +834,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
 
     var response = await http
         .post(url, headers: headers, body: body)
-        .timeout(const Duration(seconds: 200));
+        .timeout(const Duration(seconds: 100)); // 200 secs
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       print('Message sent successfully');

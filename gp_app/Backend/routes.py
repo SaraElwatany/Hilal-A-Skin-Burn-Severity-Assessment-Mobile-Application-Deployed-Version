@@ -850,6 +850,8 @@ def get_chat_history():
             else:
                 message.receiver = True
 
+            print(type(message.image))
+
             # Assign Images to messages Separatly
             burn_item = Burn.query.filter_by(burn_id=burn_id).first()
             if message.img_flag == 1:
