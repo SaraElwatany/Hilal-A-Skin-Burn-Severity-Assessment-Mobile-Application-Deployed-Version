@@ -724,7 +724,7 @@ def send_message():
 
     from .__init__ import socketio 
 
-    print('Entered Sen Message Route')
+    print('Entered Send Message Route')
 
     try:
         data = request.json
@@ -752,6 +752,11 @@ def send_message():
             except ValueError as e:
                 print(f"Error decoding base64 image: {e}")
 
+
+        # Convert timestamp string to datetime object
+        timestamp_str = data.get('timestamp')
+        timestamp = datetime.fromisoformat(timestamp_str)
+
         # Message Object For the Database
         message_db = ChatMessage(
             sender_id=data['sender_id'],
@@ -761,7 +766,7 @@ def send_message():
             burn_id=data.get('burn_id'),
             image=image_data,
             img_flag=data.get('img_flag'),
-            timestamp=data.get('timestamp'),
+            timestamp=timestamp,
             voice_note_path=data.get('voice_note_path') 
         )
 
@@ -774,7 +779,7 @@ def send_message():
             burn_id=data.get('burn_id'),
             image=data.get('image'),
             img_flag=data.get('img_flag'),
-            timestamp=data.get('timestamp'),
+            timestamp=timestamp,
             voice_note_path=data.get('voice_note_path') 
         )
 
@@ -782,9 +787,10 @@ def send_message():
         print(message)
         db.session.add(message_db)
         db.session.commit()
-
+        print('Saved Message To Database')
         
         return jsonify(message.to_dict()), 201
+    
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
