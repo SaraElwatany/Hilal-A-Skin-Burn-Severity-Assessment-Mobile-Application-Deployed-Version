@@ -612,6 +612,87 @@ def get_all_burns():
 
 
 
+
+
+# Fetch info of all users with burns (Doctor Screen)
+@main.route('/get_all_burns_danger', methods=['POST'])
+def get_all_burns_danger():
+
+    print("fetching users with burns...")
+
+    # Query to get burns ordered by the most recent message date and then by burn_class_model (2, 1, 0)
+    query = (db.session.query(Burn)
+             .outerjoin(ChatMessage, Burn.burn_id == ChatMessage.burn_id)
+             .group_by(Burn.burn_id)
+             .order_by(desc(func.max(ChatMessage.timestamp)), desc(Burn.burn_class_model)))
+    burns = query.all()
+
+    # Check if each user from Burn table exists in Users table
+    user_list = []
+    # build a dictionary of the users
+    for burn in burns:
+        user_in_users_table = User.query.filter_by(id=burn.fk_burn_user_id).first()
+        if user_in_users_table:
+            user_dict = {
+                'id': user_in_users_table.id,
+                'username': user_in_users_table.username, 
+                'email': user_in_users_table.email, 
+                'phone': user_in_users_table.phone, 
+                'weight': user_in_users_table.weight, 
+                'height': user_in_users_table.height,
+                'burn_id': burn.burn_id,
+                'trembling_limbs': burn.trembling_limbs,
+                'diarrhea': burn.diarrhea,
+                'cold_extremities': burn.cold_extremities,
+                'nausea': burn.nausea,
+                'cause': burn.burn_type,
+                'place': burn.burn_place,
+                'class': burn.burn_class_model
+            }
+            user_list.append(user_dict)
+        else:
+            # Generate a random integer for the guest user
+            last_user = User.query.order_by(User.id.desc()).first()
+            last_user_id = last_user.id
+            user_dict = {
+                'id': last_user_id + 1,
+                'username': 'Guest', 
+                'email': 'None', 
+                'phone': None, 
+                'weight': None, 
+                'height': None,
+                'burn_id': burn.burn_id,
+                'trembling_limbs': burn.trembling_limbs,
+                'diarrhea': burn.diarrhea,
+                'cold_extremities': burn.cold_extremities,
+                'nausea': burn.nausea,
+                'cause': burn.burn_type,
+                'place': burn.burn_place,
+                'class': burn.burn_class_model
+            }
+            user_list.append(user_dict)
+
+    print('User lists found', user_list)
+    user_ids = [user.get('id') for user in user_list] 
+    burns_ids = [user.get('burn_id') for user in user_list] 
+    user_names = [user.get('username') for user in user_list]
+    user_info = ['Email: ' + str(user.get('email')) for user in user_list]
+
+    # return the user list
+    return {
+        'message': 'Users with burns found', 
+        'user_ids': user_ids, 
+        'burns_ids': burns_ids,
+        'user_names': user_names, 
+        'user_info': user_info 
+    }
+
+
+
+
+
+
+
 # Fetch info of all signed up doctors (Admin Screen)
 @main.route('/get_all_doctors', methods=['POST'])
 def get_all_doctors():

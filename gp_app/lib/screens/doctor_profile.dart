@@ -19,6 +19,7 @@ class DocterProfileState extends State<DocterProfile> {
   String _selectedItem = 'Time';
   List<Patient> patients = [];
   bool adminPassword = Global.adminPassword;
+  String selectedSortCriteria = 'Time';
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class DocterProfileState extends State<DocterProfile> {
           (await SessionManager.getUserProfession()) ?? 'patient';
       print('User Profession: $userProfession');
       if (!adminPassword) {
-        await _fetchPatients();
+        await _fetchPatients(selectedSortCriteria);
       } else {
         print('Fetching doctors for admin...');
         await _fetchDoctors();
@@ -43,9 +44,9 @@ class DocterProfileState extends State<DocterProfile> {
     }
   }
 
-  Future<void> _fetchPatients() async {
+  Future<void> _fetchPatients(String sortingCriteria) async {
     try {
-      List<Patient> fetchedPatients = await getPatients();
+      List<Patient> fetchedPatients = await getPatients(sortingCriteria);
       print('Fetched Patients: $fetchedPatients');
       setState(() {
         patients = fetchedPatients;
@@ -96,11 +97,13 @@ class DocterProfileState extends State<DocterProfile> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        value: _selectedItem,
+                        value: selectedSortCriteria,
                         onChanged: (String? newValue) {
                           setState(() {
-                            _selectedItem = newValue!;
+                            selectedSortCriteria = newValue!;
                           });
+                          _fetchPatients(
+                              selectedSortCriteria); // Re-fetch patients based on the new sorting criteria
                         },
                         items: <String>[
                           S.of(context).time,

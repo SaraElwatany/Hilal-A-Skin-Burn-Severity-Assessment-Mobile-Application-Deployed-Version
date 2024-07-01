@@ -73,6 +73,9 @@ class DocterModelChatState extends State<DocterModelChat> {
     int patientID = await SessionManager.getScreenIndex() ?? 0;
     print("Patient ID Associated With the pressed thread");
 
+    int burnId = int.parse(await SessionManager.getBurnId() ?? '0');
+    print("Burn ID Associated with that index tapped");
+
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
       final message = ChatMessage(
@@ -81,7 +84,9 @@ class DocterModelChatState extends State<DocterModelChat> {
           image: null,
           timestamp: DateTime.now(),
           senderId: 1,
-          receiverId: patientID);
+          receiverId: patientID,
+          burnId: burnId,
+          imgFlag: 0);
 
       // Send the message to the server
       sendMessageToServer(message);

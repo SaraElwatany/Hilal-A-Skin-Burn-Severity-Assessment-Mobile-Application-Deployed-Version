@@ -652,8 +652,15 @@ Future skipClinicalData(BuildContext context) async {
 }
 
 // Function to list all users with burns for the doctor
-Future<List<Patient>> getPatients() async {
-  var url = Uri.parse('https://deploy-2uif.onrender.com/get_all_burns');
+Future<List<Patient>> getPatients(String sortingCriteria) async {
+  var route = '';
+  if (sortingCriteria == 'Time') {
+    route = 'https://deploy-2uif.onrender.com/get_all_burns';
+  } else {
+    route = 'https://deploy-2uif.onrender.com/get_all_burns_danger';
+  }
+
+  var url = Uri.parse(route);
   var response = await http.post(url);
 
   // Request was successful, handle the response
@@ -662,7 +669,7 @@ Future<List<Patient>> getPatients() async {
     final responseMessage = responseData['message'];
 
     final patients_ids = responseData['user_ids'];
-    final burn_ids = responseData['burn_ids'];
+    final burn_ids = responseData['burns_ids'];
     final patients_names = responseData['user_names'];
     final patients_info = responseData['user_info'];
 
@@ -757,36 +764,6 @@ Future<List<BurnHistory>> getBurns() async {
     throw Exception('Failed to load burns');
   }
 }
-
-// class AudioApi {
-//     static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-//     static String? _recordFilePath;
-
-//     static Future<void> initRecorder() async {
-//         final status = await Permission.microphone.request();
-//         if (status != PermissionStatus.granted) {
-//             throw Exception('Microphone permission not granted');
-//         }
-
-//         // Open the audio session
-//         await _recorder.openAudioSession();
-//     }
-
-//     static Future<void> startRecording() async {
-//         final dir = await getApplicationDocumentsDirectory();
-//         _recordFilePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
-//         await _recorder.startRecorder(toFile: _recordFilePath);
-//     }
-
-//     static Future<String?> stopRecording() async {
-//         await _recorder.stopRecorder();
-//         return _recordFilePath; // Return the file path after stopping the recorder
-//     }
-
-//     static Future<void> closeRecorder() async {
-//         await _recorder.closeAudioSession();  // Correct method to close the recorder
-//     }
-// }
 
 Future<List<ChatMessage>> fetchChatHistory(
     int senderId, int receiverId, int burn_id) async {
@@ -942,3 +919,36 @@ void logout() async {
     print('Error during logout: $e');
   }
 }
+
+
+
+
+// class AudioApi {
+//     static final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+//     static String? _recordFilePath;
+
+//     static Future<void> initRecorder() async {
+//         final status = await Permission.microphone.request();
+//         if (status != PermissionStatus.granted) {
+//             throw Exception('Microphone permission not granted');
+//         }
+
+//         // Open the audio session
+//         await _recorder.openAudioSession();
+//     }
+
+//     static Future<void> startRecording() async {
+//         final dir = await getApplicationDocumentsDirectory();
+//         _recordFilePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+//         await _recorder.startRecorder(toFile: _recordFilePath);
+//     }
+
+//     static Future<String?> stopRecording() async {
+//         await _recorder.stopRecorder();
+//         return _recordFilePath; // Return the file path after stopping the recorder
+//     }
+
+//     static Future<void> closeRecorder() async {
+//         await _recorder.closeAudioSession();  // Correct method to close the recorder
+//     }
+// }
