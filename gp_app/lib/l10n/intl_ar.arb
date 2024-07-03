@@ -116,6 +116,9 @@
   
   "firstDegreeBurn":"حرق الدرجة الأولي",
   "secondDegreeBurn":"حرق الدرجة الثانية",
-  "thirdDegreeBurn":"حرق الدرجة الرابعة"
+  "thirdDegreeBurn":"حرق الدرجة الرابعة",
+
+  "speciality":"تخصص",
+  "email":"البريد الالكتروني"
 
   }

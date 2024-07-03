@@ -640,7 +640,7 @@ def get_all_burns():
     user_ids = [user.get('id') for user in user_list] 
     burns_ids = [user.get('burn_id') for user in user_list] 
     user_names = [user.get('username') for user in user_list]
-    user_info = ['Email - البريد الالكتروني: '+str(user.get('email')) for user in user_list]
+    user_info = [str(user.get('email')) for user in user_list]
     # user_info = ['email: '+str(user.get('email'))+' '+'Height: '+str(user.height) for user in users]
 
     # return the user list
@@ -767,9 +767,9 @@ def get_all_doctors():
     print('Doctor User lists found', user_list)
     user_ids = [user.get('id') for user in user_list] 
     user_names = [user.get('username') for user in user_list]
+    user_info = [str(user.get('speciality')) for user in user_list]
     # user_info = ['Email: '+str(user.get('email'))+' Speciality: '+str(user.get('speciality'))+' Phone: '+str(user.get('phone')) for user in user_list]
-    user_info = ['Speciality - تخصص: '+str(user.get('speciality'))+' Phone - رقم الهاتف: '+str(user.get('phone')) for user in user_list]
-
+    # user_info = ['Speciality - تخصص: '+str(user.get('speciality'))+' Phone - رقم الهاتف: '+str(user.get('phone')) for user in user_list]
     # return the doctor user list
     return {
             'message': 'Users with burns found', 

@@ -1056,6 +1056,26 @@ class S {
       args: [],
     );
   }
+
+  // speciality
+  String get speciality {
+    return Intl.message(
+      "Speciality",
+      name: 'Speciality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // email
+  String get email {
+    return Intl.message(
+      "Email",
+      name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

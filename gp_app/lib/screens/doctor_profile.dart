@@ -46,7 +46,8 @@ class DocterProfileState extends State<DocterProfile> {
 
   Future<void> _fetchPatients(String sortingCriteria) async {
     try {
-      List<Patient> fetchedPatients = await getPatients(sortingCriteria);
+      List<Patient> fetchedPatients =
+          await getPatients(sortingCriteria, context);
       print('Fetched Patients: $fetchedPatients');
       if (mounted) {
         setState(() {
@@ -60,7 +61,7 @@ class DocterProfileState extends State<DocterProfile> {
 
   Future<void> _fetchDoctors() async {
     try {
-      List<Patient> fetchedDoctors = await getDoctors();
+      List<Patient> fetchedDoctors = await getDoctors(context);
       print('Fetched Doctors: $fetchedDoctors');
       if (mounted) {
         setState(() {
@@ -145,15 +146,20 @@ class DocterProfileState extends State<DocterProfile> {
                     print('Tapped patient at index: $index');
 
                     int patientId = patients[index].id;
-                    int burnId = patients[index].burn_id!;
+
+                    try {
+                      int burnId = patients[index].burn_id!;
+                      await SessionManager.saveBurnId(burnId.toString());
+                      print('Burn ID For that Index On Tap: $burnId');
+                    } catch (e) {
+                      print('No Burn ID Found');
+                    }
+
                     String patientInfo = patients[index].info;
 
                     await SessionManager.saveScreenIndex(patientId);
                     print('Selected Patient ID: $patientId');
                     print('Selected Patient Info: $patientInfo');
-
-                    await SessionManager.saveBurnId(burnId.toString());
-                    print('Burn ID For that Index On Tap: $burnId');
 
                     bool check = Global.adminPassword;
                     if (!check) {

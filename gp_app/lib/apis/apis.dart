@@ -683,7 +683,8 @@ Future skipClinicalData(BuildContext context) async {
 }
 
 // Function to list all users with burns for the doctor
-Future<List<Patient>> getPatients(String sortingCriteria) async {
+Future<List<Patient>> getPatients(
+    String sortingCriteria, BuildContext context) async {
   var route = '';
   if (sortingCriteria == 'Time') {
     route = 'https://deploy-2uif.onrender.com/get_all_burns';
@@ -713,7 +714,7 @@ Future<List<Patient>> getPatients(String sortingCriteria) async {
     List<Patient> patients_list = List.generate(no_patients, (index) {
       return Patient(
           name: patients_names[index],
-          info: patients_info[index],
+          info: S.of(context).email + ': ' + patients_info[index],
           burn_id: burn_ids[index],
           id: patients_ids[index]);
     });
@@ -725,7 +726,7 @@ Future<List<Patient>> getPatients(String sortingCriteria) async {
 }
 
 // Function to list all doctor users for the admin
-Future<List<Patient>> getDoctors() async {
+Future<List<Patient>> getDoctors(BuildContext context) async {
   var url = Uri.parse('https://deploy-2uif.onrender.com/get_all_doctors');
   var response = await http.post(url);
 
@@ -743,7 +744,7 @@ Future<List<Patient>> getDoctors() async {
       doctorsList.add(Patient(
         id: doctorsIds[i],
         name: doctorsNames[i],
-        info: doctorsInfo[i],
+        info: S.of(context).speciality + ': ' + doctorsInfo[i],
       ));
     }
 

@@ -114,5 +114,8 @@
 
     "firstDegreeBurn":"First Degree Burn",
     "secondDegreeBurn":"Second Degree Burn",
-    "thirdDegreeBurn":"Third Degree Burn"
+    "thirdDegreeBurn":"Third Degree Burn",
+
+    "speciality":"Speciality",
+    "email":"Email"
   }

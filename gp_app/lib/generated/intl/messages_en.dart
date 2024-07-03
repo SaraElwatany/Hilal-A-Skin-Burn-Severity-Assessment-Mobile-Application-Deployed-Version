@@ -161,5 +161,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Second Degree Burn"),
         "thirdDegreeBurn":
             MessageLookupByLibrary.simpleMessage("Third Degree Burn"),
+        "speciality": MessageLookupByLibrary.simpleMessage("Speciality"),
+        "email": MessageLookupByLibrary.simpleMessage("Email"),
       };
 }
