@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gp_app/apis/apis.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/burn_history.dart';
-import 'package:gp_app/widgets/burnHistory_widget.dart';
-
 import 'package:gp_app/widgets/localization_icon.dart';
+import 'package:gp_app/widgets/burnHistory_widget.dart';
 import 'package:gp_app/screens/patient_model_screen.dart';
 
 class BurnHistoryScreen extends StatefulWidget {
@@ -56,11 +55,13 @@ class _BurnHistoryScreenState extends State<BurnHistoryScreen> {
 
   Future<void> _fetchBurns() async {
     try {
-      List<BurnHistory> fetchedBurns = await getBurns();
+      List<BurnHistory> fetchedBurns = await getBurns(context);
       print('Fetched Burns: $fetchedBurns');
-      setState(() {
-        burnshistory = fetchedBurns;
-      });
+      if (mounted) {
+        setState(() {
+          burnshistory = fetchedBurns;
+        });
+      }
     } catch (error) {
       print('Error fetching burns: $error');
     }

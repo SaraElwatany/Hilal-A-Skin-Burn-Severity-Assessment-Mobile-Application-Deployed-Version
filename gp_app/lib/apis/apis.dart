@@ -754,7 +754,7 @@ Future<List<Patient>> getDoctors() async {
 }
 
 // Function to list all users with burns for the doctor
-Future<List<BurnHistory>> getBurns() async {
+Future<List<BurnHistory>> getBurns(BuildContext context) async {
   var url = Uri.parse('https://deploy-2uif.onrender.com/get_user_burns');
 
   int user_id = Global.userId;
@@ -786,8 +786,23 @@ Future<List<BurnHistory>> getBurns() async {
     print('Received Response From get_user_burns route: $responseMessage');
     print('Received burns: $burn_ids');
 
+    // List<BurnHistory> burns_list = List.generate(no_burns, (index) {
+    //   return BurnHistory(degree: burn_degrees[index], id: burn_ids[index]);
+    // });
+
     List<BurnHistory> burns_list = List.generate(no_burns, (index) {
-      return BurnHistory(degree: burn_degrees[index], id: burn_ids[index]);
+      String degree = burn_degrees[index];
+
+      // Map the degree of burns to localized strings
+      if (degree == 'First Degree Burn') {
+        degree = S.of(context).firstDegreeBurn;
+      } else if (degree == 'Second Degree Burn') {
+        degree = S.of(context).secondDegreeBurn;
+      } else if (degree == 'Third Degree Burn') {
+        degree = S.of(context).thirdDegreeBurn;
+      }
+
+      return BurnHistory(degree: degree, id: burn_ids[index]);
     });
 
     return burns_list;

@@ -165,7 +165,7 @@ class DoctorMessagesWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: ((doctorMessage.receiver == false)
                           ? Theme.of(context).colorScheme.surface
-                          : Color.fromARGB(255, 243, 240, 240)),
+                          : Color.fromARGB(255, 149, 145, 145)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

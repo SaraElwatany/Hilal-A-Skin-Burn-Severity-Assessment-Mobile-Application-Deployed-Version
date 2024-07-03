@@ -51,7 +51,7 @@ class MessagesWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: chatMessage.receiver == false
                         ? Theme.of(context).colorScheme.surface
-                        : const Color.fromARGB(255, 106, 105, 105),
+                        : Color.fromARGB(255, 149, 145, 145),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +98,8 @@ class MessagesWidget extends StatelessWidget {
                       // VoiceNoteCard(voiceNoteInfo: voiceNoteInfo),
 
                       _buildMessageContent(context, chatMessage),
-                      if (chatMessage.voiceNote != null)
+                      if (chatMessage.voiceNote !=
+                          null) // if (chatMessage.voiceNote != null && chatMessage.voiceNote!.isNotEmpty)
                         VoiceNoteCard(
                           voiceNoteInfo: VoiceNoteModel(
                             name:

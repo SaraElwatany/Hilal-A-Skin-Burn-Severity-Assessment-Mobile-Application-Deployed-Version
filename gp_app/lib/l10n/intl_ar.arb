@@ -111,6 +111,11 @@
   "doctorThirdDegreeMessage":"درجة الحرق المرجحة هي الدرجة الثالثة.",
   "clinicalDataMessage":"المعلومات المتوفرة:",
   "symptomss":"الأعراض",
-  "doctorTapButton": "تم ارسال الرد للمريض، تقدر دلوقتي تضيف أي ملاحظات زيادة."
+  "doctorTapButton": "تم ارسال الرد للمريض، تقدر دلوقتي تضيف أي ملاحظات زيادة.",
+
+  
+  "firstDegreeBurn":"حرق الدرجة الأولي",
+  "secondDegreeBurn":"حرق الدرجة الثانية",
+  "thirdDegreeBurn":"حرق الدرجة الرابعة"
 
   }

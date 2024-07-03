@@ -110,5 +110,9 @@
     "doctorThirdDegreeMessage":"The Suggested User's Burn is Third Degree Burn.",
     "clinicalDataMessage":"The Clinical Data Provided: ",
     "symptomss":"Symptoms",
-    "doctorTapButton": "The response was sent to the patient, you can add additional notes."
+    "doctorTapButton": "The response was sent to the patient, you can add additional notes.",
+
+    "firstDegreeBurn":"First Degree Burn",
+    "secondDegreeBurn":"Second Degree Burn",
+    "thirdDegreeBurn":"Third Degree Burn"
   }

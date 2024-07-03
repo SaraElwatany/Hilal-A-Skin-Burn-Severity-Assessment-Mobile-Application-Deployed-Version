@@ -1026,6 +1026,36 @@ class S {
       args: [],
     );
   }
+
+  // firstDegreeBurn
+  String get firstDegreeBurn {
+    return Intl.message(
+      "First Degree Burn",
+      name: 'firstDegreeBurn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // secondDegreeBurn
+  String get secondDegreeBurn {
+    return Intl.message(
+      "Second Degree Burn",
+      name: 'secondDegreeBurn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // thirdDegreeBurn
+  String get thirdDegreeBurn {
+    return Intl.message(
+      "Third Degree Burn",
+      name: 'thirdDegreeBurn',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

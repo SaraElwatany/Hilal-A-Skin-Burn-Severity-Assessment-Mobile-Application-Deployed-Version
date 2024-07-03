@@ -48,9 +48,11 @@ class DocterProfileState extends State<DocterProfile> {
     try {
       List<Patient> fetchedPatients = await getPatients(sortingCriteria);
       print('Fetched Patients: $fetchedPatients');
-      setState(() {
-        patients = fetchedPatients;
-      });
+      if (mounted) {
+        setState(() {
+          patients = fetchedPatients;
+        });
+      }
     } catch (error) {
       print('Error fetching patients: $error');
     }
@@ -60,10 +62,12 @@ class DocterProfileState extends State<DocterProfile> {
     try {
       List<Patient> fetchedDoctors = await getDoctors();
       print('Fetched Doctors: $fetchedDoctors');
-      setState(() {
-        patients = fetchedDoctors;
-        print('Updated Patients List: $patients');
-      });
+      if (mounted) {
+        setState(() {
+          patients = fetchedDoctors;
+          print('Updated Patients List: $patients');
+        });
+      }
     } catch (error) {
       print('Error fetching doctors: $error');
     }

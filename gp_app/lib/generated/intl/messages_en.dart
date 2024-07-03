@@ -155,5 +155,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "clinicalDataMessage": MessageLookupByLibrary.simpleMessage(
             "The Clinical Data Provided: "),
         "symptomss": MessageLookupByLibrary.simpleMessage("Symptoms"),
+        "firstDegreeBurn":
+            MessageLookupByLibrary.simpleMessage("First Degree Burn"),
+        "secondDegreeBurn":
+            MessageLookupByLibrary.simpleMessage("Second Degree Burn"),
+        "thirdDegreeBurn":
+            MessageLookupByLibrary.simpleMessage("Third Degree Burn"),
       };
 }
