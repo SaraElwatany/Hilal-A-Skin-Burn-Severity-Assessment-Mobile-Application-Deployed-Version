@@ -109,7 +109,8 @@
   "doctorFirstDegreeMessage":"درجة الحرق المرجحة هي الدرجة الأولى",
   "doctorSecondDegreeMessage":"درجة الحرق المرجحة هي الدرجة الثانية.",
   "doctorThirdDegreeMessage":"درجة الحرق المرجحة هي الدرجة الثالثة.",
-  "clinicalDataMessage":"المعلومات المتوفرة: ",
-  "symptomss":"الأعراض"
+  "clinicalDataMessage":"المعلومات المتوفرة:",
+  "symptomss":"الأعراض",
+  "doctorTapButton": "تم ارسال الرد للمريض، تقدر دلوقتي تضيف أي ملاحظات زيادة."
 
   }

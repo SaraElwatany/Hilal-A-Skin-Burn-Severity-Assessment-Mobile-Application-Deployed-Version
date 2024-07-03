@@ -246,6 +246,7 @@ CREATE TABLE IF NOT EXISTS `defaultdb`.`chat_message` (
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     receiver BOOLEAN NOT NULL DEFAULT FALSE,
+    show_btn BOOLEAN NULL DEFAULT FALSE,
     burn_id INT NOT NULL,
     voice_note_path VARCHAR(1000),
     message VARCHAR(2000) NOT NULL,

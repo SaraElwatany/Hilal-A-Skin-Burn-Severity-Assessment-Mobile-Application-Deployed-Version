@@ -49,18 +49,20 @@ class PatientModelChatState extends State<PatientModelChat> {
   // Function to Provide the Intro Message If The User Was A Guest
   void updateChatScreenWithIntroGuest() async {
     int burn_id = int.parse(await SessionManager.getBurnId() ?? '0');
-
-    setState(() {
-      messages.add(ChatMessage(
-          message: S.of(context).Intro,
-          receiver: false,
-          timestamp: DateTime.now(),
-          senderId: Global.userId,
-          burnId: burn_id,
-          image: null,
-          imgFlag: 0,
-          receiverId: 1));
-    });
+    if (mounted) {
+      setState(() {
+        messages.add(ChatMessage(
+            message: S.of(context).Intro,
+            receiver: false,
+            show_btn: false,
+            timestamp: DateTime.now(),
+            senderId: Global.userId,
+            burnId: burn_id,
+            image: null,
+            imgFlag: 0,
+            receiverId: 1));
+      });
+    }
   }
 
   // Function to Provide the Intro Message For Every New Burn Thread Created
@@ -100,30 +102,59 @@ class PatientModelChatState extends State<PatientModelChat> {
       // Retrieve clinical data details
       Map<String, dynamic>? clinicalData =
           SessionManager.getClinicalDataDetails();
-      drMessage += '\n' + S.of(context).clinicalDataMessage + '\n';
+      print('Retrieved Clinical Data: $clinicalData');
+
+      drMessage += '\n' +
+          S.of(context).clinicalDataMessage +
+          '\n\n' +
+          S.of(context).numberOne;
+      // List of symptoms to iterate over
+      List<String> symptomsKeys = [
+        'trembling_limbs',
+        'diarrhea',
+        'cold_extremities',
+        'nausea'
+      ];
 
       if (clinicalData != null) {
-        if (clinicalData['symptoms'] != null &&
-            clinicalData['symptoms'].isNotEmpty) {
-          drMessage += S.of(context).numberOne +
-              S.of(context).symptoms +
-              ': ' +
-              clinicalData['symptoms'].join(', ') +
-              '\n';
+        print('Clinical Data Not NULL');
+        int comma = 0;
+
+        drMessage += S.of(context).symptomssMessage + ': ';
+        // Iterate over symptoms and construct message
+        for (String symptomKey in symptomsKeys) {
+          if (clinicalData[symptomKey] != null &&
+              clinicalData[symptomKey].isNotEmpty) {
+            print('Clinical Symptoms Not NULL');
+
+            if (comma == 0) {
+              drMessage += clinicalData[symptomKey];
+              comma = 1;
+            } else {
+              drMessage += ', ' + clinicalData[symptomKey];
+            }
+          }
         }
-        if (clinicalData['cause'] != null && clinicalData['cause'].isNotEmpty) {
+
+        drMessage += '\n\n';
+
+        if (clinicalData['Cause of Burn'] != null &&
+            clinicalData['Cause of Burn'].isNotEmpty) {
+          print('Cause of Burn');
           drMessage += S.of(context).numberTwo +
               S.of(context).cause +
-              ': ' +
-              clinicalData['cause'] +
-              '\n';
+              ' ' +
+              clinicalData['Cause of Burn'] +
+              '\n\n';
         }
-        if (clinicalData['place'] != null && clinicalData['place'].isNotEmpty) {
+        if (clinicalData['Place of Burn'] != null &&
+            clinicalData['Place of Burn'].isNotEmpty) {
           drMessage += S.of(context).numberThree +
               S.of(context).place +
               ': ' +
-              clinicalData['place'] +
+              clinicalData['Place of Burn'] +
               '\n';
+          print('Place of Burn');
         }
       }
     }
@@ -171,18 +202,20 @@ class PatientModelChatState extends State<PatientModelChat> {
 
     // _sendMessage(true, false, waitingMessage, Global.userId, null,
     //     0); // Display waiting Message
-
-    setState(() {
-      messages.add(ChatMessage(
-          message: message, // message,
-          receiver: false,
-          image: base64Img,
-          senderId: Global.userId,
-          burnId: burn_id,
-          receiverId: 1,
-          imgFlag: 1,
-          timestamp: DateTime.now()));
-    });
+    if (mounted) {
+      setState(() {
+        messages.add(ChatMessage(
+            message: message, // message,
+            receiver: false,
+            show_btn: true,
+            image: base64Img,
+            senderId: Global.userId,
+            burnId: burn_id,
+            receiverId: 1,
+            imgFlag: 1,
+            timestamp: DateTime.now()));
+      });
+    }
   }
 
   // Function To Display The List Of Nearest Hospitals For The Signed Up User
@@ -253,19 +286,21 @@ class PatientModelChatState extends State<PatientModelChat> {
         '${hospital['lat']},${hospital['lon']}': hospitalMessage,
       });
     }
-
-    setState(() {
-      messages.add(ChatMessage(
-          message: fullMessage,
-          receiver: false,
-          senderId: Global.userId,
-          receiverId: 1,
-          burnId: burn_id,
-          image: null,
-          imgFlag: 0,
-          hospitalDetails: hospitalDetails,
-          timestamp: DateTime.now()));
-    });
+    if (mounted) {
+      setState(() {
+        messages.add(ChatMessage(
+            message: fullMessage,
+            receiver: false,
+            show_btn: false,
+            senderId: Global.userId,
+            receiverId: 1,
+            burnId: burn_id,
+            image: null,
+            imgFlag: 0,
+            hospitalDetails: hospitalDetails,
+            timestamp: DateTime.now()));
+      });
+    }
   }
 
   Future<void> fetchPredictionAndHospitals(int guest, String? base64Img) async {
@@ -327,10 +362,11 @@ class PatientModelChatState extends State<PatientModelChat> {
           }
 
           updateChatScreenWithWaitingMessage();
-
-          setState(() {
-            predictionAndHospitalsFetched = true;
-          });
+          if (mounted) {
+            setState(() {
+              predictionAndHospitalsFetched = true;
+            });
+          }
         }
       } else {
         print('Failed to get response. Status code: ${response.statusCode}');
@@ -422,9 +458,11 @@ class PatientModelChatState extends State<PatientModelChat> {
     try {
       List<ChatMessage> fetchedMessages = await fetchChatHistory(
           Global.userId, 1, burn_id); // Receiver ID set to 1
-      setState(() {
-        messages = fetchedMessages;
-      });
+      if (mounted) {
+        setState(() {
+          messages = fetchedMessages;
+        });
+      }
 
       print('chat is loaded');
     } catch (e) {
@@ -458,6 +496,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         final message = ChatMessage(
           message: mess_age,
           receiver: true,
+          show_btn: true,
           image: base64Img,
           imgFlag: img_flag,
           timestamp: DateTime.now(),
@@ -475,6 +514,7 @@ class PatientModelChatState extends State<PatientModelChat> {
         final message = ChatMessage(
           message: mess_age,
           receiver: false,
+          show_btn: false,
           image: base64Img,
           imgFlag: img_flag,
           timestamp: DateTime.now(),
@@ -485,16 +525,19 @@ class PatientModelChatState extends State<PatientModelChat> {
 
         // Send the message to the server
         await sendMessageToServer(message);
-        setState(() {
-          messages.add(message);
-          _messageController.clear();
-        });
+        if (mounted) {
+          setState(() {
+            messages.add(message);
+            _messageController.clear();
+          });
+        }
       }
     } else {
       if (voiceNotePath != null) {
         final voiceNoteMessage = ChatMessage(
           message: mess_age,
           receiver: false,
+          show_btn: false,
           image: base64Img,
           imgFlag: img_flag,
           voiceNote: voiceNotePath,
@@ -506,10 +549,12 @@ class PatientModelChatState extends State<PatientModelChat> {
 
         // Send the voice note message to the server
         await sendMessageToServer(voiceNoteMessage);
-        setState(() {
-          messages.add(voiceNoteMessage);
-          _messageController.clear();
-        });
+        if (mounted) {
+          setState(() {
+            messages.add(voiceNoteMessage);
+            _messageController.clear();
+          });
+        }
       } else {
         final text = _messageController.text.trim();
 
@@ -520,6 +565,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           final message = ChatMessage(
               message: text,
               receiver: true,
+              show_btn: false,
               image: base64Img,
               imgFlag: img_flag,
               timestamp: DateTime.now(),
@@ -529,11 +575,12 @@ class PatientModelChatState extends State<PatientModelChat> {
 
           // Send the message to the server
           await sendMessageToServer(message);
-
-          setState(() {
-            messages.add(message);
-            _messageController.clear();
-          });
+          if (mounted) {
+            setState(() {
+              messages.add(message);
+              _messageController.clear();
+            });
+          }
         } else
           print('message is empty');
       }

@@ -137,6 +137,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "viewMaps": MessageLookupByLibrary.simpleMessage("View on Maps"),
         "waitingMessage": MessageLookupByLibrary.simpleMessage(
             "Our Doctors will get to you shortly."),
+        "doctorTapButton": MessageLookupByLibrary.simpleMessage(
+            "The response was sent to the patient, you can add additional notes."),
         "numberOne": MessageLookupByLibrary.simpleMessage("1."),
         "numberTwo": MessageLookupByLibrary.simpleMessage("2."),
         "numberThree": MessageLookupByLibrary.simpleMessage("3."),

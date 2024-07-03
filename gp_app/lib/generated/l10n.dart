@@ -887,6 +887,16 @@ class S {
     );
   }
 
+  // doctorTapButton
+  String get doctorTapButton {
+    return Intl.message(
+      "The response was sent to the patient, you can add additional notes.",
+      name: 'doctorTapButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   // viewMapsMessage
   String get viewMapsMessage {
     return Intl.message(

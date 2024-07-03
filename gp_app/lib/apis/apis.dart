@@ -518,6 +518,7 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
   String burnId = (await SessionManager.getBurnId()) ?? '0';
 
   List<String> clinicalSymptoms = [];
+  List<String> clinicalSymptomsKeys = [];
   String cause = '';
   String place = '';
   int no_symptoms = symptoms.length;
@@ -531,25 +532,34 @@ Future addClinicalData(List<Symptoms> symptoms, Symptoms? causeOfBurn,
   // Encode the symtoms after a burn in the form of dictionary
   for (int indx = 0; indx < no_symptoms; indx++) {
     String value = '';
+    String key = '';
 
     if (symptoms[indx] == Symptoms.symptom_1) {
       value = S.of(context).symptom_1; //'trembling_limbs';
+      key = 'trembling_limbs';
     } else if (symptoms[indx] == Symptoms.symptom_2) {
       value = S.of(context).symptom_2; //'diarrhea';
+      key = 'diarrhea';
     } else if (symptoms[indx] == Symptoms.symptom_3) {
       value = S.of(context).symptom_3; //'cold_extremities';
+      key = 'cold_extremities';
     } else if (symptoms[indx] == Symptoms.symptom_4) {
       value = S.of(context).symptom_4; //'nausea';
+      key = 'nausea';
     }
 
     print(value);
     clinicalSymptoms.add(value);
+    clinicalSymptomsKeys.add(key);
   }
 
   // Converting symptoms list to dictionary
   Map<String, dynamic> symptomsMap = {};
+  // for (int symp = 0; symp < no_symptoms; symp++) {
+  //   symptomsMap[clinicalSymptoms[symp]] = clinicalSymptoms[symp];
+  // }
   for (int symp = 0; symp < no_symptoms; symp++) {
-    symptomsMap[clinicalSymptoms[symp]] = clinicalSymptoms[symp];
+    symptomsMap[clinicalSymptomsKeys[symp]] = clinicalSymptoms[symp];
   }
   print(symptomsMap);
 
@@ -819,6 +829,7 @@ Future<void> sendMessageToServer(ChatMessage message) async {
       'img_flag': message.imgFlag,
       'timestamp': message.timestamp.toIso8601String(),
       'receiver': message.receiver,
+      'show_btn': message.show_btn,
       'voice_note_path': message.voiceNote ?? '',
     });
 

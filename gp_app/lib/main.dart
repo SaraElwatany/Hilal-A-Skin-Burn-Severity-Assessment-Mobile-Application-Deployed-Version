@@ -9,7 +9,6 @@ import 'package:gp_app/apis/apis.dart';
 import 'package:provider/provider.dart';
 import 'package:gp_app/models/my_state.dart'; // Import the file where you defined your state class
 
-
 // void main() async {
 //   runApp(
 //     ChangeNotifierProvider(
@@ -18,6 +17,7 @@ import 'package:gp_app/models/my_state.dart'; // Import the file where you defin
 //     ),
 //   );
 // }
+
 void main() {
   runApp(
     MultiBlocProvider(

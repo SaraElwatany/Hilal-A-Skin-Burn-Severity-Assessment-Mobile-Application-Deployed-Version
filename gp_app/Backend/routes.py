@@ -615,7 +615,6 @@ def get_all_burns():
 
 
 # Fetch info of all users with burns (Doctor Screen)
-# Fetch info of all users with burns (Doctor Screen)
 @main.route('/get_all_burns_danger', methods=['POST'])
 def get_all_burns_danger():
 
@@ -775,7 +774,6 @@ def get_user_burns():
 
 
 
-
 # route for updating burn item 
 @main.route('/update_burn', methods=['GET', 'POST'])
 def update_burn():
@@ -851,6 +849,7 @@ def send_message():
             receiver_id=data['receiver_id'],
             message=data['message'],
             receiver=data['receiver'],
+            show_btn=data.get('show_btn'),
             burn_id=data.get('burn_id'),
             image=image_data,
             img_flag=data.get('img_flag'),
@@ -864,6 +863,7 @@ def send_message():
             receiver_id=data['receiver_id'],
             message=data['message'],
             receiver=data['receiver'],
+            show_btn=data.get('show_btn'),
             burn_id=data.get('burn_id'),
             image=data.get('image'),
             img_flag=data.get('img_flag'),

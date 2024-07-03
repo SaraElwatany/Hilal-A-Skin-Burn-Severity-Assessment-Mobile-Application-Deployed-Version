@@ -13,6 +13,7 @@ class ChatMessage(db.Model):
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
     burn_id = db.Column(db.Integer, nullable=False)
     # user_id = db.Column(db.Integer, nullable=False)
+    show_btn = db.Column(db.Boolean, nullable=True, default=False)
     voice_note_path = db.Column(db.String(255), nullable=True) 
 
     def to_dict(self):
@@ -24,6 +25,7 @@ class ChatMessage(db.Model):
             'image': self.image,
             'img_flag': self.img_flag,
             'receiver': self.receiver,
+            'show_btn': self.show_btn,
             'timestamp': self.timestamp.isoformat(),
             'burn_id': self.burn_id,
             #'user_id': self.user_id,

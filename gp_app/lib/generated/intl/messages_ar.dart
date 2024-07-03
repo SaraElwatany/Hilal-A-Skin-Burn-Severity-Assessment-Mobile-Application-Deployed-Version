@@ -129,6 +129,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "معرفناش نحدد موقعك، بس دي قايمة بخمس مستشفيات متواجدين في القاهرة:\n\n"),
         "waitingMessage": MessageLookupByLibrary.simpleMessage(
             "دكاترتنا هيتواصلوا معاك علي طول"),
+        "doctorTapButton": MessageLookupByLibrary.simpleMessage(
+            "تم ارسال الرد للمريض، تقدر دلوقتي تضيف أي ملاحظات زيادة."),
         "viewMaps": MessageLookupByLibrary.simpleMessage("عرض علي الخرائط"),
         "numberOne": MessageLookupByLibrary.simpleMessage("١."),
         "numberTwo": MessageLookupByLibrary.simpleMessage("٢."),

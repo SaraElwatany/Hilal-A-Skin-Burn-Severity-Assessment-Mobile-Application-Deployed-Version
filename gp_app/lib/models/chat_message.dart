@@ -9,6 +9,7 @@ class ChatMessage {
   final int? imgFlag;
   final String? voiceNote;
   final bool? receiver;
+  final bool? show_btn;
   final DateTime timestamp;
   // Variables Related to the Location
   final double? latitude; // Add latitude
@@ -24,6 +25,7 @@ class ChatMessage {
     this.imgFlag,
     required this.message,
     required this.receiver,
+    this.show_btn,
     this.image,
     this.voiceNote,
     required this.timestamp,
@@ -46,6 +48,7 @@ class ChatMessage {
       imgFlag: json['img_flag'] as int?,
       voiceNote: json['voice_note_path'] as String?,
       receiver: json['receiver'] as bool?,
+      show_btn: json['show_btn'] as bool?,
       timestamp: DateTime.parse(json['timestamp'] as String),
       latitude: json['latitude'] as double?,
       longitude: json['longitude'] as double?,
@@ -66,6 +69,7 @@ class ChatMessage {
       'image': image, // Store base64 encoded image
       'voice_note': voiceNote,
       'receiver': receiver,
+      'show_btn': show_btn,
       'timestamp': timestamp.toIso8601String(),
       'latitude': latitude,
       'longitude': longitude,
