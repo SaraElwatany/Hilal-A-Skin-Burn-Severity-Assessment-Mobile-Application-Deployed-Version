@@ -1061,7 +1061,7 @@ class S {
   String get speciality {
     return Intl.message(
       "Speciality",
-      name: 'Speciality',
+      name: 'speciality',
       desc: '',
       args: [],
     );

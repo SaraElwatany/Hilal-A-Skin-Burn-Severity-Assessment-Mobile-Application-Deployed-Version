@@ -98,8 +98,9 @@ class MessagesWidget extends StatelessWidget {
                       // VoiceNoteCard(voiceNoteInfo: voiceNoteInfo),
 
                       _buildMessageContent(context, chatMessage),
-                      if (chatMessage.voiceNote !=
-                          null) // if (chatMessage.voiceNote != null && chatMessage.voiceNote!.isNotEmpty)
+                      // if (chatMessage.voiceNote !=null)
+                      if (chatMessage.voiceNote != null &&
+                          chatMessage.voiceNote!.isNotEmpty)
                         VoiceNoteCard(
                           voiceNoteInfo: VoiceNoteModel(
                             name:
