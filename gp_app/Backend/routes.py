@@ -41,6 +41,51 @@ def intro():
 
 
 
+# A route for the emergency button (Done)
+@main.route('/emergency_guest', methods = ['POST'])
+def emergency_guest():
+
+    print('Emergency Guest...')
+
+    # Create a dummy password
+    password = '13884743'
+    # Create a temporary user_id for the guest and delete on the exit of the session by going to the welcome page
+    hashed_password = generate_password_hash(password, method='pbkdf2')
+
+    # add info for temporary user
+    new_user = User(
+    username = f'Guest User', 
+    password = hashed_password,
+    email = 'guest_user',
+    phone = 1224355,    #'None'
+    weight = 50,        #'None'
+    height = 170,       #'None'
+    gender = 'M',       #'None'
+    dob = date(2020,4,2),   #'None'
+    profession = 'patient'
+    )
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        print('Saved Emergency Guest Temporary')
+        print('user id: ', new_user.id) # Get user ID
+        response = {'response': 'Signup successful', 'user_id': new_user.id}
+    except OperationalError:
+        print('Operational Error Encountered')
+    except IntegrityError:
+        db.session.rollback()   # Rollback the transaction
+        print('Integrity Error: User with this email already exists')
+        response = {'response': 'Email already exists', 'user_id': 0}
+    except Exception as e:
+        db.session.rollback()
+        print(f'Error during signup: {str(e)}')
+        response = {'response': 'Internal Server Error', 'user_id': 0}
+    return jsonify(response)
+
+
+
+
 
 # Route to get the username and password in the login screen (Done)
 @main.route('/login', methods = ['POST'])

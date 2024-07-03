@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/widgets/localization_icon.dart';
 import 'package:gp_app/apis/apis.dart';
-// import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/models/global.dart';
 // import 'package:provider/provider.dart';
-
 import 'package:gp_app/models/new_user.dart';
+// import 'package:gp_app/models/my_state.dart';
 import 'package:gp_app/screens/login_screen.dart';
 import 'package:gp_app/screens/main_page.dart';
 import 'package:gp_app/screens/doctor_profile.dart';
@@ -49,7 +48,7 @@ class _SignUpState extends State<SignUpScreen> {
       // Get the User Profession
       String user_profession;
       user_profession = (await SessionManager.getUserProfession()) ?? 'patient';
-      output = await signUp(userInfo, user_profession);
+      output = await signUp(userInfo, user_profession, 0);
 
       if ((_formKey.currentState != null &&
               _formKey.currentState!.validate()) &&

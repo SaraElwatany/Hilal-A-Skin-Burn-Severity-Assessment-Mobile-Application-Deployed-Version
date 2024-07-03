@@ -171,8 +171,8 @@ class DoctorMessagesWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Visibility(
-                          visible: (doctorMessage.show_btn ==
-                              true), // (doctorMessage.receiver == false),
+                          visible: (doctorMessage.receiver ==
+                              false), // (doctorMessage.receiver == false),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 4.0, left: 4.0),
                             child: (doctorMessage.receiver == false
@@ -185,6 +185,8 @@ class DoctorMessagesWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
+                        Text(doctorMessage
+                            .message), // Add this line to display the message text
                       ],
                     ),
                   ),
@@ -195,7 +197,8 @@ class DoctorMessagesWidget extends StatelessWidget {
               height: 10,
             ),
             Visibility(
-              visible: (doctorMessage.receiver == false),
+              visible: (doctorMessage.show_btn ==
+                  true), // (doctorMessage.receiver == false)
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

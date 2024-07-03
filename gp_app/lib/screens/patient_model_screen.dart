@@ -59,6 +59,7 @@ class PatientModelChatState extends State<PatientModelChat> {
             senderId: Global.userId,
             burnId: burn_id,
             image: null,
+            voiceNote: null,
             imgFlag: 0,
             receiverId: 1));
       });
@@ -213,6 +214,7 @@ class PatientModelChatState extends State<PatientModelChat> {
             burnId: burn_id,
             receiverId: 1,
             imgFlag: 1,
+            voiceNote: null,
             timestamp: DateTime.now()));
       });
     }
@@ -296,6 +298,7 @@ class PatientModelChatState extends State<PatientModelChat> {
             receiverId: 1,
             burnId: burn_id,
             image: null,
+            voiceNote: null,
             imgFlag: 0,
             hospitalDetails: hospitalDetails,
             timestamp: DateTime.now()));
@@ -501,6 +504,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           imgFlag: img_flag,
           timestamp: DateTime.now(),
           senderId: 3,
+          voiceNote: voiceNotePath,
           receiverId: receive_r,
           burnId: burn_id,
         );
@@ -519,6 +523,7 @@ class PatientModelChatState extends State<PatientModelChat> {
           imgFlag: img_flag,
           timestamp: DateTime.now(),
           senderId: 3,
+          voiceNote: voiceNotePath,
           receiverId: Global.userId,
           burnId: burn_id,
         );
@@ -571,6 +576,7 @@ class PatientModelChatState extends State<PatientModelChat> {
               timestamp: DateTime.now(),
               senderId: Global.userId,
               burnId: burn_id,
+              voiceNote: voiceNotePath,
               receiverId: receive_r);
 
           // Send the message to the server

@@ -327,7 +327,8 @@ void login_warning(context) {
 }
 
 // Function to sign up an account
-Future<String> signUp(NewUser userInfo, String userProfession) async {
+Future<String> signUp(
+    NewUser userInfo, String userProfession, int guest) async {
   // Define Route For checking the sign up info based on the user profession, whether patient or admin
   String route = '';
   var body;
@@ -341,13 +342,18 @@ Future<String> signUp(NewUser userInfo, String userProfession) async {
       'speciality': userInfo.speciality,
     };
   } else {
-    route = 'signup';
-    body = {
-      'firstname': userInfo.firstName,
-      'lastname': userInfo.lastName,
-      'email': userInfo.email,
-      'password': userInfo.password,
-    };
+    if (guest == 1) {
+      route = 'emergency_guest';
+      body = {}; // Send an empty body
+    } else {
+      route = 'signup';
+      body = {
+        'firstname': userInfo.firstName,
+        'lastname': userInfo.lastName,
+        'email': userInfo.email,
+        'password': userInfo.password,
+      };
+    }
   }
 
   var url = 'https://deploy-2uif.onrender.com/$route'; //
@@ -817,43 +823,101 @@ Future<List<ChatMessage>> fetchChatHistory(
 }
 
 Future<void> sendMessageToServer(ChatMessage message) async {
-  try {
-    var url = Uri.parse('https://deploy-2uif.onrender.com/send_message');
-    var headers = {'Content-Type': 'application/json'};
-    var body = jsonEncode({
-      'sender_id': message.senderId,
-      'receiver_id': message.receiverId,
-      'burn_id': message.burnId,
-      'message': message.message,
-      'image': message.image,
-      'img_flag': message.imgFlag,
-      'timestamp': message.timestamp.toIso8601String(),
-      'receiver': message.receiver,
-      'show_btn': message.show_btn,
-      'voice_note_path': message.voiceNote ?? '',
-    });
+  const int maxRetries = 3;
+  const int retryDelay = 5; // seconds
 
-    print('Sending JSON: $body'); // Print the JSON payload for debugging
+  for (int attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      var url = Uri.parse('https://deploy-2uif.onrender.com/send_message');
+      var headers = {'Content-Type': 'application/json'};
+      var body = jsonEncode({
+        'sender_id': message.senderId,
+        'receiver_id': message.receiverId,
+        'burn_id': message.burnId,
+        'message': message.message,
+        'image': message.image,
+        'img_flag': message.imgFlag,
+        'timestamp': message.timestamp.toIso8601String(),
+        'receiver': message.receiver,
+        'show_btn': message.show_btn,
+        'voice_note_path': message.voiceNote ?? '',
+      });
 
-    var response = await http
-        .post(url, headers: headers, body: body)
-        .timeout(const Duration(seconds: 100)); // 200 secs
+      print('Sending JSON (Attempt ${attempt + 1}): $body');
 
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      print('Message sent successfully');
-    } else {
-      print('Failed to send message. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      throw Exception('Failed to send message');
+      var response = await http
+          .post(url, headers: headers, body: body)
+          .timeout(const Duration(seconds: 100));
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        print('Message sent successfully');
+        return; // Exit the function if successful
+      } else {
+        print('Failed to send message. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        if (attempt == maxRetries - 1) {
+          throw Exception('Failed to send message after $maxRetries attempts');
+        }
+      }
+    } on TimeoutException catch (e) {
+      print('Timeout sending message (Attempt ${attempt + 1}): $e');
+      if (attempt == maxRetries - 1) {
+        throw Exception(
+            'Timeout sending message after $maxRetries attempts: $e');
+      }
+    } catch (e) {
+      print('Error sending message (Attempt ${attempt + 1}): $e');
+      if (attempt == maxRetries - 1) {
+        throw Exception('Error sending message after $maxRetries attempts: $e');
+      }
     }
-  } on TimeoutException catch (e) {
-    print('Timeout sending message: $e');
-    throw Exception('Timeout sending message: $e');
-  } catch (e) {
-    print('Error sending message: $e');
-    throw Exception('Error sending message: $e');
+
+    // Wait before retrying
+    if (attempt < maxRetries - 1) {
+      print('Retrying in $retryDelay seconds...');
+      await Future.delayed(Duration(seconds: retryDelay));
+    }
   }
 }
+
+// {
+//   try {
+//     var url = Uri.parse('https://deploy-2uif.onrender.com/send_message');
+//     var headers = {'Content-Type': 'application/json'};
+//     var body = jsonEncode({
+//       'sender_id': message.senderId,
+//       'receiver_id': message.receiverId,
+//       'burn_id': message.burnId,
+//       'message': message.message,
+//       'image': message.image,
+//       'img_flag': message.imgFlag,
+//       'timestamp': message.timestamp.toIso8601String(),
+//       'receiver': message.receiver,
+//       'show_btn': message.show_btn,
+//       'voice_note_path': message.voiceNote ?? '',
+//     });
+
+//     print('Sending JSON: $body'); // Print the JSON payload for debugging
+
+//     var response = await http
+//         .post(url, headers: headers, body: body)
+//         .timeout(const Duration(seconds: 100)); // 200 secs
+
+//     if (response.statusCode == 201 || response.statusCode == 200) {
+//       print('Message sent successfully');
+//     } else {
+//       print('Failed to send message. Status code: ${response.statusCode}');
+//       print('Response body: ${response.body}');
+//       throw Exception('Failed to send message');
+//     }
+//   } on TimeoutException catch (e) {
+//     print('Timeout sending message: $e');
+//     throw Exception('Timeout sending message: $e');
+//   } catch (e) {
+//     print('Error sending message: $e');
+//     throw Exception('Error sending message: $e');
+//   }
+// }
 
 // Function to return the user's location to flask
 Future<void> get_user_location(
