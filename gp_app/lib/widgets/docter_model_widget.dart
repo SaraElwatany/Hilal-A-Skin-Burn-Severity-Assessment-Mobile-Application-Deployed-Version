@@ -3,7 +3,8 @@ import 'package:gp_app/apis/apis.dart';
 import 'package:flutter/material.dart';
 import 'package:gp_app/generated/l10n.dart';
 import 'package:gp_app/models/chat_message.dart';
-import 'package:gp_app/screens/doctor_model_screen.dart';
+import 'package:gp_app/models/voice_note_model.dart';
+import 'package:gp_app/widgets/voice_note_card.dart';
 import 'package:flutter_langdetect/flutter_langdetect.dart'
     as langdetect; // recommend to import 'as langdetect' because this package shows a simple function name 'detect'
 
@@ -185,8 +186,16 @@ class DoctorMessagesWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text(doctorMessage
-                            .message), // Add this line to display the message text
+                        // Text(doctorMessage
+                        //     .message), // Add this line to display the message text
+                      if (doctorMessage.voiceNote != null && doctorMessage.voiceNote!.isNotEmpty)
+                        VoiceNoteCard(
+                          voiceNoteInfo: VoiceNoteModel(
+                            name: 'Voice Note', // Provide a name for the voice note
+                            createAt: DateTime.now(), // Timestamp for voice note
+                            path: doctorMessage.voiceNote!, // Voice note path
+                          ),
+                        ),
                       ],
                     ),
                   ),
