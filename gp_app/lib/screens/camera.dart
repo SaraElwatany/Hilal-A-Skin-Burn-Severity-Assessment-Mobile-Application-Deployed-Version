@@ -13,6 +13,32 @@ import 'package:permission_handler/permission_handler.dart';
 int navigate = 0; // Flag to navigate to the chat screen
 bool isNavigating = false; // Add this flag to track navigation
 
+// Function to show a warning if the uploaded image was NULL
+void image_warning(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text('No Image Selected'),
+      content: const Text('Please select an image before uploading.'),
+      backgroundColor: Colors.white,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(ctx);
+          },
+          child: Text(
+            'Okay',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.surface,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
   @override
@@ -118,7 +144,8 @@ class _HomeScreenState extends State<CameraScreen> {
                         }
                       } else {
                         print('No image selected');
-                        // Handle the case when nullableFile is null
+                        image_warning(
+                            context); // Show warning if imageFile is null
                       }
                     },
                     style: ElevatedButton.styleFrom(
