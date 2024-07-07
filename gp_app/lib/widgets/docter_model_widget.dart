@@ -185,8 +185,12 @@ class DoctorMessagesWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text(doctorMessage
-                            .message), // Add this line to display the message text
+                        Text(
+                          doctorMessage.message,
+                          style: TextStyle(
+                            color: Colors.white, // Set the text color to white
+                          ),
+                        ), // Add this line to display the message text
                       ],
                     ),
                   ),
