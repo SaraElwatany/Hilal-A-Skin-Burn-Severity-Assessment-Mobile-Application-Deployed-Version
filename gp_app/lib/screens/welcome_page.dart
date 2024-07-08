@@ -151,27 +151,27 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(
             height: 20,
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const VoiceNoteScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                fixedSize: const Size(100, 50),
-                backgroundColor: const Color.fromARGB(255, 29, 49, 78)),
-            child: const Text(
-              "Voice",
-              style: TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 255, 251, 251),
-              ),
-            ),
-          )
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => const VoiceNoteScreen()),
+          //     );
+          //   },
+          //   style: ElevatedButton.styleFrom(
+          //       shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(15)),
+          //       fixedSize: const Size(100, 50),
+          //       backgroundColor: const Color.fromARGB(255, 29, 49, 78)),
+          //   child: const Text(
+          //     "Voice",
+          //     style: TextStyle(
+          //       fontSize: 18,
+          //       color: Color.fromARGB(255, 255, 251, 251),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
