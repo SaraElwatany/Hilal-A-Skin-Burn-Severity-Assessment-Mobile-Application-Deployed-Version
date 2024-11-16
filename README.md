@@ -69,7 +69,7 @@ vol. 1116, p. 012186, Apr. 2021.
 
 1- This is a deployable version of the application, so some functionalities (camera, ..etc) may not be available if you run it locally on your computer. 
 
-2- If you wish to run the application on your computer and not on a mobile phone you will have to update the environment variables necessary for the databse connection, can be found in "", or you can type them manually in a separate file.
+2- If you wish to run the application on your computer and not on a mobile phone you will have to update the environment variables necessary for the databse connection, can be found in "my_tokens.py", or you can type them manually in a separate file.
 
 
 
