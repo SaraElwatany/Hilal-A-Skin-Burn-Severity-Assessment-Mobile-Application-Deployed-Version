@@ -61,7 +61,7 @@ vol. 1116, p. 012186, Apr. 2021.
 ## How To Use
 1- Clone the repository
 
-2- Install the required Packages present in the requirements.txt file 
+2- Install the required Packages present in the "gp_app/requirements.txt" file.
 
 3- Update the URLs present in the apis file present in to your desired URLs 
 
