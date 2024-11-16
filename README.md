@@ -25,6 +25,7 @@ https://github.com/user-attachments/assets/decbbc72-da6d-4b1a-a950-1fab2768c982
 
 - **Second Degree Burn & Hospitals Suggestion**
 
+https://github.com/user-attachments/assets/d97e49df-adc9-4e57-9deb-7ee24e506c62
 
 
 ## References
