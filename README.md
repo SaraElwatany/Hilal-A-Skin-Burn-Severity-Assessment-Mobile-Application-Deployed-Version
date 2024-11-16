@@ -7,6 +7,8 @@
 https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 
 ## Methodology
+![Untitled](https://github.com/user-attachments/assets/93662248-fbcb-4150-9c53-7ab098af1711)
+
 
 
 
