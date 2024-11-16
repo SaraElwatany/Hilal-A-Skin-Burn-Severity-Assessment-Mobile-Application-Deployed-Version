@@ -14,8 +14,7 @@ https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 
 ## Snapshots
 
-![Picture1](https://github.com/user-attachments/assets/194d9224-fee1-4076-bd55-00f174522dfc)
-
+![Picture1 - Copy](https://github.com/user-attachments/assets/a50c22e6-81d8-4876-a745-3aace41eebca)
 ![signup](https://github.com/user-attachments/assets/855e7618-4e87-4b1a-bf95-08c9021d0539)
 
 ![Picture3](https://github.com/user-attachments/assets/38d75796-77ac-4077-84b1-dee8d2910788)
