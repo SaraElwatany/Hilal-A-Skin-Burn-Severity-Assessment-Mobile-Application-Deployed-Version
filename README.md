@@ -1,5 +1,16 @@
 # Hilal - Skin Burn Severity Assessment Mobile Application
 
+## About
+
 ## Motivation
-[![Video Title](https://img.youtube.com/vi/YYBD46rUGMY/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
+https://github.com/user-attachments/assets/8ddb7fb2-3973-4bd5-b18f-2f64f6f220c7
+
+## Methodology
+
+## Snapshots
+
+
+## References
+
+
 
