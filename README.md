@@ -59,17 +59,17 @@ vol. 1116, p. 012186, Apr. 2021.
 
 
 ## How To Use
-1- Clone the repository
+1- Clone the repository.
 
 2- Install the required Packages present in the "gp_app/requirements.txt" file.
 
-3- Update the URLs present in the apis file present in to your desired URLs 
+3- Update the URLs present in the "gp_app/lib/apis/apis.dart" file to your desired URLs.
 
 **Note:** 
 
 1- This is a deployable version of the application, so some functionalities (camera, ..etc) may not be available if you run it locally on your computer. 
 
-2- If you wish to run the application on your computer and not on a mobile phone you will have to update the environment variables necessary for the databse connection, or you can type them manually in a separate file.
+2- If you wish to run the application on your computer and not on a mobile phone you will have to update the environment variables necessary for the databse connection, can be found in "", or you can type them manually in a separate file.
 
 
 
