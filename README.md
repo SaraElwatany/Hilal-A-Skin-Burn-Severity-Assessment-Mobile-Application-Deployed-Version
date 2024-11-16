@@ -19,10 +19,8 @@ https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
   <img src="https://github.com/user-attachments/assets/38d75796-77ac-4077-84b1-dee8d2910788" alt="Picture3" width="45%" />
 </p>
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/6d359178-d33f-4108-82a9-26ded6cc0026" alt="Picture4" width="45%" />
-  <img src="[https://github.com/user-attachments/assets/6d359178-d33f-4108-82a9-26ded6cc0026](https://github.com/user-attachments/assets/defd9349-1083-48ad-8b01-f784ee212c0c)" alt="WhatsApp Image 2024-07-16 at 11 41 07" width="45%" />
-</p>
+![Picture4](https://github.com/user-attachments/assets/6d359178-d33f-4108-82a9-26ded6cc0026)
+
 
 ## Demo
 - **Sign Up**
