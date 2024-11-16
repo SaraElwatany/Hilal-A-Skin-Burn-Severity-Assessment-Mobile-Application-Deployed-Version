@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/9599924b-d82b-488b-bf6f-d462dab4603b
 
 ## References
 
-**- DataSets**
+- **DataSets**
   
 [1] YOLO, “Skin burn dataset.” https://www.kaggle.com/datasets/shubhambaid/skin-burn-dataset, 2023. Accessed: Jan. 11, 2023.
 
@@ -38,7 +38,7 @@ https://github.com/user-attachments/assets/9599924b-d82b-488b-bf6f-d462dab4603b
 [4] Biomedical Image Processing (BIP) Group and Virgen del Roc´ıo Hospital, “Burns bip us database.” Accessed: Dec. 30, 2023, http://personal.us.es/
 rboloix/Burns BIP US database.zip, Dec. 2023.
 
-**- Papers & Articles**
+- **Papers & Articles**
   
 [1] S. A. Suha and T. F. Sanam, “A deep convolutional neural network-based approach for detecting burn severity from skin burn images,” Machine Learning
 and Applications, vol. 9, p. 100371, Sept. 2022.
@@ -49,7 +49,7 @@ classification,” Scientific Reports, vol. 13, p. 12516, Aug. 2023.
 [3] D. P. Yadav, “A method for human burn diagnosis using machine learning and slic superpixels based segmentation,” IOP Conf. Ser. Mater. Sci. Eng.,
 vol. 1116, p. 012186, Apr. 2021.
 
-**- Tools**
+- **Tools**
   
 [1] Labelbox, “Labelbox.” https://labelbox.com, Jan. 2023. Accessed: Nov. 27, 2023.
 
