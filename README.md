@@ -20,7 +20,7 @@ https://github.com/user-attachments/assets/1a8638e8-a756-4b8d-8852-4f440090e56b
 https://github.com/user-attachments/assets/9599924b-d82b-488b-bf6f-d462dab4603b
 
 - **First Degree Burn & Voice Note Feature**
-[Watch the demo video]([https://drive.google.com/your-video-link](https://drive.google.com/drive/u/0/folders/1QgruLUqK3KoOEW-mPUksQvPOPuJ9AztU))
+[Watch the demo video]([[https://drive.google.com/your-video-link](https://drive.google.com/drive/u/0/folders/1QgruLUqK3KoOEW-mPUksQvPOPuJ9AztU](https://drive.google.com/file/d/1ypb18CqGV7CZkiwxyt8tqtkftJaVs5kU/view?usp=sharing)))
   
 - **Second Degree Burn & Hospitals Suggestion**
 
