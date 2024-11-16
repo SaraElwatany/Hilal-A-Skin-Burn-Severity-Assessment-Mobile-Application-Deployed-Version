@@ -1,4 +1,5 @@
 # Hilal - Skin Burn Severity Assessment Mobile Application
+![Picture5-imageonline co-merged](https://github.com/user-attachments/assets/d60feb15-53be-4300-a251-beb7da69149f)
 
 ## About
 
@@ -8,7 +9,13 @@ https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 ## Methodology
 
 
+
 ## Snapshots
+![Picture1](https://github.com/user-attachments/assets/194d9224-fee1-4076-bd55-00f174522dfc)
+![signup](https://github.com/user-attachments/assets/855e7618-4e87-4b1a-bf95-08c9021d0539)
+![Picture3](https://github.com/user-attachments/assets/38d75796-77ac-4077-84b1-dee8d2910788)
+![Picture4](https://github.com/user-attachments/assets/6d359178-d33f-4108-82a9-26ded6cc0026)
+![WhatsApp Image 2024-07-16 at 11 41 07](https://github.com/user-attachments/assets/defd9349-1083-48ad-8b01-f784ee212c0c)
 
 ## Demo
 - **Sign Up**
