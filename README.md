@@ -39,12 +39,15 @@ for Two Vs. Three model.
 
 
 ## Motivation
+
 This project aims to bridge the gap between patients and specialists by providing fast and reliable burn diagnosis support, reducing the risk of delayed treatment and improving patient outcomes through a mobile-friendly burn assessment telemedicine application.
 
 https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 
+
 ## Methodology
 ![Untitled](https://github.com/user-attachments/assets/93662248-fbcb-4150-9c53-7ab098af1711)
+
 
 **Data Collection and Preprocessing**
 
@@ -57,11 +60,12 @@ https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 - Data Cleaning: Removed artifacts and poor-quality images that could negatively impact training.
 
 - Standardization: Resized images and normalized pixel values to ensure consistent input format for all models.
+  
 
 
 **Model Development**
 
-- ResNet-50 Benchmark Model:
+- **ResNet-50 Benchmark Model:**
 
 Pretrained ResNet-50 model with added dense layers.
 
@@ -70,14 +74,16 @@ Additional layers: fully connected layer, dropout layer (0.3), final output laye
 Achieved 41.1% accuracy on initial trials, improved to 50% with hyperparameter tuning on initial datasets.
 
 
-- DenseNet Model:
+
+- **DenseNet Model:**
 
 Pretrained DenseNet with added dense layers.
 
 Achieved 50.00% accuracy on initial datasets.
 
 
-- MobileNet Model:
+
+- **MobileNet Model:**
 
 Pretrained MobileNet with an extra flatten layer and two fully connected layers.
 
@@ -86,18 +92,21 @@ Dropout layer (0.7) and ReLU activation.
 Achieved 49.15% accuracy on initial datasets.
 
 
-- VGG16 Model:
+
+- **VGG16 Model:**
 
 Pretrained VGG16 with added dense layers.
 
 Achieved 47.46% accuracy on initial datasets.
 
 
-- ShuffleNet Model:
+
+- **ShuffleNet Model:**
 
 Pretrained ShuffleNet with added dense layers.
 
 Achieved 46.61% accuracy on initial datasets.
+
 
 
 **Advanced Strategies**
@@ -107,8 +116,9 @@ Due to the low accuracies, we adapted to advanced startegies to enhance the burn
 - I = Class 1 / First Degree Burn
 - II = Class 2 / Second Degree Burn
 - III = Class 3 / Third Degree Burn
+  
 
-- One-vs-All (OvA) Strategy:
+- **One-vs-All (OvA) Strategy:**
 
 ResNet-50 model fine-tuned for binary classification of each burn degree against the others.
 
@@ -119,7 +129,8 @@ II vs Others: 68.64% accuracy
 III vs Others: 70.34% accuracy
 
 
-- Cascading Classifier:
+
+- **Cascading Classifier:**
 
 Integrated two models for hierarchical classification, and continued with mobilenet pretrained model for better optimization:
 
@@ -128,30 +139,35 @@ First-degree vs. Others (MobileNet): 92.34% accuracy
 Second-degree vs. Third-degree (MobileNet): 89.55% accuracy
 
 
+
 **Training and Evaluation**
 
-- Loss Functions:
+
+- **Loss Functions:**
 
 Multi-class classification: Cross-Entropy Loss
 
 Binary classification (OvA): Binary Cross-Entropy Loss
 
 
-- Optimization:
+
+- **Optimization:**
 
 Adam optimizer with adaptive learning rates.
 
 ReduceLROnPlateau scheduler to reduce learning rate by a factor of 0.1 if no improvement for 6 epochs.
 
 
-- Evaluation Metrics:
+
+- **Evaluation Metrics:**
 
 Accuracy, F1-score, Precision, Recall
 
 Confusion matrices for visual performance comparison
 
 
-- Best Results:
+
+- **Best Results:**
 
 CIELAB color space with Mobilenet using cascading classifier.
 
