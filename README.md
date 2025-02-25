@@ -48,7 +48,7 @@ https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 
 **Data Collection and Preprocessing**
 
-- Datasets: We combined multiple datasets (datasets 4, 5, 6, 7, and 8) to build a robust training set, ensuring diverse representation of burn types.
+- Datasets: We combined multiple datasets (listed below in the readme) to build a robust training set, ensuring diverse representation of burn types.
 
 - Image Processing: Burn region of interest (ROI) extraction was performed to focus on the affected areas, reducing noise and improving model performance.
 
@@ -67,14 +67,14 @@ Pretrained ResNet-50 model with added dense layers.
 
 Additional layers: fully connected layer, dropout layer (0.3), final output layer.
 
-Achieved 41.1% accuracy on initial trials, improved to 50% with hyperparameter tuning on dataset 5.
+Achieved 41.1% accuracy on initial trials, improved to 50% with hyperparameter tuning on initial datasets.
 
 
 - DenseNet Model:
 
 Pretrained DenseNet with added dense layers.
 
-Achieved 50.00% accuracy on dataset 5.
+Achieved 50.00% accuracy on initial datasets.
 
 
 - MobileNet Model:
@@ -83,24 +83,30 @@ Pretrained MobileNet with an extra flatten layer and two fully connected layers.
 
 Dropout layer (0.7) and ReLU activation.
 
-Achieved 49.15% accuracy on dataset 5.
+Achieved 49.15% accuracy on initial datasets.
 
 
 - VGG16 Model:
 
 Pretrained VGG16 with added dense layers.
 
-Achieved 47.46% accuracy on dataset 5.
+Achieved 47.46% accuracy on initial datasets.
 
 
 - ShuffleNet Model:
 
 Pretrained ShuffleNet with added dense layers.
 
-Achieved 46.61% accuracy on dataset 5.
+Achieved 46.61% accuracy on initial datasets.
 
 
 **Advanced Strategies**
+
+Due to the low accuracies, we adapted to advanced startegies to enhance the burn classes classification.
+
+- I = Class 1 / First Degree Burn
+- II = Class 2 / Second Degree Burn
+- III = Class 3 / Third Degree Burn
 
 - One-vs-All (OvA) Strategy:
 
@@ -115,9 +121,9 @@ III vs Others: 70.34% accuracy
 
 - Cascading Classifier:
 
-Integrated two models for hierarchical classification:
+Integrated two models for hierarchical classification, and continued with mobilenet pretrained model for better optimization:
 
-First-degree vs. Others (ResNet-50): 92.34% accuracy
+First-degree vs. Others (MobileNet): 92.34% accuracy
 
 Second-degree vs. Third-degree (MobileNet): 89.55% accuracy
 
@@ -147,7 +153,7 @@ Confusion matrices for visual performance comparison
 
 - Best Results:
 
-CIELAB color space with ResNet-50: 63.23% accuracy, 0.6271 F1-score, 0.6391 Precision, 0.6323 Recall
+CIELAB color space with Mobilenet using cascading classifier.
 
 
 
