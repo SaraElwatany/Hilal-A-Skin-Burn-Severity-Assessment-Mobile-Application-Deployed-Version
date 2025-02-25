@@ -39,7 +39,7 @@ for Two Vs. Three model.
 
 
 ## Motivation
-This project aims to bridge the gap between patients and specialists by providing fast and reliable burn diagnosis support, reducing the risk of delayed treatment and improving patient outcomes through mobile-friendly burn assessment.
+This project aims to bridge the gap between patients and specialists by providing fast and reliable burn diagnosis support, reducing the risk of delayed treatment and improving patient outcomes through a mobile-friendly burn assessment telemedicine application.
 
 https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 
