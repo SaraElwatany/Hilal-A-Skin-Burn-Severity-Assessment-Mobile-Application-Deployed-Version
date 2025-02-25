@@ -2,7 +2,28 @@
 ![Picture5-imageonline co-merged](https://github.com/user-attachments/assets/d60feb15-53be-4300-a251-beb7da69149f)
 
 ## About
+
 This project presents a comprehensive AI-powered clinical decision support system for skin burn severity assessment, integrated into a user-friendly mobile application. Developed by a multidisciplinary team from Cairo University’s Faculty of Engineering and Faculty of Medicine, the system assists burn specialists in diagnosing burn severity, enabling timely and accurate treatment, especially in remote areas.
+
+**About Hilal**
+
+Hilal is a mobile application designed to assist in the assessment of burn injuries by classifying the degree of burns from images. The app integrates doctor validation and feedback to ensure high diagnostic accuracy and better patient care.
+
+**Tech Stack**
+
+- Frontend: Flutter
+
+- Backend: Flask
+
+- Machine Learning: PyTorch
+
+- Database: SQLAlchemy (storing images as blobs)
+
+
+**System Architecture**
+
+Hilal follows a cascading classifier approach, leveraging ResNet-50 and MobileNet models for image-based burn classification. Doctor feedback is integrated into the system to continuously improve model performance.
+
 
 **Key Features:**
 
@@ -14,11 +35,12 @@ This project presents a comprehensive AI-powered clinical decision support syste
 
 - High Performance: Achieved the best classification results using a modified MobileNet model, with an accuracy of (92.34% accuracy) for One Vs. Others model and (89.55% accuracy)
 for Two Vs. Three model.
-- 
-This project aims to bridge the gap between patients and specialists by providing fast and reliable burn diagnosis support, reducing the risk of delayed treatment and improving patient outcomes.
+
 
 
 ## Motivation
+This project aims to bridge the gap between patients and specialists by providing fast and reliable burn diagnosis support, reducing the risk of delayed treatment and improving patient outcomes through mobile-friendly burn assessment.
+
 https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 
 ## Methodology
