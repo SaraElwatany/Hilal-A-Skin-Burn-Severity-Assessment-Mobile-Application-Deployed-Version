@@ -2,6 +2,21 @@
 ![Picture5-imageonline co-merged](https://github.com/user-attachments/assets/d60feb15-53be-4300-a251-beb7da69149f)
 
 ## About
+This project presents a comprehensive AI-powered clinical decision support system for skin burn severity assessment, integrated into a user-friendly mobile application. Developed by a multidisciplinary team from Cairo University’s Faculty of Engineering and Faculty of Medicine, the system assists burn specialists in diagnosing burn severity, enabling timely and accurate treatment, especially in remote areas.
+
+**Key Features:**
+
+- Deep Learning Models: Implemented and compared ResNet50, DenseNet, MobileNet, VGG16, and ShuffleNet for burn degree classification.
+
+- Enhanced Datasets: Curated and enriched a diverse dataset from publicly available sources and local Egyptian hospitals, with expert-annotated images.
+
+- Mobile Application: Designed a telemedicine platform to facilitate remote diagnosis and specialist-patient communication.
+
+- High Performance: Achieved the best classification results using a modified MobileNet model, with an accuracy of (92.34% accuracy) for One Vs. Others model and (89.55% accuracy)
+for Two Vs. Three model.
+- 
+This project aims to bridge the gap between patients and specialists by providing fast and reliable burn diagnosis support, reducing the risk of delayed treatment and improving patient outcomes.
+
 
 ## Motivation
 https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
