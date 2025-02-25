@@ -46,6 +46,108 @@ https://github.com/user-attachments/assets/08232ad9-344e-4d1f-83ec-3b3a283c9438
 ## Methodology
 ![Untitled](https://github.com/user-attachments/assets/93662248-fbcb-4150-9c53-7ab098af1711)
 
+**Data Collection and Preprocessing**
+
+- Datasets: We combined multiple datasets (datasets 4, 5, 6, 7, and 8) to build a robust training set, ensuring diverse representation of burn types.
+
+- Image Processing: Burn region of interest (ROI) extraction was performed to focus on the affected areas, reducing noise and improving model performance.
+
+- Color Space Transformation: Images were converted from RGB to CIELAB color space, which helped improve classification accuracy by enhancing color differentiation.
+
+- Data Cleaning: Removed artifacts and poor-quality images that could negatively impact training.
+
+- Standardization: Resized images and normalized pixel values to ensure consistent input format for all models.
+
+
+**Model Development**
+
+- ResNet-50 Benchmark Model:
+
+Pretrained ResNet-50 model with added dense layers.
+
+Additional layers: fully connected layer, dropout layer (0.3), final output layer.
+
+Achieved 41.1% accuracy on initial trials, improved to 50% with hyperparameter tuning on dataset 5.
+
+
+- DenseNet Model:
+
+Pretrained DenseNet with added dense layers.
+
+Achieved 50.00% accuracy on dataset 5.
+
+
+- MobileNet Model:
+
+Pretrained MobileNet with an extra flatten layer and two fully connected layers.
+
+Dropout layer (0.7) and ReLU activation.
+
+Achieved 49.15% accuracy on dataset 5.
+
+
+- VGG16 Model:
+
+Pretrained VGG16 with added dense layers.
+
+Achieved 47.46% accuracy on dataset 5.
+
+
+- ShuffleNet Model:
+
+Pretrained ShuffleNet with added dense layers.
+
+Achieved 46.61% accuracy on dataset 5.
+
+
+**Advanced Strategies**
+
+- One-vs-All (OvA) Strategy:
+
+ResNet-50 model fine-tuned for binary classification of each burn degree against the others.
+
+I vs Others: 87.74% accuracy
+
+II vs Others: 68.64% accuracy
+
+III vs Others: 70.34% accuracy
+
+
+- Cascading Classifier:
+
+Integrated two models for hierarchical classification:
+
+First-degree vs. Others (ResNet-50): 92.34% accuracy
+
+Second-degree vs. Third-degree (MobileNet): 89.55% accuracy
+
+
+**Training and Evaluation**
+
+- Loss Functions:
+
+Multi-class classification: Cross-Entropy Loss
+
+Binary classification (OvA): Binary Cross-Entropy Loss
+
+
+- Optimization:
+
+Adam optimizer with adaptive learning rates.
+
+ReduceLROnPlateau scheduler to reduce learning rate by a factor of 0.1 if no improvement for 6 epochs.
+
+
+- Evaluation Metrics:
+
+Accuracy, F1-score, Precision, Recall
+
+Confusion matrices for visual performance comparison
+
+
+- Best Results:
+
+CIELAB color space with ResNet-50: 63.23% accuracy, 0.6271 F1-score, 0.6391 Precision, 0.6323 Recall
 
 
 
