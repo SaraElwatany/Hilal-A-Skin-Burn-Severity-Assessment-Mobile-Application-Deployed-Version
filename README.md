@@ -174,6 +174,11 @@ Confusion matrices for visual performance comparison
 CIELAB color space with Mobilenet using cascading classifier.
 
 
+## Models
+
+Notebooks related to the various techniques discussed earlier can be found in the following repository to ensure proper readability of the contents: [Skin Burn Classification Deep Learning](https://github.com/SaraElwatany/Skin_Burn_Classification_Deep_Learning).
+
+
 
 ## Snapshots
 
