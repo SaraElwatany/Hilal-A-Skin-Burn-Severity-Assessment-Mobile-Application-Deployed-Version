@@ -240,7 +240,7 @@ vol. 1116, p. 012186, Apr. 2021.
 
 ## Publication
 
-[Integrating multi-source data for skin burn classification using deep learning]([https://github.com/SaraElwatany/Skin_Burn_Classification_Deep_Learning](https://www.sciencedirect.com/science/article/abs/pii/S0010482525009072).
+[Integrating multi-source data for skin burn classification using deep learning](https://www.sciencedirect.com/science/article/abs/pii/S0010482525009072)
 
 ## How To Use
 1- Clone the repository.
